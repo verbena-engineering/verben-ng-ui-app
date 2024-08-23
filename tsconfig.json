@@ -21,7 +21,15 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "paths": {
+      "verbena-ui-library": [
+        "./dist/verbena-ui-library"
+      ],
+      "verbena-ui-peace": [
+        "./dist/verbena-ui-peace"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -1,27 +1,35 @@
+import { AppComponent } from './app.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-
-
-// Import modules
-// import { MaxNumberModule } from 'verbena-ui-library';
-// import { MinNumberModule } from 'verbena-ui-library';
-// import { RequiredInputModule } from 'verbena-ui-library';
-// import { EmailValidatorModule } from 'verbena-ui-library';
-// import { ConvertToDecimalModule } from 'verbena-ui-library';
-// import { ConvertToIntegerModule } from 'verbena-ui-library';
-// import { ConvertToStringModule } from 'verbena-ui-library';
-
+// Import your library modules or directives
+import { NumberRangeModule } from 'verbena-ui-library';
+import { RequiredInputModule } from 'verbena-ui-library';
+import { EmailValidatorModule } from 'verbena-ui-library';
+import { ConvertToNumberModule } from 'verbena-ui-library';
+import { ConvertToIntegerModule } from 'verbena-ui-library';
+import { PhoneNumberModule } from 'verbena-ui-library';
+import { ValidateInputModule } from 'verbena-ui-library';
+// Import the entire library or specific modules
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    // other components in the demo app
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    FormsModule,
+    ReactiveFormsModule,
+    NumberRangeModule,
+    RequiredInputModule,
+    EmailValidatorModule,
+    ConvertToNumberModule,
+    ConvertToIntegerModule,
+    PhoneNumberModule,
+    ValidateInputModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]

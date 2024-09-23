@@ -1,27 +1,30 @@
 <form>
+  <verben-drop-down></verben-drop-down>
   <!-- Max Number Directive -->
   <label for="maxNumber">Max Number:</label>
   <input type="number" appNumberRange [maxNumber]="10" />
-
-
-
-
-
+  <br/>
+  <br/>
   <!-- Min Number Directive -->
   <label for="minNumber">Min Number:</label>
   <input type="number" appNumberRange [minNumber]="10" class="border" />
+  <br/>
+  <br/>
 
   <label for="minMaxNumber">Min & Max Number:</label>
-
   <input type="number" appNumberRange [maxNumber]="10" [minNumber]="5" />
+  <br/>
+  <br/>
   <!-- Required Input Directive -->
   <label for="requiredInput">Required Input:</label>
   <input type="text" required requiredInput class="border" />
-
+  <br/>
+  <br/>
   <!-- Email Validator Directive -->
   <label for="emailValidator">Email Validator:</label>
   <input type="email" emailValidator class="border" />
-
+  <br/>
+  <br/>
   <!-- Convert to Decimal Directive -->
   <label for="convertToDecimal">Convert to Decimal:</label>
   <input type="text" convertToDecimal class="border" />
@@ -29,6 +32,7 @@
   <!-- Convert to Integer Directive -->
   <label for="convertToInteger">Convert to Integer:</label>
   <input type="text" convertToInteger class="border" />
-
+ <br/>
+  <br/>
   <button type="submit">Submit</button>
 </form>

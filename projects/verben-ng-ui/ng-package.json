@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../dist/verbena-ui-library",
+  "dest": "../../dist/verben-ng-ui",
   "lib": {
     "entryFile": "src/public-api.ts"
   }

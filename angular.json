@@ -3,44 +3,11 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "verbena-ui-library": {
-      "projectType": "library",
-      "root": "projects/verbena-ui-library",
-      "sourceRoot": "projects/verbena-ui-library/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/verbena-ui-library/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/verbena-ui-library/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/verbena-ui-library/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "tsConfig": "projects/verbena-ui-library/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
-        }
-      }
-    },
-  
-    "demo-app": {
+    "verben-ui": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
+          "style": "scss",
           "standalone": false
         },
         "@schematics/angular:directive": {
@@ -50,28 +17,29 @@
           "standalone": false
         }
       },
-      "root": "projects/demo-app",
-      "sourceRoot": "projects/demo-app/src",
+      "root": "",
+      "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/demo-app",
-            "index": "projects/demo-app/src/index.html",
-            "browser": "projects/demo-app/src/main.ts",
+            "outputPath": "dist/verben-ui",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
-            "tsConfig": "projects/demo-app/tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/demo-app/public"
+                "input": "public"
               }
             ],
             "styles": [
-              "projects/demo-app/src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -103,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "demo-app:build:production"
+              "buildTarget": "verben-ui:build:production"
             },
             "development": {
-              "buildTarget": "demo-app:build:development"
+              "buildTarget": "verben-ui:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -121,17 +89,51 @@
               "zone.js",
               "zone.js/testing"
             ],
-            "tsConfig": "projects/demo-app/tsconfig.spec.json",
+            "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/demo-app/public"
+                "input": "public"
               }
             ],
             "styles": [
-              "projects/demo-app/src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
+          }
+        }
+      }
+    },
+    "verben-ng-ui": {
+      "projectType": "library",
+      "root": "projects/verben-ng-ui",
+      "sourceRoot": "projects/verben-ng-ui/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/verben-ng-ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/verben-ng-ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/verben-ng-ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/verben-ng-ui/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         }
       }

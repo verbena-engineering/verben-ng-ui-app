@@ -3,23 +3,23 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "verbena-ui-peace": {
+    "verbena-ui-library": {
       "projectType": "library",
-      "root": "projects/verbena-ui-peace",
-      "sourceRoot": "projects/verbena-ui-peace/src",
+      "root": "projects/verbena-ui-library",
+      "sourceRoot": "projects/verbena-ui-library/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/verbena-ui-peace/ng-package.json"
+            "project": "projects/verbena-ui-library/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/verbena-ui-peace/tsconfig.lib.prod.json"
+              "tsConfig": "projects/verbena-ui-library/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/verbena-ui-peace/tsconfig.lib.json"
+              "tsConfig": "projects/verbena-ui-library/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -27,7 +27,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "tsConfig": "projects/verbena-ui-peace/tsconfig.spec.json",
+            "tsConfig": "projects/verbena-ui-library/tsconfig.spec.json",
             "polyfills": [
               "zone.js",
               "zone.js/testing"

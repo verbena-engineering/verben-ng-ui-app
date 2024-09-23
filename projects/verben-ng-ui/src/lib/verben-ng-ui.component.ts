@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'lib-verbena-ui-library',
+  selector: 'lib-verben-ng-ui',
   standalone: true,
   imports: [],
   template: `
     <p>
-      verbena-ui-library works!
+      verben-ng-ui works!
     </p>
   `,
   styles: ``
 })
-export class VerbenaUiLibraryComponent {
+export class VerbenNgUiComponent {
 
 }

@@ -10,6 +10,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
+    "isolatedModules": true,
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
@@ -23,11 +24,8 @@
       "dom"
     ],
     "paths": {
-      "verbena-ui-library": [
-        "./dist/verbena-ui-library"
-      ],
-      "verbena-ui-peace": [
-        "./dist/verbena-ui-peace"
+      "verben-ng-ui": [
+        "./dist/verben-ng-ui"
       ]
     }
   },

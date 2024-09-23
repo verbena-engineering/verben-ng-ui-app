@@ -36,39 +36,7 @@
         }
       }
     },
-    "verbena-ui-library": {
-      "projectType": "library",
-      "root": "projects/verbena-ui-library",
-      "sourceRoot": "projects/verbena-ui-library/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/verbena-ui-library/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/verbena-ui-library/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/verbena-ui-library/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "tsConfig": "projects/verbena-ui-library/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
-        }
-      }
-    },
+  
     "demo-app": {
       "projectType": "application",
       "schematics": {

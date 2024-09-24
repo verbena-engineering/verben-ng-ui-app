@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { provideHttpClient, withFetch  } from '@angular/common/http';
+
 import {
     ConvertToIntegerModule,
     ConvertToNumberModule,
@@ -10,7 +11,11 @@ import {
     NumberRangeModule, 
     PhoneNumberModule, 
     RequiredInputModule, 
-    ValidateInputModule,DropDownModule } from '../../projects/verben-ng-ui/src/public-api';
+    ValidateInputModule,
+    DropDownModule,
+    ImageModule,
+    SvgModule
+     } from '../../projects/verben-ng-ui/src/public-api';
 
 @NgModule({
   declarations: [
@@ -19,16 +24,20 @@ import {
   imports: [
     BrowserModule,
     AppRoutingModule,
-      NumberRangeModule,
+     NumberRangeModule,
     RequiredInputModule,
     EmailValidatorModule,
     ConvertToNumberModule,
     ConvertToIntegerModule,
     PhoneNumberModule,
     ValidateInputModule,
-    DropDownModule
+    DropDownModule,
+    ImageModule,
+    SvgModule,
   ],
-  providers: [],
+  providers: [
+    provideHttpClient(withFetch())
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

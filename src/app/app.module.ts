@@ -11,10 +11,12 @@ import {
     PhoneNumberModule, 
     RequiredInputModule, 
     ValidateInputModule,DropDownModule } from '../../projects/verben-ng-ui/src/public-api';
+import { ButtonDirective } from './lib/button.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ButtonDirective
   ],
   imports: [
     BrowserModule,

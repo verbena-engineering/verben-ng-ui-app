@@ -38,3 +38,11 @@ export * from './lib/required-input/required-input.directive';
 export * from './lib/email-validator/email-validator.module';
 export * from './lib/email-validator/email-validator.directive';
 
+export * from './lib/convert-to-number/convert-to-number.module';
+export * from './lib/convert-to-integer/convert-to-integer.module';
+
+export * from './lib/button/button.module';
+export * from './lib/button/button.directive';
+
+export * from './lib/theme-switcher/theme-switcher.module';
+export * from './lib/theme-switcher/theme-switcher.directive';

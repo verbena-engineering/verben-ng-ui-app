@@ -7,16 +7,16 @@ import {
     ConvertToIntegerModule,
     ConvertToNumberModule,
     EmailValidatorModule,
-    NumberRangeModule, 
-    PhoneNumberModule, 
-    RequiredInputModule, 
+    NumberRangeModule,
+    PhoneNumberModule,
+    RequiredInputModule,
     ValidateInputModule,DropDownModule } from '../../projects/verben-ng-ui/src/public-api';
-import { ButtonDirective } from './lib/button.directive';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    ButtonDirective
+
   ],
   imports: [
     BrowserModule,

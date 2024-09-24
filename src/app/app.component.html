@@ -1,5 +1,19 @@
 <form>
   <verben-drop-down></verben-drop-down>
+
+  <verben-svg icon="alert" [width]="100" [height]="100" color="red"></verben-svg> 
+  <verben-svg icon="alert" [width]="80" [height]="80" color="green"></verben-svg> 
+  <verben-svg icon="user" [width]="60" [height]="60" color="blue"></verben-svg> 
+  <verben-svg icon="user" [width]="40" [height]="40" color="yellow"></verben-svg> 
+
+  <verben-image
+  [url]="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR94u0EyhIYQ35WVzV0LSlxZ0Ozv9tMqfzewA&s'" 
+  [placeholder]="'assets/placeholder.png'" 
+  [lazyLoad]="true"
+  [width]="'600px'" 
+  [height]="'500px'">
+</verben-image>
+
   <!-- Max Number Directive -->
   <label for="maxNumber">Max Number:</label>
   <input type="number" appNumberRange [maxNumber]="10" />

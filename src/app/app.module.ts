@@ -14,7 +14,8 @@ import {
     ValidateInputModule,
     DropDownModule,
     ImageModule,
-    SvgModule
+    SvgModule,
+    CardModule
      } from '../../projects/verben-ng-ui/src/public-api';
 
 @NgModule({
@@ -34,6 +35,7 @@ import {
     DropDownModule,
     ImageModule,
     SvgModule,
+    CardModule
   ],
   providers: [
     provideHttpClient(withFetch())

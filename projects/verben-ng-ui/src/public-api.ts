@@ -9,6 +9,7 @@
 export * from './lib/components/drop-down/drop-down.module';
 export * from './lib/components/image/image.module';
 export * from './lib/components/svg/svg.module';
+export * from './lib/components/card/card.module';
 export * from './lib/convert-to-number/convert-to-number.module';
 export * from './lib/convert-to-integer/convert-to-integer.module';
 // export * from './lib/convert-to-decimal/convert-to-decimal.module';

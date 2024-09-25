@@ -1,0 +1,72 @@
+<section class="filterWrapper"> 
+    <div class="top"> 
+        <h3 class="filterHeadling">Filters <span class="filterFigure"><sup>(5)</sup></span></h3>
+        <button class="reset">Reset</button>
+    </div>
+    <hr />
+    <div class="center"> 
+        <div class="savedWrapper"> 
+            <h3>Saved Filters</h3>
+            <img src="assets/icons/info.svg" alt="" />
+        </div>
+        <div class="centerMainWrapper"> 
+            <div *ngFor="let filter of savedFilters.slice(0, visibleFilters); let i = index" class="centerInnerWrapper"> 
+              <div class="checkboxWrapper"> 
+                  <span>
+                     <input type="checkbox" 
+                            [checked]="filter.checked" 
+                            (click)="toggleCheckbox(i)" 
+                            [ngClass]="{'checked': filter.checked}" />
+                   </span>
+                   <p>{{filter.name}}</p>
+              </div>
+              <div class="iconWrapper"> 
+                <span>
+                  <img src="assets/icons/edit.svg" alt="" />
+                </span>
+                <span (click)="deleteFilter(i)">
+                  <img src="assets/icons/delete.svg" alt="" />
+                </span>
+              </div>
+            </div>
+          </div>          
+          <div class="moreWrapper" (click)="toggleShowMore()"> 
+            <p>{{visibleFilters === 2 ? 'Show more' : 'Show less'}}</p>
+            <span>
+              <img src="assets/icons/chevron.svg" alt="" />
+            </span>
+          </div>
+    </div>
+    <hr />
+    <div class="bottom"> 
+        <div class="savedWrapper"> 
+            <h3>Operation</h3>
+            <img src="assets/icons/info.svg" alt="" />
+        </div>
+        <div class="inputsWrapper" *ngFor="let operation of operations; let i = index">
+            <select [(ngModel)]="operation.filterBy">
+              <option value="" selected>Filter By</option>
+              <option value="all">ALL</option>
+              <option value="even">Even</option>
+              <option value="odd">Odd</option>
+            </select>
+            <select [(ngModel)]="operation.condition">
+              <option value="equal" selected>equal</option>
+              <option value="greater">greater than</option>
+              <option value="less">less than</option>
+            </select>
+            <input type="text" [(ngModel)]="operation.value" placeholder="#1,000,000" />
+          </div>
+          <div class="btnWrapper"> 
+            <button class="addBtn" (click)="addOperation()"> 
+              + Add
+            </button>
+          </div>          
+       <hr />
+       <div class="btnWrapper"> 
+        <button class="filterBtn"> 
+            Filter
+          </button>
+       </div>
+    </div>
+</section>

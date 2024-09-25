@@ -1,1 +1,37 @@
-<p>drop-down works!</p>
+<div #dropdownContainer class="drop-down">
+  <div (click)="onDropdownClick($event)" [class.focused]="isFocused" (focus)="onFocus()" (blur)="onBlur()" tabindex="0"
+    class="drop-down-input flex">
+    <div class="drop-down-main-content">
+      <ng-container *ngIf="itemTemplate; else defaultItem">
+        <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: selectedOption }"></ng-container>
+      </ng-container>
+
+      <ng-template #defaultItem>
+        <div class="default-item flex">
+          <div class="dropdown-label place-holder" *ngIf="!this.selectedOption">{{placeholder}}</div>
+          <div *ngIf="this.selectedOption" class="item-label dropdown-label">
+            {{this.getOptionLabel(this.selectedOption)}}</div>
+        </div>
+      </ng-template>
+    </div>
+    <span *ngIf="showClear && this.selectedOption" (click)="this.selectedOption = null; $event.stopPropagation()"
+      class="drop-down-icon-item drop-down-clear-button">X</span>
+    <span class="drop-down-icon-item drop-down-expand-button">&#x25BC;</span>
+  </div>
+  <div class="drop-down-menu-item-wrapper" *ngIf="isExpanded" (click)="$event.preventDefault()">
+    <div class="drop-down-menu-item">
+      <drop-down-item [itemTemplate]="itemTemplate" [groupTemplate]="groupTemplate" [activeItem]="selectedOption"
+        [optionLabel]="optionLabel" [optionSubLabel]="optionSubLabel" [loadMoreCaption]="loadMoreCaption"
+        [options]="options" [group]="group" [onExpand]="expandMenu.bind(this)"
+        [onLoadMore]="loadMoreMenuItems.bind(this)" [onSelect]="onSelect.bind(this)"></drop-down-item>
+      <div *ngIf="lazyLoad">
+        <div class="see-more-container flex justify-end">
+          <span class="see-more-caption" (click)="loadMore()">{{loadMoreCaption}}</span>
+        </div>
+      </div>
+      <div *ngIf="isLoading" class="loading-overlay">
+        <div class="loader"></div>
+      </div>
+    </div>
+  </div>
+</div>

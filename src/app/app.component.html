@@ -1,30 +1,53 @@
+<verbena-drop-down [showClear]="true" placeholder="First Test" (onChange)="onDropdownChange($event)"
+  [(options)]="options" [(ngModel)]="selectedOption"></verbena-drop-down>
+<verbena-drop-down [lazyLoad]="true" [load]="this.mockAsyncFunction.bind(this)" (onChange)="onDropdownChange($event)"
+  [(options)]="options" [(ngModel)]="selectedOption"></verbena-drop-down>
+
+<verbena-drop-down placeholder="Select test item" [lazyLoad]="true" optionValue="Id"
+  [load]="this.mockAsyncFunctionTwo.bind(this)" (onChange)="onDropdownChange($event)" [(options)]="optionsTwo"
+  [(ngModel)]="selectedOptionTwo"></verbena-drop-down>
+
+<verbena-drop-down [group]="true" placeholder="Select test item" [lazyLoad]="true" optionValue="Id"
+  [load]="this.mockAsyncFunctionThree.bind(this)" (onChange)="onDropdownChange($event)" [(options)]="optionsThree"
+  [(ngModel)]="selectedOptionThree"></verbena-drop-down>
+
+<verbena-drop-down [group]="true" placeholder="Select test item" [lazyLoad]="true"
+  [load]="this.mockAsyncFunctionThree.bind(this)" (onChange)="onDropdownChange($event)" [(options)]="optionsThree"
+  [(ngModel)]="selectedOptionFour"></verbena-drop-down>
+
+<verbena-drop-down [group]="true" placeholder="Select test item" (onChange)="onDropdownChange($event)"
+  [(options)]="optionsThree" [(ngModel)]="selectedOptionFive"></verbena-drop-down>
+
+<verbena-drop-down [group]="true" placeholder="Select test item" [lazyLoad]="true"
+  [load]="this.mockAsyncFunctionFour.bind(this)" (onChange)="onDropdownChange($event)" [(options)]="optionsFour"
+  [(ngModel)]="selectedOptionSix"></verbena-drop-down>
+
 <form>
-  <verben-drop-down></verben-drop-down>
   <!-- Max Number Directive -->
   <label for="maxNumber">Max Number:</label>
   <input type="number" appNumberRange [maxNumber]="10" />
-  <br/>
-  <br/>
+  <br />
+  <br />
   <!-- Min Number Directive -->
   <label for="minNumber">Min Number:</label>
   <input type="number" appNumberRange [minNumber]="10" class="border" />
-  <br/>
-  <br/>
+  <br />
+  <br />
 
   <label for="minMaxNumber">Min & Max Number:</label>
   <input type="number" appNumberRange [maxNumber]="10" [minNumber]="5" />
-  <br/>
-  <br/>
+  <br />
+  <br />
   <!-- Required Input Directive -->
   <label for="requiredInput">Required Input:</label>
   <input type="text" required requiredInput class="border" />
-  <br/>
-  <br/>
+  <br />
+  <br />
   <!-- Email Validator Directive -->
   <label for="emailValidator">Email Validator:</label>
   <input type="email" emailValidator class="border" />
-  <br/>
-  <br/>
+  <br />
+  <br />
   <!-- Convert to Decimal Directive -->
   <label for="convertToDecimal">Convert to Decimal:</label>
   <input type="text" convertToDecimal class="border" />
@@ -32,7 +55,7 @@
   <!-- Convert to Integer Directive -->
   <label for="convertToInteger">Convert to Integer:</label>
   <input type="text" convertToInteger class="border" />
- <br/>
-  <br/>
+  <br />
+  <br />
   <button type="submit">Submit</button>
 </form>

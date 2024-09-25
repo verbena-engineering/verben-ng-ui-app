@@ -1,0 +1,83 @@
+<!-- If group mode is false, display a flat list -->
+<ng-container *ngIf="!group">
+
+  <div class="option-items-container flex flex-col">
+    <ng-container *ngFor="let item of options">
+      <ng-container *ngIf="itemTemplate; else defaultItem">
+        <div [ngClass]="{'active-item': this.activeItem == item}" (click)="onSelect && onSelect(item, $event)"
+          class="item-wrapper">
+          <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
+        </div>
+      </ng-container>
+
+      <ng-template #defaultItem>
+        <div [ngClass]="{'active-item': this.activeItem == item}" (click)="onSelect && onSelect(item, $event)"
+          class="default-item item-wrapper flex flex-col">
+          <div [ngClass]="{'has-sub-label': optionSubLabel}" class="item-label">{{this.getOptionLabel(item)}}</div>
+          <div *ngIf="optionSubLabel || (group && item.subLabel)" class="item-sub-label">
+            {{this.getOptionSubLabel(item)}}</div>
+        </div>
+      </ng-template>
+    </ng-container>
+  </div>
+</ng-container>
+
+<!-- If group mode is true, display groups and sub-groups recursively -->
+<ng-container *ngIf="group">
+  <div class="option-items-container flex flex-col">
+    <ng-container *ngFor="let item of options">
+      <!-- Display as group header if the item has children -->
+      <div *ngIf="!item.lazyLoad">
+        <ng-container *ngIf="itemTemplate; else defaultItem">
+          <div [ngClass]="{'active-item': this.activeItem == item}" (click)="onSelect && onSelect(item, $event)"
+            class="item-wrapper">
+            <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
+          </div>
+        </ng-container>
+
+        <ng-template #defaultItem>
+          <div [ngClass]="{'active-item': this.activeItem == item}" (click)="onSelect && onSelect(item, $event)"
+            class="default-item item-wrapper flex flex-col">
+            <div [ngClass]="{'has-sub-label': item.subLabel}" class="item-label">{{item.label}}</div>
+            <div *ngIf="item.subLabel" class="item-sub-label">{{item.subLabel}}</div>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Display as normal item if it doesn't have children -->
+      <div class="flex flex-col" *ngIf="item.lazyLoad">
+        <ng-container *ngIf="groupTemplate; else defaultGroup">
+          <div class="group-wrapper" (click)="onExpand && onExpand(item)">
+            <ng-container *ngTemplateOutlet="groupTemplate; context: { $implicit: item }"></ng-container>
+          </div>
+        </ng-container>
+
+        <ng-template #defaultGroup>
+          <div (click)="onExpand && onExpand(item)" class="default-group group-wrapper flex">
+            <span *ngIf="!item.expanded">+</span>
+            <span *ngIf="item.expanded">-</span>
+            <div class="default-item flex flex-col">
+              <div [ngClass]="{'has-sub-label': item.subLabel}" class="item-label">{{item.label}}</div>
+              <div *ngIf="item.subLabel" class="item-sub-label">{{item.subLabel}}</div>
+            </div>
+          </div>
+        </ng-template>
+        <!-- Recursive rendering of sub-items (groups or individual items) -->
+        <ng-container *ngIf="item.expanded">
+          <div class="group-wrapper-items flex flex-col">
+            <drop-down-item [itemTemplate]="itemTemplate" [groupTemplate]="groupTemplate" [activeItem]="activeItem"
+              [optionLabel]="optionLabel" [optionSubLabel]="optionSubLabel" [loadMoreCaption]="loadMoreCaption"
+              [options]="item.items" [group]="group" [onExpand]="onExpand" [onLoadMore]="onLoadMore"
+              [onSelect]="onSelect"></drop-down-item>
+            <div class="see-more-container flex">
+              <span class="see-more-caption" (click)="onLoadMore && onLoadMore(item)">{{loadMoreCaption}}</span>
+            </div>
+            <div *ngIf="item.isLoading" class="loading-overlay">
+              <div class="loader"></div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>

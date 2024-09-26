@@ -1,7 +1,7 @@
 <section class="filterWrapper"> 
     <div class="top"> 
         <h3 class="filterHeadling">Filters <span class="filterFigure"><sup>(5)</sup></span></h3>
-        <button class="reset">Reset</button>
+        <button class="reset" (click)='resetFilters()'>Reset</button>
     </div>
     <hr />
     <div class="center"> 
@@ -25,16 +25,14 @@
                   <img src="assets/icons/edit.svg" alt="" />
                 </span>
                 <span (click)="deleteFilter(i)">
-                  <img src="assets/icons/delete.svg" alt="" />
+                  <verben-svg icon="delete" [width]="15" [height]="15" color="#E20000"></verben-svg> 
                 </span>
               </div>
             </div>
           </div>          
           <div class="moreWrapper" (click)="toggleShowMore()"> 
             <p>{{visibleFilters === 2 ? 'Show more' : 'Show less'}}</p>
-            <span>
-              <img src="assets/icons/chevron.svg" alt="" />
-            </span>
+            <verben-svg icon="chevron" [width]="8" [height]="6" color="black"></verben-svg> 
           </div>
     </div>
     <hr />

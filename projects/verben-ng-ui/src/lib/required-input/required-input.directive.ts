@@ -10,7 +10,7 @@ export class RequiredInputDirective {
   @HostListener('input') onInput() {
     const value = this.el.nativeElement.value.trim();
     if (value === '') {
-      this.renderer.setStyle(this.el.nativeElement, 'border', '2px solid red');
+      this.renderer.setStyle(this.el.nativeElement, 'border', '5px solid purple');
     } else {
       this.renderer.setStyle(this.el.nativeElement, 'border', 'none');
     }

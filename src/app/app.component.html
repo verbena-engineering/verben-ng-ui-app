@@ -35,4 +35,32 @@
  <br/>
   <br/>
   <button type="submit">Submit</button>
+
+  <input type="text" appValidate="text" >
+  <input type="text" appValidate="number">
+  <input type="text" appValidate="decimal">
+  <input type="text" appValidate="integer">
+  <input type="email" appValidate="email">
 </form>
+
+
+<button class="relative p-2 bg-gray-200 rounded">
+  Notifications
+  <span appBadge="5" badgeColor="bg-red-900" class="bg-red-500" badgePosition="top-right"></span>
+</button>
+
+<body class="bg-white text-black dark:bg-gray-900 dark:text-white">
+  <button appThemeSwitcher>Switch Theme</button>
+</body>
+<button appButton buttonType="icon-text" iconClass="fas fa-check">Save</button>
+
+
+<!-- Example with custom color and class for the button -->
+<button appThemeSwitcher [switchColor]="'red'" [switchClass]="'text-lg font-bold'">
+  Toggle Dark Mode
+</button>
+
+<!-- Elements styled with Tailwind's dark mode -->
+<div class="bg-white text-black dark:bg-gray-900 dark:text-white p-4">
+  This section will toggle between light and dark modes!
+</div>

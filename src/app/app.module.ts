@@ -4,13 +4,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {
-    ConvertToIntegerModule,
+    
     ConvertToNumberModule,
     EmailValidatorModule,
+    BadgeModule,
+    ButtonModule,
+    ThemeSwitcherModule,
     NumberRangeModule,
     PhoneNumberModule,
     RequiredInputModule,
-    ValidateInputModule,DropDownModule } from '../../projects/verben-ng-ui/src/public-api';
+    ValidationModule,DropDownModule } from '../../projects/verben-ng-ui/src/public-api';
+import { ValidateInputModule } from '../../dist/verbena-ui-library';
 
 
 @NgModule({
@@ -25,10 +29,14 @@ import {
     RequiredInputModule,
     EmailValidatorModule,
     ConvertToNumberModule,
-    ConvertToIntegerModule,
+    ValidationModule,
+
     PhoneNumberModule,
     ValidateInputModule,
-    DropDownModule
+    DropDownModule,
+    ThemeSwitcherModule,
+    ButtonModule,
+    BadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

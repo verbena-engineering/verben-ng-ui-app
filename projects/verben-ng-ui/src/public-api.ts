@@ -12,14 +12,14 @@ export * from './lib/convert-to-integer/convert-to-integer.module';
 // export * from './lib/convert-to-decimal/convert-to-decimal.module';
 export * from './lib/phone-number/phone-number.module';
 
-export * from './lib/validate-input/validate-input.module';
+export * from './lib/validate/validate.module';
 
 // Also export the directives if needed directly
 export * from './lib/convert-to-number/convert-to-number.directive';
 export * from './lib/convert-to-integer/convert-to-integer.directive';
 // export * from './lib/convert-to-decimal/convert-to-decimal.directive';
 export * from './lib/phone-number/phone-number.directive';
-export * from './lib/validate-input/validate-input.directive';
+export * from './lib/validate/validate.directive';
 
 
 // Exporting MaxNumberModule and MaxNumberDirective
@@ -46,3 +46,17 @@ export * from './lib/button/button.directive';
 
 export * from './lib/theme-switcher/theme-switcher.module';
 export * from './lib/theme-switcher/theme-switcher.directive';
+
+// Public API Surface of verbena-ui-library
+
+export * from './lib/badge/badge.directive';
+export * from './lib/badge/badge.module';
+
+// Export the service
+export * from './lib/validate/error-message.service';
+
+// Export the directive
+export * from './lib/validate/validate.directive';
+
+// Export the validation module
+export * from './lib/validate/validate.module';

@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { provideHttpClient, withFetch  } from '@angular/common/http';
+
 import {
     
-    ConvertToNumberModule,
+   
     EmailValidatorModule,
     BadgeModule,
     ButtonModule,
@@ -13,8 +14,8 @@ import {
     NumberRangeModule,
     PhoneNumberModule,
     RequiredInputModule,
-    ValidationModule,DropDownModule } from '../../projects/verben-ng-ui/src/public-api';
-import { ValidateInputModule } from '../../dist/verbena-ui-library';
+    ValidationModule,DropDownModule,SvgModule,    ImageModule, DropDownModule } from '../../projects/verben-ng-ui/src/public-api';
+
 
 
 @NgModule({
@@ -25,20 +26,24 @@ import { ValidateInputModule } from '../../dist/verbena-ui-library';
   imports: [
     BrowserModule,
     AppRoutingModule,
-      NumberRangeModule,
+     NumberRangeModule,
     RequiredInputModule,
     EmailValidatorModule,
-    ConvertToNumberModule,
+  
     ValidationModule,
 
     PhoneNumberModule,
-    ValidateInputModule,
+     ValidationModule,
     DropDownModule,
     ThemeSwitcherModule,
     ButtonModule,
     BadgeModule
+    ImageModule,
+    SvgModule,
   ],
-  providers: [],
+  providers: [
+    provideHttpClient(withFetch())
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

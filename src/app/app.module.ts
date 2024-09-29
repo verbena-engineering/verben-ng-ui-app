@@ -16,6 +16,7 @@ import {
     ImageModule,
     SvgModule,
     TableFilterModule
+    CardModule
      } from '../../projects/verben-ng-ui/src/public-api';
 
 @NgModule({
@@ -36,6 +37,7 @@ import {
     ImageModule,
     SvgModule,
     TableFilterModule
+    CardModule
   ],
   providers: [
     provideHttpClient(withFetch())

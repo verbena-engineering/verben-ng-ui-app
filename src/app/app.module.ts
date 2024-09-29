@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideHttpClient, withFetch  } from '@angular/common/http';
-
 import {
     ConvertToIntegerModule,
     ConvertToNumberModule,
@@ -15,12 +14,13 @@ import {
     DropDownModule,
     ImageModule,
     SvgModule,
-    CardModule
+    CardModule,
+    CardDataViewModule
      } from '../../projects/verben-ng-ui/src/public-api';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,7 +35,8 @@ import {
     DropDownModule,
     ImageModule,
     SvgModule,
-    CardModule
+    CardModule,
+    CardDataViewModule,
   ],
   providers: [
     provideHttpClient(withFetch())

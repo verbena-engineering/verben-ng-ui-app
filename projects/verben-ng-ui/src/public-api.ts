@@ -12,6 +12,8 @@ export * from './lib/components/svg/svg.module';
 export * from './lib/convert-to-number/convert-to-number.module';
 export * from './lib/convert-to-integer/convert-to-integer.module';
 export * from './lib/components/sort-table/sort-table.module';
+export * from './lib/components/visible-column/visible-column.module';
+export * from './lib/components/data-view/data-view.module';
 // export * from './lib/convert-to-decimal/convert-to-decimal.module';
 export * from './lib/phone-number/phone-number.module';
 
@@ -40,4 +42,8 @@ export * from './lib/required-input/required-input.directive';
 // Exporting EmailValidatorModule and EmailValidatorDirective
 export * from './lib/email-validator/email-validator.module';
 export * from './lib/email-validator/email-validator.directive';
+
+// Exporting ControlOptionModule and ControlOptionDirective
+export * from './lib/control-options/control-options.module';
+export * from './lib/control-options/control-options.directive';
 

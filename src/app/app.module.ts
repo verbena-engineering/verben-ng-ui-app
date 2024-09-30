@@ -15,8 +15,12 @@ import {
     DropDownModule,
     ImageModule,
     SvgModule,
-    SortTableModule
+    SortTableModule,
+    VisibleColumnModule,
+    DataViewModule,
+    ControlOptionsModule
      } from '../../projects/verben-ng-ui/src/public-api';
+
 
 @NgModule({
   declarations: [
@@ -35,7 +39,10 @@ import {
     DropDownModule,
     ImageModule,
     SvgModule,
-    SortTableModule
+    SortTableModule,
+    VisibleColumnModule,
+    DataViewModule,
+    ControlOptionsModule
   ],
   providers: [
     provideHttpClient(withFetch())

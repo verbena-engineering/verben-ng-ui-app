@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'verben-image',
-  standalone: true,
-  imports: [CommonModule],
   templateUrl: './image.component.html',
   styleUrl: './image.component.css'
 })

@@ -1,5 +1,10 @@
 # VerbenUi
 
+Do npm install (After the first pull)
+Run the project( npm start)
+Use ng build --watch to watching and listen to change in  library 
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.3.
 
 ## Development server

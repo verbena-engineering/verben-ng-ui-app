@@ -6,9 +6,24 @@
 // export * from './lib/verben-ng-ui.component';
 
 // Exporting modules
+export * from './lib/components/card-data-view/card-data-view.component';
+export * from './lib/components/card-data-view/card-data-view.module';
+export * from './lib/components/card-data-view/card-data';
+
 export * from './lib/components/drop-down/drop-down.module';
 export * from './lib/components/chip/chip.module';
 export * from './lib/components/shared.module';
+export * from './lib/components/drop-down/drop-down.component';
+
+export * from './lib/components/image/image.module';
+export * from './lib/components/image/image.component';
+
+export * from './lib/components/svg/svg.module';
+export * from './lib/components/svg/svg.component';
+
+export * from './lib/components/card/card.module';
+export * from './lib/components/card/card.component';
+
 export * from './lib/convert-to-number/convert-to-number.module';
 export * from './lib/convert-to-integer/convert-to-integer.module';
 // export * from './lib/convert-to-decimal/convert-to-decimal.module';

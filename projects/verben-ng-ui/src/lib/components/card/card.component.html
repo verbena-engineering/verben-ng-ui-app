@@ -1,0 +1,23 @@
+  <div class="card"
+  [style.background-color]="bgColor"
+  [style.margin]="mg"
+  [style.border]="border"
+  [style.border-radius]="borderRadius"
+  [style.color]="textColor"
+  [style.width]="width"
+  [style.height]="height"
+  [ngClass]="disabled?'disable':''"
+  [style.aspect-ratio]="aspectRatio"
+  [style.padding]="pd"
+  >
+    <div class="card-header" *ngIf="hasHeader">
+      <ng-content select="[card-header]"></ng-content>
+    </div>
+    <div class="card-body" *ngIf="hasBody">
+      <ng-content select="[card-body]"></ng-content>
+    </div>
+    <div class="card-footer" *ngIf="hasFooter">
+      <ng-content select="[card-footer]"></ng-content>
+    </div>
+  </div>
+  

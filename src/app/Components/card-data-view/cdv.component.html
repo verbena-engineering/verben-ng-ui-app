@@ -1,20 +1,28 @@
-  <!-- <verben-card-data-view border="5px" pd="5px 10px" [cardDataList]="cardData">
-
-    <ng-template #card let-item card-body class="flex flex-col bg-yellow-500 border-r-4">
-      <div>
-        <span class="font-bold">{{item.title}}</span>
-        <verben-svg icon="close" [width]="20" [height]="20" color="black"></verben-svg> 
-      </div>
-       @for (ciItem of item.body; track ciItem.value) {
-        <div class="gap-2">
-           <span class="text-gray-200">{{ciItem.title}}</span>
-           <span>{{ciItem.value}}</span>
+  <verben-card-data-view lHeight="calc(100%-30px)"  border="5px" pd="5px 10px" [cardDataList]="cardData" mg="20px">
+    <ng-template #card let-item card-body >
+      <div class="flex  bg-secondary rounded-xl my-2 ">
+        <div class="w-3 rounded-xl rounded-tr-none rounded-br-none" [ngClass]="item.selected? 'bg-primary':'bg-secondary-200'"></div>
+        <div class="flex flex-col py-2 px-4">
+        <div>
+          <span class="font-normal text-sm">{{item.title}}</span>
+          <verben-svg icon="close" [width]="20" [height]="20" color="black"></verben-svg> 
         </div>
-       }
+        @for (ciItem of item.body; track ciItem.value) {
+          <div class="gap-2">
+            <span class="text-muted font-light text-xs">{{ciItem.title}}:</span>
+            <span class="text-black">{{ciItem.value}}</span>
+          </div>
+        }
+        </div>
+      </div>
     </ng-template>
-    <ng-template #rightContent>
-        <div>hello</div>
-    </ng-template>
-  </verben-card-data-view> -->
+    <div detail class="100%">
+        <form class=" bg-secondary p-3 rounded-xl h-full w-full">
+          <div class="flex flex-col"> 
+           <label class="text-muted font-extralight text-sm " for="convertToDecimal">Convert to Decimal:</label>
+           <input type="text" convertToDecimal class="border-secondary-200 rounded-xl border-2 px-2 py-1" /> 
+          </div>
+        </form>
+    </div>
+  </verben-card-data-view>
 
-  <div>hello PPP</div>

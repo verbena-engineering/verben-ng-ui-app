@@ -8,17 +8,17 @@ import { CardData } from '../../../../projects/verben-ng-ui/src/public-api';
 })
 export class CardDataViewComponent {
    cardData:CardData[]=[
-     { title:"Title1", body:[
+     { selected:true, title:"Title1", body:[
       { title:'Code',value:'code1'},
       { title:'Name',value:'name1'},
       { title:'Description',value:'description1'}
     ]},
-      { title:"Title2", body:[
+      {  selected:false,title:"Title2", body:[
       { title:'Code',value:'code2'},
       { title:'Name',value:'name2'},
       { title:'Description',value:'description2'}
     ]},
-      { title:"Title3", body:[
+      { selected:false, title:"Title3", body:[
       { title:'Code',value:'code3'},
       { title:'Name',value:'name3'},
       { title:'Description',value:'description3'}

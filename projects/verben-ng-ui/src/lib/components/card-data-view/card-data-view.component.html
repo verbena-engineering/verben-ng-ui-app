@@ -13,15 +13,14 @@
     <ng-content select="[card-body]"></ng-content>
 </div> -->
 
-<div [style.display]="'flex'" [style.flex-direction]="displayAsRow?'row':'column'">
-    <ng-template [ngIf]="hasCustomLeft" [ngIfElse]="staticLeft">
-        <div>
-           <ng-content select="[leftContent]"></ng-content>  
+<div class="container" [style.display]="'flex'" [style.margin]="mg" [style.flex-direction]="displayAsRow?'row':'column'">
+       <div #dynamicDetail>
+           <ng-content select="[master]"></ng-content>  
         </div>
-    </ng-template>
-    <ng-template #staticLeft>
       <div 
+       *ngIf="!dynamicDetail.children.length"
         class="left-side"
+        [style.backgroundColor]="lbgColor"
         [style.width]="lWidth"
         [style.height]="lHeight"
       >
@@ -29,18 +28,20 @@
             <ng-content *ngTemplateOutlet="card;context: {$implicit: item}"></ng-content>
          }
       </div>
-    </ng-template>
 
-     <ng-template [ngIf]="hasCustomRight" [ngIfElse]="staticRight">
-          <ng-content select="[rightContent]"></ng-content>   
-    </ng-template>
-     <ng-template #staticRight>
-      <div class="left-side"
-           [style.width]="rWidth"
-           [style.height]="rHeight"
+      <div #dynamicMaster class="right-side"
+      [style.width]="rWidth"
+      [style.height]="rHeight"
+      [style.backgroundColor]="rbgColor"
       >
-
+         <ng-content select="[detail]" ></ng-content>   
       </div>
-    </ng-template>
+      <div *ngIf="!dynamicMaster.children.length" 
+      class="right-side"
+      [style.width]="rWidth"
+      [style.height]="rHeight"
+      [style.backgroundColor]="rbgColor"
 
+      >
+      </div>
 </div>

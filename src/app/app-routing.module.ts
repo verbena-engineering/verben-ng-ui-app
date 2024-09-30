@@ -1,21 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CardDataViewComponent } from './Components/card-data-view/cdv.component';
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { DropdownSampleComponent } from './views/dropdown-sample/dropdown-sample.component';
 
 const routes: Routes = [
-{
-    path: '',
-    loadChildren: () =>
-      import('./Components/card-data-view/cdv.module').then(
-        (m) => m.CDVModule
-      ),
+  {
+    path: 'card-data-view',
+    component: CardDataViewComponent,
   },
-    { path: '**', redirectTo: '', pathMatch: 'full' },
-
-
+  { path: '', component: HomeComponent, pathMatch: 'full' },
+  {
+    path: 'dropdown-chip',
+    component: DropdownSampleComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

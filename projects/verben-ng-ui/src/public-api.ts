@@ -10,8 +10,13 @@ export * from './lib/components/card-data-view/card-data-view.component';
 export * from './lib/components/card-data-view/card-data-view.module';
 export * from './lib/components/card-data-view/card-data';
 
+export * from './lib/components/drop-down/DropdownMenuItem';
+export * from './lib/components/drop-down/DropdownChangeEvent';
+export * from './lib/components/drop-down/DropdownLoadEvent';
+export * from './lib/components/chip/ChipChangeEvent';
 export * from './lib/components/drop-down/drop-down.module';
-export * from './lib/components/drop-down/drop-down.component';
+export * from './lib/components/chip/chip.module';
+export * from './lib/components/shared.module';
 
 export * from './lib/components/image/image.module';
 export * from './lib/components/image/image.component';
@@ -38,14 +43,12 @@ export * from './lib/convert-to-integer/convert-to-integer.directive';
 export * from './lib/phone-number/phone-number.directive';
 export * from './lib/validate-input/validate-input.directive';
 
-
 // Exporting MaxNumberModule and MaxNumberDirective
 export * from './lib/number-range/number-range.module';
 export * from './lib/number-range/number-range.directive';
 
 export * from './lib/number-range/number-range.module';
 export * from './lib/number-range/number-range.directive';
-
 
 // Exporting RequiredInputModule and RequiredInputDirective
 export * from './lib/required-input/required-input.module';
@@ -54,4 +57,3 @@ export * from './lib/required-input/required-input.directive';
 // Exporting EmailValidatorModule and EmailValidatorDirective
 export * from './lib/email-validator/email-validator.module';
 export * from './lib/email-validator/email-validator.directive';
-

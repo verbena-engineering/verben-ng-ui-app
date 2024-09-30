@@ -19,6 +19,7 @@ import {
     CardDataViewModule,
     ValidationModule,
     ButtonModule,
+  
     VerbenaBadgeModule,
     VerbenaInputModule,
      } from '../../projects/verben-ng-ui/src/public-api';

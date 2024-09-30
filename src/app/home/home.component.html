@@ -79,7 +79,22 @@
 </form>
 
 <p>home</p>
-<verbena-input  [minLength]="3" [maxLength]="10" label="surname" caption="your name">
-  <input type="text" class="border" />
-</verbena-input>
+
+
+<verbena-input
+  label="Convert to Decimal:"
+  appValidate="decimal" [showBorder]="true" [showErrorMessage]="true" errorPosition="below"
+
+  [minLength]="3"
+  [maxLength]="10"
+></verbena-input>
+<verbena-input
+  label="Convert to Decimal:"
+  appValidate="number" [showBorder]="true" [showErrorMessage]="true" errorPosition="below"
+
+  [minLength]="3"
+  [maxLength]="10"
+></verbena-input>
+
+
 

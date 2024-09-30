@@ -69,6 +69,6 @@ export * from './lib/validate/validate.directive'
 export * from './lib/validate/validate.module'
 
 
-export * from './lib/Verbena-input/verbena-input.directive'
+export * from './lib/Verbena-input/verbena-input.component'
 export * from './lib/Verbena-input/verbena-input.module'
 

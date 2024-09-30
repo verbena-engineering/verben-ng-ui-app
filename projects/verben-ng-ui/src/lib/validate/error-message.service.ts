@@ -11,18 +11,24 @@ export class ErrorMessageService {
     if (!errorElement) {
       // Create new error element if it doesn't exist
       errorElement = document.createElement('span');
-      inputElement.parentNode?.insertBefore(errorElement, position === 'above' ? inputElement : inputElement.nextSibling);
+      errorElement.style.color = 'red';
+      errorElement.style.fontSize = '12px';
+
+      // Insert error element in the specified position
+      if (position === 'above') {
+        inputElement.parentNode?.insertBefore(errorElement, inputElement);
+      } else {
+        inputElement.parentNode?.insertBefore(errorElement, inputElement.nextSibling);
+      }
     }
 
     errorElement.textContent = message;  // Update the message
-    errorElement.style.color = 'red';
-    errorElement.style.fontSize = '12px';
   }
 
   public removeErrorMessage(inputElement: HTMLInputElement) {
     const errorElement = this.getErrorElement(inputElement);
     if (errorElement) {
-      errorElement.textContent = '';  // Clear the message
+      errorElement.remove();  // Remove the message element
     }
   }
 

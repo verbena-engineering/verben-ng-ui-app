@@ -1,85 +1,57 @@
-import { Directive, ElementRef, Input, HostListener, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
 import { ErrorMessageService } from './error-message.service';
 
 @Directive({
   selector: '[appValidate]'
 })
 export class ValidateDirective {
-  @Input('appValidate') validationType: 'text' | 'number' | 'decimal' | 'integer' | 'email' = 'text';
-  @Input() required: boolean = false;
-
-  // Custom inputs for error display options
-  @Input() showBorder: boolean = true;
-  @Input() showErrorMessage: boolean = true;
+  @Input() appValidate!: string;
+  @Input() showBorder: boolean = false;
+  @Input() showErrorMessage: boolean = false;
   @Input() errorPosition: 'above' | 'below' = 'below';
 
-  constructor(
-    private el: ElementRef,
-    private errorMessageService: ErrorMessageService,
-    private renderer: Renderer2
-  ) {}
+  constructor(private el: ElementRef, private renderer: Renderer2, private errorMessageService: ErrorMessageService) {}
 
-  @HostListener('input') onInput() {
+  @HostListener('input') // Listen for the input event
+  onInput() {
+    this.validate();
+  }
+
+  private validate() {
     const input = this.el.nativeElement as HTMLInputElement;
-    const value = input.value.trim();
+    const value = input.value;
+    let errorMessage = '';
 
-    switch (this.validationType) {
+    switch (this.appValidate) {
       case 'text':
-        this.validateText(input, value);
+        if (!value) {
+          errorMessage = 'This field is required.';
+        }
         break;
       case 'number':
-        this.validateNumber(input, value);
+        if (isNaN(value as any)) {
+          errorMessage = 'Please enter a valid number.';
+        }
         break;
       case 'decimal':
-        this.validateDecimal(input, value);
+        if (!/^\d+(\.\d+)?$/.test(value)) {
+          errorMessage = 'Please enter a valid decimal number.';
+        }
         break;
       case 'integer':
-        this.validateInteger(input, value);
+        if (!/^\d+$/.test(value)) {
+          errorMessage = 'Please enter a valid integer.';
+        }
         break;
       case 'email':
-        this.validateEmail(input, value);
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          errorMessage = 'Please enter a valid email address.';
+        }
         break;
     }
-  }
 
-  private validateText(input: HTMLInputElement, value: string) {
-    if (this.required && value === '') {
-      this.showError(input, 'Text is required');
-    } else {
-      this.clearError(input);
-    }
-  }
-
-  private validateNumber(input: HTMLInputElement, value: string) {
-    if (isNaN(+value)) {
-      this.showError(input, 'Please enter a valid number');
-    } else {
-      this.clearError(input);
-    }
-  }
-
-  private validateDecimal(input: HTMLInputElement, value: string) {
-    const regex = /^\d+(\.\d+)?$/;
-    if (!regex.test(value)) {
-      this.showError(input, 'Please enter a valid decimal number');
-    } else {
-      this.clearError(input);
-    }
-  }
-
-  private validateInteger(input: HTMLInputElement, value: string) {
-    const regex = /^\d+$/;
-    if (!regex.test(value)) {
-      this.showError(input, 'Please enter a valid integer');
-    } else {
-      this.clearError(input);
-    }
-  }
-
-  private validateEmail(input: HTMLInputElement, value: string) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!regex.test(value)) {
-      this.showError(input, 'Please enter a valid email address');
+    if (errorMessage) {
+      this.showError(input, errorMessage);
     } else {
       this.clearError(input);
     }
@@ -102,5 +74,4 @@ export class ValidateDirective {
       this.errorMessageService.removeErrorMessage(input);
     }
   }
-
 }

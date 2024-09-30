@@ -3,24 +3,19 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SvgComponent } from '../svg/svg.component';
 import { IFilter } from '../../models/table-filter';
-
+import { DropDownComponent } from '../drop-down/drop-down.component';
+import { DropdownChangeEvent } from '../drop-down/DropdownChangeEvent';
 @Component({
   selector: 'verben-table-filter',
   standalone: true,
-  imports: [CommonModule,FormsModule,SvgComponent],
+  imports: [CommonModule,FormsModule,SvgComponent,DropDownComponent],
   templateUrl: './table-filter.component.html',
   styleUrl: './table-filter.component.css'
 })
 
 export class TableFilterComponent {
   @Input() filterOptions: string[] = ['Date', 'Credit'];
-  @Input() conditionOptions: any[] = [
-    { value: 'equal', label: 'Equal' },
-    { value: 'before', label: 'Before'},
-    { value: 'after', label: 'After'},
-    { value: 'less than', label: 'Less than'},
-    { value: 'greater than', label: 'Greater than'},
-  ];
+  @Input() conditionOptions: string[] = ['Equal','Before','After','Less than','Greater than']
   @Input() pd?:string ;
   @Input() mg?:string ;
   @Input() height?:string ;
@@ -33,6 +28,7 @@ export class TableFilterComponent {
   @Input() tertiaryColor?:string ;
   @Input() border?:string ;
   @Input() borderRadius?:string;
+  @Input() selectWidth?:string;
   @Output() filtersApplied = new EventEmitter<IFilter[]>();
 
 
@@ -81,7 +77,11 @@ export class TableFilterComponent {
     } else {
       this.savedFilters.push(newFilter);
     }
-    this.clearOperationSection();
+    
+    console.log('select values',this.selectedFilterType)
+    this.selectedFilterType = '';
+    this.selectedCondition = '';
+    this.inputValue = '';
   }
 
   toggleCheckbox(index: number) {
@@ -120,11 +120,11 @@ export class TableFilterComponent {
       : this.savedFilters.slice(0, this.MAX_VISIBLE_FILTERS); 
   }
 
-  clearOperationSection() {
-    this.selectedFilterType = '';
-    this.selectedCondition = '';
-    this.inputValue = '';
-  }
+  // clearOperationSection() {
+  //   this.selectedFilterType = '';
+  //   this.selectedCondition = '';
+  //   this.inputValue = '';
+  // }
 
 
   toggleSelectAll(): void {
@@ -145,4 +145,6 @@ export class TableFilterComponent {
     this.disableAddFilterBtn = exists
     this.isDuplicateFilter = exists;
   }
+
+
 }

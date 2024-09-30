@@ -1,119 +1,193 @@
-<section 
-[style.background-color]="bgColor"
-[style.box-shadow]="boxShadow"
-[style.border]="border"
-[style.border-radius]="borderRadius"
-[style.color]="textColor"
-[style.width]="width"
-[style.height]="height"
-[style.padding]="pd"
-> 
-  <div class="top"> 
-    <h3 
-    [style.color] = "tertiaryColor"
-    [style.font-size] = "'14px'"
-    >
-      Filters <span [style.color] = "secondaryColor" ><sup>({{ savedFilters.length }})</sup></span>
+<section
+  [style.background-color]="bgColor"
+  [style.box-shadow]="boxShadow"
+  [style.border]="border"
+  [style.border-radius]="borderRadius"
+  [style.color]="textColor"
+  [style.width]="width"
+  [style.height]="height"
+  [style.padding]="pd"
+>
+  <div class="top">
+    <h3 [style.color]="tertiaryColor" [style.font-size]="'14px'">
+      Filters
+      <span [style.color]="secondaryColor"
+        ><sup>({{ savedFilters.length }})</sup></span
+      >
     </h3>
-    <button 
-    [style.color] = "secondaryColor"  
-    [style.background-color]="bgColor"
-    [style.border] = "'none'"
-    [style.cursor] = "'pointer'"
-    (click)="resetFilters()">
-    Reset
-  </button>
+    <button
+      [style.color]="secondaryColor"
+      [style.background-color]="bgColor"
+      [style.border]="'none'"
+      [style.cursor]="'pointer'"
+      (click)="resetFilters()"
+    >
+      Reset
+    </button>
   </div>
   <hr />
 
   <!-- Saved Filters Section -->
   <div class="center">
     <div class="savedWrapper">
-      <h3 
-      [style.font-size] = "'13px'"
-      >Saved Filters</h3>
-      <verben-svg icon="info" [width]="15" [height]="15" fill="black"></verben-svg> 
+      <h3 [style.font-size]="'13px'">Saved Filters</h3>
+      <verben-svg
+        icon="info"
+        [width]="15"
+        [height]="15"
+        fill="black"
+      ></verben-svg>
     </div>
-    <div class="selectAllWrapper"  *ngIf="savedFilters.length"> 
-      <input type="checkbox" 
-      [checked]="checkAll" 
-      (change)="toggleSelectAll()">
-      <p 
-      [style.font-size] = "'13px'"
-      [style.font-weight] = "'500'"
-      >Select All</p>
+    <div class="selectAllWrapper" *ngIf="savedFilters.length">
+      <input
+        type="checkbox"
+        [checked]="checkAll"
+        (change)="toggleSelectAll()"
+      />
+      <p [style.font-size]="'13px'" [style.font-weight]="'500'">Select All</p>
     </div>
-    <div *ngFor="let filter of visibleFilters; let i = index" class="centerInnerWrapper">
+    <div
+      *ngFor="let filter of visibleFilters; let i = index"
+      class="centerInnerWrapper"
+    >
       <div class="checkboxWrapper">
-        <span><input type="checkbox" 
-          [checked]="filter.checked" 
-          (click)="toggleCheckbox(i)"
-          /></span>
-        <p 
-        [style.font-size] = "'13px'"
-        [style.font-weight] = "'500'"
-        [style.color] = "tertiaryColor"
-        >{{ filter.type }} {{ filter.condition }} {{ filter.value }}</p>
+        <span
+          ><input
+            type="checkbox"
+            [checked]="filter.checked"
+            (click)="toggleCheckbox(i)"
+        /></span>
+        <p
+          [style.font-size]="'13px'"
+          [style.font-weight]="'500'"
+          [style.color]="tertiaryColor"
+        >
+          {{ filter.type }} {{ filter.condition }} {{ filter.value }}
+        </p>
       </div>
       <div class="iconWrapper">
-        <verben-svg icon="edit" [width]="15" [height]="15" stroke="#3479E9" fill="white" (click)="editFilter(i)"></verben-svg> 
-        <verben-svg icon="delete" [width]="15" [height]="15" stroke="#E20000" (click)="deleteFilter(i)"></verben-svg> 
+        <verben-svg
+          icon="edit"
+          [width]="15"
+          [height]="15"
+          stroke="#3479E9"
+          fill="white"
+          (click)="editFilter(i)"
+        ></verben-svg>
+        <verben-svg
+          icon="delete"
+          [width]="15"
+          [height]="15"
+          stroke="#E20000"
+          (click)="deleteFilter(i)"
+        ></verben-svg>
       </div>
     </div>
 
-    <div class="moreWrapper" *ngIf="savedFilters.length > MAX_VISIBLE_FILTERS" (click)="toggleShowMore()">
-      <p 
-      [style.font-size] = "'12px'"
-      [style.font-weight] = "'500'"
-      [style.color] = "tertiaryColor"
-      >{{ showAllFilters ? 'Show less' : 'Show more' }}</p>
-      <verben-svg icon="chevron" [width]="8" [height]="6" color="black"></verben-svg> 
+    <div
+      class="moreWrapper"
+      *ngIf="savedFilters.length > MAX_VISIBLE_FILTERS"
+      (click)="toggleShowMore()"
+    >
+      <p
+        [style.font-size]="'12px'"
+        [style.font-weight]="'500'"
+        [style.color]="tertiaryColor"
+      >
+        {{ showAllFilters ? "Show less" : "Show more" }}
+      </p>
+      <verben-svg
+        icon="chevron"
+        [width]="8"
+        [height]="6"
+        color="black"
+      ></verben-svg>
     </div>
   </div>
   <hr />
 
   <!-- Operation Section -->
-  <div class="bottom"> 
-    <div class="savedWrapper"> 
-      <h3
-      [style.font-size] = "'13px'"
-      >Operation</h3>
-      <verben-svg icon="dangerInfo" [width]="15" [height]="15" [fill]="'red'" *ngIf="isDuplicateFilter"></verben-svg> 
-      <verben-svg icon="info" [width]="15" [height]="15" [fill]="'black'" *ngIf="!isDuplicateFilter"></verben-svg> 
+  <div class="bottom">
+    <div class="savedWrapper">
+      <h3 [style.font-size]="'13px'">Operation</h3>
+      <verben-svg
+        icon="dangerInfo"
+        [width]="15"
+        [height]="15"
+        [fill]="'red'"
+        *ngIf="isDuplicateFilter"
+      ></verben-svg>
+      <verben-svg
+        icon="info"
+        [width]="15"
+        [height]="15"
+        [fill]="'black'"
+        *ngIf="!isDuplicateFilter"
+      ></verben-svg>
     </div>
-    
+
     <div class="inputsWrapper">
-      <select [(ngModel)]="selectedFilterType">
+      <!-- <select [(ngModel)]="selectedFilterType">
         <option value="" selected disabled>Filter By</option>
         <option *ngFor="let option of filterOptions" [value]="option">{{ option }}</option>
-      </select>
-      <select [(ngModel)]="selectedCondition" (change)="checkDuplicateFilter()">
+      </select> -->
+      <verben-drop-down
+        width="'7.2rem'"
+        placeholder="Select"
+        [options]="filterOptions"
+        [(ngModel)]="selectedFilterType"
+      >
+      </verben-drop-down>
+      <!-- <select [(ngModel)]="selectedCondition" (change)="checkDuplicateFilter()">
         <option value="" selected disabled>Select</option>
         <option 
+        
           *ngFor="let option of conditionOptions" 
           [value]="option.value" >
           {{ option.label }}
         </option>
-      </select>
+      </select> -->
+
+      <verben-drop-down
+        (onChange)="checkDuplicateFilter()"
+        width="6rem"
+        placeholder="Select"
+        [options]="conditionOptions"
+        [(ngModel)]="selectedCondition"
+      >
+      </verben-drop-down>
 
       <!-- Input for value (text/number) -->
-      <input *ngIf="selectedFilterType === 'Date'" type="date" [(ngModel)]="inputValue" />
-      <input *ngIf="selectedFilterType !== 'Date'" type="text" placeholder="#1,000,000" [(ngModel)]="inputValue" />
+      <input
+        *ngIf="selectedFilterType === 'Date'"
+        type="date"
+        [(ngModel)]="inputValue"
+      />
+      <input
+        *ngIf="selectedFilterType !== 'Date'"
+        type="text"
+        placeholder="#1,000,000"
+        [(ngModel)]="inputValue"
+      />
     </div>
 
     <div class="btnWrapper">
       <button
-      [style.margin-top] = "'0.5rem'"
-      [style.outline] = "'none'"
-      [style.border] = "'none'"
-      [style.border-radius]="borderRadius"
-      [style.background-color] = "'transparent'"
-      [style.color] = "secondaryColor"
-      [style.font-size] = "'12px'"
-      [style.font-weight] = "'500'"
-      [disabled]="disableAddFilterBtn"
-      [ngClass]="{'disablebtn': disableAddFilterBtn, 'enableBtn':!disableAddFilterBtn}"
-      (click)="addFilter()">
+        [style.margin-top]="'0.5rem'"
+        [style.outline]="'none'"
+        [style.border]="'none'"
+        [style.border-radius]="borderRadius"
+        [style.background-color]="'transparent'"
+        [style.color]="secondaryColor"
+        [style.font-size]="'12px'"
+        [style.font-weight]="'500'"
+        [disabled]="disableAddFilterBtn"
+        [ngClass]="{
+          disablebtn: disableAddFilterBtn,
+          enableBtn: !disableAddFilterBtn
+        }"
+        (click)="addFilter()"
+      >
         + Add
       </button>
     </div>
@@ -121,16 +195,17 @@
 
     <div class="btnWrapper">
       <button
-      [style.margin-top] = "'0.5rem'"
-      [style.outline] = "'none'"
-      [style.border] = "'none'"
-      [style.padding] = "'0.2rem 1.6rem'"
-      [style.background-color] = "primaryColor"
-      [style.color] = "tertiaryColor"
-      [style.font-size] = "'12px'"
-      [style.font-weight] = "'600'"
-      [style.cursor] = "'pointer'"
-      (click)="applyFilters()">
+        [style.margin-top]="'0.5rem'"
+        [style.outline]="'none'"
+        [style.border]="'none'"
+        [style.padding]="'0.2rem 1.6rem'"
+        [style.background-color]="primaryColor"
+        [style.color]="tertiaryColor"
+        [style.font-size]="'12px'"
+        [style.font-weight]="'600'"
+        [style.cursor]="'pointer'"
+        (click)="applyFilters()"
+      >
         Filter
       </button>
     </div>

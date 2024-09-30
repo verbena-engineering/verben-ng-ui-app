@@ -4,21 +4,32 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ErrorMessageService {
-  public createErrorMessage(inputElement: HTMLInputElement, message: string) {
-    let errorElement = inputElement.nextElementSibling as HTMLElement;
-    if (!errorElement || errorElement.tagName.toLowerCase() !== 'span') {
+  public createErrorMessage(inputElement: HTMLInputElement, message: string, position: 'above' | 'below') {
+    // Check for existing error message span
+    let errorElement = this.getErrorElement(inputElement);
+
+    if (!errorElement) {
+      // Create new error element if it doesn't exist
       errorElement = document.createElement('span');
-      inputElement.parentNode?.insertBefore(errorElement, inputElement.nextSibling);
+      inputElement.parentNode?.insertBefore(errorElement, position === 'above' ? inputElement : inputElement.nextSibling);
     }
-    errorElement.textContent = message;
+
+    errorElement.textContent = message;  // Update the message
     errorElement.style.color = 'red';
     errorElement.style.fontSize = '12px';
   }
 
   public removeErrorMessage(inputElement: HTMLInputElement) {
-    let errorElement = inputElement.nextElementSibling as HTMLElement;
-    if (errorElement && errorElement.tagName.toLowerCase() === 'span') {
-      errorElement.textContent = '';
+    const errorElement = this.getErrorElement(inputElement);
+    if (errorElement) {
+      errorElement.textContent = '';  // Clear the message
     }
+  }
+
+  private getErrorElement(inputElement: HTMLInputElement): HTMLElement | null {
+    // Return the existing error element if found
+    return Array.from(inputElement.parentNode?.children || []).find(
+      (el) => el.tagName.toLowerCase() === 'span'
+    ) as HTMLElement | null;
   }
 }

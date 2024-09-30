@@ -7,7 +7,7 @@
 
 // Exporting modules
 export * from '../lib/convert-to-number/convert-to-number.module';
-export * from '../lib/convert-to-integer/convert-to-integer.module';
+
 // export * from '../lib/convert-to-decimal/convert-to-decimal.module';
 export * from '../lib/phone-number/phone-number.module';
 
@@ -15,7 +15,7 @@ export * from './validate/validate.module';
 
 // Also export the directives if needed directly
 export * from '../lib/convert-to-number/convert-to-number.directive';
-export * from '../lib/convert-to-integer/convert-to-integer.directive';
+
 // export * from '../lib/convert-to-decimal/convert-to-decimal.directive';
 export * from '../lib/phone-number/phone-number.directive';
 export * from './validate/validate.directive';

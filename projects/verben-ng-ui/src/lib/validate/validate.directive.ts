@@ -8,6 +8,11 @@ export class ValidateDirective {
   @Input('appValidate') validationType: 'text' | 'number' | 'decimal' | 'integer' | 'email' = 'text';
   @Input() required: boolean = false;
 
+  // Custom inputs for error display options
+  @Input() showBorder: boolean = true;
+  @Input() showErrorMessage: boolean = true;
+  @Input() errorPosition: 'above' | 'below' = 'below';
+
   constructor(
     private el: ElementRef,
     private errorMessageService: ErrorMessageService,
@@ -81,12 +86,21 @@ export class ValidateDirective {
   }
 
   private showError(input: HTMLInputElement, message: string) {
-    this.errorMessageService.createErrorMessage(input, message);
-    this.renderer.setStyle(input, 'borderColor', 'red');
+    if (this.showBorder) {
+      this.renderer.setStyle(input, 'borderColor', 'red');
+    }
+    if (this.showErrorMessage) {
+      this.errorMessageService.createErrorMessage(input, message, this.errorPosition);
+    }
   }
 
   private clearError(input: HTMLInputElement) {
-    this.errorMessageService.removeErrorMessage(input);
-    this.renderer.removeStyle(input, 'borderColor');
+    if (this.showBorder) {
+      this.renderer.removeStyle(input, 'borderColor');
+    }
+    if (this.showErrorMessage) {
+      this.errorMessageService.removeErrorMessage(input);
+    }
   }
+
 }

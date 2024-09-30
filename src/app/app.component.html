@@ -2,7 +2,7 @@
   <verben-drop-down></verben-drop-down>
   <!-- Max Number Directive -->
   <label for="maxNumber">Max Number:</label>
-  <input type="number" appNumberRange [maxNumber]="10" />
+  <input type="number" appNumberRange [maxNumber]="100" />
   <br/>
   <br/>
   <!-- Min Number Directive -->
@@ -63,4 +63,63 @@
 <!-- Elements styled with Tailwind's dark mode -->
 <div class="bg-white text-black dark:bg-gray-900 dark:text-white p-4">
   This section will toggle between light and dark modes!
+</div>
+
+<!-- Input -->
+<!-- <div appInput [config]="{ type: 'email', placeholder: 'Enter email' }"></div> -->
+
+<input type="text" appInputControl [required]="true" [minLength]="3" [maxLength]="10" />
+
+
+<h2>Validation Example</h2>
+
+<h2>Validation Example</h2>
+
+<form>
+  <label for="textInput">Text Input (Required)</label>
+  <input type="text" id="textInput" appValidate="text"  [showBorder]="true" [showErrorMessage]="true" errorPosition="below">
+
+  <label for="numberInput">Number Input</label>
+  <input type="text" id="numberInput" appValidate="number" [showBorder]="false" [showErrorMessage]="true" errorPosition="above">
+
+  <label for="decimalInput">Decimal Input</label>
+  <input type="text" id="decimalInput" appValidate="decimal" [showBorder]="true" [showErrorMessage]="true" errorPosition="below">
+
+  <label for="integerInput">Integer Input</label>
+  <input type="text" id="integerInput" appValidate="integer" [showBorder]="true" [showErrorMessage]="true" errorPosition="below">
+
+  <label for="emailInput">Email Input</label>
+  <input type="text" id="emailInput" appValidate="email" [showBorder]="true" [showErrorMessage]="true" errorPosition="below">
+</form>
+
+
+
+
+<!-- <input verbenaInput placeholder="Enter text" /> -->
+
+
+
+<!-- Textarea -->
+<!-- <textarea verbenaTextArea placeholder="Enter your message"></textarea> -->
+
+
+<!-- Badge -->
+<!-- <div appBadge [config]="{ text: 'New' }"></div> -->
+
+<!-- <div verbenaSwitch isChecked="true"></div> -->
+
+
+
+<!-- Button -->
+<div appButton [config]="{ text: 'Click me' }"></div>
+
+<!-- Button with icon -->
+<div appButton [config]="{ icon: 'fa fa-check' }"></div>
+
+<!-- Button with template -->
+<div appButton [config]="{ template: templateRef }">
+  <ng-template #templateRef>
+    <i class="fa fa-check"></i>
+    <span>Click me</span>
+  </ng-template>
 </div>

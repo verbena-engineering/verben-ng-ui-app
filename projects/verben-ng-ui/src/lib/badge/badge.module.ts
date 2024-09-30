@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BadgeDirective } from './badge.directive';
+import { VerbenaBadgeDirective } from './badge.directive';
 
 @NgModule({
-  declarations: [BadgeDirective],
+  declarations: [VerbenaBadgeDirective],
   imports: [CommonModule],
-  exports: [BadgeDirective]
+  exports: [VerbenaBadgeDirective]
 })
-export class BadgeModule { }
+export class VerbenaBadgeModule {}

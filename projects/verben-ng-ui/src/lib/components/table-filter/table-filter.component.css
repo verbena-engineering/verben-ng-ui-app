@@ -78,7 +78,7 @@ color: #404040;
   display: flex;
   align-items: center;
   justify-content: space-between;
-   margin-bottom: 1rem;
+   margin-bottom: 0.5rem;
 }
 
 .checkboxWrapper{
@@ -100,10 +100,7 @@ color: #404040;
  display: flex;
  align-items: center;
  gap:0.7rem;
-}
-
-.iconWrapper > span > img{ 
-    cursor: pointer;
+ cursor: pointer;
 }
 
 .moreWrapper{
@@ -161,8 +158,13 @@ color: #404040;
    text-align: left;
 }
 
+.filterBtn:disabled {
+    opacity: 0.7;  
+    cursor: not-allowed;  
+  }
+
 .inputsWrapper select:nth-of-type(1) { 
-    width: 130px;
+    width: 120px;
 }
 
 .inputsWrapper select:nth-of-type(2) { 
@@ -194,4 +196,19 @@ select{
 
 input[type="checkbox"].checked {
     accent-color: #3479E9
+}
+
+.selectAllWrapper{ 
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+.selectAllWrapper > p{ 
+   margin-bottom: 0px;
+   font-size: 14px;
+}
+
+.selectAllWrapper > input{ 
+    cursor: pointer;
 }

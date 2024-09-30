@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SvgComponent } from '../svg/svg.component';
+import { IFilter } from '../../models/table-filter';
 
 @Component({
   selector: 'verben-table-filter',
@@ -12,39 +13,113 @@ import { SvgComponent } from '../svg/svg.component';
 })
 
 export class TableFilterComponent {
-  savedFiltersArray = [
-    { name: 'Date after 22/05/2022', checked: false },
-    { name: 'Credit greater than ₦1,000,000,000', checked: false },
-    { name: 'Now it worked', checked: false }
-  ];
-  
-  operationsArray: { filterBy: string; condition: string; value: string }[] = [
-    { filterBy: '', condition: 'equal', value: '₦1,000,000' }
-  ];
+  @Input() filterOptions: string[] = ['Date', 'Credit'];
+  @Output() filtersApplied = new EventEmitter<IFilter[]>();
 
-  savedFilters = [...this.savedFiltersArray]
-  operations = [...this.operationsArray]
+  selectedFilterType: string = '';
+  selectedCondition: string = '';
+  inputValue: string | number = '';
+  savedFilters: IFilter[] = [];
+  selectedFilters: IFilter[] = [];
+  showAllFilters: boolean = false;
+  readonly MAX_VISIBLE_FILTERS = 3;
+  editIndex: number | null = null;
+  checkAll:boolean = false;
+  isDuplicateFilter: boolean = false;
 
-  visibleFilters = 2; 
-
-  toggleShowMore() {
-    this.visibleFilters = this.visibleFilters === 2 ? this.savedFilters.length : 2;
+  resetFilters() {
+    this.selectedFilterType = '';
+    this.selectedCondition = '';
+    this.inputValue = '';
+    this.savedFilters = [];
+    this.editIndex = null;
+    this.checkAll = false;
+    this.isDuplicateFilter = false; 
   }
 
-  deleteFilter(index: number) {
-    this.savedFilters.splice(index, 1);
+  addFilter() {
+    if (!this.selectedFilterType || !this.selectedCondition || !this.inputValue) {
+      return; 
+    }
+
+    if (this.isDuplicateFilter) {
+      return;
+    }
+
+    const newFilter: IFilter = {
+      type: this.selectedFilterType,
+      condition: this.selectedCondition,
+      value: this.inputValue,
+      checked: false
+    };
+
+    if (this.editIndex !== null) {
+      this.savedFilters[this.editIndex] = newFilter;
+      this.editIndex = null;
+    } else {
+      this.savedFilters.push(newFilter);
+    }
+    this.clearOperationSection();
   }
 
   toggleCheckbox(index: number) {
     this.savedFilters[index].checked = !this.savedFilters[index].checked;
   }
 
-  addOperation() {
-    this.operations.push({ filterBy: '', condition: 'equal', value: '' });
+  deleteFilter(index: number) {
+    this.savedFilters.splice(index, 1);
   }
 
-  resetFilters() {
-    this.savedFilters = [...this.savedFiltersArray];
-    this.operations = [...this.operationsArray];
+  editFilter(index: number) {
+    const filter = this.savedFilters[index];
+    this.selectedFilterType = filter.type;
+    this.selectedCondition = filter.condition;
+    this.inputValue = filter.value;
+    this.editIndex = index;
+  }
+ 
+  applyFilters() {
+    this.selectedFilters = this.savedFilters.filter(filter => filter.checked);
+    console.log('selected filters is here',this.selectedFilters)
+    this.filtersApplied.emit(this.selectedFilters);
+  }
+
+  toggleShowMore() {
+    this.showAllFilters = !this.showAllFilters;
+  }
+
+  get visibleFilters() {
+    return this.showAllFilters
+      ? this.savedFilters 
+      : this.savedFilters.slice(0, this.MAX_VISIBLE_FILTERS); 
+  }
+
+  clearOperationSection() {
+    this.selectedFilterType = '';
+    this.selectedCondition = '';
+    this.inputValue = '';
+  }
+
+
+  toggleSelectAll(): void {
+    this.checkAll = !this.checkAll
+    if(this.checkAll === true){ 
+      this.savedFilters.forEach(filter => filter.checked = true);
+    }else if (this.checkAll === false){ 
+      this.savedFilters.forEach(filter => filter.checked = false);
+    }
+    console.log('all array',this.savedFilters)
+    // const isChecked = (event.target as HTMLInputElement).checked;
+    // this.savedFilters.forEach(filter => filter.checked = isChecked);
+  }
+  
+  checkDuplicateFilter(): void {
+    const exists = this.savedFilters.some(
+      filter =>
+        filter.type === this.selectedFilterType &&
+        filter.condition === this.selectedCondition 
+    );
+    this.isDuplicateFilter = exists;
+
   }
 }

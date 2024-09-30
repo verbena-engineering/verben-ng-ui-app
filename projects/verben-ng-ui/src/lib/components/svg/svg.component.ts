@@ -13,8 +13,8 @@ export class SvgComponent implements OnInit {
   @Input() icon: string = '';
   @Input() width: number = 24;
   @Input() height: number = 24;
-  @Input() fill: string = 'black';
-  @Input() stroke: string = 'black';
+  @Input() fill: string = '';
+  @Input() stroke: string = '';
 
   @ViewChild('svgContainer', { static: true }) svgContainer!: ElementRef;
 

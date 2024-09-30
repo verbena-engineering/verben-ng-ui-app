@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { SvgComponent } from '../svg/svg.component';
 import { IFilter } from '../../models/table-filter';
 import { DropDownComponent } from '../drop-down/drop-down.component';
-import { DropdownChangeEvent } from '../drop-down/DropdownChangeEvent';
+
 @Component({
   selector: 'verben-table-filter',
   standalone: true,
@@ -13,7 +13,7 @@ import { DropdownChangeEvent } from '../drop-down/DropdownChangeEvent';
   styleUrl: './table-filter.component.css'
 })
 
-export class TableFilterComponent {
+export class TableFilterComponent{
   @Input() filterOptions: string[] = ['Date', 'Credit'];
   @Input() conditionOptions: string[] = ['Equal','Before','After','Less than','Greater than']
   @Input() pd?:string ;
@@ -43,7 +43,7 @@ export class TableFilterComponent {
   checkAll:boolean = false;
   isDuplicateFilter: boolean = false;
   disableAddFilterBtn:boolean = false;
-  disableApplyFilterBtn:boolean = false;
+  disableApplyFilterBtn:boolean = true;
 
   resetFilters() {
     this.selectedFilterType = '';
@@ -53,6 +53,7 @@ export class TableFilterComponent {
     this.editIndex = null;
     this.checkAll = false;
     this.isDuplicateFilter = false; 
+    this.disableApplyFilterBtn = true
   }
 
   addFilter() {
@@ -77,11 +78,10 @@ export class TableFilterComponent {
     } else {
       this.savedFilters.push(newFilter);
     }
+
+    this.clearOperationSection();
+    this.checkFilterButton();
     
-    console.log('select values',this.selectedFilterType)
-    this.selectedFilterType = '';
-    this.selectedCondition = '';
-    this.inputValue = '';
   }
 
   toggleCheckbox(index: number) {
@@ -92,6 +92,7 @@ export class TableFilterComponent {
   deleteFilter(index: number) {
     this.savedFilters.splice(index, 1);
     this.checkDuplicateFilter();
+    this.checkFilterButton();
     if(this.savedFilters.length === 0){
     this.checkAll = false
     }
@@ -120,12 +121,19 @@ export class TableFilterComponent {
       : this.savedFilters.slice(0, this.MAX_VISIBLE_FILTERS); 
   }
 
-  // clearOperationSection() {
-  //   this.selectedFilterType = '';
-  //   this.selectedCondition = '';
-  //   this.inputValue = '';
-  // }
-
+  clearOperationSection() {
+    this.selectedFilterType = '';
+    this.selectedCondition = '';
+    this.inputValue = '';
+  }
+  
+  checkFilterButton(){ 
+    if(this.savedFilters.length){
+      this.disableApplyFilterBtn = false;
+    }else{ 
+      this.disableApplyFilterBtn = true;
+    }
+  }
 
   toggleSelectAll(): void {
     this.checkAll = !this.checkAll

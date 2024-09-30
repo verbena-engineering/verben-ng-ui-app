@@ -25,6 +25,7 @@ import {
 import { CDVModule } from './Components/card-data-view/cdv.module';
 import { CardDataViewComponent } from './Components/card-data-view/cdv.component';
 import { HomeComponent } from './home/home.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { HomeComponent } from './home/home.component';
     HomeComponent
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
      NumberRangeModule,

@@ -1,5 +1,6 @@
-import { AfterContentInit, Component, ContentChild, ElementRef, Input, TemplateRef } from '@angular/core';
+import { AfterContentInit, Component, ContentChild, ElementRef, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { CardData } from './card-data';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'verben-card-data-view',
@@ -24,7 +25,29 @@ export class CardDataViewComponent  {
   @Input() inActiveCss?:string ;
   @Input() displayAsRow?:boolean =true;
   @Input() cardDataList:CardData[]=[];
+  @Input() dataId!:string;
   // @Input() disabled:boolean=false ;
   // @Input() aspectRatio?:number ;
   @ContentChild('card') card!: TemplateRef<any>;
+  // @ContentChild('content') content!: TemplateRef<any>;
+  currentItem:any={};
+  hasCurrentItem()
+  {
+    return !!Object.keys(this.currentItem).length
+  }
+  @Input() onItemClick(item:CardData){
+    item.selected= true;
+    this.cardDataList.forEach(element => {
+      if(element.data[this.dataId]==item.data[this.dataId])
+      {
+        this.currentItem= item;
+      }
+      else
+      {
+        element.selected=false;
+      }
+    });
+    return this.currentItem
+  }
+
 }

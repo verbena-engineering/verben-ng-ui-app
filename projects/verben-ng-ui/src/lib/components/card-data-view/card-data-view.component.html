@@ -29,12 +29,14 @@
          }
       </div>
 
-      <div #dynamicMaster class="right-side"
+      <div  #dynamicMaster class="right-side"
       [style.width]="rWidth"
       [style.height]="rHeight"
       [style.backgroundColor]="rbgColor"
       >
-         <ng-content select="[detail]" ></ng-content>   
+      <ng-container *ngIf="hasCurrentItem()">
+         <ng-content  select="[detail]" ></ng-content>  
+      </ng-container> 
       </div>
       <div *ngIf="!dynamicMaster.children.length" 
       class="right-side"

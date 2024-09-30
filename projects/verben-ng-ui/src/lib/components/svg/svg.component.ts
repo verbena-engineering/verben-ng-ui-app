@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -6,17 +6,17 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   selector: 'verben-svg',
   standalone: true,
   imports: [],
-  template: '<span [innerHTML]="svgContent"></span>',
-  styleUrl: './svg.component.css'
+  template: '<span #svgContainer></span>',
+  styleUrls: ['./svg.component.css']
 })
-
 export class SvgComponent implements OnInit {
   @Input() icon: string = '';
   @Input() width: number = 24;
   @Input() height: number = 24;
-  @Input() color: string = '';
+  @Input() fill: string = 'black';
+  @Input() stroke: string = 'black';
 
-  svgContent: SafeHtml = '';
+  @ViewChild('svgContainer', { static: true }) svgContainer!: ElementRef;
 
   constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
 
@@ -24,20 +24,35 @@ export class SvgComponent implements OnInit {
     this.loadSvgIcon(this.icon);
   }
 
+  ngOnChanges(): void {
+    this.loadSvgIcon(this.icon);
+  }
+
   loadSvgIcon(iconName: string): void {
     this.http.get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
       .subscribe((svgContent: string) => {
-        this.updateSvgContent(svgContent);
+        this.updateSvg(svgContent);
+      }, (error) => {
+        console.error(`Error loading SVG icon: ${error}`);
       });
   }
 
-  private updateSvgContent(svgContent: string): void {
-    const updatedSvg = svgContent
-      .replace(/width="\d+"/g, `width="${this.width}"`)
-      .replace(/height="\d+"/g, `height="${this.height}"`)
-      .replace(/fill="[^"]*"/g, `fill="${this.color}"`);
+  private updateSvg(svgContent: string): void {
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(svgContent, 'image/svg+xml');
+    const svgElement = svgDoc.documentElement;
 
-    this.svgContent = this.sanitizer.bypassSecurityTrustHtml(updatedSvg);
+    svgElement.setAttribute('width', this.width.toString());
+    svgElement.setAttribute('height', this.height.toString());
+
+    const paths = svgElement.querySelectorAll('path');
+    paths.forEach(path => {
+      path.setAttribute('fill', this.fill);
+      path.setAttribute('stroke', this.stroke);
+    });
+
+    const svgContainerEl = this.svgContainer.nativeElement;
+    svgContainerEl.innerHTML = '';
+    svgContainerEl.appendChild(svgElement);
   }
 }
-

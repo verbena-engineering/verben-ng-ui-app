@@ -14,7 +14,27 @@ import { IFilter } from '../../models/table-filter';
 
 export class TableFilterComponent {
   @Input() filterOptions: string[] = ['Date', 'Credit'];
+  @Input() conditionOptions: any[] = [
+    { value: 'equal', label: 'Equal' },
+    { value: 'before', label: 'Before'},
+    { value: 'after', label: 'After'},
+    { value: 'less than', label: 'Less than'},
+    { value: 'greater than', label: 'Greater than'},
+  ];
+  @Input() pd?:string ;
+  @Input() mg?:string ;
+  @Input() height?:string ;
+  @Input() width?:string ;
+  @Input() bgColor?:string ;
+  @Input() boxShadow?:string ;
+  @Input() textColor?:string ;
+  @Input() primaryColor?:string ;
+  @Input() secondaryColor?:string ;
+  @Input() tertiaryColor?:string ;
+  @Input() border?:string ;
+  @Input() borderRadius?:string;
   @Output() filtersApplied = new EventEmitter<IFilter[]>();
+
 
   selectedFilterType: string = '';
   selectedCondition: string = '';
@@ -26,6 +46,8 @@ export class TableFilterComponent {
   editIndex: number | null = null;
   checkAll:boolean = false;
   isDuplicateFilter: boolean = false;
+  disableAddFilterBtn:boolean = false;
+  disableApplyFilterBtn:boolean = false;
 
   resetFilters() {
     this.selectedFilterType = '';
@@ -64,10 +86,15 @@ export class TableFilterComponent {
 
   toggleCheckbox(index: number) {
     this.savedFilters[index].checked = !this.savedFilters[index].checked;
+    this.checkAll = this.savedFilters.every(item => item.checked)
   }
 
   deleteFilter(index: number) {
     this.savedFilters.splice(index, 1);
+    this.checkDuplicateFilter();
+    if(this.savedFilters.length === 0){
+    this.checkAll = false
+    }
   }
 
   editFilter(index: number) {
@@ -80,7 +107,6 @@ export class TableFilterComponent {
  
   applyFilters() {
     this.selectedFilters = this.savedFilters.filter(filter => filter.checked);
-    console.log('selected filters is here',this.selectedFilters)
     this.filtersApplied.emit(this.selectedFilters);
   }
 
@@ -108,9 +134,6 @@ export class TableFilterComponent {
     }else if (this.checkAll === false){ 
       this.savedFilters.forEach(filter => filter.checked = false);
     }
-    console.log('all array',this.savedFilters)
-    // const isChecked = (event.target as HTMLInputElement).checked;
-    // this.savedFilters.forEach(filter => filter.checked = isChecked);
   }
   
   checkDuplicateFilter(): void {
@@ -119,7 +142,7 @@ export class TableFilterComponent {
         filter.type === this.selectedFilterType &&
         filter.condition === this.selectedCondition 
     );
+    this.disableAddFilterBtn = exists
     this.isDuplicateFilter = exists;
-
   }
 }

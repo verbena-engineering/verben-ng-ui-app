@@ -1,18 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 h3,p{
     margin-top: 0px !important;
     margin-bottom: 0px !important;
-}
-
-.filterWrapper{ 
-    font-family: "Montserrat", sans-serif;
-    border-radius:10px;
-    border: 1px solid rgba(212, 160, 7, 1);
-    width:316px;
-    padding: 1rem;
-    background: #fff;
-    box-shadow: 2px 2px 2px 0px silver;
 }
 .top{ 
     display: flex;
@@ -20,58 +9,15 @@ h3,p{
     justify-content: space-between;
 }
 
-.filterHeadling{ 
-font-size: 13px;
-font-weight: 700;
-line-height: 15.85px;
-text-align: left;
-color: rgba(64, 64, 64, 1);
-margin-top: 0px;
-margin-bottom: 0px;
-}
-
-.filterFigure{ 
-font-size: 12px;
-font-weight: 600;
-line-height: 14.63px;
-text-align: left;
-color: rgba(52, 121, 233, 1);
-}
-
 hr{
  border: 1px solid rgba(232, 234, 241, 1);
   margin:0.8rem 0rem;
 }
 
-.reset{ 
-font-size: 12px;
-font-weight: 500;
-line-height: 14.63px;
-text-align: left;
-color: #3479E9;
-border: none;
-cursor: pointer;
-background: transparent;
-}
-
-
-.centerMainWrapper{ 
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
 .centerInnerWrapper{ 
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.centerInnerWrapper p{ 
-font-size: 12px;
-font-weight: 500;
-line-height: 14.63px;
-text-align: left;
-color: #404040;
 }
 
 .savedWrapper{ 
@@ -87,15 +33,6 @@ color: #404040;
    gap: 0.3rem;
 }
 
-.savedWrapper h3{ 
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 15.85px;
-    text-align: left;
-    color: rgba(0, 0, 0, 1);
-    margin-bottom: 1rem;
-    }
-
 .iconWrapper{
  display: flex;
  align-items: center;
@@ -110,13 +47,6 @@ color: #404040;
     cursor: pointer;
 }
 
-.moreWrapper p{ 
-    font-size: 10px;
-    font-weight: 500;
-    line-height: 12.19px;
-    text-align: left;
-    color: #404040;
-    }
 
 .inputsWrapper{ 
     margin-top: 0.5rem;
@@ -126,42 +56,10 @@ color: #404040;
     flex-wrap: wrap;
 }
 
-.addBtn{ 
-   margin-top: 0.5rem;
-   outline:none;
-   background-color: transparent;
-   border: none;
-   color: #3479E9;
-   cursor: pointer;
-   font-size: 12px;
-   font-weight: 500;
-   line-height: 14.63px;
-}
-
 .btnWrapper{ 
     display: flex;
     justify-content: end;
 }
-
-.filterBtn{ 
-   font-family: "Montserrat", sans-serif;
-   background: #FFE681;
-   border: none;
-   outline: none;
-   padding: 0.2rem 10px;
-   cursor: pointer;
-   border-radius: 4px;
-   color: #404040;
-   font-size: 12px;
-   font-weight: 600;
-   line-height: 14.63px;
-   text-align: left;
-}
-
-.filterBtn:disabled {
-    opacity: 0.7;  
-    cursor: not-allowed;  
-  }
 
 .inputsWrapper select:nth-of-type(1) { 
     width: 120px;
@@ -204,11 +102,15 @@ input[type="checkbox"].checked {
     gap: 0.25rem;
     margin-bottom: 0.5rem;
 }
-.selectAllWrapper > p{ 
-   margin-bottom: 0px;
-   font-size: 14px;
-}
 
 .selectAllWrapper > input{ 
     cursor: pointer;
+}
+
+.disablebtn {
+    filter: blur(2px);
+    cursor:not-allowed;
+}
+.enableBtn {
+    cursor:pointer;
 }

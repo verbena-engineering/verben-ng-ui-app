@@ -35,7 +35,7 @@ export interface DropdownMenuItemWrapper extends DropdownMenuItem {
 }
 
 @Component({
-  selector: 'verbena-drop-down',
+  selector: 'verben-drop-down',
   standalone: true,
   imports: [CommonModule, DropDownItemComponent, SharedModule, FormsModule],
   templateUrl: './drop-down.component.html',

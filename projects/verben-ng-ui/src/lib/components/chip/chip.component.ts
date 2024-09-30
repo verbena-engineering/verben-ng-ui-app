@@ -20,7 +20,7 @@ import { SharedModule } from '../shared.module';
 import { TemplateDirective } from '../TemplateDirective.directive';
 
 @Component({
-  selector: 'verbena-chip',
+  selector: 'verben-chip',
   standalone: true,
   imports: [CommonModule, DropDownItemComponent, SharedModule, FormsModule],
   templateUrl: './chip.component.html',
@@ -197,6 +197,6 @@ export class ChipComponent
   }
 
   get placeholderState(): string | undefined {
-    return this.chips.length == 0 ? this.placeholder : '';
+    return this.chips && this.chips.length == 0 ? this.placeholder : '';
   }
 }

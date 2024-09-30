@@ -6,7 +6,7 @@ import { SharedModule } from '../shared.module';
 
 @NgModule({
   declarations: [],
-  imports: [DropDownComponent, DropDownItemComponent],
+  imports: [DropDownComponent, DropDownItemComponent, SharedModule],
   exports: [DropDownComponent],
   providers: [
     {

@@ -2,7 +2,7 @@ import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/
 import { ErrorMessageService } from './error-message.service';
 
 @Directive({
-  selector: '[appValidate]'
+  selector: '[appValidate]',
 })
 export class ValidateDirective {
   @Input() appValidate!: string;
@@ -10,9 +10,13 @@ export class ValidateDirective {
   @Input() showErrorMessage: boolean = false;
   @Input() errorPosition: 'above' | 'below' = 'below';
 
-  constructor(private el: ElementRef, private renderer: Renderer2, private errorMessageService: ErrorMessageService) {}
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+    private errorMessageService: ErrorMessageService
+  ) {}
 
-  @HostListener('input') // Listen for the input event
+  @HostListener('input') // Trigger validation on every input change
   onInput() {
     this.validate();
   }
@@ -29,7 +33,7 @@ export class ValidateDirective {
         }
         break;
       case 'number':
-        if (isNaN(value as any)) {
+        if (isNaN(Number(value))) {
           errorMessage = 'Please enter a valid number.';
         }
         break;

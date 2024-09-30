@@ -1,41 +1,48 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ErrorMessageService {
-  public createErrorMessage(inputElement: HTMLInputElement, message: string, position: 'above' | 'below') {
-    // Check for existing error message span
-    let errorElement = this.getErrorElement(inputElement);
+  private renderer: Renderer2;
 
-    if (!errorElement) {
-      // Create new error element if it doesn't exist
-      errorElement = document.createElement('span');
-      errorElement.style.color = 'red';
-      errorElement.style.fontSize = '12px';
+  constructor(rendererFactory: RendererFactory2) {
+    this.renderer = rendererFactory.createRenderer(null, null);
+  }
 
-      // Insert error element in the specified position
+  createErrorMessage(inputElement: HTMLElement, message: string, position: 'above' | 'below') {
+    // Remove any existing error message for this input field first
+    this.removeErrorMessage(inputElement);
+
+    // Create the error message element
+    const errorElement = this.renderer.createElement('div');
+    this.renderer.addClass(errorElement, 'error-message');
+    this.renderer.setStyle(errorElement, 'color', 'red');
+    const text = this.renderer.createText(message);
+    this.renderer.appendChild(errorElement, text);
+
+    // Insert the error element either above or below based on user input
+    const parentElement = inputElement.parentNode;
+
+    // Check if parentElement is not null before proceeding
+    if (parentElement) {
       if (position === 'above') {
-        inputElement.parentNode?.insertBefore(errorElement, inputElement);
+        this.renderer.insertBefore(parentElement, errorElement, inputElement);
       } else {
-        inputElement.parentNode?.insertBefore(errorElement, inputElement.nextSibling);
+        this.renderer.appendChild(parentElement, errorElement);
       }
     }
-
-    errorElement.textContent = message;  // Update the message
   }
 
-  public removeErrorMessage(inputElement: HTMLInputElement) {
-    const errorElement = this.getErrorElement(inputElement);
-    if (errorElement) {
-      errorElement.remove();  // Remove the message element
+  removeErrorMessage(inputElement: HTMLElement) {
+    const parentElement = inputElement.parentNode;
+
+    // Check if parentElement is not null before proceeding
+    if (parentElement) {
+      const errorMessages = parentElement.querySelectorAll('.error-message');
+      errorMessages.forEach((errorMsg) => {
+        this.renderer.removeChild(parentElement, errorMsg);
+      });
     }
-  }
-
-  private getErrorElement(inputElement: HTMLInputElement): HTMLElement | null {
-    // Return the existing error element if found
-    return Array.from(inputElement.parentNode?.children || []).find(
-      (el) => el.tagName.toLowerCase() === 'span'
-    ) as HTMLElement | null;
   }
 }

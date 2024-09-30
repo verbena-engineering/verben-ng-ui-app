@@ -15,7 +15,7 @@ import {
     DropDownModule,
     ImageModule,
     SvgModule,
-    TableFilterModule
+    TableFilterModule,
     CardModule
      } from '../../projects/verben-ng-ui/src/public-api';
 
@@ -36,7 +36,7 @@ import {
     DropDownModule,
     ImageModule,
     SvgModule,
-    TableFilterModule
+    TableFilterModule,
     CardModule
   ],
   providers: [

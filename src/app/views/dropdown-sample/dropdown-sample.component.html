@@ -27,6 +27,8 @@
       [(ngModel)]="basicOption"></verben-drop-down>
   </div>
 
+  <button (click)="this.clearSelection()">Reset</button>
+
   <div class="example-section flex flex-col">
     <h1>Single select. Grouped. Option Value Id</h1>
     <verben-drop-down [group]="true" placeholder="Select test item Value" [lazyLoad]="true" optionValue="Id"

@@ -619,19 +619,27 @@ export class DropDownComponent
         return;
       }
       if (!this.group && !this.lazyLoad) {
+        let set = false;
         for (let option of this.options) {
           if (isEqual(this.getValue(option), obj)) {
             this.selectedOption = this.getValue(option);
             this.selectedOptionLabel = this.getOptionLabel(option);
+            set = true;
             break;
           }
+        }
+        if (set == false) {
+          this.selectedOption = null;
+          this.selectedOptionLabel = null;
         }
         this.onTouched();
         this.onChange.emit({ value: this.selectedOption });
         return;
       }
       this.selectedOption = obj;
-      this.selectedOptionLabel = this.asyncLabel ? this.asyncLabel(obj) : obj;
+      this.selectedOptionLabel = this.asyncLabel
+        ? this.asyncLabel(obj)
+        : this.getOptionLabel(obj);
       this.onTouched();
       this.onChange.emit({ value: this.selectedOption });
     } else {
@@ -659,7 +667,9 @@ export class DropDownComponent
       this.selectedOptions = obj;
       for (let object of obj) {
         this.selectedOptionLabels.push(
-          this.asyncLabel ? this.asyncLabel(object) : object
+          this.asyncLabel
+            ? this.asyncLabel(object)
+            : this.getOptionLabel(object)
         );
       }
       this.onTouched();

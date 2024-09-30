@@ -125,8 +125,12 @@ export class DropdownSampleComponent implements OnInit {
     return this.missingObject.Name;
   }
 
+  clearSelection() {
+    this.basicOption = '';
+  }
+
   ngOnInit(): void {
-    this.selectedParent = '5';
+    this.selectedParent = '1';
     this.selectedOption = ['Opt 1'];
     this.selectedOptionTwo = ['1'];
     // this.selectedOptionThree = {
@@ -153,23 +157,23 @@ export class DropdownSampleComponent implements OnInit {
   }
 
   onDropdownChange(event: DropdownChangeEvent): void {
-    console.log({
-      'Test Parent Value': this.selectedParent,
-      'Basic Dropdown. Single Select. No Group': this.basicOption,
-      'Single select. Grouped. Option Value Id': this.selectedOptionThree,
-      'Single select. Grouped. Paged parents.': this.selectedOptionFour,
-      'Single select. Grouped. No pagination': this.selectedOptionFive,
-      'Multiselect, No group, Not paged. Select All Allowed. Filter on. Default view':
-        this.selectedOption,
-      'Multiselect, No group, Not paged. Select All Allowed. Filter on. Chip view':
-        this.selectedOption,
-      'Multiselect, No group. Option Value Id': this.selectedOptionTwo,
-      'Multiselect. No group. Templated': this.selectedOption,
-      'Multiselect multiple nested paged content. Filter off':
-        this.selectedOptionSix,
-      'Multiselect multiple nested paged content. Filter on':
-        this.selectedOptionSix,
-    });
+    // console.log({
+    //   'Test Parent Value': this.selectedParent,
+    //   'Basic Dropdown. Single Select. No Group': this.basicOption,
+    //   'Single select. Grouped. Option Value Id': this.selectedOptionThree,
+    //   'Single select. Grouped. Paged parents.': this.selectedOptionFour,
+    //   'Single select. Grouped. No pagination': this.selectedOptionFive,
+    //   'Multiselect, No group, Not paged. Select All Allowed. Filter on. Default view':
+    //     this.selectedOption,
+    //   'Multiselect, No group, Not paged. Select All Allowed. Filter on. Chip view':
+    //     this.selectedOption,
+    //   'Multiselect, No group. Option Value Id': this.selectedOptionTwo,
+    //   'Multiselect. No group. Templated': this.selectedOption,
+    //   'Multiselect multiple nested paged content. Filter off':
+    //     this.selectedOptionSix,
+    //   'Multiselect multiple nested paged content. Filter on':
+    //     this.selectedOptionSix,
+    // });
   }
 
   async mockAsyncFunction(event: DropdownLoadEvent): Promise<string[]> {

@@ -1,0 +1,41 @@
+<div class="column-control">
+  <div class="sort-header">
+    <span class="column-title">Column <sup>[{{ getSelectedColumnCount() }}]</sup></span>
+    <span class="column-reset" (click)="resetColumns()">Reset</span>
+  </div>
+  <ul class="column-options-container">
+    <li class="column-options" *ngFor="let column of columns; let i = index" [hidden]="i >= displayedColumns">
+      <verben-svg class="svg" icon="square-dot"></verben-svg>
+      <label>
+        <input
+          type="checkbox"
+          [(ngModel)]="tempVisibleColumns[i]">
+        {{ column }}
+      </label>
+    </li>
+  </ul>
+  <div>
+    <span class="show-more" (click)="toggleShowMore()">
+      {{ showMore ? 'Show Less' : 'Show More' }}
+      <verben-svg icon="chevron" [width]="8" [height]="6" color="black"></verben-svg>
+    </span>
+  </div>
+  <button type="button" (click)="saveColumnVisibility()">Save</button> <!-- Save button to update the visible columns -->
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th *ngFor="let column of columns; let i = index" [hidden]="!visibleColumns[i]">
+        {{ column }}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of items">
+      <td *ngFor="let column of columns; let i = index" [hidden]="!visibleColumns[i]">
+        {{ item[column.toLowerCase()] }}
+      </td>
+    </tr>
+  </tbody>
+</table>

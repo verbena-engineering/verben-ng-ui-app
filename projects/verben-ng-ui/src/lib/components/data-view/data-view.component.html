@@ -1,0 +1,15 @@
+<div class="toggle-button-container">
+  <button type="button" (click)="toggleView()">
+    <verben-svg
+      [width]="30"
+      icon="table-view"
+      [class.active]="isGridView"
+    ></verben-svg>
+    <verben-svg
+      [width]="50"
+      [height]="50"
+      icon="list-view"
+      [class.active]="!isGridView"
+    ></verben-svg>
+  </button>
+</div>

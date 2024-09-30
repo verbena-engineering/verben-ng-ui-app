@@ -1,0 +1,33 @@
+<div class="sort-container">
+    <div class="sort-header">
+      <span>Sort ({{ sortOptions.length }})</span>
+      <a href="#" (click)="resetSort()">Reset</a>
+    </div>
+    
+    <div class="sort-options">
+      <div *ngFor= 'let option of visibleSortOptions; let i = index'>
+        <div class="sort-item">
+          <input type="checkbox" [(ngModel)]="option.selected" (change)="toggleSort(i)">
+          <span>{{ option.label }}</span>
+          <div class="sort-order">
+            <label>
+              <input type="radio" name="sortOrder{{i}}" value="asc" [(ngModel)]="option.order"> A-Z
+            </label>
+            <label>
+              <input type="radio" name="sortOrder{{i}}" value="desc" [(ngModel)]="option.order"> Z-A
+            </label>
+          </div>
+          
+        </div>
+      </div>
+      
+      <div *ngIf="showMore && hiddenSortOptions.length > 0">
+        <a href="#" (click)="toggleShowMore()">
+          {{ showMoreText }}
+        </a>
+      </div>
+    </div>
+  
+    <button (click)="applySort()">Sort</button>
+  </div>
+  

@@ -17,10 +17,15 @@ import {
     CardModule,
     CardDataViewModule
      } from '../../projects/verben-ng-ui/src/public-api';
+import { CDVModule } from './Components/card-data-view/cdv.module';
+import { CardDataViewComponent } from './Components/card-data-view/cdv.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    CardDataViewComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

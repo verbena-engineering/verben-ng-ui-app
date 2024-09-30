@@ -18,7 +18,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes),CardDataViewModule,SvgModule,CommonModule],
-  declarations:[CardDataViewComponent],
+  declarations:[],
   // exports: [RouterModule,CardDataViewComponent]
 })
 export class CDVModule { }

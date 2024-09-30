@@ -53,3 +53,22 @@ export * from './lib/required-input/required-input.directive';
 export * from './lib/email-validator/email-validator.module';
 export * from './lib/email-validator/email-validator.directive';
 
+
+
+export * from './lib/badge/badge.directive'
+export * from './lib/badge/badge.module'
+
+export * from './lib/button/button.directive'
+export * from './lib/button/button.module'
+
+export * from './lib/textarea/textarea.directive'
+export * from './lib/textarea/textarea.module'
+
+export * from './lib/validate/error-message.service'
+export * from './lib/validate/validate.directive'
+export * from './lib/validate/validate.module'
+
+
+export * from './lib/Verbena-input/verbena-input.directive'
+export * from './lib/Verbena-input/verbena-input.module'
+

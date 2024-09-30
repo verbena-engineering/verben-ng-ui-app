@@ -106,11 +106,11 @@ export class SortTableComponent {
   toggleSort(index: number) {
     const option = this.sortOptions[index];
     if (option.selected) {
-      option.order = option.order === 'asc' ? 'desc' : 'asc'; // Toggle order
+      option.order = option.order === 'asc' ? 'desc' : 'asc';
     } else {
-      this.resetSort(); // Clear previous selections
-      option.selected = true; // Select option
-      option.order = 'asc'; // Set default order to ascending (A-Z)
+      this.resetSort();
+      option.selected = true;
+      option.order = 'asc';
     }
   }
 

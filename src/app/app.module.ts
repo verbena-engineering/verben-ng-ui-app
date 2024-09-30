@@ -12,6 +12,8 @@ import {
   RequiredInputModule,
   ValidateInputModule,
   DropDownModule,
+  ChipModule,
+  SharedModule,
 } from '../../projects/verben-ng-ui/src/public-api';
 import { DropdownSampleComponent } from './views/dropdown-sample/dropdown-sample.component';
 import { FormsModule } from '@angular/forms';
@@ -30,6 +32,8 @@ import { FormsModule } from '@angular/forms';
     PhoneNumberModule,
     ValidateInputModule,
     DropDownModule,
+    ChipModule,
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

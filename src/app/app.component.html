@@ -1,27 +1,3 @@
-<verbena-drop-down [showClear]="true" placeholder="First Test" (onChange)="onDropdownChange($event)"
-  [(options)]="options" [(ngModel)]="selectedOption"></verbena-drop-down>
-<verbena-drop-down [lazyLoad]="true" [load]="this.mockAsyncFunction.bind(this)" (onChange)="onDropdownChange($event)"
-  [(options)]="options" [(ngModel)]="selectedOption"></verbena-drop-down>
-
-<verbena-drop-down placeholder="Select test item" [lazyLoad]="true" optionValue="Id"
-  [load]="this.mockAsyncFunctionTwo.bind(this)" (onChange)="onDropdownChange($event)" [(options)]="optionsTwo"
-  [(ngModel)]="selectedOptionTwo"></verbena-drop-down>
-
-<verbena-drop-down [group]="true" placeholder="Select test item" [lazyLoad]="true" optionValue="Id"
-  [load]="this.mockAsyncFunctionThree.bind(this)" (onChange)="onDropdownChange($event)" [(options)]="optionsThree"
-  [(ngModel)]="selectedOptionThree"></verbena-drop-down>
-
-<verbena-drop-down [group]="true" placeholder="Select test item" [lazyLoad]="true"
-  [load]="this.mockAsyncFunctionThree.bind(this)" (onChange)="onDropdownChange($event)" [(options)]="optionsThree"
-  [(ngModel)]="selectedOptionFour"></verbena-drop-down>
-
-<verbena-drop-down [group]="true" placeholder="Select test item" (onChange)="onDropdownChange($event)"
-  [(options)]="optionsThree" [(ngModel)]="selectedOptionFive"></verbena-drop-down>
-
-<verbena-drop-down [group]="true" placeholder="Select test item" [lazyLoad]="true"
-  [load]="this.mockAsyncFunctionFour.bind(this)" (onChange)="onDropdownChange($event)" [(options)]="optionsFour"
-  [(ngModel)]="selectedOptionSix"></verbena-drop-down>
-
 <form>
   <!-- Max Number Directive -->
   <label for="maxNumber">Max Number:</label>

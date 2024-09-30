@@ -1,4 +1,4 @@
-export interface DropdownChangeEvent {
+export interface ChipChangeEvent {
   originalEvent?: Event;
   value: any;
 }

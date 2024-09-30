@@ -28,12 +28,21 @@
   border-radius: 4px;
 }
 
+.item-wrapper.multi-select {
+  align-items: center;
+  gap: 5px;
+}
+
 .item-wrapper:hover {
   background-color: rgba(180, 205, 245, 0.24)
 }
 
 .item-wrapper.active-item {
   background-color: rgba(59, 130, 246, 0.24);
+}
+
+.item-wrapper.multi-select-active-item {
+  background-color: rgba(180, 205, 245, 0.24)
 }
 
 .item-wrapper.active-item>div {
@@ -70,6 +79,12 @@
 
 .default-item {
   flex: 1 1 0;
+}
+
+.plus-minus-icon {
+  color: #5d6674;
+  width: 0.8rem;
+  height: 0.8rem;
 }
 
 .loading-overlay {

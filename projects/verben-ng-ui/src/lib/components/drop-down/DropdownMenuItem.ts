@@ -33,6 +33,10 @@ export interface DropdownMenuItem {
   value: any;
   items?: DropdownMenuItem[];
   lazyLoad?: boolean;
+  filterBy?: string;
+  search?: (
+    param: string,
+    context: DropdownLoadEvent
+  ) => Promise<DropdownMenuItem[]>;
   loadMore?: (context: DropdownLoadEvent) => Promise<DropdownMenuItem[]>;
-  loadTimes?: DropdownLoadEvent;
 }

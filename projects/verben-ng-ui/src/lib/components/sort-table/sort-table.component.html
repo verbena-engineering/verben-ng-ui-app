@@ -1,33 +1,39 @@
 <div class="sort-container">
-    <div class="sort-header">
-      <span>Sort ({{ sortOptions.length }})</span>
-      <a href="#" (click)="resetSort()">Reset</a>
+  <div class="sort-header">
+    <span class="sort-title">Sort <sup>[{{ countSelectedSorts() }}]</sup></span>
+    <span class="sort-reset" (click)="resetSort()">Reset</span>
+  </div>
+
+  <div class="sort-options">
+    <div class="sort-options-header">
+      <p>Property</p>
+      <verben-svg class="svg" icon="info"></verben-svg> 
     </div>
-    
-    <div class="sort-options">
-      <div *ngFor= 'let option of visibleSortOptions; let i = index'>
-        <div class="sort-item">
+    <div *ngFor="let option of visibleSortOptions; let i = index">
+      <div class="sort-item">
+        <div class="sort-field">
+          <verben-svg class="svg" icon="square-dot"></verben-svg> 
           <input type="checkbox" [(ngModel)]="option.selected" (change)="toggleSort(i)">
           <span>{{ option.label }}</span>
-          <div class="sort-order">
-            <label>
-              <input type="radio" name="sortOrder{{i}}" value="asc" [(ngModel)]="option.order"> A-Z
-            </label>
-            <label>
-              <input type="radio" name="sortOrder{{i}}" value="desc" [(ngModel)]="option.order"> Z-A
-            </label>
-          </div>
-          
+        </div>
+        <div class="sort-order">
+          <label>
+            <input type="radio" name="sortOrder{{i}}" value="asc" [(ngModel)]="option.order" [disabled]="!option.selected"> A-Z
+          </label>
+          <label>
+            <input type="radio" name="sortOrder{{i}}" value="desc" [(ngModel)]="option.order" [disabled]="!option.selected"> Z-A
+          </label>
         </div>
       </div>
-      
-      <div *ngIf="showMore && hiddenSortOptions.length > 0">
-        <a href="#" (click)="toggleShowMore()">
-          {{ showMoreText }}
-        </a>
-      </div>
     </div>
-  
-    <button (click)="applySort()">Sort</button>
+
+    <div *ngIf="showMore && hiddenSortOptions.length > 0">
+      <span class="show-more" (click)="toggleShowMore()">
+        {{ showMoreText }}
+        <verben-svg icon="chevron" [width]="8" [height]="6" color="black"></verben-svg> 
+      </span>
+    </div>
   </div>
-  
+
+  <button (click)="applySort()">Sort</button>
+</div>

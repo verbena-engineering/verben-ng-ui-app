@@ -1,35 +1,46 @@
-import { Component,Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SvgComponent } from '../svg/svg.component';
+
 interface SortOption {
   label: string;
-  order: 'asc' | 'desc'|null;
+  order: 'asc' | 'desc' | null;
   selected: boolean;
 }
+
+interface Item {
+  [key: string]: any;
+}
+
 @Component({
   selector: 'verben-sort-table',
   standalone: true,
-  imports: [CommonModule,FormsModule,SvgComponent],
+  imports: [CommonModule, FormsModule, SvgComponent],
   templateUrl: './sort-table.component.html',
-  styleUrl: './sort-table.component.scss'
+  styleUrls: ['./sort-table.component.scss'],
 })
 export class SortTableComponent {
-  @Input() sortOptions: SortOption[] =  [
-    { label: 'Amount', order: null, selected: false },
-    { label: 'Name', order: null, selected: false },
-    { label: 'Date', order: null, selected: false },
-    { label: 'Category', order: null, selected: false },
-    { label: 'Rating', order: null, selected: false }
-  ];
-  
+  @Input() columns: string[] = [];
+  @Input() items: Item[] = [];
 
+  sortOptions: SortOption[] = [];
   visibleSortOptions: SortOption[] = [];
   hiddenSortOptions: SortOption[] = [];
   showMore: boolean = false;
   showMoreText: string = 'Show more';
 
   ngOnInit() {
+    this.generateSortOptions();
+  }
+
+  generateSortOptions() {
+    this.sortOptions = this.columns.map((column) => ({
+      label: column.charAt(0).toUpperCase() + column.slice(1),
+      order: null,
+      selected: false,
+    }));
+
     this.updateVisibleOptions();
   }
 
@@ -43,9 +54,13 @@ export class SortTableComponent {
       this.showMore = false;
     }
   }
+
   toggleShowMore() {
     if (this.showMoreText === 'Show more') {
-      this.visibleSortOptions = [...this.visibleSortOptions, ...this.hiddenSortOptions];
+      this.visibleSortOptions = [
+        ...this.visibleSortOptions,
+        ...this.hiddenSortOptions,
+      ];
       this.showMoreText = 'Show less';
     } else {
       this.updateVisibleOptions();
@@ -53,19 +68,60 @@ export class SortTableComponent {
     }
   }
 
-  resetSort() {
-    this.sortOptions.forEach(option => {
-      option.selected = false;
-      option.order = null;
-    });
-  }  
-
   applySort() {
-    const selectedSorts = this.sortOptions.filter(option => option.selected);
-    console.log('Selected Sort Options: ', selectedSorts);
+    const selectedSorts = this.sortOptions.filter(
+      (option) => option.selected && option.order !== null
+    );
+
+    if (selectedSorts.length > 0) {
+      this.items.sort((a, b) => {
+        let comparison = 0;
+
+        for (const sort of selectedSorts) {
+          if (
+            typeof a[sort.label.toLowerCase()] === 'string' &&
+            typeof b[sort.label.toLowerCase()] === 'string'
+          ) {
+            comparison = a[sort.label.toLowerCase()].localeCompare(
+              b[sort.label.toLowerCase()]
+            );
+          } else {
+            comparison =
+              a[sort.label.toLowerCase()] - b[sort.label.toLowerCase()];
+          }
+
+          if (sort.order === 'desc') {
+            comparison *= -1;
+          }
+
+          if (comparison !== 0) {
+            return comparison;
+          }
+        }
+        return 0;
+      });
+    }
   }
 
   toggleSort(index: number) {
-    console.log('Toggled sort option', index);
+    const option = this.sortOptions[index];
+    if (option.selected) {
+      option.order = option.order === 'asc' ? 'desc' : 'asc'; // Toggle order
+    } else {
+      this.resetSort(); // Clear previous selections
+      option.selected = true; // Select option
+      option.order = 'asc'; // Set default order to ascending (A-Z)
+    }
+  }
+
+  resetSort() {
+    this.sortOptions.forEach((option) => {
+      option.selected = false;
+      option.order = null;
+    });
+  }
+
+  countSelectedSorts(): number {
+    return this.sortOptions.filter((option) => option.selected).length;
   }
 }

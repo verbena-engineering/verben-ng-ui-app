@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { VerbenaInputDirective } from './verbena-input.directive';
+import { FormsModule } from '@angular/forms'; // Import FormsModule for ngModel
+import { VerbenaInputComponent } from './verbena-input.component';
 
 @NgModule({
-  declarations: [VerbenaInputDirective],
-  imports: [CommonModule],
-  exports: [VerbenaInputDirective] // Exporting the directive
+  declarations: [VerbenaInputComponent],
+  imports: [CommonModule, FormsModule], // Add FormsModule
+  exports: [VerbenaInputComponent]
 })
 export class VerbenaInputModule {}

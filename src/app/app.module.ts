@@ -19,6 +19,7 @@ import {
     CardDataViewModule,
     ValidationModule,
     ButtonModule,
+  
     VerbenaBadgeModule,
     VerbenaInputModule,
     ChipModule,

@@ -76,6 +76,7 @@ export * from './lib/verbena-badge/verbena-badge.module'
 
 
 export * from './lib/verbena-textarea/verbena-textarea.component';
-export * from './lib/verbena-textarea/verbena-textarea.module'; 
+export * from './lib/verbena-textarea/verbena-textarea.module';
 
-
+export * from './lib/verbena-switch/verbena-switch.component';
+export * from './lib/verbena-switch/verbena-switch.module';

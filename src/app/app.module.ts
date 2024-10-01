@@ -22,7 +22,8 @@ import {
     VerbenaButtonModule,
     VerbenaBadgeModule,
     VerbenaInputModule,
-    VerbenaTextareaModule
+    VerbenaTextareaModule,
+    VerbenaSwitchModule,
 
      } from '../../projects/verben-ng-ui/src/public-api';
 import { CDVModule } from './Components/card-data-view/cdv.module';
@@ -57,6 +58,7 @@ import { HomeComponent } from './home/home.component';
     CardModule,
     VerbenaTextareaModule,
     CardDataViewModule,
+    VerbenaSwitchModule
 
 ],
   providers: [

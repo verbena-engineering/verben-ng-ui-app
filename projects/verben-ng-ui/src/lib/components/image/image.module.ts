@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { ImageComponent } from './image.component';
 import { CommonModule } from '@angular/common';
+import { VerbenaInputModule } from "../../Verbena-input/verbena-input.module";
 
 @NgModule({
   declarations: [ImageComponent],
-  imports:[CommonModule],
+  imports: [CommonModule, VerbenaInputModule],
   exports: [ImageComponent]
 })
 export class ImageModule {}

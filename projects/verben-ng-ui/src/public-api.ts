@@ -59,10 +59,6 @@ export * from './lib/email-validator/email-validator.module';
 export * from './lib/email-validator/email-validator.directive';
 
 
-
-export * from './lib/badge/badge.directive'
-export * from './lib/badge/badge.module'
-
 export * from './lib/button/button.directive'
 export * from './lib/button/button.module'
 
@@ -77,3 +73,15 @@ export * from './lib/validate/validate.module'
 export * from './lib/Verbena-input/verbena-input.component'
 export * from './lib/Verbena-input/verbena-input.module'
 
+export * from './lib/verbena-button/verbena-button.component'
+export * from './lib/verbena-button/verbena-button.module'
+
+export * from './lib/verbena-badge/verbena-badge.component'
+export * from './lib/verbena-badge/verbena-badge.module'
+
+
+export * from './lib/verbena-textarea/verbena-textarea.component';
+export * from './lib/verbena-textarea/verbena-textarea.module';
+
+export * from './lib/verbena-switch/verbena-switch.component';
+export * from './lib/verbena-switch/verbena-switch.module';

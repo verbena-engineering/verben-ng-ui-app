@@ -19,11 +19,14 @@ import {
     CardDataViewModule,
     ValidationModule,
     ButtonModule,
-  
+    VerbenaButtonModule,
     VerbenaBadgeModule,
     VerbenaInputModule,
     ChipModule,
     TableFilterModule,
+    VerbenaTextareaModule,
+    VerbenaSwitchModule,
+
      } from '../../projects/verben-ng-ui/src/public-api';
 import { CDVModule } from './Components/card-data-view/cdv.module';
 import { CardDataViewComponent } from './Components/card-data-view/cdv.component';
@@ -53,15 +56,21 @@ import { FormsModule } from '@angular/forms';
     VerbenaBadgeModule,
     ValidateInputModule,
     VerbenaInputModule,
+    VerbenaButtonModule,
     DropDownModule,
     ChipModule,
     ImageModule,
     SvgModule,
     TableFilterModule,
     CardModule,
+    VerbenaTextareaModule,
     CardDataViewModule,
+    VerbenaSwitchModule
+
+],
+  providers: [
+    provideHttpClient(withFetch())
   ],
-  providers: [provideHttpClient(withFetch())],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

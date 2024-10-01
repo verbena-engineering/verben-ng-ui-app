@@ -22,6 +22,8 @@ import {
     VerbenaButtonModule,
     VerbenaBadgeModule,
     VerbenaInputModule,
+    VerbenaTextareaModule
+
      } from '../../projects/verben-ng-ui/src/public-api';
 import { CDVModule } from './Components/card-data-view/cdv.module';
 import { CardDataViewComponent } from './Components/card-data-view/cdv.component';
@@ -37,7 +39,7 @@ import { HomeComponent } from './home/home.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-     NumberRangeModule,
+    NumberRangeModule,
     RequiredInputModule,
     EmailValidatorModule,
     ConvertToNumberModule,
@@ -53,8 +55,10 @@ import { HomeComponent } from './home/home.component';
     ImageModule,
     SvgModule,
     CardModule,
+    VerbenaTextareaModule,
     CardDataViewModule,
-  ],
+
+],
   providers: [
     provideHttpClient(withFetch())
   ],

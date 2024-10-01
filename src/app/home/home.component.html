@@ -101,18 +101,33 @@
 
 <verbena-input
   label="Convert to Decimal:"
-  appValidate="decimal" [showBorder]="true" [showErrorMessage]="true" errorPosition="below"
+  appValidate="decimal" 
+  [showBorder]="true" 
+  [showErrorMessage]="true" 
+  errorPosition="below"
 
   [minLength]="3"
   [maxLength]="10"
 ></verbena-input>
 <verbena-input
   label="Convert to Decimal:"
-  appValidate="number" [showBorder]="true" [showErrorMessage]="true" errorPosition="below"
-
+  appValidate="number" 
+  [showBorder]="true" 
+  [showErrorMessage]="true" 
+  errorPosition="below"
   [minLength]="3"
   [maxLength]="10"
 ></verbena-input>
 
 
+<div class="text-center my-8"> 
+  <verbena-input
+  appValidate="decimal" 
+  [showBorder]="true" 
+  [showErrorMessage]="true" 
+  errorPosition="above"
+  [minLength]="3"
+  [maxLength]="10"
+></verbena-input>
+</div>
 

@@ -26,14 +26,13 @@ import {
 import { CDVModule } from './Components/card-data-view/cdv.module';
 import { CardDataViewComponent } from './Components/card-data-view/cdv.component';
 import { HomeComponent } from './home/home.component';
-import { AboutComponent } from './about/about.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     CardDataViewComponent,
     HomeComponent,
-    AboutComponent
   ],
   imports: [
     BrowserModule,

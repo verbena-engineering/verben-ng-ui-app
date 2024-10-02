@@ -6,13 +6,13 @@ import { IFilter, FilterType } from '../../models/table-filter';
 import { DropDownComponent } from '../drop-down/drop-down.component';
 import { VerbenaInputModule } from '../../Verbena-input/verbena-input.module';
 import { TooltipModule } from '../tooltip/tooltip.module';
-
+import { ValidationModule } from '../../validate/validate.module';
 @Component({
   selector: 'verben-table-filter',
   standalone: true,
-  imports: [CommonModule, FormsModule, SvgComponent, DropDownComponent, VerbenaInputModule,TooltipModule],
+  imports: [CommonModule, FormsModule, SvgComponent, DropDownComponent, VerbenaInputModule,TooltipModule, ValidationModule],
   templateUrl: './table-filter.component.html',
-  styleUrls: ['./table-filter.component.css'] 
+  styleUrls: ['./table-filter.component.css']
 })
 export class TableFilterComponent {
   @Input() filterOptions: FilterType[] = [FilterType.Date, FilterType.Credit];
@@ -59,14 +59,14 @@ export class TableFilterComponent {
   }
 
   addFilter() {
-    console.log({ 
+    console.log({
       filter: this.selectedFilterType,
       condition: this.selectedCondition,
       value: this.inputValue
     });
 
     if (!this.selectedFilterType || !this.selectedCondition || !this.inputValue) {
-      return; 
+      return;
     }
 
     if (this.isDuplicateFilter) {
@@ -107,12 +107,12 @@ export class TableFilterComponent {
 
   editFilter(index: number) {
     const filter = this.savedFilters[index];
-    this.selectedFilterType = filter.type; 
+    this.selectedFilterType = filter.type;
     this.selectedCondition = filter.condition;
     this.inputValue = filter.value;
     this.editIndex = index;
   }
- 
+
   applyFilters() {
     this.selectedFilters = this.savedFilters.filter(filter => filter.checked);
     this.filtersApplied.emit(this.selectedFilters);
@@ -124,8 +124,8 @@ export class TableFilterComponent {
 
   get visibleFilters() {
     return this.showAllFilters
-      ? this.savedFilters 
-      : this.savedFilters.slice(0, this.MAX_VISIBLE_FILTERS); 
+      ? this.savedFilters
+      : this.savedFilters.slice(0, this.MAX_VISIBLE_FILTERS);
   }
 
   clearOperationSection() {
@@ -133,8 +133,8 @@ export class TableFilterComponent {
     this.selectedCondition = '';
     this.inputValue = '';
   }
-  
-  checkFilterButton() { 
+
+  checkFilterButton() {
     this.disableApplyFilterBtn = this.savedFilters.length === 0;
   }
 
@@ -142,12 +142,12 @@ export class TableFilterComponent {
     this.checkAll = !this.checkAll;
     this.savedFilters.forEach(filter => filter.checked = this.checkAll);
   }
-  
+
   checkDuplicateFilter(): void {
     const exists = this.savedFilters.some(
       filter =>
         filter.type === this.selectedFilterType &&
-        filter.condition === this.selectedCondition 
+        filter.condition === this.selectedCondition
     );
     this.disableAddFilterBtn = exists;
     this.isDuplicateFilter = exists;

@@ -6,11 +6,12 @@ import { IFilter, FilterType } from '../../models/table-filter';
 import { DropDownComponent } from '../drop-down/drop-down.component';
 import { VerbenaInputModule } from '../../Verbena-input/verbena-input.module';
 import { TooltipModule } from '../tooltip/tooltip.module';
+import { ValidationModule } from '../../validate/validate.module';
 
 @Component({
   selector: 'verben-table-filter',
   standalone: true,
-  imports: [CommonModule, FormsModule, SvgComponent, DropDownComponent, VerbenaInputModule,TooltipModule],
+  imports: [CommonModule, FormsModule, SvgComponent, DropDownComponent, VerbenaInputModule,TooltipModule,ValidationModule],
   templateUrl: './table-filter.component.html',
   styleUrls: ['./table-filter.component.css'] 
 })
@@ -34,7 +35,7 @@ export class TableFilterComponent {
 
   selectedFilterType: FilterType | null = null;
   selectedCondition: string = '';
-  inputValue: string | number = '';
+  inputValue?: string | number
   savedFilters: IFilter[] = [];
   selectedFilters: IFilter[] = [];
   showAllFilters: boolean = false;

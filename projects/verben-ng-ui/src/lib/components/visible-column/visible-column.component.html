@@ -1,10 +1,10 @@
 <div class="column-control">
-  <div class="sort-header">
+  <div class="visible-column-header">
     <span class="column-title">Column <sup>[{{ getSelectedColumnCount() }}]</sup></span>
     <span class="column-reset" (click)="resetColumns()">Reset</span>
   </div>
-  <ul class="column-options-container">
-    <li class="column-options" *ngFor="let column of columns; let i = index" [hidden]="i >= displayedColumns">
+  <ul *ngFor="let column of columns; let i = index" class="column-options-container">
+    <li *ngIf="i < displayedColumns" class="column-options">
       <verben-svg class="svg" icon="square-dot"></verben-svg>
       <label>
         <input
@@ -15,12 +15,12 @@
     </li>
   </ul>
   <div>
-    <span class="show-more" (click)="toggleShowMore()">
+    <span class="show-more" *ngIf="columns.length > 5" (click)="toggleShowMore()">
       {{ showMore ? 'Show Less' : 'Show More' }}
       <verben-svg icon="chevron" [width]="8" [height]="6" color="black"></verben-svg>
     </span>
   </div>
-  <button type="button" (click)="saveColumnVisibility()">Save</button> <!-- Save button to update the visible columns -->
+  <button type="button" (click)="saveColumnVisibility()">Save</button>
 </div>
 
 <table>

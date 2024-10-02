@@ -1,0 +1,13 @@
+.tooltip-container {
+    position: relative; /* To position tooltip */
+    display: inline-block; /* To wrap content */
+    cursor: pointer;
+  }
+  
+  .tooltip {
+    position: absolute; /* Position the tooltip */
+    white-space: nowrap; /* Prevent line breaks */
+    z-index: 1000; /* Ensure tooltip is above other content */
+    transition: opacity 0.3s; /* Add transition for smooth appearance */
+  }
+  

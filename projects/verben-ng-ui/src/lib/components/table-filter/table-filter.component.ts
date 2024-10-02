@@ -5,11 +5,12 @@ import { SvgComponent } from '../svg/svg.component';
 import { IFilter, FilterType } from '../../models/table-filter';
 import { DropDownComponent } from '../drop-down/drop-down.component';
 import { VerbenaInputModule } from '../../Verbena-input/verbena-input.module';
+import { TooltipModule } from '../tooltip/tooltip.module';
 
 @Component({
   selector: 'verben-table-filter',
   standalone: true,
-  imports: [CommonModule, FormsModule, SvgComponent, DropDownComponent, VerbenaInputModule],
+  imports: [CommonModule, FormsModule, SvgComponent, DropDownComponent, VerbenaInputModule,TooltipModule],
   templateUrl: './table-filter.component.html',
   styleUrls: ['./table-filter.component.css'] 
 })
@@ -43,6 +44,7 @@ export class TableFilterComponent {
   isDuplicateFilter: boolean = false;
   disableAddFilterBtn: boolean = false;
   disableApplyFilterBtn: boolean = true;
+  duplicateMessage?:string = '';
 
   resetFilters() {
     this.selectedFilterType = null;
@@ -53,6 +55,7 @@ export class TableFilterComponent {
     this.checkAll = false;
     this.isDuplicateFilter = false;
     this.disableApplyFilterBtn = true;
+    this.duplicateMessage = ''
   }
 
   addFilter() {
@@ -148,5 +151,6 @@ export class TableFilterComponent {
     );
     this.disableAddFilterBtn = exists;
     this.isDuplicateFilter = exists;
+    this.duplicateMessage = 'This entry is a duplicate and cannot be added.'
   }
 }

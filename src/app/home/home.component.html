@@ -1,44 +1,39 @@
-  <form>
-  <verben-drop-down></verben-drop-down>
+<form>
 
   <verben-svg icon="alert" [width]="100" [height]="100" color="red"></verben-svg>
   <verben-svg icon="alert" [width]="80" [height]="80" color="green"></verben-svg>
   <verben-svg icon="user" [width]="60" [height]="60" color="blue"></verben-svg>
   <verben-svg icon="user" [width]="40" [height]="40" color="yellow"></verben-svg>
 
-  <verben-image
-  [url]="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR94u0EyhIYQ35WVzV0LSlxZ0Ozv9tMqfzewA&s'"
-  [placeholder]="'assets/placeholder.png'"
-  [lazyLoad]="true"
-  [width]="'600px'"
-  [height]="'500px'">
-</verben-image>
+  <verben-image [url]="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR94u0EyhIYQ35WVzV0LSlxZ0Ozv9tMqfzewA&s'"
+    [placeholder]="'assets/placeholder.png'" [lazyLoad]="true" [width]="'600px'" [height]="'500px'">
+  </verben-image>
 
   <!-- Max Number Directive -->
   <label for="maxNumber">Max Number:</label>
   <input type="number" appNumberRange [maxNumber]="10" />
-  <br/>
-  <br/>
+  <br />
+  <br />
   <!-- Min Number Directive -->
   <label for="minNumber">Min Number:</label>
   <input type="number" appNumberRange [minNumber]="10" class="border" />
-  <br/>
-  <br/>
+  <br />
+  <br />
 
   <label for="minMaxNumber">Min & Max Number:</label>
   <input type="number" appNumberRange [maxNumber]="10" [minNumber]="5" />
-  <br/>
-  <br/>
+  <br />
+  <br />
   <!-- Required Input Directive -->
   <label for="requiredInput">Required Input:</label>
   <input type="text" required requiredInput class="border" />
-  <br/>
-  <br/>
+  <br />
+  <br />
   <!-- Email Validator Directive -->
   <label for="emailValidator">Email Validator:</label>
   <input type="email" emailValidator class="border" />
-  <br/>
-  <br/>
+  <br />
+  <br />
   <!-- Convert to Decimal Directive -->
   <label for="convertToDecimal">Convert to Decimal:</label>
   <input type="text" convertToDecimal class="border" />
@@ -46,16 +41,16 @@
   <!-- Convert to Integer Directive -->
   <label for="convertToInteger">Convert to Integer:</label>
   <input type="text" convertToInteger class="border" />
- <br/>
-  <br/>
-  <verben-card width="100px" height="100px" bgColor="red"  pd="50px 30px">
+  <br />
+  <br />
+  <verben-card width="100px" height="100px" bgColor="red" pd="50px 30px">
     <div card-header>Test Header</div>
     <p card-body>This is the body of the card.</p>
     <div card-footer>Test Footer</div>
   </verben-card>
   <br>
   <button type="button" class="bg-blue-500" routerLink="card-data-view">Go to Card data view</button>
- <br>
+  <br>
   <button type="submit">Submit</button>
 </form>
 

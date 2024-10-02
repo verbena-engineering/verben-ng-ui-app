@@ -1,4 +1,4 @@
-  <verben-card-data-view #vdcv lHeight="calc(100%-30px)" dataId="mailAddress"  border="5px" pd="5px 10px" [cardDataList]="cardData" mg="20px">
+  <verben-card-data-view (loadMoreClick)="loadMore()" #vdcv  dataId="mailAddress"  border="5px" pd="5px 10px" [cardDataList]="cardData" mg="20px">
     <ng-template #card let-item card-body >
       <div (click)="currentData=vdcv.onItemClick(item);"class="flex cursor-pointer   bg-secondary rounded-xl my-2 ">
         <div class="w-3 rounded-xl rounded-tr-none rounded-br-none" [ngClass]="item.selected? 'bg-primary':'bg-secondary-200'"></div>

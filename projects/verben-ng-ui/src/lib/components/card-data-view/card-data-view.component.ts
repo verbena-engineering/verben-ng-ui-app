@@ -26,6 +26,8 @@ export class CardDataViewComponent  {
   @Input() displayAsRow?:boolean =true;
   @Input() cardDataList:CardData[]=[];
   @Input() dataId!:string;
+  @Input() totalRecords:number=0;
+  @Input() hidePaginator:boolean=false;
   // @Input() disabled:boolean=false ;
   // @Input() aspectRatio?:number ;
   @ContentChild('card') card!: TemplateRef<any>;
@@ -49,5 +51,9 @@ export class CardDataViewComponent  {
     });
     return this.currentItem
   }
-
+  @Output() loadMoreClick = new EventEmitter();
+  onLoadMoreClick()
+  {
+    this.loadMoreClick.emit();
+  }
 }

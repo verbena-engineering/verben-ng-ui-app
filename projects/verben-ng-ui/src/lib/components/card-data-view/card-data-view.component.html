@@ -14,22 +14,32 @@
 </div> -->
 
 <div class="container" [style.display]="'flex'" [style.margin]="mg" [style.flex-direction]="displayAsRow?'row':'column'">
-       <div #dynamicDetail>
+        <!-- Master -->
+       <div #dynamicMaster class="flex-column">
            <ng-content select="[master]"></ng-content>  
+       </div>
+        <div 
+           [style.width]="lWidth"
+           [style.height]="lHeight"
+           class="flex-column">
+          <div 
+            *ngIf="!dynamicMaster.children.length"
+            class="left-side"
+            [style.backgroundColor]="lbgColor"
+            >
+            @for (item of cardDataList; track item.title) {
+                <ng-content *ngTemplateOutlet="card;context: {$implicit: item}"></ng-content>
+            }
+          </div>
+          <div *ngIf="!hidePaginator" 
+          class="paginator flex-row">
+            <span class="paginator-text">{{totalRecords==0?cardDataList.length:totalRecords}} records loaded</span>
+            <button (click)="onLoadMoreClick()" class="load-more">Load more</button>
+          </div>
         </div>
-      <div 
-       *ngIf="!dynamicDetail.children.length"
-        class="left-side"
-        [style.backgroundColor]="lbgColor"
-        [style.width]="lWidth"
-        [style.height]="lHeight"
-      >
-        @for (item of cardDataList; track item.title) {
-            <ng-content *ngTemplateOutlet="card;context: {$implicit: item}"></ng-content>
-         }
-      </div>
-
-      <div  #dynamicMaster class="right-side"
+    
+      <!-- Details -->
+      <div  #dynamicDetail class="right-side"
       [style.width]="rWidth"
       [style.height]="rHeight"
       [style.backgroundColor]="rbgColor"
@@ -38,12 +48,13 @@
          <ng-content  select="[detail]" ></ng-content>  
       </ng-container> 
       </div>
-      <div *ngIf="!dynamicMaster.children.length" 
+      <div *ngIf="!dynamicDetail.children.length" 
       class="right-side"
       [style.width]="rWidth"
       [style.height]="rHeight"
       [style.backgroundColor]="rbgColor"
-
       >
       </div>
+      
+ 
 </div>

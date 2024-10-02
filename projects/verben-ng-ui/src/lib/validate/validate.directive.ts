@@ -1,6 +1,5 @@
 import { Directive, ElementRef, Input, HostListener, Renderer2 } from '@angular/core';
 import { ErrorMessageService } from './error-message.service';
-import { VerbenaInputComponent } from '../Verbena-input/verbena-input.component';
 
 @Directive({
   selector: '[appValidate]'
@@ -49,8 +48,9 @@ export class ValidateDirective {
   }
 
   private validateNumber(input: any, value: string) {
+    // Prevent non-numeric values
     if (isNaN(+value)) {
-      this.showError(input, 'Please enter a valid number');
+      this.blockInvalidInput(input, 'Please enter a valid number');
     } else {
       this.clearError(input);
     }
@@ -59,7 +59,7 @@ export class ValidateDirective {
   private validateDecimal(input: any, value: string) {
     const regex = /^\d+(\.\d+)?$/;
     if (!regex.test(value)) {
-      this.showError(input, 'Please enter a valid decimal number');
+      this.blockInvalidInput(input, 'Please enter a valid decimal number');
     } else {
       this.clearError(input);
     }
@@ -68,7 +68,7 @@ export class ValidateDirective {
   private validateInteger(input: any, value: string) {
     const regex = /^\d+$/;
     if (!regex.test(value)) {
-      this.showError(input, 'Please enter a valid integer');
+      this.blockInvalidInput(input, 'Please enter a valid integer');
     } else {
       this.clearError(input);
     }
@@ -77,10 +77,16 @@ export class ValidateDirective {
   private validateEmail(input: any, value: string) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!regex.test(value)) {
-      this.showError(input, 'Please enter a valid email address');
+      this.blockInvalidInput(input, 'Please enter a valid email address');
     } else {
       this.clearError(input);
     }
+  }
+
+  // Block invalid input by resetting the input value and showing an error
+  private blockInvalidInput(input: any, message: string) {
+    input.value = ''; // Clear the input value to prevent invalid entries
+    this.showError(input, message);
   }
 
   private showError(input: any, message: string) {

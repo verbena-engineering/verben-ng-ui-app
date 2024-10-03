@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SvgComponent } from '../svg/svg.component';
-import { IFilter, FilterType } from '../../models/table-filter';
+import { DataFilterType, IDataFilter } from '../../models/table-filter';
 import { DropDownComponent } from '../drop-down/drop-down.component';
 import { VerbenaInputModule } from '../../Verbena-input/verbena-input.module';
 import { TooltipModule } from '../tooltip/tooltip.module';
@@ -16,8 +16,8 @@ import { ValidationModule } from '../../validate/validate.module';
   styleUrls: ['./table-filter.component.css']
 })
 export class TableFilterComponent {
-  @Input() filterOptions: FilterType[] = [FilterType.Date, FilterType.Credit];
-  @Input() conditionOptions: string[] = ['Equal', 'Before', 'After', 'Less than', 'Greater than'];
+  @Input() filterOptions: DataFilterType[] = [];
+  @Input() conditionOptions: string[] = [];
   @Input() pd?: string;
   @Input() mg?: string;
   @Input() height?: string;
@@ -31,13 +31,13 @@ export class TableFilterComponent {
   @Input() border?: string;
   @Input() borderRadius?: string;
   @Input() selectWidth?: string;
-  @Output() filtersApplied = new EventEmitter<IFilter[]>();
+  @Output() filtersApplied = new EventEmitter<IDataFilter[]>();
 
-  selectedFilterType: FilterType | null = null;
+  selectedFilterType: DataFilterType | null = null;
   selectedCondition: string = '';
   inputValue?: string | number
-  savedFilters: IFilter[] = [];
-  selectedFilters: IFilter[] = [];
+  savedFilters: IDataFilter[] = [];
+  selectedFilters: IDataFilter[] = [];
   showAllFilters: boolean = false;
   readonly MAX_VISIBLE_FILTERS = 3;
   editIndex: number | null = null;
@@ -74,7 +74,7 @@ export class TableFilterComponent {
       return;
     }
 
-    const newFilter: IFilter = {
+    const newFilter: IDataFilter = {
       type: this.selectedFilterType,
       condition: this.selectedCondition,
       value: this.inputValue,

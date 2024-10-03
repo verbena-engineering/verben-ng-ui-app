@@ -63,7 +63,7 @@
           [style.font-weight]="'500'"
           [style.color]="tertiaryColor"
         >
-          {{ filter.type }} {{ filter.condition }} {{ filter.value }}
+          {{ filter.type }} {{ filter.condition }} {{ filter.value}}
         </p>
       </div>
       <div class="iconWrapper">
@@ -112,13 +112,13 @@
     <div class="savedWrapper">
       <h3 [style.font-size]="'13px'">Operation</h3>
       <lib-tooltip
-         [message]='duplicateMessage'
+        [message]='duplicateMessage'
         [backgroundColor]="'#ccc'"
         [textColor]="'red'"
         [border]="'1px solid red'"
         [padding]="'10px 15px'"
         [borderRadius]="borderRadius"
-        [position]="{ left: '100%', top: '1px', transform: 'translateY(-50%)' }"
+        [position]="{ left: '100%', top: '-15px', transform: 'translateY(-50%)' }"
       >
         <verben-svg
           icon="dangerInfo"
@@ -169,6 +169,7 @@
       /> -->
 
       <verbena-input
+      *ngIf="selectedFilterType === 'Date'"
       border="1px solid #ccc"
       borderRadius="5px"
       textColor="black"
@@ -182,22 +183,37 @@
       [(ngModel)]="inputValue"
     ></verbena-input>
 
-    
-    <p> value -- {{inputValue}}</p>
-
-
       <verbena-input
+      *ngIf="selectedFilterType === 'Credit'"
       border="1px solid #ccc"
       borderRadius="5px"
       textColor="black"
       width="120px"
       height="30px"
       pd="6px"
-      appValidate="integer"
+      placeHolder="input integer"
       [showBorder]="true"
       [showErrorMessage]="true"
       errorPosition="below"
+      appValidate="integer"
+      [(ngModel)]="inputValue"
     ></verbena-input>
+
+      <verbena-input
+      *ngIf="selectedFilterType !== 'Credit' && selectedFilterType !== 'Date' "
+      border="1px solid #ccc"
+      placeHolder="input value"
+      borderRadius="5px"
+      textColor="black"
+      width="120px"
+      height="30px"
+      pd="6px"
+      [showBorder]="true"
+      [showErrorMessage]="true"
+      errorPosition="below"
+      [(ngModel)]="inputValue"
+    ></verbena-input>
+
     </div>
 
     <div class="btnWrapper">

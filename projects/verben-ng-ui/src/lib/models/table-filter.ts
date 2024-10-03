@@ -1,14 +1,16 @@
-export enum FilterType {
-  String = 'string',
-  Number = 'number',
-  Integer = 'integer',
+export enum DataFilterType {
+  String = 'String',
+  Number = 'Number',
+  Decimal = 'Decimal',
   Credit= 'Credit',
   Date = 'Date',
+  Bool = "Bool"
 }
 
-export interface IFilter {
-  type: FilterType;
+export interface IDataFilter {
+  type: DataFilterType;
   condition: string;
   value: string | number; 
   checked: boolean;
 }
+

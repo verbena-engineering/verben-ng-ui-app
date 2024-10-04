@@ -46,4 +46,5 @@ export * from './lib/email-validator/email-validator.directive';
 // Exporting ControlOptionModule and ControlOptionDirective
 export * from './lib/control-options/control-options.module';
 export * from './lib/control-options/control-options.directive';
-
+// Exporting Enum type for sort table
+export * from './lib/components/sort-table/model/SortOptionType';

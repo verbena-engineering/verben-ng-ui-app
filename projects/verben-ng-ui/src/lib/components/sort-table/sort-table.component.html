@@ -1,28 +1,90 @@
 <div class="sort-container">
   <div class="sort-header">
     <span class="sort-title">Sort <sup>[{{ countSelectedSorts() }}]</sup></span>
-    <span class="sort-reset" (click)="resetSort()">Reset</span>
+    <span class="sort-reset" (click)="resetSort()">{{ resetText }}</span>
   </div>
 
   <div class="sort-options">
     <div class="sort-options-header">
-      <p>Property</p>
-      <verben-svg class="svg" icon="info"></verben-svg> 
+      <p>{{ propertyText }}</p>
+      <verben-svg class="svg" icon="info"></verben-svg>
     </div>
-    <div *ngFor="let option of visibleSortOptions; let i = index">
+    
+    <div 
+      *ngFor="let option of visibleSortOptions; let i = index"
+      draggable="true"
+      (dragstart)="onDragStart(i, $event)"
+      (dragover)="onDragOver($event)"
+      (drop)="onDrop(i, $event)"
+    >
       <div class="sort-item">
         <div class="sort-field">
-          <verben-svg class="svg" icon="square-dot"></verben-svg> 
-          <input type="checkbox" [(ngModel)]="option.selected" (change)="toggleSort(i)">
+          <verben-svg class="svg" icon="square-dot"></verben-svg>
+          <input
+            type="checkbox"
+            [checked]="option.selected"
+            (click)="toggleSort(i)"
+          />
           <span>{{ option.label }}</span>
         </div>
+        
         <div class="sort-order">
-          <label>
-            <input type="radio" name="sortOrder{{i}}" value="asc" [(ngModel)]="option.order" [disabled]="!option.selected"> A-Z
-          </label>
-          <label>
-            <input type="radio" name="sortOrder{{i}}" value="desc" [(ngModel)]="option.order" [disabled]="!option.selected"> Z-A
-          </label>
+          <ng-container *ngIf="option.type === 'string'">
+            <label>
+              <input
+                type="radio"
+                name="sortOrder{{ i }}"
+                value="asc"
+                [disabled]="!option.selected"
+              />
+              A-Z
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="sortOrder{{ i }}"
+                value="desc"
+                [disabled]="!option.selected"
+              />
+              Z-A
+            </label>
+          </ng-container>
+          <ng-container *ngIf="option.type === 'number'">
+            <label>
+              <input
+                type="radio"
+                name="sortOrder{{ i }}"
+                value="asc"
+                [disabled]="!option.selected"
+              />
+              1-100
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="sortOrder{{ i }}"
+                value="desc"
+                [disabled]="!option.selected"
+              />
+              100-1
+            </label>
+          </ng-container>
+          <ng-container class="sort-date" *ngIf="option.type === 'date'">
+            <div>
+              <label>Start date:</label>
+              <input
+                type="date"
+                [(ngModel)]="dateFilters[i].startDate"
+                [disabled]="!option.selected"
+              />
+              <label>End date:</label>
+              <input
+                type="date"
+                [(ngModel)]="dateFilters[i].endDate"
+                [disabled]="!option.selected"
+              />
+            </div>
+          </ng-container>
         </div>
       </div>
     </div>
@@ -30,10 +92,10 @@
     <div *ngIf="showMore && hiddenSortOptions.length > 0">
       <span class="show-more" (click)="toggleShowMore()">
         {{ showMoreText }}
-        <verben-svg icon="chevron" [width]="8" [height]="6" color="black"></verben-svg> 
+        <verben-svg icon="chevron" [width]="8" [height]="6" color="black"></verben-svg>
       </span>
     </div>
   </div>
 
-  <button (click)="applySort()">Sort</button>
+  <button (click)="applySort()">{{ sortButtonText }}</button>
 </div>

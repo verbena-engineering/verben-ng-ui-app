@@ -1,6 +1,15 @@
 <form>
   <verben-drop-down></verben-drop-down>
-  <verben-sort-table [columns]="['amount', 'name', 'date', 'category', 'rating']"></verben-sort-table>
+  <verben-sort-table 
+  [sortOptions]="[
+    { label: 'Amount', type:sortType.String,selected:false }, 
+    { label: 'Name', type:sortType.String,selected:false }, 
+    { label: 'Date', type:sortType.Date,selected:false }, 
+    { label: 'Category', type:sortType.String,selected:false },
+    { label: 'Rating', type:sortType.Number,selected:false }
+  ]"
+></verben-sort-table>
+
   <verben-visible-column
   [columns]="['amount', 'name', 'date', 'category', 'rating','college']"
   [items]="[

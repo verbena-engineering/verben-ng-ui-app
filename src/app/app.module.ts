@@ -18,7 +18,7 @@ import {
     SortTableModule,
     VisibleColumnModule,
     DataViewModule,
-    ControlOptionsModule
+    ControlOptionsModule,
      } from '../../projects/verben-ng-ui/src/public-api';
 
 

@@ -121,7 +121,7 @@
 
 
 <verbena-input
-  label="Username"
+  label="Enter a Number"
   bgColor="#f5f5f5"
   mg="10px"
   border="1px solid #ccc"
@@ -134,8 +134,10 @@
   placeHolder="Enter your username"
   [disable]="false"
   appValidate="number"
+  [errorMessageColor]="'blue'"
   [showBorder]="true"
   [showErrorMessage]="true"
+  [errorBorderColor]="'Yellow'"
   errorPosition="below"
 ></verbena-input>
 
@@ -150,6 +152,8 @@
   height="40px"
   pd="10px"
   placeHolder="Enter your username"
+
+
 
   (valueChange)="onUsernameChange($event)"
 ></verbena-input>
@@ -193,7 +197,7 @@
 
 <verbena-button
   text="Submit"
-  icon="fa fa-check"
+
   bgColor="#28a745"
   textColor="white"
   border="1px solid #28a745"

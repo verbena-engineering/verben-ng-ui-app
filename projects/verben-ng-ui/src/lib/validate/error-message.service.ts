@@ -4,18 +4,15 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ErrorMessageService {
-  public createErrorMessage(inputElement: HTMLInputElement, message: string, position: 'above' | 'below') {
-    // Remove existing error messages first
+  public createErrorMessage(inputElement: HTMLInputElement, message: string, position: 'above' | 'below', color: string) {
     this.removeErrorMessage(inputElement);
 
-    // Create a new error message span
     const errorElement = document.createElement('span');
     errorElement.textContent = message;
-    errorElement.style.color = 'red';
+    errorElement.style.color = color;  // Use custom color
     errorElement.style.fontSize = '12px';
-    errorElement.classList.add('error-message'); // Add a class for easier identification
+    errorElement.classList.add('error-message');
 
-    // Insert the error message based on the specified position
     if (position === 'above') {
       inputElement.parentNode?.insertBefore(errorElement, inputElement);
     } else {
@@ -24,11 +21,10 @@ export class ErrorMessageService {
   }
 
   public removeErrorMessage(inputElement: HTMLInputElement) {
-    // Remove any existing error message for this input
     const errorElements = inputElement.parentNode?.querySelectorAll('.error-message');
     if (errorElements) {
       errorElements.forEach((errorElement) => {
-        errorElement.remove(); // Remove all error spans with the class
+        errorElement.remove();
       });
     }
   }

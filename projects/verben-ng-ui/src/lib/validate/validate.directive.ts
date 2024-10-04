@@ -10,6 +10,8 @@ export class ValidateDirective {
   @Input() showBorder: boolean = true;
   @Input() showErrorMessage: boolean = true;
   @Input() errorPosition: 'above' | 'below' = 'below';
+  @Input() errorBorderColor: string = 'red';  // New input for border color
+  @Input() errorMessageColor: string = 'red';  // New input for message color
 
   constructor(
     private el: ElementRef,
@@ -48,7 +50,6 @@ export class ValidateDirective {
   }
 
   private validateNumber(input: any, value: string) {
-    // Prevent non-numeric values
     if (isNaN(+value)) {
       this.blockInvalidInput(input, 'Please enter a valid number');
     } else {
@@ -83,18 +84,17 @@ export class ValidateDirective {
     }
   }
 
-  // Block invalid input by resetting the input value and showing an error
   private blockInvalidInput(input: any, message: string) {
-    input.value = ''; // Clear the input value to prevent invalid entries
+    input.value = '';
     this.showError(input, message);
   }
 
   private showError(input: any, message: string) {
     if (this.showBorder) {
-      this.renderer.setStyle(input, 'borderColor', 'red');
+      this.renderer.setStyle(input, 'borderColor', this.errorBorderColor);
     }
     if (this.showErrorMessage) {
-      this.errorMessageService.createErrorMessage(input, message, this.errorPosition);
+      this.errorMessageService.createErrorMessage(input, message, this.errorPosition, this.errorMessageColor);
     }
   }
 

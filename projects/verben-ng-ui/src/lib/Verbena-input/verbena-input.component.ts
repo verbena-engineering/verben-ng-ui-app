@@ -3,7 +3,8 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 @Component({
   selector: 'verbena-input',
   template: `
-    <label [for]="inputId">{{ label }}</label>
+    <div>
+    <label [for]="inputId">{{ label }}</label> <br>
     <input
       [id]="inputId"
       [attr.type]="type"
@@ -29,6 +30,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
       class="input-field"
     />
     <span *ngIf="showErrorMessage && errorMessage" class="error">{{ errorMessage }}</span>
+    </div><br>
   `,
   styles: [`
     .error {

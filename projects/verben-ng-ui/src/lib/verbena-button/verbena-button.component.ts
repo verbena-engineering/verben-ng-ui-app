@@ -31,6 +31,7 @@ import { Component, Input } from '@angular/core';
       display: inline-flex;
       align-items: center;
       justify-content: center;
+
       cursor: pointer;
       transition: background-color 0.3s ease;
     }

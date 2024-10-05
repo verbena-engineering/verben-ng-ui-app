@@ -5,7 +5,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   selector: 'verbena-switch',
   template: `
     <div class="switch" [ngClass]="{'disabled': disabled}" (click)="toggleSwitch()" [style]="customStyles">
-      <input type="checkbox" [checked]="checked" (change)="onChange($event)" [disabled]="disabled" />
+      <input type="checkbox" [checked]="checked" class="check" (change)="onChange($event)" [disabled]="disabled" />
       <span class="slider"></span>
       <label *ngIf="label">{{ label }}</label>
     </div>
@@ -46,6 +46,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
     .disabled {
       cursor: not-allowed;
       opacity: 0.5;
+    }
+    .check{
+      display: none;
     }
   `]
 })

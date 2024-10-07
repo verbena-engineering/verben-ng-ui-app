@@ -1,0 +1,95 @@
+* {
+  font-family: sans-serif;
+  font-size: 0.9rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.justify-end {
+  justify-content: end;
+}
+
+.chip-content-input {
+  gap: 5px;
+  padding: 5px;
+  flex-wrap: wrap;
+  min-height: 23px;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  align-items: center;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, outline-color 0.2s;
+}
+
+.chip-content-input:hover {
+  border: 1px solid #697e97
+}
+
+.chip-content-input.disabled {
+  opacity: 1;
+  background-color: #e2e8f0;
+  pointer-events: none;
+}
+
+.chip-content-input.disabled .chips-container {
+  color: #64748b;
+}
+
+.chip-content-input.focused {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+.chip-content-input.ng-invalid {
+  border-color: red !important;
+}
+
+.chip-main-content {
+  min-width: 0;
+}
+
+.chips-container {
+  width: 100%;
+  gap: 5px;
+  color: #334155;
+  flex-wrap: wrap;
+}
+
+.item-chip {
+  cursor: pointer;
+  align-items: center;
+  gap: 5px;
+  border-radius: 5px;
+  padding: 3px 5px;
+  background-color: rgba(52, 121, 233, 0.5);
+}
+
+.item-chip>span {
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-chip>svg {}
+
+
+.input-container {
+  flex: 1 1 0;
+}
+
+.chip-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.chip-input::placeholder {
+  color: #64748b;
+}

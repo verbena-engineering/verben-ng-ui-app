@@ -1,101 +1,153 @@
-<div class="sort-container">
-  <div class="sort-header">
-    <span class="sort-title">Sort <sup>[{{ countSelectedSorts() }}]</sup></span>
-    <span class="sort-reset" (click)="resetSort()">{{ resetText }}</span>
+<div
+  [style.background-color]="bgColor"
+  [style.box-shadow]="boxShadow"
+  [style.border]="border"
+  [style.border-radius]="borderRadius"
+  [style.color]="textColor"
+  [style.width]="width"
+  [style.height]="height"
+  [style.padding]="pd"
+>
+  <!-- Header Section -->
+  <div
+    class="sort-header flex justify-between text-sm"
+  >
+    <span class="sort-title font-semibold">
+      Sort
+      <sup [style.color]="secondaryColor">[{{ countSelectedSorts() }}]</sup>
+    </span>
+    <span
+      [style.color]="secondaryColor"
+      [style.border]="'none'"
+      [style.cursor]="'pointer'"
+      [style.font-size]="'12px'"
+      class="cursor-pointer"
+      (click)="resetSort()"
+      >{{ resetText }}</span
+    >
   </div>
-
+<hr/>
+  <!-- Sort Options -->
   <div class="sort-options">
-    <div class="sort-options-header">
+    <div class="sort-options-header flex justify-between">
       <p>{{ propertyText }}</p>
-      <verben-svg class="svg" icon="info"></verben-svg>
+      <verben-svg [width]="15" class="svg" icon="info"></verben-svg>
     </div>
-    
-    <div 
+
+    <div
       *ngFor="let option of visibleSortOptions; let i = index"
-      draggable="true"
+      [attr.draggable]="enableDragAndDrop"
       (dragstart)="onDragStart(i, $event)"
       (dragover)="onDragOver($event)"
       (drop)="onDrop(i, $event)"
+      class="sort-option"
     >
-      <div class="sort-item">
-        <div class="sort-field">
-          <verben-svg class="svg" icon="square-dot"></verben-svg>
+      <div
+        class="sort-item"
+        [style.font-size]="'14px'"
+        [style.margin-top]="'14px'"
+      >
+        <div class="sort-field flex gap">
+          <verben-svg
+            *ngIf="enableDragAndDrop"
+            fill="black"
+            [width]="25"
+            class="svg"
+            icon="square-dot"
+          ></verben-svg>
           <input
             type="checkbox"
-            [checked]="option.selected"
-            (click)="toggleSort(i)"
+            [checked]="option.checked"
+            (change)="toggleSort(i)"
           />
-          <span>{{ option.label }}</span>
+          <span>{{ option.value }}</span>
         </div>
-        
-        <div class="sort-order">
-          <ng-container *ngIf="option.type === 'string'">
-            <label>
-              <input
-                type="radio"
-                name="sortOrder{{ i }}"
-                value="asc"
-                [disabled]="!option.selected"
-              />
-              A-Z
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="sortOrder{{ i }}"
-                value="desc"
-                [disabled]="!option.selected"
-              />
-              Z-A
-            </label>
-          </ng-container>
-          <ng-container *ngIf="option.type === 'number'">
-            <label>
-              <input
-                type="radio"
-                name="sortOrder{{ i }}"
-                value="asc"
-                [disabled]="!option.selected"
-              />
-              1-100
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="sortOrder{{ i }}"
-                value="desc"
-                [disabled]="!option.selected"
-              />
-              100-1
-            </label>
-          </ng-container>
-          <ng-container class="sort-date" *ngIf="option.type === 'date'">
-            <div>
-              <label>Start date:</label>
-              <input
-                type="date"
-                [(ngModel)]="dateFilters[i].startDate"
-                [disabled]="!option.selected"
-              />
-              <label>End date:</label>
-              <input
-                type="date"
-                [(ngModel)]="dateFilters[i].endDate"
-                [disabled]="!option.selected"
-              />
-            </div>
-          </ng-container>
+
+        <!-- Sorting Controls -->
+        <div class="sort-order" [style.margin-left]="'35px'">
+          <label *ngIf="option.type === 'Number'">
+            <input
+              type="radio"
+              name="sortOrder{{ i }}"
+              value="asc"
+              [disabled]="!option.checked"
+              (change)="setSortOrder(i, 'asc')"
+            />
+            1-100
+          </label>
+          <label *ngIf="option.type === 'Number'">
+            <input
+              type="radio"
+              name="sortOrder{{ i }}"
+              value="desc"
+              [disabled]="!option.checked"
+              (change)="setSortOrder(i, 'desc')"
+            />
+            100-1
+          </label>
+
+          <label *ngIf="option.type === 'String' || option.type === 'Date'">
+            <input
+              type="radio"
+              name="sortOrder{{ i }}"
+              value="asc"
+              [disabled]="!option.checked"
+              (change)="setSortOrder(i, 'asc')"
+            />
+            A-Z
+          </label>
+          <label *ngIf="option.type === 'String' || option.type === 'Date'">
+            <input
+              type="radio"
+              name="sortOrder{{ i }}"
+              value="desc"
+              [disabled]="!option.checked"
+              (change)="setSortOrder(i, 'desc')"
+            />
+            Z-A
+          </label>
         </div>
       </div>
     </div>
 
+    <!-- Show More Options -->
     <div *ngIf="showMore && hiddenSortOptions.length > 0">
-      <span class="show-more" (click)="toggleShowMore()">
+      <span
+        [style.padding-top]="'20px'"
+        [style.color]="'gray'"
+        class="text-sm cursor-pointer block"
+        (click)="toggleShowMore()"
+      >
         {{ showMoreText }}
-        <verben-svg icon="chevron" [width]="8" [height]="6" color="black"></verben-svg>
+        <verben-svg
+          icon="chevron"
+          [width]="8"
+          [height]="6"
+          color="black"
+        ></verben-svg>
       </span>
     </div>
   </div>
-
-  <button (click)="applySort()">{{ sortButtonText }}</button>
+<hr/>
+  <!-- Sort Button -->
+  <div class="btn-wrapper">
+    <button
+      [style.margin-top]="'0.5rem'"
+      [style.outline]="'none'"
+      [style.border]="'none'"
+      [style.padding]="'0.2rem 1.6rem'"
+      [style.background-color]="primaryColor"
+      [style.color]="tertiaryColor"
+      [style.font-size]="'12px'"
+      [style.font-weight]="'600'"
+      [disabled]="countSelectedSorts() === 0"
+      [ngClass]="{
+      disabledBtn:countSelectedSorts()===0,
+        enableBtn:countSelectedSorts()!==0,
+      }"
+      (click)="applySort()"
+    >
+      {{ sortButtonText }}
+    </button>
+  </div>
 </div>

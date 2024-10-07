@@ -1,0 +1,7 @@
+<div class="tooltip-container" (mouseover)="show()" (mouseout)="hide()">
+    <ng-content></ng-content>
+    <div class="tooltip" *ngIf="visible" [ngStyle]="tooltipStyles" [ngClass]="customClass">
+      {{ message }}
+    </div>
+  </div>
+  

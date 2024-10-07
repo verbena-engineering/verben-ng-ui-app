@@ -1,53 +1,67 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SvgComponent } from '../svg/svg.component';
-import { SortType } from './model/SortOptionType';
-
-interface SortOption {
-  label: string;
-  type: SortType;
-  selected: boolean;
-}
-
-interface Item {
-  [key: string]: any;
-}
+import { VerbenaInputModule } from '../../Verbena-input/verbena-input.module';
+import { DataFilterType } from '../../models/table-filter';
+import { IDataFilter } from '../../models/data-filter';
 
 @Component({
   selector: 'verben-sort-table',
   standalone: true,
-  imports: [CommonModule, FormsModule, SvgComponent],
+  imports: [CommonModule, FormsModule, SvgComponent, VerbenaInputModule],
   templateUrl: './sort-table.component.html',
   styleUrls: ['./sort-table.component.css'],
-  encapsulation: ViewEncapsulation.Emulated
+  encapsulation: ViewEncapsulation.Emulated,
 })
 export class SortTableComponent {
-  @Input() sortOptions: SortOption[] = [];
-  @Input() items: Item[] = [];
-  @Input() resetText: string = 'Reset'; // Default text for reset
-  @Input() propertyText: string = 'Property'; // Default text for property label
-  @Input() showMoreText: string = 'Show more'; // Default text for "show more"
-  @Input() sortButtonText: string = 'Sort'; // Default text for the sort button
+  @Input() enableDragAndDrop: boolean = false;
+  @Input() sortOptions: IDataFilter[] = [];
+  @Input() resetText: string = 'Reset';
+  @Input() displayedOptions: number = 4;
+  @Input() propertyText: string = 'Property';
+  @Input() showMoreText: string = 'Show more';
+  @Input() sortButtonText: string = 'Sort';
+  @Input() pd?: string;
+  @Input() mg?: string;
+  @Input() height?: string;
+  @Input() width?: string;
+  @Input() bgColor?: string;
+  @Input() boxShadow?: string;
+  @Input() textColor?: string;
+  @Input() primaryColor?: string;
+  @Input() secondaryColor?: string;
+  @Input() tertiaryColor?: string;
+  @Input() border?: string;
+  @Input() borderRadius?: string;
+  @Input() selectWidth?: string;
+  @Output() selectedOptions = new EventEmitter<IDataFilter[]>();
   draggedIndex: number | null = null;
-  visibleSortOptions: SortOption[] = [];
-  hiddenSortOptions: SortOption[] = [];
+  visibleSortOptions: IDataFilter[] = [];
+  hiddenSortOptions: IDataFilter[] = [];
   showMore: boolean = false;
-  dateFilters: { startDate: string; endDate: string }[] = [];
+  disableSortButton: boolean = false;
+
+  selectedOrders: Map<number, 'asc' | 'desc'> = new Map();
 
   ngOnInit() {
     this.updateVisibleOptions();
-    this.sortOptions.forEach((option, index) => {
-      if (option.type === 'date') {
-        this.dateFilters[index] = { startDate: '', endDate: '' };
-      }
-    });
+    this.updateSortButtonState();
   }
 
   updateVisibleOptions() {
-    if (this.sortOptions.length > 3) {
-      this.visibleSortOptions = this.sortOptions.slice(0, 3);
-      this.hiddenSortOptions = this.sortOptions.slice(3);
+    if (this.sortOptions.length > this.displayedOptions) {
+      this.visibleSortOptions = this.sortOptions.slice(
+        0,
+        this.displayedOptions
+      );
+      this.hiddenSortOptions = this.sortOptions.slice(this.displayedOptions);
       this.showMore = true;
     } else {
       this.visibleSortOptions = this.sortOptions;
@@ -66,77 +80,79 @@ export class SortTableComponent {
   }
 
   applySort() {
-    const selectedSorts = this.sortOptions.filter(option => option.selected);
+    const selectedSorts = this.sortOptions.filter((option) => option.checked);
 
-    if (selectedSorts.length > 0) {
-      this.items.sort((a, b) => {
-        for (const sort of selectedSorts) {
-          const label = sort.label; // Use the label directly for sorting
-          let comparison = 0;
+    const selectedSortDetails = selectedSorts.map((sort, index) => {
+      return {
+        type: sort.type || 'String',
+        value:
+          this.getSortOrder(
+            sort.type,
+            this.selectedOrders.get(index) || 'asc'
+          ) || '',
+        checked: sort.checked || false,
+      };
+    });
+    this.selectedOptions.emit(selectedSortDetails);
+    return selectedSortDetails;
+  }
 
-          switch (sort.type) {
-            case 'string':
-              comparison = a[label].localeCompare(b[label]);
-              break;
-            case 'number':
-              comparison = a[label] - b[label];
-              break;
-            case 'date':
-              const index = this.sortOptions.indexOf(sort);
-              const aDate = new Date(a[label]).getTime();
-              const bDate = new Date(b[label]).getTime();
-              const start = new Date(this.dateFilters[index]?.startDate).getTime();
-              const end = new Date(this.dateFilters[index]?.endDate).getTime();
-
-              const aInRange = this.dateFilters[index].startDate && this.dateFilters[index].endDate 
-                ? (aDate >= start && aDate <= end) : true;
-              const bInRange = this.dateFilters[index].startDate && this.dateFilters[index].endDate 
-                ? (bDate >= start && bDate <= end) : true;
-
-              comparison = aInRange === bInRange ? 0 : (aInRange ? -1 : 1);
-              break;
-          }
-
-          if (comparison !== 0) {
-            return comparison; // Return the first non-zero comparison
-          }
-        }
-        return 0; // If all comparisons are zero
-      });
+  getSortOrder(type: DataFilterType, selectedOrder: 'asc' | 'desc') {
+    if (type === 'Number') {
+      return selectedOrder === 'asc' ? '1-100' : '100-1';
+    } else if (type === 'String') {
+      return selectedOrder === 'asc' ? 'asc' : 'desc';
+    } else if (type === 'Date') {
+      return selectedOrder === 'asc' ? 'asc' : 'desc';
     }
+    return null;
   }
 
   toggleSort(index: number) {
     const option = this.sortOptions[index];
-    option.selected = !option.selected;
-    this.applySort(); // Apply sorting whenever a sort option is toggled
+    option.checked = !option.checked;
+
+    if (option.checked) {
+      this.selectedOrders.set(index, 'asc');
+    } else {
+      this.selectedOrders.delete(index);
+    }
+    this.updateSortButtonState();
   }
 
   resetSort() {
-    this.sortOptions.forEach(option => option.selected = false);
+    this.sortOptions.forEach((option, index) => {
+      option.checked = false;
+      this.selectedOrders.delete(index); // remove sort order entry
+    });
+    this.updateSortButtonState();
+  }
+
+  updateSortButtonState() {
+    this.disableSortButton = this.countSelectedSorts() === 0;
   }
 
   countSelectedSorts(): number {
-    return this.sortOptions.filter(option => option.selected).length;
+    return this.sortOptions.filter((option) => option.checked).length;
   }
 
-  updateDateFilter(index: number, startDate: string, endDate: string) {
-    if (this.dateFilters[index]) {
-      this.dateFilters[index].startDate = startDate;
-      this.dateFilters[index].endDate = endDate;
-    }
+  setSortOrder(index: number, order: 'asc' | 'desc') {
+    this.selectedOrders.set(index, order);
   }
 
   onDragStart(index: number, event: DragEvent) {
+    if (!this.enableDragAndDrop) return;
     this.draggedIndex = index;
     event.dataTransfer?.setData('text/plain', String(index));
   }
 
   onDragOver(event: DragEvent) {
+    if (!this.enableDragAndDrop) return;
     event.preventDefault();
   }
 
   onDrop(index: number, event: DragEvent) {
+    if (!this.enableDragAndDrop) return;
     event.preventDefault();
     if (this.draggedIndex !== null) {
       this.swapColumns(this.draggedIndex, index);
@@ -144,14 +160,25 @@ export class SortTableComponent {
   }
 
   swapColumns(fromIndex: number, toIndex: number) {
-    const temp = this.visibleSortOptions[fromIndex];
-    this.visibleSortOptions[fromIndex] = this.visibleSortOptions[toIndex];
-    this.visibleSortOptions[toIndex] = temp;
+    if (
+      fromIndex < this.visibleSortOptions.length &&
+      toIndex < this.visibleSortOptions.length
+    ) {
+      const temp = this.visibleSortOptions[fromIndex];
+      this.visibleSortOptions[fromIndex] = this.visibleSortOptions[toIndex];
+      this.visibleSortOptions[toIndex] = temp;
 
-    const mainTemp = this.sortOptions[fromIndex];
-    this.sortOptions[fromIndex] = this.sortOptions[toIndex];
-    this.sortOptions[toIndex] = mainTemp;
+      const globalFromIndex = this.sortOptions.indexOf(temp);
+      const globalToIndex = this.sortOptions.indexOf(
+        this.visibleSortOptions[fromIndex]
+      );
 
+      if (globalFromIndex !== -1 && globalToIndex !== -1) {
+        const tempGlobal = this.sortOptions[globalFromIndex];
+        this.sortOptions[globalFromIndex] = this.sortOptions[globalToIndex];
+        this.sortOptions[globalToIndex] = tempGlobal;
+      }
+    }
     this.draggedIndex = null;
   }
 }

@@ -1,15 +1,29 @@
 <div class="toggle-button-container">
-  <button type="button" (click)="toggleView()">
+  <button type="button" (click)="toggleView()" [ngClass]="buttonClass">
     <verben-svg
-      [width]="30"
-      icon="table-view"
-      [class.active]="isGridView"
-    ></verben-svg>
-    <verben-svg
-      [width]="50"
-      [height]="50"
-      icon="list-view"
+      [icon]="listIcon"
       [class.active]="!isGridView"
+      [width]="25"
+      [height]="25"
+      [ngClass]="!isGridView ? activeIconClass : iconClass"
     ></verben-svg>
+    <verben-svg
+
+    [icon]="gridIcon"
+    [class.active]="isGridView"
+    [ngClass]="isGridView ? activeIconClass : iconClass"
+  ></verben-svg>
   </button>
 </div>
+
+<div *ngIf="isGridView; else listViewTemplate">
+  <div class="grid-view">
+    <ng-content select="[grid-content]"></ng-content>
+  </div>
+</div>
+
+<ng-template #listViewTemplate>
+  <div class="list-view">
+    <ng-content select="[list-content]"></ng-content>
+  </div>
+</ng-template>

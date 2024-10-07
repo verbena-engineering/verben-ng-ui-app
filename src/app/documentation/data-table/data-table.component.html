@@ -1,0 +1,27 @@
+<lib-data-table [data]="tableData" [columns]="tableColumns">
+  <ng-template
+    appColumn="customer"
+    let-value
+    let-row="row"
+    let-isEditing="isEditing"
+  >
+    @if (isEditing) {
+    <div>
+      <input
+        [ngModel]="value.names"
+        (ngModelChange)="updateNames($event, row)"
+      />
+      <input
+        type="number"
+        [ngModel]="value.participants"
+        (ngModelChange)="updateParticipants($event, row)"
+      />
+    </div>
+    } @else {
+    <div>
+      <p>{{ value.names }}</p>
+      <p>{{ value.participants }} participants</p>
+    </div>
+    }
+  </ng-template>
+</lib-data-table>

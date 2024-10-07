@@ -5,14 +5,22 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-{
-    path: 'card-data-view',component:CardDataViewComponent,
+  {
+    path: 'card-data-view',
+    component: CardDataViewComponent,
   },
-  { path: '', component:HomeComponent, pathMatch: 'full' },
+  { path: '', component: HomeComponent, pathMatch: 'full' },
+  {
+    path: 'documentation',
+    loadChildren: () =>
+      import('./documentation/documentation.module').then(
+        (m) => m.DocumentationModule
+      ),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

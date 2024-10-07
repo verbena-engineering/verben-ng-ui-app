@@ -53,3 +53,4 @@ export * from './lib/required-input/required-input.directive';
 export * from './lib/email-validator/email-validator.module';
 export * from './lib/email-validator/email-validator.directive';
 
+export * from './lib/components/data-table'

@@ -2,45 +2,10 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 @Component({
   selector: 'verbena-input',
-  template: `
-    <div>
-    <label [for]="inputId">{{ label }}</label> <br>
-    <input
-      [id]="inputId"
-      [attr.type]="type"
-      [attr.placeholder]="placeHolder"
-      [required]="required"
-      [attr.minlength]="minLength?.toString()"
-      [attr.maxlength]="maxLength?.toString()"
-      (input)="onInput($event)"
-      (blur)="validate()"
-      [(ngModel)]="value"
-      [ngStyle]="{
-        'background-color': bgColor,
-        'margin': mg,
-        'border': showBorder ? (errorMessage ? '1px solid red' : border) : 'none',
-        'border-radius': borderRadius,
-        'color': textColor,
-        'width': width,
-        'height': height,
-        'aspect-ratio': aspectRatio,
-        'padding': pd
-      }"
-      [disabled]="disable"
-      class="input-field"
-    />
-    <span *ngIf="showErrorMessage && errorMessage" class="error">{{ errorMessage }}</span>
-    </div><br>
-  `,
-  styles: [`
-    .error {
-      color: red;
-      font-size: 12px;
-    }
-  `]
+  templateUrl: './verbena-input.component.html',
+  styleUrls: ['./verbena-input.component.css']
 })
 export class VerbenaInputComponent implements OnInit {
-  // Custom Inputs for CSS properties
   @Input() bgColor: string = '';
   @Input() mg: string = '';
   @Input() border: string = '';
@@ -53,8 +18,10 @@ export class VerbenaInputComponent implements OnInit {
   @Input() disable: boolean = false;
   @Input() placeHolder: string = '';
 
-  // Other Inputs
   @Input() label: string = '';
+  @Input() labelPosition: string = '';
+  @Input() labelColor: string = '';
+
   @Input() type: string = 'text';
   @Input() required: boolean = false;
   @Input() minLength?: number;

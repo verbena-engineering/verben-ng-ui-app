@@ -1,0 +1,55 @@
+<div
+  class="input-container"
+  [ngStyle]="{
+    'display': 'inline-flex',
+    'flex-direction': 'column',
+    'margin': mg
+  }"
+>
+  <div
+    [ngStyle]="{
+      'display': 'flex',
+      'justify-content': labelPosition
+    }"
+  >
+    <label
+      [for]="inputId"
+      [ngStyle]="{
+        'color': labelColor
+      }"
+    >
+      {{ label }}
+    </label>
+  </div>
+
+  <input
+    [id]="inputId"
+    [attr.type]="type"
+    [attr.placeholder]="placeHolder"
+    [required]="required"
+    [attr.minlength]="minLength?.toString()"
+    [attr.maxlength]="maxLength?.toString()"
+    (input)="onInput($event)"
+    (blur)="validate()"
+    [(ngModel)]="value"
+    [ngStyle]="{
+      'background-color': bgColor,
+      'border': showBorder ? (errorMessage ? '1px solid red' : border) : 'none',
+      'border-radius': borderRadius,
+      'color': textColor,
+      'width': width,
+      'height': height,
+      'aspect-ratio': aspectRatio,
+      'padding': pd
+    }"
+    [disabled]="disable"
+    [ngClass]="{'error-with-dot': errorMessage}"
+    class="input-field"
+  />
+
+</div>
+
+
+
+
+<span *ngIf="showErrorMessage && errorMessage" class="error">{{ errorMessage }}</span>

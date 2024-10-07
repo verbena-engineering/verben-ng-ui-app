@@ -70,6 +70,7 @@
               type="radio"
               name="sortOrder{{ i }}"
               value="asc"
+              [checked]="selectedOrders.get(i) === 'asc'"
               [disabled]="!option.checked"
               (change)="setSortOrder(i, 'asc')"
             />
@@ -80,17 +81,19 @@
               type="radio"
               name="sortOrder{{ i }}"
               value="desc"
+              [checked]="selectedOrders.get(i) === 'desc'"
               [disabled]="!option.checked"
               (change)="setSortOrder(i, 'desc')"
             />
             100-1
           </label>
-
+          
           <label *ngIf="option.type === 'String' || option.type === 'Date'">
             <input
               type="radio"
               name="sortOrder{{ i }}"
               value="asc"
+              [checked]="selectedOrders.get(i) === 'asc'"
               [disabled]="!option.checked"
               (change)="setSortOrder(i, 'asc')"
             />
@@ -101,11 +104,13 @@
               type="radio"
               name="sortOrder{{ i }}"
               value="desc"
+              [checked]="selectedOrders.get(i) === 'desc'"
               [disabled]="!option.checked"
               (change)="setSortOrder(i, 'desc')"
             />
             Z-A
           </label>
+          
         </div>
       </div>
     </div>

@@ -99,7 +99,7 @@ export class SortTableComponent {
 
   getSortOrder(type: DataFilterType, selectedOrder: 'asc' | 'desc') {
     if (type === 'Number') {
-      return selectedOrder === 'asc' ? '1-100' : '100-1';
+      return selectedOrder === 'asc' ? 'asc' : 'desc';
     } else if (type === 'String') {
       return selectedOrder === 'asc' ? 'asc' : 'desc';
     } else if (type === 'Date') {
@@ -111,7 +111,7 @@ export class SortTableComponent {
   toggleSort(index: number) {
     const option = this.sortOptions[index];
     option.checked = !option.checked;
-
+  
     if (option.checked) {
       this.selectedOrders.set(index, 'asc');
     } else {
@@ -119,11 +119,11 @@ export class SortTableComponent {
     }
     this.updateSortButtonState();
   }
-
+  
   resetSort() {
     this.sortOptions.forEach((option, index) => {
       option.checked = false;
-      this.selectedOrders.delete(index); // remove sort order entry
+      this.selectedOrders.delete(index);
     });
     this.updateSortButtonState();
   }

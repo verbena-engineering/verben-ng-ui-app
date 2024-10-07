@@ -1,12 +1,12 @@
 <form>
 
-  <!-- <verben-svg icon="alert" [width]="100" [height]="100" stroke="red" fill="red"></verben-svg>
+  <verben-svg icon="alert" [width]="100" [height]="100" stroke="red" fill="red"></verben-svg>
   <verben-svg icon="alert" [width]="80" [height]="80" fill="green" stroke="green"></verben-svg>
   <verben-svg icon="user" [width]="60" [height]="60" stroke="blue" fill="blue"></verben-svg>
   <verben-svg icon="user" [width]="40" [height]="40" fill="yellow" stroke="yellow"></verben-svg>
-  <verben-svg icon="close" [width]="20" [height]="20"  stroke="red"></verben-svg>
+  <verben-svg icon="user" [width]="20" [height]="20"  stroke="red"></verben-svg>
   <verben-svg icon="close" [width]="40" [height]="40"  stroke="green"></verben-svg>
-  <verben-svg icon="close" [width]="40" [height]="40"  stroke="yellow"></verben-svg>  -->
+  <verben-svg icon="close" [width]="40" [height]="40"  stroke="yellow"></verben-svg>
 
   <verben-image
   [url]="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR94u0EyhIYQ35WVzV0LSlxZ0Ozv9tMqfzewA&s'"
@@ -134,18 +134,42 @@
   placeHolder="Enter your username"
   [disable]="false"
   appValidate="number"
-  [errorMessageColor]="'blue'"
+  [errorMessageColor]="'yellow'"
   [showBorder]="true"
   [showErrorMessage]="true"
   [errorBorderColor]="'Yellow'"
-  errorPosition="above"
+  errorPosition="below"
 ></verbena-input>
+
+<verbena-input
+  label="new input"
+  bgColor="#f5f5f5"
+  mg="10px"
+  border="1px solid blue"
+  borderRadius="5px"
+  textColor="black"
+  width="300px"
+  height="40px"
+  aspectRatio="2/1"
+  pd="10px"
+  placeHolder="Enter your username"
+  [disable]="false"
+  appValidate="number"
+  [errorMessageColor]="'blue'"
+  [showBorder]="true"
+  [showErrorMessage]="false"
+  [errorBorderColor]="'yellow'"
+  errorPosition="below"
+></verbena-input>
+
 
 <!-- position error message  -->
  <!-- focus border  -->
 
 <verbena-input
   label="Username"
+  [labelPosition]="'center'"
+  [labelColor]="'blue'"
   bgColor="#f5f5f5"
   mg="10px"
   border="1px solid #ccc"
@@ -163,6 +187,17 @@
 
 <!-- label position -->
 
+
+
+<button (mouseover)="tooltip.show()" (mouseout)="tooltip.hide()">Hover me</button>
+<lib-tooltip
+  #tooltip
+  [message]="'This is a tooltip message!'"
+  [backgroundColor]="'black'"
+  [textColor]="'white'"
+  [position]="{ top: '100%', left: '50%', transform: 'translateX(-50%)' }"
+  [borderRadius]="'8px'"
+></lib-tooltip>
 
 
 <verbena-button
@@ -189,6 +224,26 @@
   width="150px"
   height="40px"
 ></verbena-button>
+
+<verbena-button  [iconPosition]="'left'">
+  <ng-template #icon>
+    <verben-svg icon="close" [width]="20" [height]="20"  stroke="red"></verben-svg>
+  </ng-template>
+  Add New Item
+</verbena-button>
+<verbena-button
+  text="Submit"
+  bgColor="#4CAF50"
+  textColor="#fff"
+  border="none"
+  borderRadius="4px"
+  pd="8px 16px"
+  [svg]="'<svg>...</svg>'"
+  svgWidth="24px"
+  svgHeight="24px"
+  iconPosition="right"
+></verbena-button>
+
 
 <verbena-button
   icon="fa fa-home"
@@ -228,6 +283,23 @@
 
 <!-- width and height    -->
 
+<br><br>
+<verbena-badge
+  width="100px"
+  height="100px"
+  borderRadius="50%"
+  bgColor="green"
+  text="new product"
+></verbena-badge>
+
+
+<verbena-input
+  [label]="'Username'"
+  [labelPosition]="'left'"
+  [labelColor]="'blue'"
+  [bgColor]="'#f0f0f0'"
+  [width]="'100%'"
+></verbena-input>
 
 <verbena-badge
   text="New"
@@ -236,6 +308,17 @@
   pd="5px 15px"
   fontSize="12px"
 ></verbena-badge>
+
+<input type="text" appValidate="email" [required]="true" [showErrorIcon]="true" errorIconTooltipPosition="left">
+
+<br><br><br>
+<verbena-input
+  [label]="'Username'"
+  [labelPosition]="'left'"
+  [labelColor]="'#efc050'"
+> <br><br>
+
+</verbena-input>
 
 <verbena-textarea
   label="Comments"
@@ -257,3 +340,17 @@
 <!-- remove the checkbox  -->
 
 <!-- svg inplace of icon  -->
+
+<button (mouseover)="tooltip.show()" (mouseout)="tooltip.hide()">Hover me</button>
+<lib-tooltip
+  #tooltip
+  [message]="'This is a tooltip message!'"
+  [backgroundColor]="'black'"
+  [textColor]="'white'"
+  [position]="{ top: '100%', left: '50%', transform: 'translateX(-50%)' }"
+  [borderRadius]="'8px'"
+></lib-tooltip>
+
+
+
+

@@ -26,6 +26,7 @@ import {
     TableFilterModule,
     VerbenaTextareaModule,
     VerbenaSwitchModule,
+    TooltipModule
 
      } from '../../projects/verben-ng-ui/src/public-api';
 import { CDVModule } from './Components/card-data-view/cdv.module';
@@ -65,7 +66,9 @@ import { FormsModule } from '@angular/forms';
     CardModule,
     VerbenaTextareaModule,
     CardDataViewModule,
-    VerbenaSwitchModule
+    VerbenaSwitchModule,
+    TooltipModule
+    
 
 ],
   providers: [

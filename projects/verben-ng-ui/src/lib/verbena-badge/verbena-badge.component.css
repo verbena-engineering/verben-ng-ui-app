@@ -1,0 +1,16 @@
+.verbena-badge {
+  display: inline-flex;
+  text-align: center;
+  justify-content: center;
+  place-items: center;
+  margin: auto;
+  font-weight: bold;
+}
+
+.verbena-badge span {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+}

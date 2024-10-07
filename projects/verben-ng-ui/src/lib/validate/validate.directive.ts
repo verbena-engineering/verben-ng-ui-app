@@ -1,5 +1,6 @@
 import { Directive, ElementRef, Input, HostListener, Renderer2 } from '@angular/core';
 import { ErrorMessageService } from './error-message.service';
+import './validate.directive.css'; // Ensure this path is correct
 
 @Directive({
   selector: '[appValidate]'
@@ -9,9 +10,11 @@ export class ValidateDirective {
   @Input() required: boolean = false;
   @Input() showBorder: boolean = true;
   @Input() showErrorMessage: boolean = true;
+  @Input() showErrorIcon: boolean = true; // Option for showing error icon
   @Input() errorPosition: 'above' | 'below' = 'below';
-  @Input() errorBorderColor: string = 'red';  // New input for border color
-  @Input() errorMessageColor: string = 'red';  // New input for message color
+  @Input() errorBorderColor: string = 'red';  // Border color for errors
+  @Input() errorMessageColor: string = 'red';  // Color for error message
+  @Input() errorIconTooltipPosition: 'top' | 'bottom' | 'left' | 'right' = 'top'; // Tooltip position for error dot
 
   constructor(
     private el: ElementRef,
@@ -92,18 +95,18 @@ export class ValidateDirective {
   private showError(input: any, message: string) {
     if (this.showBorder) {
       this.renderer.setStyle(input, 'borderColor', this.errorBorderColor);
+      this.renderer.addClass(input, 'error-with-dot'); // Add error class
     }
-    if (this.showErrorMessage) {
-      this.errorMessageService.createErrorMessage(input, message, this.errorPosition, this.errorMessageColor);
+    if (this.showErrorMessage || this.showErrorIcon) {
+      this.errorMessageService.createErrorMessage(input, message, this.errorPosition, this.errorMessageColor, this.showErrorIcon, this.errorIconTooltipPosition);
     }
   }
 
   private clearError(input: any) {
     if (this.showBorder) {
       this.renderer.removeStyle(input, 'borderColor');
+      this.renderer.removeClass(input, 'error-with-dot'); // Remove error class
     }
-    if (this.showErrorMessage) {
-      this.errorMessageService.removeErrorMessage(input);
-    }
+    this.errorMessageService.removeErrorMessage(input);
   }
 }

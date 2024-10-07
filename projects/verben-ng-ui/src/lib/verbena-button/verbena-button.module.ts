@@ -7,4 +7,4 @@ import { VerbenaButtonComponent } from './verbena-button.component';
   imports: [CommonModule],
   exports: [VerbenaButtonComponent]
 })
-export class VerbenaButtonModule { }
+export class VerbenaButtonModule {}

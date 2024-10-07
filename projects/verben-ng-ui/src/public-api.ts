@@ -25,6 +25,10 @@ export * from './lib/components/svg/svg.module';
 export * from './lib/components/table-filter/table-filter.module';
 export * from './lib/components/svg/svg.component';
 
+export * from './lib/components/tooltip/tooltip.component'
+export * from './lib/components/tooltip/tooltip.module'
+
+
 export * from './lib/components/card/card.module';
 export * from './lib/components/card/card.component';
 
@@ -68,6 +72,7 @@ export * from './lib/textarea/textarea.module'
 export * from './lib/validate/error-message.service'
 export * from './lib/validate/validate.directive'
 export * from './lib/validate/validate.module'
+
 
 
 export * from './lib/Verbena-input/verbena-input.component'

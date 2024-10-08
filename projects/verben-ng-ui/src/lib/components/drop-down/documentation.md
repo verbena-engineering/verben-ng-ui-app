@@ -4,6 +4,8 @@ INPUTS
 options: any[] | DropdownMenuItem[] - List containing selectable options. Can be 2-way bound to capture internal changes to the options state.
 
 width: string- sets the width of the dropdown.
+showHorizontalLine: boolean - Configures whether or not the horizontal line should show. Default is true.
+horizontalLineColor: string- Configure the color of the horizontal line if shown.
 optionLabel: string (Represents a valid property on the object type passed) - Can be set if options is a list of Objects and you want to configure what gets displayed for users to select and the value displayed when selected.
 optionSubLabel: string (Represents a valid property on the object type passed) - Can also be set if options is a list of Objects and you want to show another property as additional information that would like to display under the label.
 optionValue: string (Represents a valid property on the object type passed or in the case of a DropdownMenuItem array, a valid property on the value property if it's an object type) - Can be set if options is a list of Objects or a DropdownMenuItem array for which the value property is an object and you want to set what value formControls or ngModel bindings are mapped to.

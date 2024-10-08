@@ -43,7 +43,7 @@ export class SortTableComponent {
   @Input() selectWidth?: string;
   @Output() selectedOptions = new EventEmitter<IDataFilter[]>();
   draggedIndex: number | null = null;
-  visibleSortOptions: IDataFilter[] = [];
+  visibleSortOptions: IDataFilter[]= [];
   hiddenSortOptions: IDataFilter[] = [];
   showMore: boolean = false;
   disableSortButton: boolean = false;
@@ -81,6 +81,7 @@ export class SortTableComponent {
     const selectedSorts = this.sortOptions.filter((option) => option.checked);
     const selectedSortDetails = selectedSorts.map((sort, index) => {
       return {
+        name:sort.name,
         type: sort.type || 'String',
         value:
           this.getSortOrder(
@@ -88,7 +89,6 @@ export class SortTableComponent {
             this.selectedOrders.get(index) || 'asc'
           ) || '',
         checked: sort.checked || false,
-        name:sort.name
       };
     });
     this.selectedOptions.emit(selectedSortDetails);

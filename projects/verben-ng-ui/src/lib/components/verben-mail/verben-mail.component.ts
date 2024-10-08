@@ -1,5 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  Validators,
+} from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -7,13 +12,21 @@ import { QuillConfiguration } from './verben-mail.component.config';
 import { SvgModule } from '../svg/svg.module';
 import { MailPayload } from '../../models/mail-model';
 import { ChipModule } from '../chip/chip.module';
+import { ChipChangeEvent } from '../chip/ChipChangeEvent';
 
 @Component({
   selector: 'verbena-mail-template',
   templateUrl: './verben-mail.component.html',
   styleUrls: ['./verben-mail.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, QuillModule, ReactiveFormsModule,ChipModule,SvgModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    QuillModule,
+    ReactiveFormsModule,
+    ChipModule,
+    SvgModule,
+  ],
 })
 export class VerbenMailTemplate {
   mailForm: FormGroup;
@@ -25,7 +38,6 @@ export class VerbenMailTemplate {
   toEmails: string[] = [];
   ccEmails: string[] = [];
   bccEmails: string[] = [];
-
   toEmailInput: string = '';
   ccEmailInput: string = '';
   bccEmailInput: string = '';
@@ -33,7 +45,7 @@ export class VerbenMailTemplate {
   toEmailError: string | null = null;
   ccEmailError: string | null = null;
   bccEmailError: string | null = null;
-  @Output() mailPayload = new EventEmitter<MailPayload>(); 
+  @Output() mailPayload = new EventEmitter<MailPayload>();
   constructor(private fb: FormBuilder) {
     this.mailForm = this.fb.group({
       subject: ['', Validators.required],
@@ -41,65 +53,56 @@ export class VerbenMailTemplate {
       toEmails: [[], Validators.required],
       ccEmails: [[]],
       bccEmails: [[]],
-      toEmailInput: [''],
-      ccEmailInput: [''],
-      bccEmailInput: [''],
     });
   }
 
-  addEmail(type: 'to' | 'cc' | 'bcc') {
-    let emailInput = '';
+  onToChange(): void {
+    const newValues = this.mailForm.get('toEmails')?.value || [];
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const validEmails: string[] = [];
 
-    if (type === 'to') {
-      emailInput = this.mailForm.value.toEmailInput;
-    } else if (type === 'cc') {
-      emailInput = this.mailForm.value.ccEmailInput;
-    } else if (type === 'bcc') {
-      emailInput = this.mailForm.value.bccEmailInput;
-    }
-
-    if (!emailInput) {
-      this.setEmailError(type, 'Email cannot be empty.');
-      return;
-    }
-
-    if (this.validateEmail(emailInput)) {
-      if (type === 'to') {
-        this.toEmails.push(emailInput);
-        this.mailForm.get('toEmails')?.setValue(this.toEmails)
-        this.mailForm.get('toEmailInput')?.setValue('');
-        this.toEmailError = null;
-      } else if (type === 'cc') {
-        this.ccEmails.push(emailInput);
-        this.mailForm.get('ccEmails')?.setValue(this.ccEmails);
-        this.mailForm.get('ccEmailInput')?.setValue('');
-        this.ccEmailError = null;
-      } else if (type === 'bcc') {
-        this.bccEmails.push(emailInput);
-        this.mailForm.get('bccEmails')?.setValue(this.bccEmails);
-        this.mailForm.get('bccEmailInput')?.setValue('');
-        this.bccEmailError = null;
-      }
+    newValues.forEach((email: string) => {
+        if (emailRegex.test(email)) {
+            validEmails.push(email);
+        } else {
+          if(!emailRegex.test(email)){
+            this.toEmailError = 'email must be valid';
+          }
+        }
+    });
+    if (validEmails.length === 0) {
+        this.toEmailError = 'Please provide at least one valid email';
     } else {
-      this.setEmailError(type, 'Invalid email format.');
+        this.toEmailError = '';
     }
+    this.toEmails = validEmails;
+}
 
-    console.log(emailInput, "jj");
+
+  onCcChange(): void {
+    const newValues = this.mailForm.get('ccEmails')?.value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const validEmails = newValues.filter((email: string) =>
+      emailRegex.test(email)
+    );
+    this.ccEmails = validEmails;
   }
-
+  onBccChange(): void {
+    const newValues = this.mailForm.get('bccEmails')?.value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const validEmails = newValues.filter((email: string) =>
+      emailRegex.test(email)
+    );
+    console.log(this.mailForm.get('toEmails')?.value);
+    this.bccEmails = validEmails;
+  }
   validateEmail(email: string): boolean {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     return emailRegex.test(email);
   }
 
-  setEmailError(type: 'to' | 'cc' | 'bcc', message: string) {
-    if (type === 'to') {
-      this.toEmailError = message;
-    } else if (type === 'cc') {
-      this.ccEmailError = message;
-    } else {
-      this.bccEmailError = message;
-    }
+  setEmailError(message: string) {
+    return message;
   }
 
   removeEmail(type: 'to' | 'cc' | 'bcc', index: number) {
@@ -153,20 +156,17 @@ export class VerbenMailTemplate {
     return doc.body.textContent || '';
   }
 
-  
   sendEmail() {
     if (this.mailForm.valid) {
-      const emailData:MailPayload = {
+      const emailData: MailPayload = {
         subject: this.mailForm.value.subject,
         body: this.mailForm.value.body,
-        to:this.toEmails,
-        cc:this.ccEmails,
-        bcc:this.bccEmails,
+        to: this.mailForm.get('toEmails')?.value,
+        cc: this.mailForm.get('ccEmails')?.value,
+        bcc: this.mailForm.get('bccEmails')?.value,
         attachment: this.uploadedFileName,
       };
       this.mailPayload.emit(emailData);
     }
   }
 }
-
-

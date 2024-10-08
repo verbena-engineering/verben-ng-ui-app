@@ -8,9 +8,10 @@ export enum DataFilterType {
 }
 
 export interface IDataFilter {
+  name?: string;
   type: DataFilterType;
-  condition: string;
-  value: string | number; 
+  value: string | number;
   checked: boolean;
+  conditon?:boolean
 }
 

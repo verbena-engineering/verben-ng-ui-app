@@ -5,26 +5,32 @@
   'border-radius': borderRadius,
   'padding': pd,
   'width': width,
-  'height': height
+  'height': height,
+  'display': 'flex',
+  'gap':'6px'
 }"
 [disabled]="disable"
 class="verbena-button"
 >
-<!-- Icon or SVG on the left -->
-<ng-container *ngIf="icon && iconPosition === 'left'">
-  <i [class]="icon" style="margin-right: 8px;"></i>
+
+
+<ng-container *ngIf="svg && svgPosition === 'left'">
+  <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight"  [stroke]="svgColor"></verben-svg>
+
 </ng-container>
-<ng-container *ngIf="svg && iconPosition === 'left'">
-  <svg [attr.width]="svgWidth" [attr.height]="svgHeight" [innerHTML]="svg" style="margin-right: 8px;"></svg>
-</ng-container>
+
+
+
 
 <span *ngIf="text">{{ text }}</span>
 
-<!-- Icon or SVG on the right -->
-<ng-container *ngIf="icon && iconPosition === 'right'">
-  <i [class]="icon" style="margin-left: 8px;"></i>
-</ng-container>
-<ng-container *ngIf="svg && iconPosition === 'right'">
-  <svg [attr.width]="svgWidth" [attr.height]="svgHeight" [innerHTML]="svg" style="margin-left: 8px;"></svg>
+
+
+
+<ng-container *ngIf="svg && svgPosition === 'right'">
+  <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight"  [stroke]="svgColor"></verben-svg>
+
+
 </ng-container>
 </button>
+

@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core';
 export class VerbenaButtonComponent {
   @Input() text: string = '';
   @Input() icon: string = ''; // Class for icon fonts (e.g., FontAwesome)
-  @Input() iconPosition: 'left' | 'right' = 'left'; // Position for icon or SVG
+  @Input() svgPosition: 'left' | 'right' = 'left'; // Position for icon or SVG
   @Input() bgColor: string = '';
   @Input() textColor: string = '';
   @Input() border: string = '';
@@ -19,7 +19,9 @@ export class VerbenaButtonComponent {
   @Input() disable: boolean = false;
 
   // Inputs for SVG support
-  @Input() svg: string = ''; // SVG content as a string
-  @Input() svgWidth: string = '16px'; // Width of the SVG
-  @Input() svgHeight: string = '16px'; // Height of the SVG
+  @Input() svg: string = '';
+  @Input() svgWidth: number = 0; // Change type to number
+  @Input() svgHeight: number = 0; // Change type to number
+  @Input() svgColor: string = ''; // SVG color
+
 }

@@ -4,8 +4,9 @@
   <verben-svg icon="alert" [width]="80" [height]="80" fill="green" stroke="green"></verben-svg>
   <verben-svg icon="user" [width]="60" [height]="60" stroke="blue" fill="blue"></verben-svg>
   <verben-svg icon="user" [width]="40" [height]="40" fill="yellow" stroke="yellow"></verben-svg>
-  <verben-svg icon="user" [width]="20" [height]="20"  stroke="red"></verben-svg>
+  <verben-svg icon="home" [width]="20" [height]="20"  stroke="red"></verben-svg>
   <verben-svg icon="close" [width]="40" [height]="40"  stroke="green"></verben-svg>
+  <verben-svg icon="academic-cap" [width]="40" [height]="40"  stroke="green"></verben-svg>
   <verben-svg icon="close" [width]="40" [height]="40"  stroke="yellow"></verben-svg>
 
   <verben-image
@@ -102,6 +103,7 @@
 <verbena-input
   label="Convert to Decimal:"
   appValidate="decimal"
+
   [showBorder]="true"
   [showErrorMessage]="true"
   errorPosition="below"
@@ -136,7 +138,7 @@
   appValidate="number"
   [errorMessageColor]="'yellow'"
   [showBorder]="true"
-  [showErrorMessage]="true"
+  [showErrorMessage]="false"
   [errorBorderColor]="'Yellow'"
   errorPosition="below"
 ></verbena-input>
@@ -159,7 +161,8 @@
   [showBorder]="true"
   [showErrorMessage]="false"
   [errorBorderColor]="'yellow'"
-  errorPosition="below"
+
+
 ></verbena-input>
 
 
@@ -214,7 +217,7 @@
 
 <verbena-button
   text="Submit"
-  icon="fa fa-check"
+  svg="'alert'"
   iconPosition="left"
   bgColor="#28a745"
   textColor="white"
@@ -225,42 +228,48 @@
   height="40px"
 ></verbena-button>
 
-<verbena-button  [iconPosition]="'left'">
-  <ng-template #icon>
-    <verben-svg icon="close" [width]="20" [height]="20"  stroke="red"></verben-svg>
-  </ng-template>
-  Add New Item
-</verbena-button>
+
+
 <verbena-button
+  svg="academic-cap"
+  [svgHeight]="20"
+  [svgWidth]="20"
+  svgColor="'white'"
   text="Submit"
   bgColor="#4CAF50"
   textColor="#fff"
   border="none"
   borderRadius="4px"
   pd="8px 16px"
-  [svg]="'<svg>...</svg>'"
-  svgWidth="24px"
-  svgHeight="24px"
-  iconPosition="right"
+
+
+  svgPosition="right"
 ></verbena-button>
 
-
 <verbena-button
-  icon="fa fa-home"
+  svg="chevron"
+  [svgHeight]="10"
+  [svgWidth]="10"
+  svgColor="'white'"
   bgColor="#007bff"
   textColor="white"
   border="none"
   borderRadius="50%"
   width="50px"
   height="50px"
+
 ></verbena-button>
 
 <verbena-button
   text="Submit"
 
-  bgColor="#28a745"
+  bgColor="#efc050"
   textColor="white"
-  border="1px solid #28a745"
+  svg="home"
+  [svgHeight]="20"
+  [svgWidth]="20"
+  svgColor="'white'"
+
   borderRadius="5px"
   pd="10px 20px"
   width="150px"
@@ -281,7 +290,7 @@
   fontSize="20px"
 ></verbena-badge>
 
-<!-- width and height    -->
+width and height
 
 <br><br>
 <verbena-badge
@@ -299,6 +308,7 @@
   [labelColor]="'blue'"
   [bgColor]="'#f0f0f0'"
   [width]="'100%'"
+  appValidate="decimal"
 ></verbena-input>
 
 <verbena-badge
@@ -309,7 +319,7 @@
   fontSize="12px"
 ></verbena-badge>
 
-<input type="text" appValidate="email" [required]="true" [showErrorIcon]="true" errorIconTooltipPosition="left">
+<input type="text" appValidate="email" [required]="true"  errorIconTooltipPosition="left">
 
 <br><br><br>
 <verbena-input

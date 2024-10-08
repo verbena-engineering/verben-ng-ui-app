@@ -16,3 +16,15 @@ input.error-with-dot::after {
   pointer-events: none; /* Ensure the dot does not interfere with input */
 
 }
+
+
+/* Add this to validate.directive.css */
+
+.error-message {
+  margin: 4px 0;
+  font-weight: bold;
+}
+
+
+
+

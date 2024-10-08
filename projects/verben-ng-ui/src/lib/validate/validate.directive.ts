@@ -8,13 +8,13 @@ import './validate.directive.css'; // Ensure this path is correct
 export class ValidateDirective {
   @Input('appValidate') validationType: 'text' | 'number' | 'decimal' | 'integer' | 'email' = 'text';
   @Input() required: boolean = false;
-  @Input() showBorder: boolean = true;
+  @Input() showBorder: boolean = true;  // The controlling factor for the error icon
   @Input() showErrorMessage: boolean = true;
-  @Input() showErrorIcon: boolean = true; // Option for showing error icon
   @Input() errorPosition: 'above' | 'below' = 'below';
   @Input() errorBorderColor: string = 'red';  // Border color for errors
   @Input() errorMessageColor: string = 'red';  // Color for error message
   @Input() errorIconTooltipPosition: 'top' | 'bottom' | 'left' | 'right' = 'top'; // Tooltip position for error dot
+  @Input() showErrorIcon: boolean = true;
 
   constructor(
     private el: ElementRef,
@@ -61,9 +61,9 @@ export class ValidateDirective {
   }
 
   private validateDecimal(input: any, value: string) {
-    const regex = /^\d+(\.\d+)?$/;
+    const regex = /^\d*\.?\d*$/; 
     if (!regex.test(value)) {
-      this.blockInvalidInput(input, 'Please enter a valid decimal number');
+      this.showError(input, 'Please enter a valid decimal number');
     } else {
       this.clearError(input);
     }
@@ -96,9 +96,14 @@ export class ValidateDirective {
     if (this.showBorder) {
       this.renderer.setStyle(input, 'borderColor', this.errorBorderColor);
       this.renderer.addClass(input, 'error-with-dot'); // Add error class
+
+      // Show error icon when showBorder is true
+      this.errorMessageService.createErrorMessage(input, message, this.errorPosition, this.errorMessageColor, true, this.errorIconTooltipPosition);
     }
-    if (this.showErrorMessage || this.showErrorIcon) {
-      this.errorMessageService.createErrorMessage(input, message, this.errorPosition, this.errorMessageColor, this.showErrorIcon, this.errorIconTooltipPosition);
+
+    if (this.showErrorMessage) {
+      // Show error message when showErrorMessage is true
+      this.errorMessageService.createErrorMessage(input, message, this.errorPosition, this.errorMessageColor, false, this.errorIconTooltipPosition);
     }
   }
 

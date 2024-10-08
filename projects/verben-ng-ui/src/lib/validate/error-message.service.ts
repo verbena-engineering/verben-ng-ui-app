@@ -4,32 +4,41 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ErrorMessageService {
-  public createErrorMessage(inputElement: HTMLInputElement, message: string, position: 'above' | 'below', color: string, showErrorIcon: boolean, tooltipPosition: 'top' | 'bottom' | 'left' | 'right') {
+  public createErrorMessage(
+    inputElement: HTMLInputElement,
+    message: string,
+    position: 'above' | 'below',
+    color: string,
+    showErrorIcon: boolean,
+    tooltipPosition: 'top' | 'bottom' | 'left' | 'right'
+  ) {
     this.removeErrorMessage(inputElement);
 
     // Error message element
-    const errorElement = document.createElement('span');
-    errorElement.textContent = message;
-    errorElement.style.color = color;
-    errorElement.style.fontSize = '12px';
-    errorElement.classList.add('error-message');
+    if (message) {
+      const errorElement = document.createElement('span');
+      errorElement.textContent = message;
+      errorElement.style.color = color;
+      errorElement.style.fontSize = '12px';
+      errorElement.classList.add('error-message');
 
-    if (position === 'above') {
-      inputElement.parentNode?.insertBefore(errorElement, inputElement);
-    } else {
-      inputElement.parentNode?.insertBefore(errorElement, inputElement.nextSibling);
+      if (position === 'above') {
+        inputElement.parentNode?.insertBefore(errorElement, inputElement);
+      } else {
+        inputElement.parentNode?.insertBefore(errorElement, inputElement.nextSibling);
+      }
     }
 
-    // Tooltip behavior can be handled in the directive
+    // Tooltip behavior for the error icon
     if (showErrorIcon) {
       const errorDot = document.createElement('div');
       errorDot.style.width = '8px';
       errorDot.style.height = '8px';
-      errorDot.style.backgroundColor = 'red'; // Color of the dot icon
+      errorDot.style.backgroundColor = 'red';
       errorDot.style.borderRadius = '50%';
       errorDot.style.position = 'absolute';
       errorDot.style.top = '50%';
-      errorDot.style.right = '10px'; // Adjust to control horizontal alignment inside the input
+      errorDot.style.right = '10px';
       errorDot.style.transform = 'translateY(-50%)';
       errorDot.style.cursor = 'pointer';
       errorDot.classList.add('error-dot');
@@ -47,13 +56,12 @@ export class ErrorMessageService {
       tooltip.style.visibility = 'hidden'; // Hidden until hover/click
       tooltip.classList.add('error-tooltip');
 
-      // Set tooltip position
       this.setTooltipPosition(tooltip, errorDot, tooltipPosition);
 
       // Show tooltip on hover/click
-      errorDot.addEventListener('mouseenter', () => tooltip.style.visibility = 'visible');
-      errorDot.addEventListener('mouseleave', () => tooltip.style.visibility = 'hidden');
-      errorDot.addEventListener('click', () => tooltip.style.visibility = 'visible');
+      errorDot.addEventListener('mouseenter', () => (tooltip.style.visibility = 'visible'));
+      errorDot.addEventListener('mouseleave', () => (tooltip.style.visibility = 'hidden'));
+      errorDot.addEventListener('click', () => (tooltip.style.visibility = 'visible'));
 
       inputElement.parentNode?.appendChild(errorDot);
       inputElement.parentNode?.appendChild(tooltip);

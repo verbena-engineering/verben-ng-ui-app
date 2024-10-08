@@ -1,0 +1,19 @@
+<label [for]="textareaId">{{ label }}</label>
+<textarea
+  [id]="textareaId"
+  [required]="required"
+  [attr.rows]="rows"
+  [attr.cols]="cols"
+  [ngStyle]="{
+    'background-color': bgColor,
+    'color': textColor,
+    'border': border,
+    'border-radius': borderRadius,
+    'padding': pd,
+    'width': width,
+    'height': height
+  }"
+  [ngModel]="value"
+  (ngModelChange)="onValueChange($event)"  
+></textarea>
+<span *ngIf="errorMessage" class="error">{{ errorMessage }}</span>

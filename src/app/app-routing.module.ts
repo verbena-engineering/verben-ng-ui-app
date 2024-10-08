@@ -9,7 +9,8 @@ const routes: Routes = [
     path: 'card-data-view',
     component: CardDataViewComponent,
   },
-  { path: '', component: HomeComponent, pathMatch: 'full' },
+  { path: 'home', component: HomeComponent, pathMatch: 'full' },
+  { path: '', redirectTo: 'documentation', pathMatch: 'full' },
   {
     path: 'documentation',
     loadChildren: () =>

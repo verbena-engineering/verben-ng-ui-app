@@ -20,7 +20,12 @@
     <tr>
       @for (column of columnsSignal(); track column.id) {
       <td>
-        @if (column.cellTemplate) {
+        @if (isRowEditing(row.id) && column.cellEditTemplate) {
+        <ng-container
+          [ngTemplateOutlet]="column.cellEditTemplate"
+          [ngTemplateOutletContext]="getCellContext(row, column, rowIndex)"
+        ></ng-container>
+        } @else if (column.cellTemplate) {
         <ng-container
           [ngTemplateOutlet]="column.cellTemplate"
           [ngTemplateOutletContext]="getCellContext(row, column, rowIndex)"

@@ -6,6 +6,7 @@ export interface ColumnDefinition<T> {
   accessorKey?: keyof T;
   accessorFn?: (row: T) => any;
   cellTemplate?: TemplateRef<any>;
+  cellEditTemplate?: TemplateRef<any>;
   headerTemplate?: TemplateRef<any>;
   footerTemplate?: TemplateRef<any>;
   enableSorting?: boolean;

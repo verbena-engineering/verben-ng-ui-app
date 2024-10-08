@@ -116,8 +116,8 @@
         </div>
       </div>
     </div>
-    <div class="colored-underline-section">
-      <hr class="colored-underline" />
+    <div *ngIf="showHorizontalLine" class="colored-underline-section">
+      <hr [style.background-color]="horizontalLineColor" class="colored-underline" />
     </div>
     <div class="drop-down-menu-item">
       <drop-down-item [itemTemplate]="itemTemplate" [groupTemplate]="groupTemplate" [activeItem]="selectedOption"

@@ -8,6 +8,7 @@ import {
   HostListener,
   Input,
   OnInit,
+  Optional,
   Output,
   QueryList,
   Self,
@@ -66,6 +67,8 @@ export class DropDownComponent
   }
 
   @Input() width: string = '12rem';
+  @Input() showHorizontalLine: boolean = true;
+  @Input() horizontalLineColor: string = 'rgba(255, 230, 129, 1)';
   @Input() optionLabel?: string;
   @Input() optionSubLabel?: string;
   @Input() optionValue?: string;
@@ -108,30 +111,6 @@ export class DropDownComponent
   @HostBinding('class.focused') isFocused = false;
   isInputFocused = false;
 
-  @HostListener('focus') onFocus() {
-    this.isFocused = true;
-  }
-
-  @HostListener('blur') onBlur() {
-    this.isFocused = false;
-  }
-
-  onSearchFocus() {
-    this.isInputFocused = true;
-  }
-
-  onSearchBlur() {
-    this.isInputFocused = false;
-  }
-
-  onInputFocus() {
-    this.isInputFocused = true;
-  }
-
-  onInputBlur() {
-    this.isInputFocused = false;
-  }
-
   selectedItemTemplate: TemplateRef<any> | null = null;
   itemTemplate: TemplateRef<any> | null = null; // Allow null for custom item template
   groupTemplate: TemplateRef<any> | null = null;
@@ -154,7 +133,7 @@ export class DropDownComponent
   allowSelectAll: boolean = false;
   selectedAll: boolean = false;
 
-  constructor(@Self() private ngControl: NgControl) {
+  constructor(@Optional() @Self() private ngControl: NgControl) {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this; // Assign this component as the value accessor
       this.ngControl?.statusChanges?.subscribe((status) => {
@@ -236,6 +215,30 @@ export class DropDownComponent
         this.groupTemplate = templateDirective.template;
       }
     });
+  }
+
+  @HostListener('focus') onFocus() {
+    this.isFocused = true;
+  }
+
+  @HostListener('blur') onBlur() {
+    this.isFocused = false;
+  }
+
+  onSearchFocus() {
+    this.isInputFocused = true;
+  }
+
+  onSearchBlur() {
+    this.isInputFocused = false;
+  }
+
+  onInputFocus() {
+    this.isInputFocused = true;
+  }
+
+  onInputBlur() {
+    this.isInputFocused = false;
   }
 
   onSearch(event: any) {

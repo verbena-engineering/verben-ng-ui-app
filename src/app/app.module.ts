@@ -18,7 +18,7 @@ import {
     CardModule,
     CardDataViewModule,
     ValidationModule,
-    ButtonModule,
+    
     VerbenaButtonModule,
     VerbenaBadgeModule,
     VerbenaInputModule,
@@ -53,7 +53,7 @@ import { FormsModule } from '@angular/forms';
     ConvertToIntegerModule,
     PhoneNumberModule,
     ValidationModule,
-    ButtonModule,
+
     VerbenaBadgeModule,
     ValidateInputModule,
     VerbenaInputModule,
@@ -68,7 +68,7 @@ import { FormsModule } from '@angular/forms';
     CardDataViewModule,
     VerbenaSwitchModule,
     TooltipModule
-    
+
 
 ],
   providers: [

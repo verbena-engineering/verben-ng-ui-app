@@ -63,11 +63,7 @@ export * from './lib/email-validator/email-validator.module';
 export * from './lib/email-validator/email-validator.directive';
 
 
-export * from './lib/button/button.directive'
-export * from './lib/button/button.module'
 
-export * from './lib/textarea/textarea.directive'
-export * from './lib/textarea/textarea.module'
 
 export * from './lib/validate/error-message.service'
 export * from './lib/validate/validate.directive'

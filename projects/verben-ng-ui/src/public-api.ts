@@ -94,3 +94,4 @@ export * from './lib/verbena-textarea/verbena-textarea.module';
 
 export * from './lib/verbena-switch/verbena-switch.component';
 export * from './lib/verbena-switch/verbena-switch.module';
+export * from './lib/components/data-table'

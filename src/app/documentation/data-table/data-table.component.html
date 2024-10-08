@@ -1,0 +1,90 @@
+<lib-data-table
+  [data]="tableData"
+  [columns]="tableColumns"
+  (rowEdit)="onRowEdit($event)"
+  (rowSave)="onRowSave($event)"
+  (selectionChange)="onSelectionChange($event)"
+>
+  <ng-container libColumn="select">
+    <ng-template
+      #cell
+      let-isSelected="isSelected"
+      let-toggleRowSelection="toggleRowSelection"
+    >
+      <input
+        type="checkbox"
+        [checked]="isSelected"
+        (change)="toggleRowSelection()"
+      />
+    </ng-template>
+    <ng-template
+      #header
+      let-allRowsSelected="allRowsSelected"
+      let-someRowsSelected="someRowsSelected"
+      let-toggleAllRows="toggleAllRows"
+    >
+      <input
+        type="checkbox"
+        [checked]="allRowsSelected()"
+        [indeterminate]="someRowsSelected()"
+        (change)="toggleAllRows()"
+      />
+    </ng-template>
+  </ng-container>
+
+  <ng-container libColumn="role">
+    <ng-template #cell let-value="value">
+      <div>
+        <p>{{ value }}</p>
+      </div>
+    </ng-template>
+    <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+      <input [ngModel]="value" (ngModelChange)="updateValue($event)" />
+    </ng-template>
+  </ng-container>
+
+  <ng-container libColumn="customer">
+    <ng-template #cell let-value="value">
+      <div>
+        <p>{{ value.names }}</p>
+        <p>{{ value.participants }} participants</p>
+      </div>
+    </ng-template>
+    <ng-template
+      #cellEdit
+      let-value="value"
+      let-updateNestedValue="updateNestedValue"
+    >
+      <input
+        [ngModel]="value.names"
+        (ngModelChange)="updateNestedValue('names', $event)"
+      />
+      <input
+        type="number"
+        [ngModel]="value.participants"
+        (ngModelChange)="updateNestedValue('participants', $event)"
+      />
+    </ng-template>
+    <ng-template #header>
+      <strong>Customer</strong>
+    </ng-template>
+    <ng-template #footer let-data="data">
+      Total Customers: {{ data.length }}
+    </ng-template>
+  </ng-container>
+
+  <ng-container libColumn="actions">
+    <ng-template
+      #cell
+      let-isEditing="isEditing"
+      let-toggleRowEdit="toggleRowEdit"
+    >
+      <button (click)="toggleRowEdit()">
+        {{ isEditing ? "Save" : "Edit" }}
+      </button>
+    </ng-template>
+    <ng-template #header>
+      <strong>Actions</strong>
+    </ng-template>
+  </ng-container>
+</lib-data-table>

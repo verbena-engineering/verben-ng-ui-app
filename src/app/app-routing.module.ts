@@ -7,11 +7,20 @@ import { DropdownSampleComponent } from './views/dropdown-sample/dropdown-sample
 
 
 const routes: Routes = [
-  {
+    {
     path: 'card-data-view',
-    component: CardDataViewComponent,
+    
+    component:  CardDataViewComponent,
   },
-  { path: '', component: HomeComponent, pathMatch: 'full' }
+  { path: 'home', component:  HomeComponent, pathMatch: 'full' }
+  { path: '', redirectTo: 'documentation', pathMatch: 'full' },
+  {
+    path: 'documentation',
+    loadChildren: () =>
+      import('./documentation/documentation.module').then(
+        (m) => m.DocumentationModule
+      ),
+  },
 ];
 
 @NgModule({

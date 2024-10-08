@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SvgComponent } from '../svg/svg.component';
@@ -7,6 +7,8 @@ import { DropDownComponent } from '../drop-down/drop-down.component';
 import { VerbenaInputModule } from '../../Verbena-input/verbena-input.module';
 import { TooltipModule } from '../tooltip/tooltip.module';
 import { ValidationModule } from '../../validate/validate.module';
+import { Config } from '../../config';
+
 
 @Component({
   selector: 'verben-table-filter',
@@ -15,9 +17,8 @@ import { ValidationModule } from '../../validate/validate.module';
   templateUrl: './table-filter.component.html',
   styleUrls: ['./table-filter.component.css']
 })
-export class TableFilterComponent {
-  @Input() filterOptions: DataFilterType[] = [];
-  @Input() conditionOptions: string[] = [];
+export class TableFilterComponent implements OnInit {
+  @Input() filterOptions: IDataFilter[] = [];
   @Input() pd?: string;
   @Input() mg?: string;
   @Input() height?: string;
@@ -31,21 +32,43 @@ export class TableFilterComponent {
   @Input() border?: string;
   @Input() borderRadius?: string;
   @Input() selectWidth?: string;
+  @Input() maxFilterLength:number = 3
   @Output() filtersApplied = new EventEmitter<IDataFilter[]>();
-
-  selectedFilterType: DataFilterType | null = null;
-  selectedCondition: string = '';
+  
+  filterArray:string[] = [];
+  selectedFilterValue: string = '';
+  selectedFilterType?:any;
+  conditionOptions: string[] = [];
+  selectedCondition: string | undefined = '';
   inputValue?: string | number
   savedFilters: IDataFilter[] = [];
   selectedFilters: IDataFilter[] = [];
   showAllFilters: boolean = false;
-  readonly MAX_VISIBLE_FILTERS = 3;
   editIndex: number | null = null;
   checkAll: boolean = false;
   isDuplicateFilter: boolean = false;
   disableAddFilterBtn: boolean = false;
   disableApplyFilterBtn: boolean = true;
   duplicateMessage?:string = '';
+  configInstance: Config;
+
+  constructor(){ 
+    this.configInstance = new Config();
+  }
+
+  ngOnInit(): void {
+    this.filterArray = this.filterOptions.map(item => item.name)  
+  }
+
+  onFilterNameChange(selectedFilterValue: string) {
+    const selectedFilter = this.filterOptions.find(option => option.name === selectedFilterValue);
+  
+    if (selectedFilter) {
+        this.selectedFilterType = selectedFilter.type;
+        this.conditionOptions = this.configInstance.getConditionOptions(this.selectedFilterType) || [];
+        this.selectedCondition = ''; 
+    }
+}
 
   resetFilters() {
     this.selectedFilterType = null;
@@ -59,38 +82,50 @@ export class TableFilterComponent {
     this.duplicateMessage = ''
   }
 
-  addFilter() {
-    console.log({
-      filter: this.selectedFilterType,
-      condition: this.selectedCondition,
-      value: this.inputValue
-    });
 
-    if (!this.selectedFilterType || !this.selectedCondition || !this.inputValue) {
-      return;
+  addFilter() {
+    if (!this.selectedFilterValue || !this.selectedCondition || !this.inputValue) {
+        return;
     }
 
-    if (this.isDuplicateFilter) {
-      return;
+    if (this.editIndex === null && this.isDuplicateFilter) {
+        return; 
     }
 
     const newFilter: IDataFilter = {
-      type: this.selectedFilterType,
-      condition: this.selectedCondition,
-      value: this.inputValue,
-      checked: false
+        name: this.selectedFilterValue,
+        type: this.selectedFilterType,
+        condition: this.selectedCondition,
+        value: this.inputValue,
+        checked: false
     };
 
     if (this.editIndex !== null) {
-      this.savedFilters[this.editIndex] = newFilter;
-      this.editIndex = null;
+        const isDuplicate = this.savedFilters.some(
+            (filter, index) =>
+                filter.name === newFilter.name &&
+                filter.condition === newFilter.condition &&
+                index !== this.editIndex
+        );
+
+        if (isDuplicate) {
+            return;
+        }
+        this.savedFilters[this.editIndex] = newFilter;
+        this.editIndex = null;
     } else {
-      this.savedFilters.push(newFilter);
+        if (this.savedFilters.some(filter => 
+            filter.name === newFilter.name && 
+            filter.condition === newFilter.condition)) {
+            return;
+        }
+        this.savedFilters.push(newFilter);
     }
 
     this.clearOperationSection();
-    this.checkFilterButton();
+    this.checkFilterButton(); 
   }
+
 
   toggleCheckbox(index: number) {
     this.savedFilters[index].checked = !this.savedFilters[index].checked;
@@ -109,6 +144,8 @@ export class TableFilterComponent {
   editFilter(index: number) {
     const filter = this.savedFilters[index];
     this.selectedFilterType = filter.type;
+    this.selectedFilterValue = filter.name;
+    this.onFilterNameChange( this.selectedFilterValue) 
     this.selectedCondition = filter.condition;
     this.inputValue = filter.value;
     this.editIndex = index;
@@ -126,11 +163,11 @@ export class TableFilterComponent {
   get visibleFilters() {
     return this.showAllFilters
       ? this.savedFilters
-      : this.savedFilters.slice(0, this.MAX_VISIBLE_FILTERS);
+      : this.savedFilters.slice(0, this.maxFilterLength);
   }
 
   clearOperationSection() {
-    this.selectedFilterType = null;
+    this.selectedFilterValue = '';
     this.selectedCondition = '';
     this.inputValue = '';
   }
@@ -145,13 +182,29 @@ export class TableFilterComponent {
   }
 
   checkDuplicateFilter(): void {
-    const exists = this.savedFilters.some(
-      filter =>
-        filter.type === this.selectedFilterType &&
-        filter.condition === this.selectedCondition
-    );
-    this.disableAddFilterBtn = exists;
-    this.isDuplicateFilter = exists;
-    this.duplicateMessage = 'This entry is a duplicate and cannot be added.'
-  }
+    if (this.editIndex !== null) {
+        const exists = this.savedFilters.some(
+            (filter, index) =>
+                filter.name === this.selectedFilterValue &&
+                filter.condition === this.selectedCondition &&
+                index !== this.editIndex 
+        );
+        this.disableAddFilterBtn = exists;
+        this.isDuplicateFilter = exists;
+        this.duplicateMessage = exists ? 'This entry is a duplicate and cannot be added.' : '';
+    } else {
+        
+        const exists = this.savedFilters.some(
+            (filter) =>
+                filter.name === this.selectedFilterValue &&
+                filter.condition === this.selectedCondition
+        );
+        this.disableAddFilterBtn = exists;
+        this.isDuplicateFilter = exists;
+        this.duplicateMessage = exists ? 'This entry is a duplicate and cannot be added.' : '';
+    }
 }
+
+}
+
+

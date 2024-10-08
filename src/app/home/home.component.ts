@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DataFilterType, IDataFilter } from '../../../projects/verben-ng-ui/src/lib/models/table-filter';
 
 @Component({
   selector: 'app-home',
@@ -6,5 +7,35 @@ import { Component } from '@angular/core';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+ filterArray:IDataFilter[] = [
+  {
+  name:'Name',
+  type: DataFilterType.String,
+  checked:false
+ },
+  {
+  name:'Age',
+  type: DataFilterType.Integer,
+  checked:false
+ },
+  {
+  name:'Salary',
+  type: DataFilterType.Decimal,
+  checked:false
+ },
+ {
+  name:'Date',
+  type: DataFilterType.Date,
+  checked:false
+ },
+ {
+  name:'Qualify for payment',
+  type: DataFilterType.Bool,
+  checked:false
+ }
+]
 
+handleButtonClick(button: any) {
+  console.log('Button clicked:', button);
+}
 }

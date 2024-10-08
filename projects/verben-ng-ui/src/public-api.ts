@@ -21,9 +21,18 @@ export * from './lib/components/shared.module';
 export * from './lib/components/image/image.module';
 export * from './lib/components/image/image.component';
 
+export * from './lib/components/tooltip/tooltip.component';
+export * from './lib/components/tooltip/tooltip.module';
+
 export * from './lib/components/svg/svg.module';
-export * from './lib/components/table-filter/table-filter.module';
 export * from './lib/components/svg/svg.component';
+
+export * from './lib/components/table-filter/table-filter.module';
+export * from './lib/components/table-filter/table-filter.component';
+
+export * from './lib/components/notification/notification.module';
+export * from './lib/components/notification/notification.component';
+
 
 export * from './lib/components/card/card.module';
 export * from './lib/components/card/card.component';

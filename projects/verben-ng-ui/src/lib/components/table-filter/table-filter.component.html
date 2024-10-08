@@ -63,7 +63,7 @@
           [style.font-weight]="'500'"
           [style.color]="tertiaryColor"
         >
-          {{ filter.type }} {{ filter.condition }} {{ filter.value}}
+          {{ filter.name }} {{ filter.condition }} {{ filter.value}}
         </p>
       </div>
       <div class="iconWrapper">
@@ -87,7 +87,7 @@
 
     <div
       class="moreWrapper"
-      *ngIf="savedFilters.length > MAX_VISIBLE_FILTERS"
+      *ngIf="savedFilters.length > maxFilterLength"
       (click)="toggleShowMore()"
     >
       <p
@@ -97,11 +97,12 @@
       >
         {{ showAllFilters ? "Show less" : "Show more" }}
       </p>
-      <verben-svg
+        <verben-svg
         icon="chevron"
         [width]="8"
         [height]="6"
-        color="black"
+        fill="black"
+        stroke="black"
       ></verben-svg>
     </div>
   </div>
@@ -111,24 +112,37 @@
   <div class="bottom">
     <div class="savedWrapper">
       <h3 [style.font-size]="'13px'">Operation</h3>
-      <lib-tooltip
-        [message]='duplicateMessage'
-        [backgroundColor]="'#ccc'"
-        [textColor]="'red'"
-        [border]="'1px solid red'"
-        [padding]="'10px 15px'"
-        [borderRadius]="borderRadius"
-        [position]="{ left: '100%', top: '-15px', transform: 'translateY(-50%)' }"
-      >
-        <verben-svg
-          icon="dangerInfo"
-          [width]="15"
-          [height]="15"
-          [fill]="'red'"
-          *ngIf="isDuplicateFilter"
-        ></verben-svg>
-      </lib-tooltip>
-
+      <div> 
+        <verben-svg icon="dangerInfo" [width]="15" [height]="15" [fill]="'red'" 
+         (mouseenter)="tooltip.show()" (mouseleave)="tooltip.hide()" *ngIf="isDuplicateFilter">
+         </verben-svg>
+     
+        <verben-tooltip
+         [backgroundColor]="'blue'" 
+         [textColor]="'white'"
+         [padding]="'10px'"
+         [borderRadius]="'8px'"
+         [top]="'0px'"                 
+         [left]="'150px'"   
+         #tooltip >
+       <div>
+         <table>
+           <tr>
+             <td>Reference</td><td><strong>INV_001</strong></td>
+           </tr>
+           <tr>
+             <td>Code</td><td><strong>Code123</strong></td>
+           </tr>
+           <tr>
+             <td>Recurring</td><td><strong>1 Year</strong></td>
+           </tr>
+           <tr>
+             <td>Dimension</td><td><strong>Dim_001</strong></td>
+           </tr>
+         </table>
+       </div>
+        </verben-tooltip>
+      </div>
       <verben-svg
         icon="info"
         [width]="15"
@@ -140,10 +154,11 @@
 
     <div class="inputsWrapper">
       <verben-drop-down
-        width="'7rem'"
+        width="'8rem'"
         placeholder="Select value"
-        [options]="filterOptions"
-        [(ngModel)]="selectedFilterType"
+        [options]="filterArray"
+        [(ngModel)]="selectedFilterValue"
+        (ngModelChange)="onFilterNameChange(selectedFilterValue)"
       >
       </verben-drop-down>
       <verben-drop-down
@@ -155,19 +170,6 @@
       >
       </verben-drop-down>
 
-      <!-- Input for value (text/number) -->
-      <!-- <input
-        *ngIf="selectedFilterType === 'Date'"
-        type="date"
-        [(ngModel)]="inputValue"
-      />
-      <input
-        *ngIf="selectedFilterType !== 'Date'"
-        type="text"
-        placeholder="#1,000,000"
-        [(ngModel)]="inputValue"
-      /> -->
-
       <verbena-input
       *ngIf="selectedFilterType === 'Date'"
       border="1px solid #ccc"
@@ -177,14 +179,14 @@
       height="30px"
       pd="6px"
       [showBorder]="true"
-      [showErrorMessage]="true"
+      [showErrorMessage]="false"
       errorPosition="below"
       type="date"
       [(ngModel)]="inputValue"
     ></verbena-input>
 
       <verbena-input
-      *ngIf="selectedFilterType === 'Credit'"
+      *ngIf="selectedFilterType === 'Credit' || selectedFilterType === 'Integer'" 
       border="1px solid #ccc"
       borderRadius="5px"
       textColor="black"
@@ -193,14 +195,30 @@
       pd="6px"
       placeHolder="input integer"
       [showBorder]="true"
-      [showErrorMessage]="true"
+      [showErrorMessage]="false"
       errorPosition="below"
       appValidate="integer"
       [(ngModel)]="inputValue"
     ></verbena-input>
 
       <verbena-input
-      *ngIf="selectedFilterType !== 'Credit' && selectedFilterType !== 'Date' "
+      *ngIf="selectedFilterType === 'Decimal'" 
+      border="1px solid #ccc"
+      borderRadius="5px"
+      textColor="black"
+      width="120px"
+      height="30px"
+      pd="6px"
+      placeHolder="input a decimal"
+      [showBorder]="true"
+      [showErrorMessage]="false"
+      errorPosition="below"
+      appValidate="decimal"
+      [(ngModel)]="inputValue"
+    ></verbena-input>
+
+      <verbena-input
+      *ngIf="selectedFilterType !== 'Credit' && selectedFilterType !== 'Date'  && selectedFilterType !== 'Integer'  && selectedFilterType !== 'Decimal'"
       border="1px solid #ccc"
       placeHolder="input value"
       borderRadius="5px"
@@ -209,7 +227,7 @@
       height="30px"
       pd="6px"
       [showBorder]="true"
-      [showErrorMessage]="true"
+      [showErrorMessage]="false"
       errorPosition="below"
       [(ngModel)]="inputValue"
     ></verbena-input>

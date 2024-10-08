@@ -1,14 +1,12 @@
 <table>
   <thead>
     <tr>
-      @for (column of columns; track column.id) {
+      @for (column of columnsSignal(); track column.id) {
       <th>
         @if (column.headerTemplate) {
         <ng-container
-          *ngTemplateOutlet="
-            column.headerTemplate;
-            context: getHeaderContext(column)
-          "
+          [ngTemplateOutlet]="column.headerTemplate"
+          [ngTemplateOutletContext]="getHeaderContext(column)"
         ></ng-container>
         } @else {
         {{ column.header }}
@@ -20,14 +18,12 @@
   <tbody>
     @for (row of data; track row.id; let rowIndex = $index) {
     <tr>
-      @for (column of columns; track column.id) {
+      @for (column of columnsSignal(); track column.id) {
       <td>
         @if (column.cellTemplate) {
         <ng-container
-          *ngTemplateOutlet="
-            column.cellTemplate;
-            context: getCellContext(row, column, rowIndex)
-          "
+          [ngTemplateOutlet]="column.cellTemplate"
+          [ngTemplateOutletContext]="getCellContext(row, column, rowIndex)"
         ></ng-container>
         } @else {
         {{ getCellValue(row, column) }}
@@ -39,14 +35,12 @@
   </tbody>
   <tfoot>
     <tr>
-      @for (column of columns; track column.id) {
+      @for (column of columnsSignal(); track column.id) {
       <td>
         @if (column.footerTemplate) {
         <ng-container
-          *ngTemplateOutlet="
-            column.footerTemplate;
-            context: getFooterContext(column)
-          "
+          [ngTemplateOutlet]="column.footerTemplate"
+          [ngTemplateOutletContext]="getFooterContext(column)"
         ></ng-container>
         }
       </td>

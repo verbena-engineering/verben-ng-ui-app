@@ -1,4 +1,10 @@
-import { Directive, Input, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ContentChild,
+  Directive,
+  Input,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 
 @Directive({
   selector: '[libColumn]',
@@ -6,7 +12,7 @@ import { Directive, Input, TemplateRef, ViewChild } from '@angular/core';
 export class ColumnDirective {
   @Input('libColumn') columnId!: string;
 
-  @ViewChild('cell') cellTemplate?: TemplateRef<any>;
-  @ViewChild('header') headerTemplate?: TemplateRef<any>;
-  @ViewChild('footer') footerTemplate?: TemplateRef<any>;
+  @ContentChild('cell', { static: true }) cellTemplate?: TemplateRef<any>;
+  @ViewChild('header', { static: true }) headerTemplate?: TemplateRef<any>;
+  @ViewChild('footer', { static: true }) footerTemplate?: TemplateRef<any>;
 }

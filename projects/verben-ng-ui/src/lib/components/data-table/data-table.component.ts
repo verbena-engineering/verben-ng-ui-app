@@ -7,7 +7,6 @@ import {
   effect,
   EventEmitter,
   Input,
-  OnChanges,
   Output,
   QueryList,
   Signal,
@@ -21,22 +20,18 @@ import { ColumnDirective } from './column.directive';
 
 @Component({
   selector: 'lib-data-table',
-  // standalone: true,
-  // imports: [],
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DataTableComponent<T extends { id: string | number }> {
+export class DataTableComponent<T extends { id: string | number }>
+  implements AfterContentInit
+{
   @Input({ required: true }) data!: T[];
   @Input({ required: true }) columns!: ColumnDefinition<T>[];
 
   @ContentChildren(ColumnDirective)
-  set columnTemplates(value: ColumnDirective[]) {
-    this._columnTemplates = value;
-    this.mergeColumnTemplates();
-  }
-  private _columnTemplates: ColumnDirective[] = [];
+  columnTemplates!: QueryList<ColumnDirective>;
 
   @Output() rowEdit = new EventEmitter<T>();
   @Output() selectionChange = new EventEmitter<T[]>();
@@ -44,34 +39,35 @@ export class DataTableComponent<T extends { id: string | number }> {
   private editingRowsSignal = signal<Set<string | number>>(new Set());
   private selectedRowsSignal = signal<Set<string | number>>(new Set());
 
+  columnsSignal: WritableSignal<ColumnDefinition<T>[]> = signal([]);
+
   constructor() {
     effect(() => {
-      console.log('Columns updated:', this.columns);
-      console.log('Column templates:', this._columnTemplates);
-      this.mergeColumnTemplates();
+      console.log('Columns updated:', this.columnsSignal());
     });
   }
 
-  private mergeColumnTemplates() {
-    if (!this._columnTemplates) return;
+  ngAfterContentInit() {
+    this.columnTemplates.changes.subscribe(() => this.mergeColumnTemplates());
+    this.mergeColumnTemplates();
+  }
 
-    this.columns = this.columns.map((column) => {
-      const matchingTemplate = this._columnTemplates.find(
+  private mergeColumnTemplates() {
+    const updatedColumns = this.columns.map((column) => {
+      const matchingTemplate = this.columnTemplates.find(
         (t) => t.columnId === column.id
       );
       if (matchingTemplate) {
-        console.log(matchingTemplate);
         return {
           ...column,
-          cellTemplate: matchingTemplate.cellTemplate || column.cellTemplate,
-          headerTemplate:
-            matchingTemplate.headerTemplate || column.headerTemplate,
-          footerTemplate:
-            matchingTemplate.footerTemplate || column.footerTemplate,
+          cellTemplate: matchingTemplate.cellTemplate,
+          headerTemplate: matchingTemplate.headerTemplate,
+          footerTemplate: matchingTemplate.footerTemplate,
         };
       }
       return column;
     });
+    this.columnsSignal.set(updatedColumns);
   }
 
   getCellValue = (row: T, column: ColumnDefinition<T>): any => {

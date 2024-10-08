@@ -4,33 +4,6 @@
   (rowEdit)="onRowEdit($event)"
   (selectionChange)="onSelectionChange($event)"
 >
-  <ng-template libColumn="select">
-    <ng-template
-      #cell
-      let-isSelected="isSelected"
-      let-toggleRowSelection="toggleRowSelection"
-    >
-      <input
-        type="checkbox"
-        [checked]="isSelected"
-        (change)="toggleRowSelection()"
-      />
-    </ng-template>
-    <ng-template
-      #header
-      let-allRowsSelected="allRowsSelected"
-      let-someRowsSelected="someRowsSelected"
-      let-toggleAllRows="toggleAllRows"
-    >
-      <input
-        type="checkbox"
-        [checked]="allRowsSelected()"
-        [indeterminate]="someRowsSelected()"
-        (change)="toggleAllRows()"
-      />
-    </ng-template>
-  </ng-template>
-
   <ng-template libColumn="customer">
     <ng-template #cell let-value="value">
       <div>
@@ -43,21 +16,6 @@
     </ng-template>
     <ng-template #footer let-data="data">
       Total Customers: {{ data.length }}
-    </ng-template>
-  </ng-template>
-
-  <ng-template libColumn="actions">
-    <ng-template
-      #cell
-      let-isEditing="isEditing"
-      let-toggleRowEdit="toggleRowEdit"
-    >
-      <button (click)="toggleRowEdit()">
-        {{ isEditing ? "Save" : "Edit" }}
-      </button>
-    </ng-template>
-    <ng-template #header>
-      <strong>Actions</strong>
     </ng-template>
   </ng-template>
 </lib-data-table>

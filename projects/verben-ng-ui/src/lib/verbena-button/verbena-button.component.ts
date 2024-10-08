@@ -20,8 +20,8 @@ export class VerbenaButtonComponent {
 
   // Inputs for SVG support
   @Input() svg: string = '';
-  @Input() svgWidth: number = 0; // Change type to number
-  @Input() svgHeight: number = 0; // Change type to number
+  @Input() svgWidth: number = 20; // Change type to number
+  @Input() svgHeight: number = 20; // Change type to number
   @Input() svgColor: string = ''; // SVG color
 
 }

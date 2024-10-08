@@ -1,8 +1,8 @@
 import { DataFilterType } from './table-filter';
 
 export interface IDataFilter {
-  name?: string;
+  name: string;
   type: DataFilterType;
-  value: string | number;
+  value?: string | number;
   checked: boolean;
 }

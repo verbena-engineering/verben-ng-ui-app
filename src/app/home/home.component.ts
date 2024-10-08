@@ -15,7 +15,7 @@ export class HomeComponent {
    this.isGridView = view;
    console.log('Current view:', this.isGridView ? 'Grid' : 'List');
  }
- onColumnsUpdated(updatedColumns: Column[]) {
+ onColumnsUpdated(updatedColumns: IDataFilter[]) {
   console.log('Updated columns:', updatedColumns);
 }
 onSelectOptions(updatedOptions: IDataFilter[]) {

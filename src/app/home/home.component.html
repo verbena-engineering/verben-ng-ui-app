@@ -7,53 +7,66 @@
   <verben-svg icon="close" [width]="40" [height]="40"  stroke="green"></verben-svg>
   <verben-svg icon="close" [width]="40" [height]="40"  stroke="yellow"></verben-svg>  -->
   <verben-sort-table
-  border="1px solid rgba(212, 160, 7, 1)"
-  borderRadius="10px"
-  boxShadow="2px 2px 2px 0px silver"
-  bgColor="white"
-  width="400px"
-  textColor="black"
-  pd="1rem"
-  primaryColor="#FFE681"
-  secondaryColor="#3479E9"
-  tertiaryColor="#404040"
+    border="1px solid rgba(212, 160, 7, 1)"
+    borderRadius="10px"
+    boxShadow="2px 2px 2px 0px silver"
+    bgColor="white"
+    width="400px"
+    textColor="black"
+    pd="1rem"
+    primaryColor="#FFE681"
+    secondaryColor="#3479E9"
+    tertiaryColor="#404040"
     [enableDragAndDrop]="true"
     (selectedOptions)="onSelectOptions($event)"
     [sortOptions]="[
-      { value: 'Amount', type: SortFilter.Number, checked: false, },
-      { value: 'Name', type: SortFilter.String, checked: false },
-      { value: 'Date', type: SortFilter.Date, checked: false },
-      { value: 'Category', type: SortFilter.String, checked: false },
-      { value: 'Rating', type: SortFilter.Number, checked: false }
+      {
+        name: 'Amount',
+        type: SortFilter.Number,
+        checked: false
+      },
+      { name: 'Name', type: SortFilter.String, checked: false },
+      { name: 'Date', type: SortFilter.Date, checked: false },
+      {
+        name: 'Category',
+        type: SortFilter.String,
+        checked: false
+      },
+      {
+        name: 'Rating',
+        value: 'Rating',
+        type: SortFilter.Number,
+        checked: false
+      }
     ]"
   ></verben-sort-table>
-  
+
   <verben-visible-column
-  border="1px solid rgba(212, 160, 7, 1)"
-  borderRadius="10px"
-  boxShadow="2px 2px 2px 0px silver"
-  bgColor="white"
-  width="400px"
-  textColor="black"
-  pd="1rem"
-  primaryColor="#FFE681"
-  secondaryColor="#3479E9"
-  (columnsUpdated)="onColumnsUpdated($event)"
+    border="1px solid rgba(212, 160, 7, 1)"
+    borderRadius="10px"
+    boxShadow="2px 2px 2px 0px silver"
+    bgColor="white"
+    width="400px"
+    textColor="black"
+    pd="1rem"
+    primaryColor="#FFE681"
+    secondaryColor="#3479E9"
+    (columnsUpdated)="onColumnsUpdated($event)"
     [columns]="[
-      { checked: true, value: 'Column 1' },
-      { checked: false, value: 'Column 2' },
-      { checked: true, value: 'Column 3' },
-      { checked: false, value: 'Column 4' },
-      { checked: true, value: 'Column 5' },
-      { checked: false, value: 'Column 6' },
-      { checked: true, value: 'Column 7' },
-      { checked: false, value: 'Column 8' }
+      { checked: true, name: 'Column 1', type: SortFilter.Bool },
+      { checked: false, name: 'Column 2', type: SortFilter.Bool },
+      { checked: true, name: 'Column 3', type: SortFilter.Bool },
+      { checked: false, name: 'Column 4', type: SortFilter.Bool },
+      { checked: true, name: 'Column 5', type: SortFilter.Bool },
+      { checked: false, name: 'Column 6', type: SortFilter.Bool },
+      { checked: true, name: 'Column 7', type: SortFilter.Bool },
+      { checked: false, name: 'Column 8', type: SortFilter.Bool }
     ]"
   ></verben-visible-column>
-  <verben-data-view (viewChange)="onViewChange($event)">
-
-  </verben-data-view>
-  <verbena-mail-template (mailPayload)="onSubmitMail($event)"></verbena-mail-template>
+  <verben-data-view (viewChange)="onViewChange($event)"> </verben-data-view>
+  <verbena-mail-template
+    (mailPayload)="onSubmitMail($event)"
+  ></verbena-mail-template>
   <verben-image
     [url]="
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR94u0EyhIYQ35WVzV0LSlxZ0Ozv9tMqfzewA&s'

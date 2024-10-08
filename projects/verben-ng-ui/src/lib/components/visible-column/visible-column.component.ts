@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SvgComponent } from '../svg/svg.component';
-import { Column } from '../../models/column-filter';
+import { IDataFilter } from '../../models/data-filter';
 
 interface Item {
   [key: string]: any;
@@ -15,11 +15,10 @@ interface Item {
   templateUrl: './visible-column.component.html',
   styleUrls: ['./visible-column.component.css'],
 })
-
 export class VisibleColumnComponent {
-  @Input() columns: Column[] = [];
+  @Input() columns: IDataFilter[] = [];
   @Input() items: Item[] = [];
-  @Input() enableDragAndDrop: boolean =true;
+  @Input() enableDragAndDrop: boolean = true;
   @Input() displayedColumns: number = 5;
   @Input() showMore: boolean = false;
   @Input() pd?: string;
@@ -35,7 +34,7 @@ export class VisibleColumnComponent {
   @Input() border?: string;
   @Input() borderRadius?: string;
   @Input() selectWidth?: string;
-  @Output() columnsUpdated = new EventEmitter<Column[]>(); 
+  @Output() columnsUpdated = new EventEmitter<IDataFilter[]>();
 
   visibleColumns: boolean[] = [];
   tempVisibleColumns: boolean[] = [];
@@ -67,7 +66,14 @@ export class VisibleColumnComponent {
       column.checked = this.tempVisibleColumns[index];
     });
 
-    const selectedColumns = this.columns.filter(column => column.checked);
+    const selectedColumns: IDataFilter[] = this.columns.filter(
+      (column) => column.checked
+    ).map((column:IDataFilter) => ({
+      name: column.name,
+      checked: column.checked,
+      type: column.type,
+      value: column.name,
+    }));
     this.columnsUpdated.emit(selectedColumns);
 
     this.visibleColumns = [...this.tempVisibleColumns];
@@ -89,7 +95,7 @@ export class VisibleColumnComponent {
   }
 
   onDragOver(event: DragEvent) {
-    event.preventDefault(); 
+    event.preventDefault();
   }
 
   onDrop(index: number, event: DragEvent) {

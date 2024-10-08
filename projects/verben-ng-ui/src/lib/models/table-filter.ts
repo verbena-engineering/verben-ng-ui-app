@@ -12,6 +12,5 @@ export interface IDataFilter {
   type: DataFilterType;
   value: string | number;
   checked: boolean;
-  conditon?:boolean
 }
 

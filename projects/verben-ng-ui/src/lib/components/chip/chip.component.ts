@@ -37,6 +37,8 @@ export class ChipComponent
   @Input() separator: string = ',';
   @Input() disabled: boolean = false;
   @Input() required: boolean = false;
+  @Input() invalidMessage?: string;
+  @Input() errorPosition: string = '';
 
   // OUTPUTS
   @Output() onChange: EventEmitter<ChipChangeEvent> = new EventEmitter();

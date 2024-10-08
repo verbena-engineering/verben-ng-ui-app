@@ -1,14 +1,39 @@
-.dropdown-sample-container {
-  gap: 40px;
-  padding: 30px;
+* {
+  font-family: sans-serif;
+  font-size: 0.9rem;
 }
 
-.example-section {
-  gap: 10px;
+.flex {
+  display: flex;
 }
 
-.example-section>h1 {
-  font-weight: bold
+.flex-col {
+  flex-direction: column;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: end;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.grid {
+  display: grid;
+}
+
+.verben-error-message {
+  font-size: 0.8rem;
+  color: red;
 }
 
 .verben-input {

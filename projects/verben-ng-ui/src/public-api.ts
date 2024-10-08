@@ -66,7 +66,7 @@ export * from './lib/control-options/control-options.module';
 export * from './lib/control-options/control-options.directive';
 // Exporting Enum type for sort table
 export * from './lib/models/table-filter';
-
+export * from './lib/models/mail-model';
 export * from './lib/button/button.directive'
 export * from './lib/button/button.module'
 
@@ -93,3 +93,5 @@ export * from './lib/verbena-textarea/verbena-textarea.module';
 
 export * from './lib/verbena-switch/verbena-switch.component';
 export * from './lib/verbena-switch/verbena-switch.module';
+
+export * from './lib/components/verben-mail/verben-mail.module'

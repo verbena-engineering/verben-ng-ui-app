@@ -28,15 +28,16 @@ import {
     VerbenaSwitchModule,
     SortTableModule,
     VisibleColumnModule,
-    DataViewModule
+    DataViewModule,
+    VerbenaMailTemplateModule
 
      } from '../../projects/verben-ng-ui/src/public-api';
-import { CDVModule } from './Components/card-data-view/cdv.module';
 import { CardDataViewComponent } from './Components/card-data-view/cdv.component';
 import { HomeComponent } from './home/home.component';
 import { DropdownSampleComponent } from './views/dropdown-sample/dropdown-sample.component';
 import { FormsModule } from '@angular/forms';
-
+import { QuillModule } from 'ngx-quill';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,6 +47,7 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     NumberRangeModule,
@@ -71,7 +73,9 @@ import { FormsModule } from '@angular/forms';
     VerbenaSwitchModule,
     SortTableModule,
     VisibleColumnModule,
-    DataViewModule
+    DataViewModule,
+    VerbenaMailTemplateModule,
+    QuillModule.forRoot() 
 
 ],
   providers: [

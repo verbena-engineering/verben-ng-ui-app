@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DataFilterType} from '../../../projects/verben-ng-ui/src/public-api';
+import { DataFilterType, MailPayload} from '../../../projects/verben-ng-ui/src/public-api';
 import { Column } from '../../../projects/verben-ng-ui/src/lib/models/column-filter';
 import { IDataFilter } from '../../../projects/verben-ng-ui/src/lib/models/data-filter';
 @Component({
@@ -21,5 +21,7 @@ export class HomeComponent {
 onSelectOptions(updatedOptions: IDataFilter[]) {
   console.log('Updated Options:', updatedOptions);
 }
-
+onSubmitMail(mailPayload:MailPayload) {
+  console.log('payload:', mailPayload);
+}
 }

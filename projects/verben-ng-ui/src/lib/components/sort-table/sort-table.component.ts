@@ -47,7 +47,6 @@ export class SortTableComponent {
   hiddenSortOptions: IDataFilter[] = [];
   showMore: boolean = false;
   disableSortButton: boolean = false;
-
   selectedOrders: Map<number, 'asc' | 'desc'> = new Map();
 
   ngOnInit() {
@@ -78,10 +77,8 @@ export class SortTableComponent {
       this.showMoreText = 'Show more';
     }
   }
-
   applySort() {
     const selectedSorts = this.sortOptions.filter((option) => option.checked);
-
     const selectedSortDetails = selectedSorts.map((sort, index) => {
       return {
         type: sort.type || 'String',
@@ -91,12 +88,12 @@ export class SortTableComponent {
             this.selectedOrders.get(index) || 'asc'
           ) || '',
         checked: sort.checked || false,
+        name:sort.name
       };
     });
     this.selectedOptions.emit(selectedSortDetails);
     return selectedSortDetails;
   }
-
   getSortOrder(type: DataFilterType, selectedOrder: 'asc' | 'desc') {
     if (type === 'Number') {
       return selectedOrder === 'asc' ? 'asc' : 'desc';

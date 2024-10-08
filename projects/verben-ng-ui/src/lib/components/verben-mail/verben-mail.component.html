@@ -1,0 +1,107 @@
+<form [style.width]="'600px'" [formGroup]="mailForm" (ngSubmit)="sendEmail()">
+  <div class="button-container">
+    <button type="button" (click)="toggleEditor()">
+      {{ isRichText ? 'Switch to Plain' : 'View Designer' }}
+    </button>
+    <button type="submit" [ngClass]="{
+      disabled:mailForm.invalid,
+      enabled:!mailForm.invalid
+    }" [disabled]="mailForm.invalid">Send</button>
+  </div>
+  <div  class="container">
+    <div class="verben-mail-container">
+      <div class="verben-mail-form">
+      
+        <div class="form-element subject">
+          <label for="subject">Subject:</label>
+          <input id="subject" type="text" formControlName="subject" />
+        </div>
+  
+        <!-- To Field with Tags -->
+        <div class="form-element">
+          <label for="to">TO:</label>
+          <div class="email-tags-container">
+            <input
+              type="text"
+              formControlName="toEmailInput"
+              (keyup.enter)="addEmail('to')"
+              
+            />
+            <div *ngIf="toEmailError" class="error">{{ toEmailError }}</div>
+            <div *ngFor="let email of toEmails; let i = index" class="email-tag">
+              <span>
+                {{ email }}
+                <button type="button" (click)="removeEmail('to', i)">&#x2715;</button>
+              </span>
+            </div>
+          
+          </div>
+
+        </div>
+  
+        <!-- CC Field with Tags -->
+        <div class="form-element">
+          <label for="cc">CC:</label>
+          <div class="email-tags-container">
+            <input
+              type="text"
+              formControlName="ccEmailInput"
+              (keyup.enter)="addEmail('cc')"
+              placeholder="example@gmail.com"
+            />
+            <div *ngIf="ccEmailError" class="error">{{ ccEmailError }}</div>
+            <div *ngFor="let email of ccEmails; let i = index" class="email-tag">
+              
+              <span>
+                {{ email }}
+                <button type="button" (click)="removeEmail('cc', i)">&#x2715;</button>
+              </span>
+            </div>
+          </div>
+        </div>
+  
+        <!-- BCC Field with Tags -->
+        <div class="form-element">
+          <label for="bcc">BCC:</label>
+          <div class="email-tags-container">
+            <input
+              type="text"
+              formControlName="bccEmailInput"
+              (keyup.enter)="addEmail('bcc')"
+              placeholder="example@gmail.com"
+            />
+            <div *ngIf="bccEmailError" class="error">{{ bccEmailError }}</div>
+            <div *ngFor="let email of bccEmails; let i = index" class="email-tag">
+              <span>
+                {{ email }}
+                <button type="button" (click)="removeEmail('bcc', i)">&#x2715;</button>
+              </span>
+            </div>
+            
+          </div>
+        </div>
+  
+        <!-- Attachments Section -->
+        <div class="form-element attachment">
+          <label *ngIf="!uploadedFileName && !isUploading" for="attachment" class="flex items-center gap cursor-pointer">
+            <verben-svg [width]="20" fill="black" icon="attach"></verben-svg>Attach file
+          </label>
+          <input id="attachment" type="file" (change)="onFileSelected($event)" />
+          <div *ngIf="isUploading" class="loader">Uploading...</div>
+          <div *ngIf="uploadedFileName" class="flex items-center gap">
+            <span>{{ uploadedFileName }}</span>
+            <button [style.color]="'black'" type="button" (click)="removeFile()">&#x2715;</button>
+          </div>
+          <div *ngIf="fileUploadError" class="error">{{ fileUploadError }}</div>
+        </div>
+        <!-- Email Body -->
+         <hr [style.color]="'#00000066'"/>
+        <div class="form-element quill" [style.margin-top]="'30px'">
+          <quill-editor [style.border]="'none'" *ngIf="isRichText" [modules]="quillConfig" formControlName="body" [style.width]="'100%'" [style.height]="'100%'"></quill-editor>
+          <textarea *ngIf="!isRichText" formControlName="body" rows="10" cols="50"></textarea>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+</form>

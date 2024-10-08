@@ -27,6 +27,7 @@
       { value: 'Rating', type: SortFilter.Number, checked: false }
     ]"
   ></verben-sort-table>
+  
   <verben-visible-column
   border="1px solid rgba(212, 160, 7, 1)"
   borderRadius="10px"
@@ -50,16 +51,9 @@
     ]"
   ></verben-visible-column>
   <verben-data-view (viewChange)="onViewChange($event)">
-    <div grid-content>
-     Grid content
-      <!-- Your grid/table content goes here -->
-    </div>
-    <div list-content>
-   List content
-      <!-- Your list content goes here -->
-    </div>
+
   </verben-data-view>
-  
+  <verbena-mail-template (mailPayload)="onSubmitMail($event)"></verbena-mail-template>
   <verben-image
     [url]="
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR94u0EyhIYQ35WVzV0LSlxZ0Ozv9tMqfzewA&s'

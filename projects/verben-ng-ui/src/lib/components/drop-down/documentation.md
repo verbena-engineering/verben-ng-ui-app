@@ -9,6 +9,8 @@ optionSubLabel: string (Represents a valid property on the object type passed) -
 optionValue: string (Represents a valid property on the object type passed or in the case of a DropdownMenuItem array, a valid property on the value property if it's an object type) - Can be set if options is a list of Objects or a DropdownMenuItem array for which the value property is an object and you want to set what value formControls or ngModel bindings are mapped to.
 styleClass: string - Optional class addition that would be added to the dropdown.
 placeholder: string - Any value you want the dropdown to display when nothing has been selected.
+invalidMessage: string - Specifies message to be shown when the dropdown is invalid. If not set, no message is shown.
+errorPosition: string - Specifies the position you want the dropdown's invalid message to show relative to the dropdown. Has 3 options - 'top', 'left' and 'right'. If none of these is set, it defaults to bottom.
 showClear: boolean (default = false) - Configures whether to show a clear icon to remove the current selected value or values.
 lazyLoad: boolean (default = false) - Configures whether or not more items can be loaded aynchronously and added to the options list.
 loadMoreCaption: string - Configures the caption of the button that is used to load more items. Only displays when lazyLoad is set to true.

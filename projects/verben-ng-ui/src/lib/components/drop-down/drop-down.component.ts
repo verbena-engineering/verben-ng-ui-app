@@ -70,6 +70,8 @@ export class DropDownComponent
   @Input() optionSubLabel?: string;
   @Input() optionValue?: string;
   @Input() placeholder?: string;
+  @Input() invalidMessage?: string;
+  @Input() errorPosition: string = '';
   @Input() loadMoreCaption: string = 'See more';
   @Input() display: string = 'default';
   @Input() showClear: boolean = false;
@@ -618,19 +620,15 @@ export class DropDownComponent
         this.selectedOptionLabel = obj;
         return;
       }
+      this.selectedOption = null;
+      this.selectedOptionLabel = null;
       if (!this.group && !this.lazyLoad) {
-        let set = false;
         for (let option of this.options) {
           if (isEqual(this.getValue(option), obj)) {
             this.selectedOption = this.getValue(option);
             this.selectedOptionLabel = this.getOptionLabel(option);
-            set = true;
             break;
           }
-        }
-        if (set == false) {
-          this.selectedOption = null;
-          this.selectedOptionLabel = null;
         }
         this.onTouched();
         this.onChange.emit({ value: this.selectedOption });

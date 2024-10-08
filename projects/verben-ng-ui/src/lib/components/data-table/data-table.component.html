@@ -1,7 +1,20 @@
 <table>
   <thead>
     <tr>
-      <th *ngFor="let column of columns">{{ column.header }}</th>
+      @for (column of columns; track column.id) {
+      <th>
+        @if (column.headerTemplate) {
+        <ng-container
+          *ngTemplateOutlet="
+            column.headerTemplate;
+            context: getHeaderContext(column)
+          "
+        ></ng-container>
+        } @else {
+        {{ column.header }}
+        }
+      </th>
+      }
     </tr>
   </thead>
   <tbody>
@@ -9,22 +22,35 @@
     <tr>
       @for (column of columns; track column.id) {
       <td>
+        @if (column.cellTemplate) {
         <ng-container
           *ngTemplateOutlet="
-            column.cellTemplate || defaultCellTemplate;
-            context: {
-              $implicit: getCellValue(row, column),
-              row: row,
-              column: column,
-              rowIndex: rowIndex,
-              isEditing: isRowEditing()(row.id)
-            }
+            column.cellTemplate;
+            context: getCellContext(row, column, rowIndex)
           "
         ></ng-container>
+        } @else {
+        {{ getCellValue(row, column) }}
+        }
       </td>
       }
     </tr>
     }
   </tbody>
+  <tfoot>
+    <tr>
+      @for (column of columns; track column.id) {
+      <td>
+        @if (column.footerTemplate) {
+        <ng-container
+          *ngTemplateOutlet="
+            column.footerTemplate;
+            context: getFooterContext(column)
+          "
+        ></ng-container>
+        }
+      </td>
+      }
+    </tr>
+  </tfoot>
 </table>
-<ng-template #defaultCellTemplate let-value>{{ value }}</ng-template>

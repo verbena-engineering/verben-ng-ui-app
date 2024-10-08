@@ -1,11 +1,12 @@
-import { Directive, Input, TemplateRef } from '@angular/core';
+import { Directive, Input, TemplateRef, ViewChild } from '@angular/core';
 
 @Directive({
   selector: '[libColumn]',
-  // standalone: true,
 })
 export class ColumnDirective {
   @Input('libColumn') columnId!: string;
 
-  constructor(public template: TemplateRef<any>) {}
+  @ViewChild('cell') cellTemplate?: TemplateRef<any>;
+  @ViewChild('header') headerTemplate?: TemplateRef<any>;
+  @ViewChild('footer') footerTemplate?: TemplateRef<any>;
 }

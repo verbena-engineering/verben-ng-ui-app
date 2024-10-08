@@ -19,6 +19,10 @@ export class DataTableComponent {
 
   tableColumns: ColumnDefinition<YourDataType>[] = [
     {
+      id: 'select',
+      header: 'Select',
+    },
+    {
       id: 'customer',
       header: 'Customer',
       accessorFn: (row) => ({
@@ -27,34 +31,21 @@ export class DataTableComponent {
           .join(', '),
         participants: row.numberOfParticipants,
       }),
-      enableSorting: false,
-      enableHiding: false,
     },
-    // Other column definitions
+    {
+      id: 'actions',
+      header: 'Actions',
+    },
   ];
 
-  updateNames(names: string, row: YourDataType) {
-    // Update logic here
-    this.tableData = this.tableData.map((item) =>
-      item.id === row.id
-        ? {
-            ...item,
-            activityDetails: names.split(', ').map((name) => {
-              const [firstName, lastName] = name.split(' ');
-              return { firstName, lastName };
-            }),
-          }
-        : item
-    );
+  onRowEdit(editedRow: YourDataType) {
+    console.log('Row edited:', editedRow);
+    // Handle the edited row
   }
 
-  updateParticipants(participants: number, row: YourDataType) {
-    // Update logic here
-    this.tableData = this.tableData.map((item) =>
-      item.id === row.id
-        ? { ...item, numberOfParticipants: participants }
-        : item
-    );
+  onSelectionChange(selectedRows: YourDataType[]) {
+    console.log('Selection changed:', selectedRows);
+    // Handle the selection change
   }
 }
 

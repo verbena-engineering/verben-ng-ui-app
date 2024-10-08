@@ -1,27 +1,63 @@
-<lib-data-table [data]="tableData" [columns]="tableColumns">
-  <ng-template
-    appColumn="customer"
-    let-value
-    let-row="row"
-    let-isEditing="isEditing"
-  >
-    @if (isEditing) {
-    <div>
+<lib-data-table
+  [data]="tableData"
+  [columns]="tableColumns"
+  (rowEdit)="onRowEdit($event)"
+  (selectionChange)="onSelectionChange($event)"
+>
+  <ng-template libColumn="select">
+    <ng-template
+      #cell
+      let-isSelected="isSelected"
+      let-toggleRowSelection="toggleRowSelection"
+    >
       <input
-        [ngModel]="value.names"
-        (ngModelChange)="updateNames($event, row)"
+        type="checkbox"
+        [checked]="isSelected"
+        (change)="toggleRowSelection()"
       />
+    </ng-template>
+    <ng-template
+      #header
+      let-allRowsSelected="allRowsSelected"
+      let-someRowsSelected="someRowsSelected"
+      let-toggleAllRows="toggleAllRows"
+    >
       <input
-        type="number"
-        [ngModel]="value.participants"
-        (ngModelChange)="updateParticipants($event, row)"
+        type="checkbox"
+        [checked]="allRowsSelected()"
+        [indeterminate]="someRowsSelected()"
+        (change)="toggleAllRows()"
       />
-    </div>
-    } @else {
-    <div>
-      <p>{{ value.names }}</p>
-      <p>{{ value.participants }} participants</p>
-    </div>
-    }
+    </ng-template>
+  </ng-template>
+
+  <ng-template libColumn="customer">
+    <ng-template #cell let-value="value">
+      <div>
+        <p>{{ value.names }}</p>
+        <p>{{ value.participants }} participants</p>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <strong>Customer</strong>
+    </ng-template>
+    <ng-template #footer let-data="data">
+      Total Customers: {{ data.length }}
+    </ng-template>
+  </ng-template>
+
+  <ng-template libColumn="actions">
+    <ng-template
+      #cell
+      let-isEditing="isEditing"
+      let-toggleRowEdit="toggleRowEdit"
+    >
+      <button (click)="toggleRowEdit()">
+        {{ isEditing ? "Save" : "Edit" }}
+      </button>
+    </ng-template>
+    <ng-template #header>
+      <strong>Actions</strong>
+    </ng-template>
   </ng-template>
 </lib-data-table>

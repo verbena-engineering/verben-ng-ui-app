@@ -1,6 +1,8 @@
-<div [ngClass]="styleClass" [style.width]="width" class="chip">
+<div [ngClass]="styleClass" [style.width]="width"
+  [ngClass]="{'right-error': errorPosition == 'right', 'left-error': errorPosition == 'left', 'top-error': errorPosition == 'top'}"
+  class="chip">
   <div [class.focused]="isFocused" [ngClass]="{'ng-invalid': isInvalid, 'disabled': disabled}" (focus)="onFocus()"
-    (blur)="onBlur()" tabindex="0" class="chip-content-input flex">
+    (blur)="onBlur()" tabindex="0" class="chip-content-input verben-input flex">
     <div class="chip-main-content">
       <div class="default-item flex">
         <!-- <div class="dropdown-label place-holder" *ngIf="this.chips.length == 0">{{placeholder}}</div> -->
@@ -40,5 +42,7 @@
           stroke-linejoin="round" />
       </svg>
     </span> -->
+  </div>
+  <div *ngIf="this.isInvalid && this.invalidMessage" class="verben-error-message error-message">{{invalidMessage}}
   </div>
 </div>

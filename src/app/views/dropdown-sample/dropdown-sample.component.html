@@ -1,4 +1,10 @@
 <div class="dropdown-sample-container flex flex-col">
+  <div>
+    <input disabled="true" class="verben-input" />
+  </div>
+  <div>
+    <button class="verben-button secondary">Save</button>
+  </div>
   <div class="example-section flex flex-col">
     <h1>Basic Chip</h1>
     <verben-chip [disabled]="true" placeholder="Add Items" (onChange)="onChipChange($event)"
@@ -7,7 +13,8 @@
 
   <div class="example-section flex flex-col">
     <h1>Chip. Max 10. Templated item</h1>
-    <verben-chip [required]="true" (onChange)="onChipChange($event)" [max]="10" [(ngModel)]="chipValues">
+    <verben-chip [required]="true" invalidMessage="No value was provided" (onChange)="onChipChange($event)" [max]="10"
+      [(ngModel)]="chipValues">
       <ng-template let-item vTemplate="item">
         {{item}} Item Template
       </ng-template>
@@ -15,10 +22,16 @@
   </div>
 
   <div class="example-section flex flex-col">
+    <h1>Normal Example</h1>
     <verben-drop-down [minChar]="3" [required]="true" placeholder="Select Parent" [lazyLoad]="true"
-      [asyncLabel]="this.getParentLabel.bind(this)" [filter]="true" filterBy="Name" [showClear]="true"
-      [search]="this.searchParents" [load]="this.loadMoreParents" (onChange)="onDropdownChange($event)"
-      [(ngModel)]="selectedParent" optionLabel="Name" optionValue="Id" [options]="testParents"></verben-drop-down>
+      [asyncLabel]="this.getParentLabel.bind(this)" invalidMessage="No value was provided" [filter]="true"
+      filterBy="Name" [showClear]="true" [search]="this.searchParents" [load]="this.loadMoreParents"
+      (onChange)="onDropdownChange($event)" [(ngModel)]="selectedParent" optionLabel="Name" optionValue="Id"
+      [options]="testParents"></verben-drop-down>
+  </div>
+  <div class="example-section flex flex-col">
+    <h1>Grouped Example</h1>
+    <verben-drop-down></verben-drop-down>
   </div>
 
   <div class="example-section flex flex-col">

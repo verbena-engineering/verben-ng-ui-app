@@ -4793,6 +4793,19 @@ ng-packagr@^18.0.0, ng-packagr@^18.2.0:
   optionalDependencies:
     rollup "^4.18.0"
 
+nice-napi@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/nice-napi/-/nice-napi-1.0.2.tgz"
+  integrity sha512-px/KnJAJZf5RuBGcfD+Sp2pAKq0ytz8j+1NehvgIGFkvtvFrDM3T8E4x/JJODXK9WZow8RRGrbA9QQ3hs+pDhA==
+  dependencies:
+    node-addon-api "^3.0.0"
+    node-gyp-build "^4.2.2"
+
+node-addon-api@^3.0.0:
+  version "3.2.1"
+  resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-3.2.1.tgz"
+  integrity sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==
+
 node-addon-api@^6.1.0:
   version "6.1.0"
   resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-6.1.0.tgz"
@@ -4809,6 +4822,11 @@ node-gyp-build-optional-packages@5.2.2:
   integrity sha512-s+w+rBWnpTMwSFbaE0UXsRlg7hU4FjekKU4eyAih5T8nJuNZT1nNsskXpxmeqSK9UzkBl6UgRlnKc8hz8IEqOw==
   dependencies:
     detect-libc "^2.0.1"
+
+node-gyp-build@^4.2.2:
+  version "4.8.2"
+  resolved "https://registry.npmjs.org/node-gyp-build/-/node-gyp-build-4.8.2.tgz"
+  integrity sha512-IRUxE4BVsHWXkV/SFOut4qTlagw2aM8T5/vnTsmrHJvVoKueJHRc/JaFND7QDDc61kLYUJ6qlZM3sqTSyx2dTw==
 
 node-gyp@^10.0.0:
   version "10.2.0"

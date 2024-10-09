@@ -10,10 +10,14 @@ const routes: Routes = [
     path: 'card-data-view',
     component: CardDataViewComponent,
   },
-  { path: '', component: HomeComponent, pathMatch: 'full' },
+  { path: 'home', component: HomeComponent, pathMatch: 'full' },
+  { path: '', redirectTo: 'documentation', pathMatch: 'full' },
   {
-    path: 'dropdown-chip',
-    component: DropdownSampleComponent,
+    path: 'documentation',
+    loadChildren: () =>
+      import('./documentation/documentation.module').then(
+        (m) => m.DocumentationModule
+      ),
   },
 ];
 

@@ -1,0 +1,55 @@
+<table>
+  <thead>
+    <tr>
+      @for (column of columnsSignal(); track column.id) {
+      <th>
+        @if (column.headerTemplate) {
+        <ng-container
+          [ngTemplateOutlet]="column.headerTemplate"
+          [ngTemplateOutletContext]="getHeaderContext(column)"
+        ></ng-container>
+        } @else {
+        {{ column.header }}
+        }
+      </th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @for (row of data; track row.id; let rowIndex = $index) {
+    <tr>
+      @for (column of columnsSignal(); track column.id) {
+      <td>
+        @if (isRowEditing(row.id) && column.cellEditTemplate) {
+        <ng-container
+          [ngTemplateOutlet]="column.cellEditTemplate"
+          [ngTemplateOutletContext]="getCellContext(row, column, rowIndex)"
+        ></ng-container>
+        } @else if (column.cellTemplate) {
+        <ng-container
+          [ngTemplateOutlet]="column.cellTemplate"
+          [ngTemplateOutletContext]="getCellContext(row, column, rowIndex)"
+        ></ng-container>
+        } @else {
+        {{ getCellValue(row, column) }}
+        }
+      </td>
+      }
+    </tr>
+    }
+  </tbody>
+  <tfoot>
+    <tr>
+      @for (column of columnsSignal(); track column.id) {
+      <td>
+        @if (column.footerTemplate) {
+        <ng-container
+          [ngTemplateOutlet]="column.footerTemplate"
+          [ngTemplateOutletContext]="getFooterContext(column)"
+        ></ng-container>
+        }
+      </td>
+      }
+    </tr>
+  </tfoot>
+</table>

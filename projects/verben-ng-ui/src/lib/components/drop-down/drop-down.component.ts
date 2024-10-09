@@ -25,6 +25,7 @@ import { DropDownItemComponent } from './drop-down-item/drop-down-item.component
 import { isEqual, cloneDeep } from 'lodash';
 import { debounceTime, Subject } from 'rxjs';
 import { SharedModule } from '../shared.module';
+import { SvgModule } from '../svg/svg.module';
 
 export interface DropdownMenuItemWrapper extends DropdownMenuItem {
   expanded: boolean;
@@ -38,7 +39,13 @@ export interface DropdownMenuItemWrapper extends DropdownMenuItem {
 @Component({
   selector: 'verben-drop-down',
   standalone: true,
-  imports: [CommonModule, DropDownItemComponent, SharedModule, FormsModule],
+  imports: [
+    CommonModule,
+    DropDownItemComponent,
+    SharedModule,
+    FormsModule,
+    SvgModule,
+  ],
   templateUrl: './drop-down.component.html',
   styleUrl: './drop-down.component.css',
 })

@@ -12,7 +12,7 @@ const routes: Routes = [
     
     component:  CardDataViewComponent,
   },
-  { path: 'home', component:  HomeComponent, pathMatch: 'full' }
+  { path: 'home', component:  HomeComponent, pathMatch: 'full' },
   { path: '', redirectTo: 'documentation', pathMatch: 'full' },
   {
     path: 'documentation',

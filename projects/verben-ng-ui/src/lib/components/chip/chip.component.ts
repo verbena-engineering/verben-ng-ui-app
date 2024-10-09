@@ -18,11 +18,18 @@ import { CommonModule } from '@angular/common';
 import { ChipChangeEvent } from './ChipChangeEvent';
 import { SharedModule } from '../shared.module';
 import { TemplateDirective } from '../TemplateDirective.directive';
+import { SvgModule } from '../svg/svg.module';
 
 @Component({
   selector: 'verben-chip',
   standalone: true,
-  imports: [CommonModule, DropDownItemComponent, SharedModule, FormsModule],
+  imports: [
+    CommonModule,
+    DropDownItemComponent,
+    SharedModule,
+    FormsModule,
+    SvgModule,
+  ],
   templateUrl: './chip.component.html',
   styleUrl: './chip.component.css',
 })

@@ -21,14 +21,24 @@ export * from './lib/components/shared.module';
 export * from './lib/components/image/image.module';
 export * from './lib/components/image/image.component';
 
+export * from './lib/components/tooltip/tooltip.component';
+export * from './lib/components/tooltip/tooltip.module';
+
 export * from './lib/components/svg/svg.module';
 export * from './lib/components/svg/svg.component';
+
+export * from './lib/components/table-filter/table-filter.module';
+export * from './lib/components/table-filter/table-filter.component';
+
+export * from './lib/components/notification/notification.module';
+export * from './lib/components/notification/notification.component';
 
 export * from './lib/components/card/card.module';
 export * from './lib/components/card/card.component';
 
 export * from './lib/convert-to-number/convert-to-number.module';
 export * from './lib/convert-to-integer/convert-to-integer.module';
+
 // export * from './lib/convert-to-decimal/convert-to-decimal.module';
 export * from './lib/phone-number/phone-number.module';
 
@@ -56,4 +66,28 @@ export * from './lib/required-input/required-input.directive';
 export * from './lib/email-validator/email-validator.module';
 export * from './lib/email-validator/email-validator.directive';
 
+export * from './lib/button/button.directive';
+export * from './lib/button/button.module';
+
+export * from './lib/textarea/textarea.directive';
+export * from './lib/textarea/textarea.module';
+
+export * from './lib/validate/error-message.service';
+export * from './lib/validate/validate.directive';
+export * from './lib/validate/validate.module';
+
+export * from './lib/Verbena-input/verbena-input.component';
+export * from './lib/Verbena-input/verbena-input.module';
+
+export * from './lib/verbena-button/verbena-button.component';
+export * from './lib/verbena-button/verbena-button.module';
+
+export * from './lib/verbena-badge/verbena-badge.component';
+export * from './lib/verbena-badge/verbena-badge.module';
+
+export * from './lib/verbena-textarea/verbena-textarea.component';
+export * from './lib/verbena-textarea/verbena-textarea.module';
+
+export * from './lib/verbena-switch/verbena-switch.component';
+export * from './lib/verbena-switch/verbena-switch.module';
 export * from './lib/components/data-table';

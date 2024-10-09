@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CardDataViewModule } from '../card-data-view/card-data-view.module';
 import { SvgModule } from '../svg/svg.module';
-import { DataTableModule } from '../data-table';
-
+import { DataTableModule } from '../../../../../../src/app/documentation/data-table/data-table.module';
 
 @Component({
   selector: 'verben-data-view',

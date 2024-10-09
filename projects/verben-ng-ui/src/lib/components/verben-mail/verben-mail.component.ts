@@ -28,7 +28,14 @@ import { ChipModule } from '../chip/chip.module';
   ],
 })
 export class VerbenMailTemplate {
-  @Input() quillHeight:string="250px"
+  @Input() containerWidth: string = '500px';
+  @Input() borderRadius: string = '10px';
+  @Input() primaryColor: string = '#FFE681';
+  @Input() secondaryColor: string = '';
+  @Input() tetiaryColor: string = '';
+  @Input() border: string = '1px solid gray';
+  @Input() pd: string = '20px';
+  @Input() m: string = '';
   mailForm: FormGroup;
   isRichText: boolean = false;
   quillConfig = QuillConfiguration;
@@ -101,20 +108,7 @@ export class VerbenMailTemplate {
     return emailRegex.test(email);
   }
 
-  setEmailError(message: string) {
-    return message;
-  }
-
-  removeEmail(type: 'to' | 'cc' | 'bcc', index: number) {
-    if (type === 'to') {
-      this.toEmails.splice(index, 1);
-    } else if (type === 'cc') {
-      this.ccEmails.splice(index, 1);
-    } else {
-      this.bccEmails.splice(index, 1);
-    }
-  }
-
+ 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -126,12 +120,12 @@ export class VerbenMailTemplate {
       if (file.size > 5000000) {
         this.fileUploadError = 'File size exceeds 5MB limit.';
         this.uploadedFileName = null;
-        this.isUploading = false;
+        this.isUploading = false; // Reset isUploading state
       } else {
         this.uploadedFileName = file.name;
       }
     } else {
-      this.isUploading = false;
+      this.isUploading = false; 
     }
   }
 

@@ -3,18 +3,18 @@
 }
 .verben-mail-container{
     background-color: #80808013;
-    border-radius: 10px;
-    padding: 20px;
+
 }
 .verben-mail-form{
     background-color: white;
-    padding: 20px;
-    border-radius: 10px;
 }
 .verben-mail-form label {
     font-weight:500;
     margin-right: 6px;
     font-size: 14px;
+}
+#attachment{
+    display: none;
 }
 .verben-mail-form .form-element {
  margin-bottom: 10px;
@@ -23,9 +23,7 @@
 .verben-mail-form .form-element input{
     padding: 0;
     display:inline-block;
-    font-size: 14px;
     padding:2px 4px;
-    border-radius: 10px;
     border: 1px solid #9A9FBF80;
     outline: none;
     min-width: 200px;
@@ -36,23 +34,10 @@
     font-weight: 600;
 }
 .verben-mail-form .form-element textarea{
-    display: block;
-    font-size: 14px;
     padding: 16px;
     width: 100%;
     height: 100%;
     resize: none;
-    border: none;
-    outline: none;
-}
-#attachment{
-    display: none;
-}
-.button-container{
-    display: flex;
-    justify-content: flex-end;
-    gap:20px;
-    margin-bottom: 10px;
 }
 
 .button-container :nth-child(1){
@@ -63,16 +48,11 @@
     font-weight: 500;
 
 }
-.button-container :nth-child(2){
-    background-color: #FFE681;
-    border-radius: 3px;
-    padding: 4px 15px;
+.semibold{
     font-weight: 500;
-
 }
-.form-element.attachment{
-    font-weight: 500;
-    font-size: 14px;
+.flex-end{
+    justify-content: flex-end;
 }
 .flex{
     display: flex;
@@ -81,37 +61,11 @@
     align-items: center;
 }
 .gap{
-gap:6px;
-}
-.cursor-pointer{
-    cursor: pointer;
-}
-.email-tag{
-   margin-top: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    width: 100%;
-}
-.email-tag span{
-    border: 1px solid gainsboro;
-    padding: 2px 9px;
-    font-weight: 500;
-    border-radius:10px;
-    width: fit-content;
-}
-.error{
-    font-size: 12px;
-    margin-top: 5px;
-    color: red;
-}
-.disabled{
-    cursor: not-allowed;
+gap:20px;
 }
 .enabled{
     cursor: pointer;
 }
-.form-element.quill{
-    width: 100%;
-    min-height: 300px;
+.disabled{
+    cursor: not-allowed;
 }

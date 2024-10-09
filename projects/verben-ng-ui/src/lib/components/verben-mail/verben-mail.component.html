@@ -1,10 +1,12 @@
-<form [style.width]="'600px'" [formGroup]="mailForm" (ngSubmit)="sendEmail()">
-  <div class="button-container">
-    <button type="button" (click)="toggleEditor()">
+<form [style.width]="containerWidth" [formGroup]="mailForm" (ngSubmit)="sendEmail()">
+  <div class="button-container flex flex-end gap" [style.margin-bottom]="'10px'">
+    <button  class="button" type="button" (click)="toggleEditor()">
       {{ isRichText ? "Switch to Plain" : "View Designer" }}
     </button>
     <button
       type="submit"
+      [style.background-color]="primaryColor"
+      [style.padding]="'0px 10px'"
       [ngClass]="{
         disabled: mailForm.invalid,
         enabled: !mailForm.invalid
@@ -14,7 +16,7 @@
       Send
     </button>
   </div>
-  <div class="container">
+  <div class="container"[style.border-radius]="borderRadius" [style.border]="border" [style.padding]="pd">
     <div class="verben-mail-container">
       <div class="verben-mail-form">
         <!-- Subject Field -->
@@ -80,6 +82,7 @@
             id="attachment"
             type="file"
             (change)="onFileSelected($event)"
+            class="none"
           />
           <div *ngIf="isUploading" class="loader">Uploading...</div>
           <div *ngIf="uploadedFileName" class="flex items-center gap">
@@ -102,11 +105,11 @@
             *ngIf="isRichText"
             [modules]="quillConfig"
             formControlName="body"
-            [style.height]="quillHeight"
           ></quill-editor>
           <textarea
             *ngIf="!isRichText"
             formControlName="body"
+            class="block"
             rows="10"
             cols="50"
           ></textarea>

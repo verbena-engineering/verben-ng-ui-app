@@ -13,7 +13,6 @@ import { SvgModule } from '../svg/svg.module';
 import { MailPayload } from '../../models/mail-model';
 import { ChipModule } from '../chip/chip.module';
 
-
 @Component({
   selector: 'verben-mail-template',
   templateUrl: './verben-mail.component.html',
@@ -62,23 +61,22 @@ export class VerbenMailTemplate {
     const validEmails: string[] = [];
 
     newValues.forEach((email: string) => {
-        if (emailRegex.test(email)) {
-            validEmails.push(email);
-        } else {
-          if(!emailRegex.test(email)){
-            this.toEmailError = 'email must be valid';
-          }
+      if (emailRegex.test(email)) {
+        validEmails.push(email);
+      } else {
+        if (!emailRegex.test(email)) {
+          this.toEmailError = 'email must be valid';
         }
+      }
     });
     if (validEmails.length === 0) {
-        this.toEmailError = 'Please provide at least one valid email';
+      this.toEmailError = 'Please provide at least one valid email';
     } else {
-        this.toEmailError = '';
+      this.toEmailError = '';
     }
 
     this.toEmails = validEmails;
-}
-
+  }
 
   onCcChange(): void {
     const newValues = this.mailForm.get('ccEmails')?.value;
@@ -120,18 +118,19 @@ export class VerbenMailTemplate {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      this.isUploading = true;
       this.fileUploadError = null;
-
-      setTimeout(() => {
+      if (!file) {
+        this.isUploading = true;
+      }
+      if (file.size > 5000000) {
+        this.fileUploadError = 'File size exceeds 5MB limit.';
+        this.uploadedFileName = null;
         this.isUploading = false;
-        if (file.size > 5000000) {
-          this.fileUploadError = 'File size exceeds 5MB limit.';
-          this.uploadedFileName = null;
-        } else {
-          this.uploadedFileName = file.name;
-        }
-      }, 2000);
+      } else {
+        this.uploadedFileName = file.name;
+      }
+    } else {
+      this.isUploading = false;
     }
   }
 

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CardDataViewComponent } from './Components/card-data-view/cdv.component';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { DropdownSampleComponent } from './views/dropdown-sample/dropdown-sample.component';
+import { DropdownSampleComponent } from './documentation/dropdown-sample/dropdown-sample.component';
 
 const routes: Routes = [
   {

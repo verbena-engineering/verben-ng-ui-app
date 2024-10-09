@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { CardDataViewComponent } from './Components/card-data-view/cdv.component';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { DropdownSampleComponent } from './views/dropdown-sample/dropdown-sample.component';
 import { IconsSampleComponent } from './views/icons-sample/icons-sample.component';
 import { ImageSampleComponent } from './views/image-sample/image-sample.component';
 import { NotificationsSampleComponent } from './views/notifications-sample/notifications-sample.component';
@@ -12,11 +11,12 @@ import { TooltipSampleComponent } from './views/tooltip-sample/tooltip-sample.co
 import { ImageSampleModule } from './views/image-sample/image-sample.module';
 
 const routes: Routes = [
-    {
+  {
     path: 'card-data-view',
-    
-    component:  CardDataViewComponent,
+
+    component: CardDataViewComponent,
   },
+  { path: 'home', component: HomeComponent, pathMatch: 'full' },
   { path: '', redirectTo: 'documentation', pathMatch: 'full' },
   {
     path: 'documentation',

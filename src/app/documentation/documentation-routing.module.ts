@@ -9,6 +9,18 @@ const routes: Routes = [
     loadChildren: () =>
       import('./data-table/data-table.module').then((m) => m.DataTableModule),
   },
+  {
+    path: 'dropdown',
+    loadChildren: () =>
+      import('./dropdown-sample/dropdown-sample.module').then(
+        (m) => m.DropdownSampleModule
+      ),
+  },
+  {
+    path: 'chip',
+    loadChildren: () =>
+      import('./chip/chip.module').then((m) => m.ChipExampleModule),
+  },
 ];
 
 @NgModule({

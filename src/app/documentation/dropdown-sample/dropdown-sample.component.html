@@ -5,21 +5,6 @@
   <div>
     <button class="verben-button secondary">Save</button>
   </div>
-  <div class="example-section flex flex-col">
-    <h1>Basic Chip</h1>
-    <verben-chip [disabled]="true" placeholder="Add Items" (onChange)="onChipChange($event)"
-      [(ngModel)]="basicChip"></verben-chip>
-  </div>
-
-  <div class="example-section flex flex-col">
-    <h1>Chip. Max 10. Templated item</h1>
-    <verben-chip [required]="true" invalidMessage="No value was provided" (onChange)="onChipChange($event)" [max]="10"
-      [(ngModel)]="chipValues">
-      <ng-template let-item vTemplate="item">
-        {{item}} Item Template
-      </ng-template>
-    </verben-chip>
-  </div>
 
   <div class="example-section flex flex-col">
     <h1>Normal Example</h1>

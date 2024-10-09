@@ -61,6 +61,7 @@
 
 .drop-down-input {
   align-items: center;
+  min-height: 39px;
 }
 
 .drop-down-input.disabled .dropdown-label {
@@ -101,6 +102,9 @@
 
 .dropdown-label {
   color: #334155;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dropdown-label.place-holder {
@@ -148,10 +152,6 @@
 .search-section.focused {
   border-color: #3b82f6;
   outline: none;
-}
-
-.search-icon {
-  display: flex;
 }
 
 .search-icon>svg {

@@ -45,10 +45,18 @@ export class SvgComponent implements OnInit {
     svgElement.setAttribute('width', this.width.toString());
     svgElement.setAttribute('height', this.height.toString());
 
-    const paths = svgElement.querySelectorAll('path');
-    paths.forEach(path => {
-      path.setAttribute('fill', this.fill);
-      path.setAttribute('stroke', this.stroke);
+    const elementsToUpdate = ['path', 'circle', 'line', 'rect', 'polygon', 'polyline', 'ellipse'];
+
+    elementsToUpdate.forEach(tag => {
+      const elements = svgElement.querySelectorAll(tag);
+      elements.forEach(element => {
+        if (this.fill) {
+          element.setAttribute('fill', this.fill);
+        }
+        if (this.stroke) {
+          element.setAttribute('stroke', this.stroke);
+        }
+      });
     });
 
     const svgContainerEl = this.svgContainer.nativeElement;

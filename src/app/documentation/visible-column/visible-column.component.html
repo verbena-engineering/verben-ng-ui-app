@@ -1,0 +1,16 @@
+<p [style.margin]="'20px 0px'" [style.width]="'700px'">
+The verben-visible-column component is a customizable interface that allows users to show or hide table columns based on their selections. It accepts various input properties, including border, borderRadius, boxShadow, bgColor, width, textColor, pd, and color options for primary and secondary elements. The component emits an event through the (columnsUpdated) output whenever the visibility of columns is changed, enabling dynamic updates. This component provides a flexible styling system to cater to a variety of design needs.
+</p>
+<verben-visible-column
+border="1px solid rgba(212, 160, 7, 1)"
+borderRadius="10px"
+boxShadow="2px 2px 2px 0px silver"
+bgColor="white"
+width="400px"
+textColor="black"
+pd="1rem"
+primaryColor="#FFE681"
+secondaryColor="#3479E9"
+(columnsUpdated)="onColumnsUpdated($event)"
+[columns]="columns"
+></verben-visible-column>

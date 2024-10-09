@@ -95,3 +95,4 @@ export * from './lib/verbena-switch/verbena-switch.component';
 export * from './lib/verbena-switch/verbena-switch.module';
 
 export * from './lib/components/verben-mail/verben-mail.module'
+export * from './lib/components/data-table'

@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CardDataViewModule } from '../card-data-view/card-data-view.module';
 import { SvgModule } from '../svg/svg.module';
+import { DataTableModule } from '../data-table';
+
 
 @Component({
   selector: 'verben-data-view',
   standalone: true,
-  imports: [CommonModule, SvgModule,CardDataViewModule],
+  imports: [CommonModule, SvgModule,CardDataViewModule,DataTableModule],
   templateUrl: './data-view.component.html',
   styleUrls: ['./data-view.component.css']
 })

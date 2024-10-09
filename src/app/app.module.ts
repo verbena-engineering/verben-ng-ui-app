@@ -29,7 +29,8 @@ import {
     SortTableModule,
     VisibleColumnModule,
     DataViewModule,
-    VerbenaMailTemplateModule
+    VerbenaMailTemplateModule,
+
 
      } from '../../projects/verben-ng-ui/src/public-api';
 import { CardDataViewComponent } from './Components/card-data-view/cdv.component';

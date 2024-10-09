@@ -1,72 +1,15 @@
-<form>
-  <!-- <verben-svg icon="alert" [width]="100" [height]="100" stroke="red" fill="red"></verben-svg>
-  <verben-svg icon="alert" [width]="80" [height]="80" fill="green" stroke="green"></verben-svg>
-  <verben-svg icon="user" [width]="60" [height]="60" stroke="blue" fill="blue"></verben-svg>
-  <verben-svg icon="user" [width]="40" [height]="40" fill="yellow" stroke="yellow"></verben-svg>
-  <verben-svg icon="close" [width]="20" [height]="20"  stroke="red"></verben-svg>
-  <verben-svg icon="close" [width]="40" [height]="40"  stroke="green"></verben-svg>
-  <verben-svg icon="close" [width]="40" [height]="40"  stroke="yellow"></verben-svg>  -->
-  <verben-sort-table
-    border="1px solid rgba(212, 160, 7, 1)"
-    borderRadius="10px"
-    boxShadow="2px 2px 2px 0px silver"
-    bgColor="white"
-    width="400px"
-    textColor="black"
-    pd="1rem"
-    primaryColor="#FFE681"
-    secondaryColor="#3479E9"
-    tertiaryColor="#404040"
-    [enableDragAndDrop]="true"
-    (selectedOptions)="onSelectOptions($event)"
-    [sortOptions]="[
-      {
-        name: 'Amount',
-        type: SortFilter.Number,
-        checked: false
-      },
-      { name: 'Name', type: SortFilter.String, checked: false },
-      { name: 'Date', type: SortFilter.Date, checked: false },
-      {
-        name: 'Category',
-        type: SortFilter.String,
-        checked: false
-      },
-      {
-        name: 'Rating',
-        value: 'Rating',
-        type: SortFilter.Number,
-        checked: false
-      }
-    ]"
-  ></verben-sort-table>
+  <div style="height: 48px; padding: 16px; border-bottom: 1px solid black;">
+    <a routerLink="/documentation">Open Documentation</a>
+  </div>
+  
+  <form>
+  <verben-drop-down></verben-drop-down>
 
-  <verben-visible-column
-    border="1px solid rgba(212, 160, 7, 1)"
-    borderRadius="10px"
-    boxShadow="2px 2px 2px 0px silver"
-    bgColor="white"
-    width="400px"
-    textColor="black"
-    pd="1rem"
-    primaryColor="#FFE681"
-    secondaryColor="#3479E9"
-    (columnsUpdated)="onColumnsUpdated($event)"
-    [columns]="[
-      { checked: true, name: 'Column 1', type: SortFilter.Bool },
-      { checked: false, name: 'Column 2', type: SortFilter.Bool },
-      { checked: true, name: 'Column 3', type: SortFilter.Bool },
-      { checked: false, name: 'Column 4', type: SortFilter.Bool },
-      { checked: true, name: 'Column 5', type: SortFilter.Bool },
-      { checked: false, name: 'Column 6', type: SortFilter.Bool },
-      { checked: true, name: 'Column 7', type: SortFilter.Bool },
-      { checked: false, name: 'Column 8', type: SortFilter.Bool }
-    ]"
-  ></verben-visible-column>
-  <verben-data-view (viewChange)="onViewChange($event)"> </verben-data-view>
-  <verbena-mail-template
-    (mailPayload)="onSubmitMail($event)"
-  ></verbena-mail-template>
+  <verben-svg icon="alert" [width]="100" [height]="100" color="red"></verben-svg> 
+  <verben-svg icon="alert" [width]="80" [height]="80" color="green"></verben-svg> 
+  <verben-svg icon="user" [width]="60" [height]="60" color="blue"></verben-svg> 
+  <verben-svg icon="user" [width]="40" [height]="40" color="yellow"></verben-svg> 
+
   <verben-image
     [url]="
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR94u0EyhIYQ35WVzV0LSlxZ0Ozv9tMqfzewA&s'

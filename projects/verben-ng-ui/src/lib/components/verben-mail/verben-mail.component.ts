@@ -8,14 +8,14 @@ import {
 import { QuillModule } from 'ngx-quill';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { QuillConfiguration } from './verben-mail.component.config';
+import { QuillConfiguration } from 'verben-ng-ui/src/config/quill-config';
 import { SvgModule } from '../svg/svg.module';
 import { MailPayload } from '../../models/mail-model';
 import { ChipModule } from '../chip/chip.module';
-import { ChipChangeEvent } from '../chip/ChipChangeEvent';
+
 
 @Component({
-  selector: 'verbena-mail-template',
+  selector: 'verben-mail-template',
   templateUrl: './verben-mail.component.html',
   styleUrls: ['./verben-mail.component.css'],
   standalone: true,
@@ -75,6 +75,7 @@ export class VerbenMailTemplate {
     } else {
         this.toEmailError = '';
     }
+
     this.toEmails = validEmails;
 }
 

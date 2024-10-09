@@ -76,7 +76,7 @@ export class TableFilterComponent {
 
     const newFilter: IDataFilter = {
       type: this.selectedFilterType,
-      condition: this.selectedCondition,
+      // condition: this.selectedCondition,
       value: this.inputValue,
       checked: false
     };
@@ -109,7 +109,7 @@ export class TableFilterComponent {
   editFilter(index: number) {
     const filter = this.savedFilters[index];
     this.selectedFilterType = filter.type;
-    this.selectedCondition = filter.condition;
+    // this.selectedCondition = filter.condition;
     this.inputValue = filter.value;
     this.editIndex = index;
   }
@@ -145,13 +145,13 @@ export class TableFilterComponent {
   }
 
   checkDuplicateFilter(): void {
-    const exists = this.savedFilters.some(
-      filter =>
-        filter.type === this.selectedFilterType &&
-        filter.condition === this.selectedCondition
-    );
-    this.disableAddFilterBtn = exists;
-    this.isDuplicateFilter = exists;
-    this.duplicateMessage = 'This entry is a duplicate and cannot be added.'
+    // const exists = this.savedFilters.some(
+    //   filter =>
+    //     filter.type === this.selectedFilterType &&
+    //     filter.condition === this.selectedCondition
+    // );
+    // this.disableAddFilterBtn = exists;
+    // this.isDuplicateFilter = exists;
+    // this.duplicateMessage = 'This entry is a duplicate and cannot be added.'
   }
 }

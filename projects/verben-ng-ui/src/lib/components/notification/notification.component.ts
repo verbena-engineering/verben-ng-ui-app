@@ -1,6 +1,4 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { SvgComponent } from '../svg/svg.component';
-import { CommonModule } from '@angular/common'
 
 interface Button {
   text: string;
@@ -13,8 +11,6 @@ interface Button {
 
 @Component({
   selector: 'verben-notification',
-  standalone: true,
-  imports: [SvgComponent,CommonModule],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.css'
 })

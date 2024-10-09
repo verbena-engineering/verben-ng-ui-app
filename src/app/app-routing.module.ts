@@ -9,6 +9,7 @@ import { ImageSampleComponent } from './views/image-sample/image-sample.componen
 import { NotificationsSampleComponent } from './views/notifications-sample/notifications-sample.component';
 import { TableFilterSampleComponent } from './views/table-filter-sample/table-filter-sample.component';
 import { TooltipSampleComponent } from './views/tooltip-sample/tooltip-sample.component';
+import { ImageSampleModule } from './views/image-sample/image-sample.module';
 
 const routes: Routes = [
     {
@@ -26,24 +27,27 @@ const routes: Routes = [
   },
   {
     path: 'icons',
-    component:IconsSampleComponent
+    loadChildren: () =>
+      import('./views/icons-sample/icons-sample.module').then(
+        (m) => m.IconSampleModule
+      ),
   },
-  {
-    path: 'images',
-    component:ImageSampleComponent
-  },
-  {
-    path: 'notifications',
-    component:NotificationsSampleComponent
-  },
-  {
-    path: 'table-filter',
-    component:TableFilterSampleComponent
-  },
-  {
-    path: 'tooltips',
-    component:TooltipSampleComponent
-  },
+  // {
+  //   path: 'images',
+  //   component:ImageSampleModule
+  // },
+  // {
+  //   path: 'notifications',
+  //   component:NotificationsSampleComponent
+  // },
+  // {
+  //   path: 'table-filter',
+  //   component:TableFilterSampleComponent
+  // },
+  // {
+  //   path: 'tooltips',
+  //   component:TooltipSampleComponent
+  // },
 ];
 
 @NgModule({

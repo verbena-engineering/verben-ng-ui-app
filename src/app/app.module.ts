@@ -26,17 +26,12 @@ import {
     VerbenaTextareaModule,
     VerbenaSwitchModule,
     NotificationModule
-
      } from '../../projects/verben-ng-ui/src/public-api';
 import { CDVModule } from './Components/card-data-view/cdv.module';
 import { CardDataViewComponent } from './Components/card-data-view/cdv.component';
 import { HomeComponent } from './home/home.component';
 import { DropdownSampleComponent } from './views/dropdown-sample/dropdown-sample.component';
 import { FormsModule } from '@angular/forms';
-import { NotificationsSampleComponent } from './views/notifications-sample/notifications-sample.component';
-import { TableFilterSampleComponent } from './views/table-filter-sample/table-filter-sample.component';
-import { TooltipSampleComponent } from './views/tooltip-sample/tooltip-sample.component';
-import { ImageSampleComponent } from './views/image-sample/image-sample.component';
 
 
 @NgModule({
@@ -71,10 +66,7 @@ import { ImageSampleComponent } from './views/image-sample/image-sample.componen
     CardDataViewModule,
     VerbenaSwitchModule,
     NotificationModule,
-    ImageSampleComponent,
-    NotificationsSampleComponent,
-    // TableFilterSampleComponent,
-    // TooltipSampleComponent,
+
 ],
   providers: [
     provideHttpClient(withFetch())

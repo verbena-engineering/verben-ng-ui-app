@@ -5,45 +5,31 @@
   position: relative; /* Needed for positioning elements */
 }
 
-.input-wrapper {
-  display: flex;
-  align-items: center;
-  position: relative;
+.input-field {
+  width: 100%;
+  padding: 10px;
 }
 
-.input-field.error-with-dot {
-  padding-right: 25px; /* Adjust padding to make space for the dot */
-}
-
-.input-field.error-with-dot::after {
-  content: '';
-  position: absolute;
-  top: 50%; /* Center the dot vertically */
-  right: 10px; /* Position from the right */
-  width: 8px; /* Size of the dot */
-  height: 8px; /* Size of the dot */
-  background-color: red; /* Color of the dot */
-  border-radius: 50%; /* Make it a circle */
-  transform: translateY(-50%); /* Center the dot vertically */
-  pointer-events: none; /* Ensure the dot does not interfere with input */
-}
-
-.error {
-  color: red;
+.error-message {
   font-size: 12px;
+  margin: 0;
+}
+
+.error-top {
+  position: absolute;
+  top: 0;
+}
+
+.error-bottom {
   margin-top: 5px;
 }
 
-.error-side {
-  color: red;
-  font-size: 12px;
-  margin: 0 10px;
+.error-left {
+  position: absolute;
+  left: -10px;
 }
 
-.error[errorPosition='right'] {
-  margin-left: 10px;
-}
-
-.error[errorPosition='left'] {
-  margin-right: 10px;
+.error-right {
+  position: absolute;
+  right: -10px;
 }

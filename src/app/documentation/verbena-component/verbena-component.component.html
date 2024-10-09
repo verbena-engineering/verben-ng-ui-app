@@ -1,7 +1,7 @@
-
+<!--
 <verbena-input
   label="Convert to Decimal:"
-  
+
 
   [minLength]="3"
   [maxLength]="10"
@@ -9,8 +9,7 @@
 <verbena-input
   label="Convert to Decimal:"
   appValidate="number"
-  [showBorder]="true"
-  [showErrorMessage]="true"
+
   errorPosition="below"
   [minLength]="3"
   [maxLength]="10"
@@ -49,16 +48,15 @@
   [disable]="false"
   appValidate="number"
 
-  [showBorder]="true"
-  [showErrorMessage]="false"
+
 
 
 
 ></verbena-input>
 
 
-<!-- position error message  -->
- <!-- focus border  -->
+
+
 
 <verbena-input
   label="Username"
@@ -78,8 +76,6 @@
 
 
 ></verbena-input>
-
-<!-- label position -->
 
 
 
@@ -185,8 +181,7 @@ height="40px"
   height="40px"
 ></verbena-button>
 
-<!-- fix to the center  -->
-<!-- specify position of icon -->
+
 
 <verbena-badge
   text="5"
@@ -237,7 +232,7 @@ width and height
   [labelColor]="'#efc050'"
 > <br><br>
 
-</verbena-input>
+</verbena-input> -->
 
 <verbena-textarea
   label="Comments"
@@ -255,3 +250,48 @@ width and height
   label="Enable Notifications"
 
 ></verbena-switch>
+<h2>Customizable Input Example</h2>
+
+<verbena-input
+  [label]="'Email'"
+  [placeHolder]="'Enter your email'"
+
+  [required]="true"
+  [type]="'text'"
+  [(value)]="email"
+  [showBorder]="true"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'orange'"
+  [errorBorderColor]="'orange'"
+  [errorPosition]="'top'"
+></verbena-input>
+
+<verbena-input
+  [label]="'Age'"
+  [placeHolder]="'Enter your age'"
+  [required]="true"
+  [type]="'integer'"
+  appValidate="number"
+  [(value)]="age"
+  [showBorder]="true"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'blue'"
+  [errorBorderColor]="'blue'"
+  [errorPosition]="'right'"
+></verbena-input>
+
+<verbena-input
+  [label]="'Decimal Value'"
+  [placeHolder]="'Enter a decimal value'"
+  appValidate="decimal"
+  [required]="true"
+  [type]="'decimal'"
+  [(value)]="decimalValue"
+  [showBorder]="false"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'green'"
+  [errorBorderColor]="'green'"
+  [errorPosition]="'bottom'"
+></verbena-input>
+
+<button (click)="submit()">Submit</button>

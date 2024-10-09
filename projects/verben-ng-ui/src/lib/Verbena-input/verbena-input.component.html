@@ -1,58 +1,31 @@
-<div>
-  <div
-  class="input-container"
-  [ngStyle]="{
-    'display': 'inline-flex',
-    'flex-direction': 'column',
-    'margin': mg
-  }"
->
-  <div
-    [ngStyle]="{
-      'display': 'flex',
-      'justify-content': labelPosition
-    }"
-  >
-    <label
-      [for]="inputId"
-      [ngStyle]="{
-        'color': labelColor
-      }"
-    >
-      {{ label }}
-    </label>
-  </div>
-
+<div class="input-container">
+  <label [for]="label">{{ label }}</label>
   <input
-    [id]="inputId"
+    [id]="label"
     [attr.type]="type"
     [attr.placeholder]="placeHolder"
     [required]="required"
     [attr.minlength]="minLength?.toString()"
     [attr.maxlength]="maxLength?.toString()"
     (input)="onInput($event)"
-    (blur)="validate()"
     [(ngModel)]="value"
     [ngStyle]="{
       'background-color': bgColor,
-      'border': showBorder ? (errorMessage ? '1px solid red' : border) : 'none',
+      'border': showBorder ? (errorMessage ? '1px solid ' + errorBorderColor : border) : 'none',
       'border-radius': borderRadius,
-      'color': textColor,
-      'width': width,
-      'height': height,
-      'aspect-ratio': aspectRatio,
-      'padding': pd
+      'color': textColor
     }"
-    [disabled]="disable"
-    [ngClass]="{'error-with-dot': errorMessage}"
     class="input-field"
   />
 
-</div>
-
-
-
-
-<span *ngIf="showErrorMessage && errorMessage" class="error">{{ errorMessage }}</span>
-
+  <!-- Conditional error message display based on position -->
+  <span *ngIf="errorMessage && showErrorMessage"
+        [ngStyle]="{ 'color': errorMessageColor }"
+        [ngClass]="{'error-message': true,
+                     'error-top': errorPosition === 'top',
+                     'error-bottom': errorPosition === 'bottom',
+                     'error-left': errorPosition === 'left',
+                     'error-right': errorPosition === 'right'}">
+    {{ errorMessage }}
+  </span>
 </div>

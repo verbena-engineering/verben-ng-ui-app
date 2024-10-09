@@ -13,11 +13,13 @@ import { VerbenaButtonModule } from "../../../projects/verben-ng-ui/src/lib/verb
 
 
 
+
 @NgModule({
   declarations: [
     DocumentationComponent,
 
     VerbenaValidationComponent,
+
 
   ],
   imports: [

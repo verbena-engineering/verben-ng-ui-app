@@ -7,5 +7,15 @@ import { Component } from '@angular/core';
   styleUrl: './verbena-component.component.scss'
 })
 export class VerbenaComponentComponent {
+  email: string = '';
+  age: string = '';
+  decimalValue: string = '';
 
+  submit() {
+    console.log('Submitted Values:', {
+      email: this.email,
+      age: this.age,
+      decimalValue: this.decimalValue
+    });
+  }
 }

@@ -178,8 +178,9 @@
       pd="6px"
       [showBorder]="true"
       [showErrorMessage]="true"
-      errorPosition="below"
-      type="date"
+      [errorPosition]="'bottom'"
+
+
       [(ngModel)]="inputValue"
     ></verbena-input>
 
@@ -194,7 +195,7 @@
       placeHolder="input integer"
       [showBorder]="true"
       [showErrorMessage]="true"
-      errorPosition="below"
+      [errorPosition]="'bottom'"
       appValidate="integer"
       [(ngModel)]="inputValue"
     ></verbena-input>
@@ -210,7 +211,7 @@
       pd="6px"
       [showBorder]="true"
       [showErrorMessage]="true"
-      errorPosition="below"
+      [errorPosition]="'bottom'"
       [(ngModel)]="inputValue"
     ></verbena-input>
 
@@ -259,6 +260,7 @@
       </button>
     </div>
 
- 
+
   </div>
+  
 </section>

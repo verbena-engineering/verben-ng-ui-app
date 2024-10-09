@@ -10,7 +10,7 @@ export class ValidateDirective {
   @Input() required: boolean = false;
   @Input() showBorder: boolean = true;  // The controlling factor for the error icon
   @Input() showErrorMessage: boolean = true;
-  @Input() errorPosition: 'above' | 'below' = 'below';
+
   @Input() errorBorderColor: string = 'red';  // Border color for errors
   @Input() errorMessageColor: string = 'red';  // Color for error message
   @Input() errorIconTooltipPosition: 'top' | 'bottom' | 'left' | 'right' = 'top'; // Tooltip position for error dot
@@ -61,7 +61,7 @@ export class ValidateDirective {
   }
 
   private validateDecimal(input: any, value: string) {
-    const regex = /^\d*\.?\d*$/; 
+    const regex = /^\d*\.?\d*$/;
     if (!regex.test(value)) {
       this.showError(input, 'Please enter a valid decimal number');
     } else {
@@ -97,13 +97,7 @@ export class ValidateDirective {
       this.renderer.setStyle(input, 'borderColor', this.errorBorderColor);
       this.renderer.addClass(input, 'error-with-dot'); // Add error class
 
-      // Show error icon when showBorder is true
-      this.errorMessageService.createErrorMessage(input, message, this.errorPosition, this.errorMessageColor, true, this.errorIconTooltipPosition);
-    }
 
-    if (this.showErrorMessage) {
-      // Show error message when showErrorMessage is true
-      this.errorMessageService.createErrorMessage(input, message, this.errorPosition, this.errorMessageColor, false, this.errorIconTooltipPosition);
     }
   }
 

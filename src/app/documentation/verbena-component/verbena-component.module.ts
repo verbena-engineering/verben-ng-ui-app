@@ -13,10 +13,11 @@ import { VerbenaBadgeModule } from "../../../../projects/verben-ng-ui/src/lib/ve
 import { VerbenaButtonModule } from '../../../../projects/verben-ng-ui/src/lib/verbena-button/verbena-button.module';
 import { VerbenaSwitchModule } from '../../../../projects/verben-ng-ui/src/lib/verbena-switch/verbena-switch.module';
 import { VerbenaTextareaModule } from '../../../../projects/verben-ng-ui/src/lib/verbena-textarea/verbena-textarea.module';
+import { ValidationModule } from '../../../../projects/verben-ng-ui/src/lib/validate/validate.module';
 
 
 @NgModule({
   declarations: [VerbenaComponentComponent],
-  imports: [CommonModule, FormsModule, VerbenaBadgeModule, VerbenaButtonModule, VerbenaSwitchModule, VerbenaTextareaModule, verbenaComponentRoutingModule, VerbenaInputModule, TooltipComponent],
+  imports: [CommonModule, FormsModule, VerbenaBadgeModule, VerbenaButtonModule, VerbenaSwitchModule, VerbenaTextareaModule, verbenaComponentRoutingModule, VerbenaInputModule, TooltipComponent, ValidationModule],
 })
 export class VerbenaComponentModule {}

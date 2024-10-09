@@ -17,30 +17,29 @@ export class ValidateDirective {
     private renderer: Renderer2
   ) {}
 
-  @HostListener('input') onInput() {
-    const input = this.el.nativeElement as HTMLInputElement;
-    const value = input.value.trim();
+  @HostListener('input', ['$event.target']) onInput(inputElement: any) {
+    const value = inputElement.value.trim();
 
     switch (this.validationType) {
       case 'text':
-        this.validateText(input, value);
+        this.validateText(inputElement, value);
         break;
       case 'number':
-        this.validateNumber(input, value);
+        this.validateNumber(inputElement, value);
         break;
       case 'decimal':
-        this.validateDecimal(input, value);
+        this.validateDecimal(inputElement, value);
         break;
       case 'integer':
-        this.validateInteger(input, value);
+        this.validateInteger(inputElement, value);
         break;
       case 'email':
-        this.validateEmail(input, value);
+        this.validateEmail(inputElement, value);
         break;
     }
   }
 
-  private validateText(input: HTMLInputElement, value: string) {
+  private validateText(input: any, value: string) {
     if (this.required && value === '') {
       this.showError(input, 'Text is required');
     } else {
@@ -48,16 +47,17 @@ export class ValidateDirective {
     }
   }
 
-  private validateNumber(input: HTMLInputElement, value: string) {
+  private validateNumber(input: any, value: string) {
+    // Prevent non-numeric values
     if (isNaN(+value)) {
-      this.showError(input, 'Please enter a valid number');
+      this.blockInvalidInput(input, 'Please enter a valid number');
     } else {
       this.clearError(input);
     }
   }
 
-  private validateDecimal(input: HTMLInputElement, value: string) {
-    const regex = /^\d+(\.\d+)?$/;
+  private validateDecimal(input: any, value: string) {
+    const regex = /^\d*\.?\d*$/;
     if (!regex.test(value)) {
       this.showError(input, 'Please enter a valid decimal number');
     } else {
@@ -65,25 +65,31 @@ export class ValidateDirective {
     }
   }
 
-  private validateInteger(input: HTMLInputElement, value: string) {
+  private validateInteger(input: any, value: string) {
     const regex = /^\d+$/;
     if (!regex.test(value)) {
-      this.showError(input, 'Please enter a valid integer');
+      this.blockInvalidInput(input, 'Please enter a valid integer');
     } else {
       this.clearError(input);
     }
   }
 
-  private validateEmail(input: HTMLInputElement, value: string) {
+  private validateEmail(input: any, value: string) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!regex.test(value)) {
-      this.showError(input, 'Please enter a valid email address');
+      this.blockInvalidInput(input, 'Please enter a valid email address');
     } else {
       this.clearError(input);
     }
   }
 
-  private showError(input: HTMLInputElement, message: string) {
+  // Block invalid input by resetting the input value and showing an error
+  private blockInvalidInput(input: any, message: string) {
+    input.value = ''; // Clear the input value to prevent invalid entries
+    this.showError(input, message);
+  }
+
+  private showError(input: any, message: string) {
     if (this.showBorder) {
       this.renderer.setStyle(input, 'borderColor', 'red');
     }
@@ -92,7 +98,7 @@ export class ValidateDirective {
     }
   }
 
-  private clearError(input: HTMLInputElement) {
+  private clearError(input: any) {
     if (this.showBorder) {
       this.renderer.removeStyle(input, 'borderColor');
     }

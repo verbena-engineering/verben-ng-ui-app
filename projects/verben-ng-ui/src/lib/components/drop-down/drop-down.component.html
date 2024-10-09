@@ -1,71 +1,78 @@
 <div #dropdownContainer [ngClass]="styleClass" [style.width]="width" class="drop-down">
-  <div (click)="onDropdownClick($event)" [class.focused]="isFocused"
-    [ngClass]="{'ng-invalid': isInvalid, 'disabled': disabled}" (focus)="onFocus()" (blur)="onBlur()" tabindex="0"
-    class="drop-down-input flex">
-    <div class="drop-down-main-content">
-      <ng-container
-        *ngIf="(selectedItemTemplate && selectedOption) || (selectedItemTemplate && selectedOptions.length > 0); else defaultItem">
-        <div *ngIf="!multiselect">
-          <ng-container *ngTemplateOutlet="selectedItemTemplate; context: { $implicit: selectedOption }"></ng-container>
-        </div>
-        <div *ngIf="multiselect">
-          <ng-container
-            *ngTemplateOutlet="selectedItemTemplate; context: { $implicit: selectedOptions }"></ng-container>
-        </div>
-      </ng-container>
+  <div
+    [ngClass]="{'right-error': errorPosition == 'right', 'left-error': errorPosition == 'left', 'top-error': errorPosition == 'top'}"
+    class="drop-down-input-wrapper">
+    <div (click)="onDropdownClick($event)" [class.focused]="isFocused"
+      [ngClass]="{'ng-invalid': isInvalid, 'disabled': disabled}" (focus)="onFocus()" (blur)="onBlur()" tabindex="0"
+      class="drop-down-input verben-input flex">
+      <div class="drop-down-main-content">
+        <ng-container
+          *ngIf="(selectedItemTemplate && selectedOption) || (selectedItemTemplate && selectedOptions.length > 0); else defaultItem">
+          <div *ngIf="!multiselect">
+            <ng-container
+              *ngTemplateOutlet="selectedItemTemplate; context: { $implicit: selectedOption }"></ng-container>
+          </div>
+          <div *ngIf="multiselect">
+            <ng-container
+              *ngTemplateOutlet="selectedItemTemplate; context: { $implicit: selectedOptions }"></ng-container>
+          </div>
+        </ng-container>
 
-      <ng-template #defaultItem>
-        <div *ngIf="!multiselect" class="default-item flex">
-          <div class="dropdown-label place-holder" *ngIf="!this.selectedOption">{{placeholder}}</div>
-          <div *ngIf="this.selectedOption" class="item-label dropdown-label">
-            {{this.selectedOptionLabel}}</div>
-        </div>
-        <div *ngIf="multiselect" class="default-item multi-select flex">
-          <div class="dropdown-label place-holder" *ngIf="this.selectedOptions.length == 0">{{placeholder}}</div>
-          <div *ngIf="this.selectedOptions.length > 0" class="item-label dropdown-label">
-            <div *ngIf="display == 'chip'" class="multiselect-items-container-two chip">
-              <span *ngFor="let item of selectedOptionLabels; index as i"
-                class="multiselect-item-chip multi-select flex">
-                <span>{{item}}</span>
-                <svg (click)="onMultiselectItemClosed(i, $event); $event.stopPropagation();" width="10" height="10"
-                  viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M5.00065 9.33333C7.30184 9.33333 9.16732 7.46785 9.16732 5.16667C9.16732 2.86548 7.30184 1 5.00065 1C2.69946 1 0.833984 2.86548 0.833984 5.16667C0.833984 7.46785 2.69946 9.33333 5.00065 9.33333Z"
-                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M6.25 3.91797L3.75 6.41797" stroke="currentColor" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                  <path d="M3.75 3.91797L6.25 6.41797" stroke="currentColor" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </span>
-            </div>
-            <div *ngIf="display != 'chip'" class="multiselect-items-container-two normal">
-              <span *ngFor="let item of selectedOptionLabels; index as i" class="multiselect-item">
-                {{i !== selectedOptionLabels.length - 1? item + ', ':item}}
-              </span>
+        <ng-template #defaultItem>
+          <div *ngIf="!multiselect" class="default-item flex">
+            <div class="dropdown-label place-holder" *ngIf="!this.selectedOption">{{placeholder}}</div>
+            <div *ngIf="this.selectedOption" class="item-label dropdown-label">
+              {{this.selectedOptionLabel}}</div>
+          </div>
+          <div *ngIf="multiselect" class="default-item multi-select flex">
+            <div class="dropdown-label place-holder" *ngIf="this.selectedOptions.length == 0">{{placeholder}}</div>
+            <div *ngIf="this.selectedOptions.length > 0" class="item-label dropdown-label">
+              <div *ngIf="display == 'chip'" class="multiselect-items-container-two chip">
+                <span *ngFor="let item of selectedOptionLabels; index as i"
+                  class="multiselect-item-chip multi-select flex">
+                  <span>{{item}}</span>
+                  <svg (click)="onMultiselectItemClosed(i, $event); $event.stopPropagation();" width="10" height="10"
+                    viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M5.00065 9.33333C7.30184 9.33333 9.16732 7.46785 9.16732 5.16667C9.16732 2.86548 7.30184 1 5.00065 1C2.69946 1 0.833984 2.86548 0.833984 5.16667C0.833984 7.46785 2.69946 9.33333 5.00065 9.33333Z"
+                      stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M6.25 3.91797L3.75 6.41797" stroke="currentColor" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M3.75 3.91797L6.25 6.41797" stroke="currentColor" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </span>
+              </div>
+              <div *ngIf="display != 'chip'" class="multiselect-items-container-two normal">
+                <span *ngFor="let item of selectedOptionLabels; index as i" class="multiselect-item">
+                  {{i !== selectedOptionLabels.length - 1? item + ', ':item}}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      </ng-template>
+        </ng-template>
+      </div>
+      <span
+        *ngIf="(showClear && this.selectedOption && !multiselect) || (showClear && this.selectedOptions.length > 0 && multiselect)"
+        (click)="this.clearSelection($event); $event.stopPropagation()"
+        class="drop-down-icon-item drop-down-clear-button">
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.84375 0.84375L8.15625 8.15625" stroke="currentColor" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M0.84375 8.15625L8.15625 0.84375" stroke="currentColor" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </span>
+      <span class="drop-down-icon-item drop-down-expand-button">
+        <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M6.00507 4.88027C6.20205 4.62775 6.30683 4.4622 6.44095 4.32704C7.74334 3.01731 9.05202 1.71387 10.3576 0.406242C10.5713 0.192495 10.7882 0.00913367 11.1193 0.0101814C11.4692 0.0112292 11.7228 0.15792 11.8884 0.456537C12.057 0.760394 12.0309 1.06111 11.8349 1.34296C11.7658 1.4425 11.6767 1.52737 11.5908 1.61433C9.98873 3.21639 8.37305 4.80483 6.793 6.42784C6.29111 6.94335 5.68759 6.92344 5.21399 6.43832C3.63184 4.8174 2.01826 3.22687 0.414109 1.62691C0.116539 1.32934 -0.116067 1.0192 0.0620561 0.565507C0.271612 0.031139 0.883519 -0.167941 1.35502 0.157919C1.49647 0.255363 1.61592 0.387385 1.73955 0.509975C3.02204 1.79036 4.30452 3.07075 5.58386 4.35533C5.70645 4.47792 5.80284 4.62671 6.00611 4.88132L6.00507 4.88027Z"
+            fill="currentColor" />
+        </svg>
+      </span>
     </div>
-    <span
-      *ngIf="(showClear && this.selectedOption && !multiselect) || (showClear && this.selectedOptions.length > 0 && multiselect)"
-      (click)="this.clearSelection($event); $event.stopPropagation()"
-      class="drop-down-icon-item drop-down-clear-button">
-      <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0.84375 0.84375L8.15625 8.15625" stroke="currentColor" stroke-linecap="round"
-          stroke-linejoin="round" />
-        <path d="M0.84375 8.15625L8.15625 0.84375" stroke="currentColor" stroke-linecap="round"
-          stroke-linejoin="round" />
-      </svg>
-    </span>
-    <span class="drop-down-icon-item drop-down-expand-button">
-      <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M6.00507 4.88027C6.20205 4.62775 6.30683 4.4622 6.44095 4.32704C7.74334 3.01731 9.05202 1.71387 10.3576 0.406242C10.5713 0.192495 10.7882 0.00913367 11.1193 0.0101814C11.4692 0.0112292 11.7228 0.15792 11.8884 0.456537C12.057 0.760394 12.0309 1.06111 11.8349 1.34296C11.7658 1.4425 11.6767 1.52737 11.5908 1.61433C9.98873 3.21639 8.37305 4.80483 6.793 6.42784C6.29111 6.94335 5.68759 6.92344 5.21399 6.43832C3.63184 4.8174 2.01826 3.22687 0.414109 1.62691C0.116539 1.32934 -0.116067 1.0192 0.0620561 0.565507C0.271612 0.031139 0.883519 -0.167941 1.35502 0.157919C1.49647 0.255363 1.61592 0.387385 1.73955 0.509975C3.02204 1.79036 4.30452 3.07075 5.58386 4.35533C5.70645 4.47792 5.80284 4.62671 6.00611 4.88132L6.00507 4.88027Z"
-          fill="currentColor" />
-      </svg>
-    </span>
+    <div *ngIf="this.isInvalid && this.invalidMessage" class="verben-error-message error-message">{{invalidMessage}}
+    </div>
   </div>
   <div class="drop-down-menu-item-wrapper" *ngIf="isExpanded">
     <div *ngIf="multiselect && this.selectedOptions.length > 0">
@@ -95,6 +102,7 @@
       <div *ngIf="filter" [ngClass]="{'focused': isInputFocused}" tabindex="0" (focus)="onSearchFocus()"
         (blur)="onSearchBlur()" class="search-section flex">
         <span class="search-icon">
+          <!-- <verben-svg icon="search" [stroke]="'red'" [width]="15" [height]="15"></verben-svg> -->
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
             <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="2" fill="none"></circle>
             <line x1="14" y1="14" x2="19" y2="19" stroke="currentColor" stroke-width="2"></line>
@@ -109,8 +117,8 @@
         </div>
       </div>
     </div>
-    <div class="colored-underline-section">
-      <hr class="colored-underline" />
+    <div *ngIf="showHorizontalLine" class="colored-underline-section">
+      <hr [style.background-color]="horizontalLineColor" class="colored-underline" />
     </div>
     <div class="drop-down-menu-item">
       <drop-down-item [itemTemplate]="itemTemplate" [groupTemplate]="groupTemplate" [activeItem]="selectedOption"

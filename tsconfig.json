@@ -24,6 +24,7 @@
       "dom"
     ],
     "paths": {
+      "verben-ng-ui/*": [ "./projects/verben-ng-ui/*" ],
       "verben-ng-ui": [
         "./dist/verben-ng-ui"
       ]

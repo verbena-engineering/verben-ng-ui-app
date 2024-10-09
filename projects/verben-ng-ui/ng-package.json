@@ -3,5 +3,8 @@
   "dest": "../../dist/verben-ng-ui",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": [
+    "lodash"
+  ]
 }

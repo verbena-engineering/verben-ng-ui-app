@@ -18,7 +18,7 @@ import {
     CardModule,
     CardDataViewModule,
     ValidationModule,
-    
+
     VerbenaButtonModule,
     VerbenaBadgeModule,
     VerbenaInputModule,
@@ -35,12 +35,14 @@ import { HomeComponent } from './home/home.component';
 import { DropdownSampleComponent } from './views/dropdown-sample/dropdown-sample.component';
 import { FormsModule } from '@angular/forms';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     CardDataViewComponent,
     HomeComponent,
     DropdownSampleComponent,
+  
   ],
   imports: [
     FormsModule,

@@ -9,6 +9,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./data-table/data-table.module').then((m) => m.DataTableModule),
   },
+  {
+    path: 'verbena-component',
+    loadChildren: () =>
+      import('./verbena-component/verbena-component.module').then((m) => m.VerbenaComponentModule),
+  },
 ];
 
 @NgModule({

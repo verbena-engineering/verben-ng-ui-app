@@ -1,0 +1,257 @@
+
+<verbena-input
+  label="Convert to Decimal:"
+  
+
+  [minLength]="3"
+  [maxLength]="10"
+></verbena-input>
+<verbena-input
+  label="Convert to Decimal:"
+  appValidate="number"
+  [showBorder]="true"
+  [showErrorMessage]="true"
+  errorPosition="below"
+  [minLength]="3"
+  [maxLength]="10"
+></verbena-input>
+
+
+<verbena-input
+  label="Enter my name"
+  bgColor="#f5f5f5"
+  mg="10px"
+  border="1px solid #ccc"
+  borderRadius="5px"
+  textColor="black"
+  width="300px"
+  height="40px"
+  aspectRatio="2/1"
+  pd="10px"
+  placeHolder="Enter your username"
+
+  appValidate="number"
+
+></verbena-input>
+
+<verbena-input
+  label="new input"
+  bgColor="#f5f5f5"
+  mg="10px"
+  border="1px solid blue"
+  borderRadius="5px"
+  textColor="black"
+  width="300px"
+  height="40px"
+  aspectRatio="2/1"
+  pd="10px"
+  placeHolder="Enter your username"
+  [disable]="false"
+  appValidate="number"
+
+  [showBorder]="true"
+  [showErrorMessage]="false"
+
+
+
+></verbena-input>
+
+
+<!-- position error message  -->
+ <!-- focus border  -->
+
+<verbena-input
+  label="Username"
+  [labelPosition]="'center'"
+  [labelColor]="'blue'"
+  bgColor="#f5f5f5"
+  mg="10px"
+  border="1px solid #ccc"
+  borderRadius="5px"
+  textColor="black"
+  width="300px"
+  height="40px"
+  pd="10px"
+  placeHolder="Enter your username"
+
+
+
+
+></verbena-input>
+
+<!-- label position -->
+
+
+
+<button (mouseover)="tooltip.show()" (mouseout)="tooltip.hide()">Hover me</button>
+<lib-tooltip
+  #tooltip
+  [message]="'This is a tooltip message!'"
+  [backgroundColor]="'black'"
+  [textColor]="'white'"
+  [position]="{ top: '100%', left: '50%', transform: 'translateX(-50%)' }"
+  [borderRadius]="'8px'"
+></lib-tooltip>
+
+
+<verbena-button
+  text="Submit"
+
+  bgColor="#28a745"
+  textColor="white"
+  border="1px solid #28a745"
+  borderRadius="5px"
+  pd="10px 20px"
+  width="150px"
+  height="40px"
+></verbena-button>
+
+<verbena-button
+  text="Submit"
+  svg="'alert'"
+  iconPosition="left"
+  bgColor="#28a745"
+  textColor="white"
+  border="1px solid #28a745"
+  borderRadius="5px"
+  pd="10px 20px"
+  width="150px"
+  height="40px"
+></verbena-button>
+
+
+<verbena-button
+text="backward"
+svg="backward"
+
+  svgColor="'white'"
+svgPosition="right"
+bgColor="#28a745"
+textColor="white"
+border="1px solid #28a745"
+borderRadius="5px"
+pd="10px 20px"
+width="150px"
+height="40px"
+>
+
+
+</verbena-button>
+
+
+<verbena-button
+  svg="academic-cap"
+  [svgHeight]="20"
+  [svgWidth]="20"
+  svgColor="'white'"
+  text="Submit"
+  bgColor="#4CAF50"
+  textColor="#fff"
+  border="none"
+  borderRadius="4px"
+  pd="8px 16px"
+
+
+  svgPosition="right"
+></verbena-button>
+
+<verbena-button
+  svg="chevron"
+  [svgHeight]="10"
+  [svgWidth]="10"
+  svgColor="'white'"
+  bgColor="#007bff"
+  textColor="white"
+  border="none"
+  borderRadius="50%"
+  width="50px"
+  height="50px"
+
+></verbena-button>
+
+<verbena-button
+  text="Submit"
+
+  bgColor="#efc050"
+  textColor="white"
+  svg="home"
+  [svgHeight]="20"
+  [svgWidth]="20"
+  svgColor="'white'"
+
+  borderRadius="5px"
+  pd="10px 20px"
+  width="150px"
+  height="40px"
+></verbena-button>
+
+<!-- fix to the center  -->
+<!-- specify position of icon -->
+
+<verbena-badge
+  text="5"
+  bgColor="#3498db"
+  textColor="white"
+  width="40px"
+  height="40px"
+  borderRadius="50%"
+  pd="5px 8px"
+  fontSize="20px"
+></verbena-badge>
+
+width and height
+
+<br><br>
+<verbena-badge
+  width="100px"
+  height="100px"
+  borderRadius="50%"
+  bgColor="green"
+  text="new product"
+></verbena-badge>
+
+
+<verbena-input
+  [label]="'Username'"
+  [labelPosition]="'left'"
+  [labelColor]="'blue'"
+  [bgColor]="'#f0f0f0'"
+  [width]="'100%'"
+  appValidate="decimal"
+></verbena-input>
+
+<verbena-badge
+  text="New"
+  bgColor="red"
+  textColor="white"
+  pd="5px 15px"
+  fontSize="12px"
+></verbena-badge>
+
+<input type="text" appValidate="email" [required]="true"  errorIconTooltipPosition="left">
+
+<br><br><br>
+<verbena-input
+  [label]="'Username'"
+  [labelPosition]="'left'"
+  [labelColor]="'#efc050'"
+> <br><br>
+
+</verbena-input>
+
+<verbena-textarea
+  label="Comments"
+
+  bgColor="#f8f8f8"
+  textColor="#333"
+  border="1px solid #ccc"
+  borderRadius="5px"
+  pd="8px"
+  width="100%"
+  height="100px"
+></verbena-textarea>
+
+<verbena-switch
+  label="Enable Notifications"
+
+></verbena-switch>

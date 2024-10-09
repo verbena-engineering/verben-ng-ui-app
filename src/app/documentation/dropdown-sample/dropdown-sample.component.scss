@@ -1,0 +1,71 @@
+.dropdown-sample-container {
+  gap: 40px;
+  padding: 30px;
+}
+
+.example-section {
+  gap: 10px;
+}
+
+.example-section>h1 {
+  font-weight: bold
+}
+
+.verben-input {
+  border: 1px solid #cbd5e1;
+  outline: none;
+  border-radius: 5px;
+  color: #334155;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, outline-color 0.2s;
+}
+
+.verben-input::placeholder {
+  color: #64748b;
+}
+
+.verben-input:hover {
+  border: 1px solid #697e97
+}
+
+.verben-input.disabled {
+  opacity: 1;
+  background-color: light-dark(rgba(239, 239, 239, 0.3), rgba(59, 59, 59, 0.3));
+  pointer-events: none;
+  color: #64748b;
+}
+
+.verben-input:disabled {
+  opacity: 1;
+  background-color: light-dark(rgba(239, 239, 239, 0.3), rgba(59, 59, 59, 0.3));
+  pointer-events: none;
+  color: #64748b;
+}
+
+.verben-input.focused {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+.verben-input:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+.verben-input.ng-invalid {
+  border-color: red;
+}
+
+.verben-button {
+  padding: 8px 15px;
+  border-radius: 4px;
+  border: none;
+  text-align: center;
+}
+
+.verben-button.primary {
+  background-color: rgba(255, 230, 129, 1);
+}
+
+.verben-button.secondary {
+  background-color: rgba(217, 217, 217, 0.25);
+}

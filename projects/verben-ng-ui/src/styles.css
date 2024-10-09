@@ -1,0 +1,96 @@
+* {
+  font-family: sans-serif;
+  font-size: 0.9rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: end;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.grid {
+  display: grid;
+}
+
+.verben-error-message {
+  font-size: 0.8rem;
+  color: red;
+}
+
+.verben-input {
+  border: 1px solid #cbd5e1;
+  outline: none;
+  border-radius: 5px;
+  color: #334155;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, outline-color 0.2s;
+}
+
+.verben-input::placeholder {
+  color: #64748b;
+}
+
+.verben-input:hover {
+  border: 1px solid #697e97
+}
+
+.verben-input.disabled {
+  opacity: 1;
+  background-color: light-dark(rgba(239, 239, 239, 0.3), rgba(59, 59, 59, 0.3));
+  pointer-events: none;
+  color: #64748b;
+}
+
+.verben-input:disabled {
+  opacity: 1;
+  background-color: light-dark(rgba(239, 239, 239, 0.3), rgba(59, 59, 59, 0.3));
+  pointer-events: none;
+  color: #64748b;
+}
+
+.verben-input.focused {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+.verben-input:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+.verben-input.ng-invalid {
+  border-color: red;
+}
+
+.verben-button {
+  padding: 8px 15px;
+  border-radius: 4px;
+  border: none;
+  text-align: center;
+}
+
+.verben-button.primary {
+  background-color: rgba(255, 230, 129, 1);
+}
+
+.verben-button.secondary {
+  background-color: rgba(217, 217, 217, 0.25);
+}

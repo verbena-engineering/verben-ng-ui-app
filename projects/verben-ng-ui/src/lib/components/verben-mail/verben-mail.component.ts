@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -28,6 +28,7 @@ import { ChipModule } from '../chip/chip.module';
   ],
 })
 export class VerbenMailTemplate {
+  @Input() quillHeight:string="250px"
   mailForm: FormGroup;
   isRichText: boolean = false;
   quillConfig = QuillConfiguration;

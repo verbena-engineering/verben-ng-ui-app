@@ -102,6 +102,7 @@
             *ngIf="isRichText"
             [modules]="quillConfig"
             formControlName="body"
+            [style.height]="quillHeight"
           ></quill-editor>
           <textarea
             *ngIf="!isRichText"

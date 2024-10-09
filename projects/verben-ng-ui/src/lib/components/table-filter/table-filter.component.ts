@@ -33,6 +33,7 @@ export class TableFilterComponent implements OnInit {
   @Input() borderRadius?: string;
   @Input() selectWidth?: string;
   @Input() maxFilterLength:number = 3
+  @Input() tooltip:boolean = false
   @Output() filtersApplied = new EventEmitter<IDataFilter[]>();
   
   filterArray:string[] = [];
@@ -203,7 +204,15 @@ export class TableFilterComponent implements OnInit {
         this.isDuplicateFilter = exists;
         this.duplicateMessage = exists ? 'This entry is a duplicate and cannot be added.' : '';
     }
-}
+   }
+
+   showTooltip(){ 
+    this.tooltip = true;
+   }
+
+   hideTooltip(){ 
+    this.tooltip = false;
+   }
 
 }
 

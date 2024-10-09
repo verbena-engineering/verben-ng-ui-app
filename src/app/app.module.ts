@@ -13,7 +13,6 @@ import {
     RequiredInputModule,
     ValidateInputModule,
     DropDownModule,
-    ImageModule,
     SvgModule,
     CardModule,
     CardDataViewModule,
@@ -34,6 +33,11 @@ import { CardDataViewComponent } from './Components/card-data-view/cdv.component
 import { HomeComponent } from './home/home.component';
 import { DropdownSampleComponent } from './views/dropdown-sample/dropdown-sample.component';
 import { FormsModule } from '@angular/forms';
+import { NotificationsSampleComponent } from './views/notifications-sample/notifications-sample.component';
+import { TableFilterSampleComponent } from './views/table-filter-sample/table-filter-sample.component';
+import { TooltipSampleComponent } from './views/tooltip-sample/tooltip-sample.component';
+import { ImageSampleComponent } from './views/image-sample/image-sample.component';
+
 
 @NgModule({
   declarations: [
@@ -60,15 +64,17 @@ import { FormsModule } from '@angular/forms';
     VerbenaButtonModule,
     DropDownModule,
     ChipModule,
-    ImageModule,
     SvgModule,
     TableFilterModule,
     CardModule,
     VerbenaTextareaModule,
     CardDataViewModule,
     VerbenaSwitchModule,
-    NotificationModule
-
+    NotificationModule,
+    ImageSampleComponent,
+    NotificationsSampleComponent,
+    // TableFilterSampleComponent,
+    // TooltipSampleComponent,
 ],
   providers: [
     provideHttpClient(withFetch())

@@ -36,6 +36,6 @@ export class HomeComponent {
 ]
 
 handleButtonClick(button: any) {
-  console.log('Button clicked:', button);
+  console.log('Button clicked', button);
 }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, TemplateRef, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, TemplateRef, ElementRef, ViewChild, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SvgComponent } from '../svg/svg.component';
 
@@ -9,7 +9,7 @@ import { SvgComponent } from '../svg/svg.component';
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.css']
 })
-export class TooltipComponent implements AfterViewInit {
+export class TooltipComponent {
   @Input() tooltipTemplate!: TemplateRef<any>; 
   @Input() customClass: string = ''; 
   @Input() backgroundColor: string = 'black'; 
@@ -17,6 +17,7 @@ export class TooltipComponent implements AfterViewInit {
   @Input() padding: string = '5px 10px'; 
   @Input() borderRadius: string = '4px'; 
   @Input() border: string = '';
+  @Input() width: string = '';
   @Input() top?: string; 
   @Input() bottom?: string; 
   @Input() left?: string; 
@@ -24,45 +25,21 @@ export class TooltipComponent implements AfterViewInit {
 
   @ViewChild('tooltipRef', { static: false }) tooltipRef!: ElementRef;
 
-  visible: boolean = false;
-
-  ngAfterViewInit() {
-    console.log('tooltip is mounted')
-  }
-
-  show() {
-    this.visible = true;
-    this.updatePosition();
-  }
-
-  hide() {
-    this.visible = false;
-  }
-
-  updatePosition() {
-    if (this.tooltipRef) {
-      const tooltip = this.tooltipRef.nativeElement;
-      tooltip.style.top = this.top ? this.top : `0px`; 
-      tooltip.style.left = this.left ? this.left : `0px`;
-
-      if (this.bottom) {
-        tooltip.style.bottom = this.bottom;
-      }
-      if (this.right) {
-        tooltip.style.right = this.right;
-      }
-    }
-  }
 
   get tooltipStyles() {
     return {
       'background-color': this.backgroundColor,
+      'width': this.width,
       'color': this.textColor,
       'padding': this.padding,
       'border-radius': this.borderRadius,
       'border': this.border,
       'position': 'absolute',
       'z-index': '9999',
+      'top': this.top,
+      'left': this.left,
+      'right': this.right,
+      'bottom': this.bottom,
     };
   }
 }

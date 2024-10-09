@@ -44,16 +44,19 @@
       [style.height]="rHeight"
       [style.backgroundColor]="rbgColor"
       >
-      <ng-container *ngIf="hasCurrentItem()">
-         <ng-content  select="[detail]" ></ng-content>  
-      </ng-container> 
+        <ng-container *ngIf="hasCurrentItem()">
+          <ng-content  select="[detail]" ></ng-content>  
+        </ng-container> 
       </div>
-      <div *ngIf="!dynamicDetail.children.length" 
+
+
+      <div  *ngIf="!dynamicDetail.children.length" 
       class="right-side"
       [style.width]="rWidth"
       [style.height]="rHeight"
       [style.backgroundColor]="rbgColor"
       >
+      
       </div>
       
  

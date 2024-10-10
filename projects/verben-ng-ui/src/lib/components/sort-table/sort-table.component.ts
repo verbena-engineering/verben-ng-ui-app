@@ -5,17 +5,11 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SvgComponent } from '../svg/svg.component';
-import { VerbenaInputModule } from '../../Verbena-input/verbena-input.module';
 import { DataFilterType } from '../../models/table-filter';
 import { IDataFilter } from '../../models/data-filter';
 
 @Component({
   selector: 'verben-sort-table',
-  standalone: true,
-  imports: [CommonModule, FormsModule, SvgComponent, VerbenaInputModule],
   templateUrl: './sort-table.component.html',
   styleUrls: ['./sort-table.component.css'],
   encapsulation: ViewEncapsulation.Emulated,

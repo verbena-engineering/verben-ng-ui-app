@@ -1,7 +1,4 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SvgComponent } from '../svg/svg.component';
 import { IDataFilter } from '../../models/data-filter';
 
 interface Item {
@@ -10,8 +7,6 @@ interface Item {
 
 @Component({
   selector: 'verben-visible-column',
-  standalone: true,
-  imports: [CommonModule, FormsModule, SvgComponent],
   templateUrl: './visible-column.component.html',
   styleUrls: ['./visible-column.component.css'],
 })

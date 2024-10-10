@@ -13,7 +13,8 @@ import { DropdownMenuItemWrapper } from '../drop-down.component';
 import { CommonModule } from '@angular/common';
 import { isEqual } from 'lodash';
 import { FormsModule } from '@angular/forms';
-import { SvgModule } from '../../svg/svg.module';
+// import { SvgModule } from 'verben-ng-ui/src/public-api';
+import {SvgModule} from '../../../components/svg/svg.module'
 
 @Component({
   selector: 'drop-down-item',

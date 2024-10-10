@@ -12,7 +12,6 @@ import { VerbenaBadgeModule } from "../../../projects/verben-ng-ui/src/lib/verbe
 import { VerbenaButtonModule } from "../../../projects/verben-ng-ui/src/lib/verbena-button/verbena-button.module";
 
 
-
 @NgModule({
 
   declarations: [DocumentationComponent],

@@ -5,15 +5,20 @@ import { FormsModule } from '@angular/forms';
 import { DropDownModule } from '../drop-down/drop-down.module';
 import { VerbenaInputModule } from '../../Verbena-input/verbena-input.module';
 import { TooltipModule } from '../tooltip/tooltip.module';
+import { ValidationModule } from '../../validate/validate.module';
+import { SvgModule } from '../svg/svg.module';
+
 
 @NgModule({
+  declarations:[TableFilterComponent],
   imports: [
     CommonModule,
     FormsModule,
-    TableFilterComponent,
     DropDownModule,
     VerbenaInputModule,
-    TooltipModule
+    ValidationModule,
+    TooltipModule,
+    SvgModule
   ],
   exports: [TableFilterComponent]
 })

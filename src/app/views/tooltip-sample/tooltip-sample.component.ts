@@ -1,13 +1,10 @@
 import { AfterViewInit, Component, QueryList, ViewChildren } from '@angular/core';
-import { TooltipComponent } from 'verben-ng-ui/src/public-api';
-import { CommonModule } from '@angular/common';
+import { TooltipComponent } from '../../../../projects/verben-ng-ui/src/lib/components/tooltip/tooltip.component';
 
 @Component({
   selector: 'app-tooltip-sample',
   templateUrl: './tooltip-sample.component.html',
   styleUrl: './tooltip-sample.component.scss',
-  standalone:true,
-  imports:[TooltipComponent,CommonModule]
 })
 
 export class TooltipSampleComponent {

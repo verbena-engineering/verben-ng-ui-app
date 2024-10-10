@@ -6,9 +6,6 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { CardDataViewComponent } from './views/card-data-view/cdv.component';
 import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NotificationsSampleComponent } from './views/notifications-sample/notifications-sample.component';
-import { ImageSampleComponent } from './views/image-sample/image-sample.component';
-import { QuillModule } from 'ngx-quill';
 
 import {
   ConvertToIntegerModule,
@@ -40,6 +37,7 @@ import {
 
 import { CDVModule } from './views/card-data-view/cdv.module';
 import { CommonModule } from '@angular/common';
+import { QuillModule } from 'ngx-quill';
 
 
 @NgModule({
@@ -77,9 +75,9 @@ import { CommonModule } from '@angular/common';
     QuillModule.forRoot()
 
 ],
-  providers: [provideHttpClient(withFetch()),  NotificationModule,
-    ImageSampleComponent,
-    NotificationsSampleComponent,],
-  bootstrap: [AppComponent],
+  providers: [
+    provideHttpClient(withFetch())
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

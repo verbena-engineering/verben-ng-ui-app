@@ -36,7 +36,7 @@
         icon="info"
         [width]="15"
         [height]="15"
-        fill="black"
+        fill="grey"
       ></verben-svg>
     </div>
     <div class="selectAllWrapper" *ngIf="savedFilters.length">
@@ -112,19 +112,24 @@
   <div class="bottom">
     <div class="savedWrapper">
       <h3 [style.font-size]="'13px'">Operation</h3>
-      <div [ngStyle]="{'position':'relative'}">
-        <verben-svg icon="dangerInfo" [width]="15" [height]="15" [fill]="'red'"
-         (mouseenter)="showTooltip()" (mouseleave)="hideTooltip()" >
-         </verben-svg>
-
+      <div [ngStyle]="{'position':'relative'}"> 
+        <verben-svg icon="info" [width]="15" [height]="15"  
+        (mouseenter)="showTooltip()" 
+        (mouseleave)="hideTooltip()"  
+        *ngIf="isDuplicateFilter"
+        fill="red"
+        >
+        </verben-svg>
+     
         <verben-tooltip
          [backgroundColor]="'grey'"
          [textColor]="'white'"
          [padding]="'10px'"
          [borderRadius]="'8px'"
-         [top]="'0px'"
-         [right]="'30px'"
-         #tooltip
+         [top]="'20px'"                 
+         [right]="'0px'"   
+         width="250px" 
+         #tooltip 
          *ngIf="tooltip"
          >
          <h3>{{duplicateMessage}}</h3>
@@ -134,7 +139,7 @@
         icon="info"
         [width]="15"
         [height]="15"
-        [fill]="'black'"
+        fill="grey"
         *ngIf="!isDuplicateFilter"
       ></verben-svg>
     </div>
@@ -150,7 +155,7 @@
       </verben-drop-down>
       <verben-drop-down
         (onChange)="checkDuplicateFilter()"
-        width="7rem"
+        width="8rem"
         placeholder="Select value"
         [options]="conditionOptions"
         [(ngModel)]="selectedCondition"
@@ -162,16 +167,12 @@
       border="1px solid #ccc"
       borderRadius="5px"
       textColor="black"
-      width="120px"
-      height="30px"
+      width="100px"
+      height="25px"
       pd="6px"
       [showBorder]="true"
-
       [showErrorMessage]="true"
       [errorPosition]="'bottom'"
-
-
-
       [(ngModel)]="inputValue"
     ></verbena-input>
 
@@ -180,8 +181,8 @@
       border="1px solid #ccc"
       borderRadius="5px"
       textColor="black"
-      width="120px"
-      height="30px"
+      width="100px"
+      height="25px"
       pd="6px"
       placeHolder="input integer"
       [showBorder]="true"
@@ -198,8 +199,8 @@
       border="1px solid #ccc"
       borderRadius="5px"
       textColor="black"
-      width="120px"
-      height="30px"
+      width="100px"
+      height="25px"
       pd="6px"
       placeHolder="input a decimal"
       [showBorder]="true"
@@ -215,8 +216,8 @@
       placeHolder="input value"
       borderRadius="5px"
       textColor="black"
-      width="120px"
-      height="30px"
+      width="100px"
+      height="25px"
       pd="6px"
       [showBorder]="true"
 

@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { VerbenaInputModule } from "../../Verbena-input/verbena-input.module";
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, VerbenaInputModule,ImageComponent],
+  declarations: [ImageComponent],
+  imports: [CommonModule, VerbenaInputModule,CommonModule],
   exports: [ImageComponent],
 })
 export class ImageModule {}

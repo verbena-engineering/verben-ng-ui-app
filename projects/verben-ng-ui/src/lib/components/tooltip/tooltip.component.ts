@@ -1,11 +1,7 @@
 import { Component, Input, TemplateRef, ElementRef, ViewChild, AfterViewInit, EventEmitter, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { SvgComponent } from '../svg/svg.component';
 
 @Component({
   selector: 'verben-tooltip',
-  standalone: true,
-  imports: [CommonModule,SvgComponent],
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.css']
 })
@@ -24,7 +20,6 @@ export class TooltipComponent {
   @Input() right?: string; 
 
   @ViewChild('tooltipRef', { static: false }) tooltipRef!: ElementRef;
-
 
   get tooltipStyles() {
     return {

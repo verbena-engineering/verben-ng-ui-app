@@ -1,0 +1,120 @@
+<form [style.width]="containerWidth" [formGroup]="mailForm" (ngSubmit)="sendEmail()">
+  <div class="button-container flex flex-end gap" [style.margin-bottom]="'10px'">
+    <button  class="button" type="button" (click)="toggleEditor()">
+      {{ isRichText ? "Switch to Plain" : "View Designer" }}
+    </button>
+    <button
+      type="submit"
+      [style.background-color]="primaryColor"
+      [style.padding]="'0px 10px'"
+      [ngClass]="{
+        disabled: mailForm.invalid,
+        enabled: !mailForm.invalid
+      }"
+      [disabled]="mailForm.invalid"
+    >
+      Send
+    </button>
+  </div>
+  <div class="container"[style.border-radius]="borderRadius" [style.border]="border" [style.padding]="pd">
+    <div class="verben-mail-container">
+      <div class="verben-mail-form">
+        <!-- Subject Field -->
+        <div class="form-element subject">
+          <label for="subject">Subject:</label>
+          <input id="subject" type="text" formControlName="subject" />
+        </div>
+
+        <!-- To Field with verben-chip -->
+        <div class="form-element">
+          <label for="to">TO:</label>
+          <div class="email-tags-container">
+            <verben-chip
+              [required]="true"
+              [invalidMessage]="toEmailError||'email must be provided'"
+              (onChange)="onToChange()"
+              formControlName="toEmails"
+              [max]="10"
+              [ngModel]="toEmails"
+            >
+              <ng-template let-item vTemplate="item">
+                {{ item }}
+              </ng-template>
+            </verben-chip>
+          </div>
+        </div>
+
+        <!-- CC Field with verben-chip -->
+        <div class="form-element">
+          <label for="cc">CC:</label>
+          <div class="email-tags-container">
+            <verben-chip (onChange)="onCcChange()" formControlName="ccEmails"  [ngModel]="ccEmails" >
+              <ng-template let-item vTemplate="item">
+                {{ item }}
+              </ng-template>
+            </verben-chip>
+          </div>
+        </div>
+
+        <!-- BCC Field with verben-chip -->
+        <div class="form-element">
+          <label for="bcc">BCC:</label>
+          <div class="email-tags-container">
+            <verben-chip (onChange)="onBccChange()"   [ngModel]="bccEmails" formControlName="bccEmails">
+              <ng-template let-item vTemplate="item">
+                {{ item }}
+              </ng-template>
+            </verben-chip>
+          </div>
+        </div>
+
+        <!-- Attachments Section -->
+        <div class="form-element attachment">
+          <label
+            *ngIf="!uploadedFileName && !isUploading"
+            for="attachment"
+            class="flex items-center gap cursor-pointer"
+          >
+            <verben-svg [width]="20" fill="black" icon="attach"></verben-svg
+            >Attach file
+          </label>
+          <input
+            id="attachment"
+            type="file"
+            (change)="onFileSelected($event)"
+            class="none"
+          />
+          <div *ngIf="isUploading" class="loader">Uploading...</div>
+          <div *ngIf="uploadedFileName" class="flex items-center gap">
+            <span>{{ uploadedFileName }}</span>
+            <button
+              [style.color]="'black'"
+              type="button"
+              (click)="removeFile()"
+            >
+              &#x2715;
+            </button>
+          </div>
+          <div *ngIf="fileUploadError" class="error">{{ fileUploadError }}</div>
+        </div>
+
+        <!-- Email Body -->
+        <hr [style.color]="'#00000066'" />
+        <div class="form-element quill" [style.margin-top]="'30px'">
+          <quill-editor
+            *ngIf="isRichText"
+            [modules]="quillConfig"
+            formControlName="body"
+          ></quill-editor>
+          <textarea
+            *ngIf="!isRichText"
+            formControlName="body"
+            class="block"
+            rows="10"
+            cols="50"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

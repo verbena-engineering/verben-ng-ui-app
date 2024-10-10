@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { DataFilterType, IDataFilter } from '../../../projects/verben-ng-ui/src/lib/models/table-filter';
-
+import { DataFilterType, MailPayload} from '../../../projects/verben-ng-ui/src/public-api';
+import { Column } from '../../../projects/verben-ng-ui/src/lib/models/column-filter';
+import { IDataFilter } from '../../../projects/verben-ng-ui/src/lib/models/data-filter';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',

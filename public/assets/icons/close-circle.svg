@@ -1,5 +1,15 @@
+<<<<<<< HEAD
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="SVGRepo_bgCarrier" stroke-width="0"/>
+<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+<g id="SVGRepo_iconCarrier"> <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="#FFE681" stroke-width="1.5" stroke-linecap="round"/> <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#FFE681" stroke-width="1.5" stroke-linecap="round"/> </g>
+</svg>
+=======
 <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M5.00065 9.33333C7.30184 9.33333 9.16732 7.46785 9.16732 5.16667C9.16732 2.86548 7.30184 1 5.00065 1C2.69946 1 0.833984 2.86548 0.833984 5.16667C0.833984 7.46785 2.69946 9.33333 5.00065 9.33333Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M6.25 3.91797L3.75 6.41797" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M3.75 3.91797L6.25 6.41797" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
+>>>>>>> 1935064e4fe0428690a5ce9566fa3f9e86e124eb

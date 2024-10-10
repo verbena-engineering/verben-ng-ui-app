@@ -4,7 +4,8 @@ export enum DataFilterType {
   Decimal = 'Decimal',
   Credit= 'Credit',
   Date = 'Date',
-  Bool = "Bool"
+  Bool = "Bool",
+  Number="Number"
 }
 
 export interface IDataFilter {

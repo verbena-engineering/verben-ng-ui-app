@@ -1,9 +1,15 @@
-import { ThemeSwitcherModule } from './../../projects/verben-ng-ui/src/lib/theme-switcher/theme-switcher.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { CardDataViewComponent } from './views/card-data-view/cdv.component';
+import { HomeComponent } from './home/home.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NotificationsSampleComponent } from './views/notifications-sample/notifications-sample.component';
+import { ImageSampleComponent } from './views/image-sample/image-sample.component';
+import { QuillModule } from 'ngx-quill';
+
 import {
   ConvertToIntegerModule,
   ConvertToNumberModule,
@@ -12,7 +18,6 @@ import {
   PhoneNumberModule,
   RequiredInputModule,
   ValidateInputModule,
-  DropDownModule,
   SvgModule,
   CardModule,
   CardDataViewModule,
@@ -21,28 +26,26 @@ import {
   VerbenaButtonModule,
   VerbenaBadgeModule,
   VerbenaInputModule,
-
-
+  TableFilterModule,
   VerbenaTextareaModule,
   VerbenaSwitchModule,
+  NotificationModule,
+  SortTableModule,
+  VisibleColumnModule,
+  DataViewModule,
+  VerbenaMailTemplateModule,
+  DataTableModule,
 
 } from '../../projects/verben-ng-ui/src/public-api';
 
 import { CDVModule } from './views/card-data-view/cdv.module';
-import { CardDataViewComponent } from './views/card-data-view/cdv.component';
-
-import { HomeComponent } from './home/home.component';
-import { FormsModule } from '@angular/forms';
-import { NotificationsSampleComponent } from './views/notifications-sample/notifications-sample.component';
-import { TableFilterSampleComponent } from './views/table-filter-sample/table-filter-sample.component';
-import { TooltipSampleComponent } from './views/tooltip-sample/tooltip-sample.component';
-import { ImageSampleComponent } from './views/image-sample/image-sample.component';
 
 
 @NgModule({
-  declarations: [AppComponent, CardDataViewComponent, HomeComponent],
+  declarations: [AppComponent, HomeComponent,CardDataViewComponent],
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     NumberRangeModule,
@@ -63,9 +66,18 @@ import { ImageSampleComponent } from './views/image-sample/image-sample.componen
     VerbenaTextareaModule,
     CardDataViewModule,
     VerbenaSwitchModule,
+    SortTableModule,
+    VisibleColumnModule,
+    DataViewModule,
+    VerbenaMailTemplateModule,
+    DataTableModule,
+    CDVModule,
+    QuillModule.forRoot()
 
-  ],
-  providers: [provideHttpClient(withFetch())],
+],
+  providers: [provideHttpClient(withFetch()),  NotificationModule,
+    ImageSampleComponent,
+    NotificationsSampleComponent,],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

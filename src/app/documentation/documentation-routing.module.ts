@@ -15,6 +15,31 @@ const routes: Routes = [
       import('./verbena-component/verbena-component.module').then((m) => m.VerbenaComponentModule),
   },
   {
+    path: 'sort-table',
+    loadChildren: () =>
+      import('./sort-table/sort-table.module').then((m) => m.SortModule),
+  },
+  {
+    path: 'visible-column',
+    loadChildren: () =>
+      import('./visible-column/visible-column.module').then((m) => m.VisibleColModule),
+  },
+  {
+    path: 'verben-mail',
+    loadChildren: () =>
+      import('./verben-mail/verben-mail.module').then((m) => m.VerbenMailModule),
+  },
+  {
+    path: 'data-view',
+    loadChildren: () =>
+      import('./data-view/data.view.module').then((m) => m.AppDataViewModule),
+  },
+  {
+    path: 'verbena-component',
+    loadChildren: () =>
+      import('./verbena-component/verbena-component.module').then((m) => m.VerbenaComponentModule),
+  },
+  {
 
     path: 'dropdown',
     loadChildren: () =>
@@ -33,7 +58,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('../views/card-data-view/cdv.module').then((m)=>m.CDVModule),
   },
-  
+
 ];
 
 @NgModule({

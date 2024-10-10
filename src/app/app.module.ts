@@ -39,6 +39,7 @@ import {
 } from '../../projects/verben-ng-ui/src/public-api';
 
 import { CDVModule } from './views/card-data-view/cdv.module';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { CDVModule } from './views/card-data-view/cdv.module';
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     NumberRangeModule,
     RequiredInputModule,

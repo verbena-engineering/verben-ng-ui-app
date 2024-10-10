@@ -28,6 +28,12 @@ const routes: Routes = [
       import('./chip/chip.module').then((m) => m.ChipExampleModule),
 
   },
+    {
+    path: 'card-data-view',
+    loadChildren: () =>
+      import('../views/card-data-view/cdv.module').then((m)=>m.CDVModule),
+  },
+  
 ];
 
 @NgModule({

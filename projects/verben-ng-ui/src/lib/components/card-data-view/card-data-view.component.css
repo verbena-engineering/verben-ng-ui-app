@@ -1,6 +1,40 @@
 .left-side
 {
-    border:5px;
+    border:1.5px solid rgb(246, 191, 109);
     border-radius: 8px;
     padding: 10px;
+   left: 0;
+box-sizing: border-box;
+}
+.right-side{
+  right: 0;
+box-sizing: border-box;
+}
+.container
+{
+  gap: 10px;
+  min-height: 100vh;
+}
+.load-more{
+  margin-left: auto;
+  text-decoration: underline;
+  color: blue;
+}
+.paginator-text
+{
+  margin-left: auto;
+  margin-right: auto;
+}
+.flex{
+  display: flex;
+}
+.flex-col
+{
+  display: flex;
+  flex-direction: column;
+}
+.flex-row
+{
+  display: flex;
+  flex-direction: row;
 }

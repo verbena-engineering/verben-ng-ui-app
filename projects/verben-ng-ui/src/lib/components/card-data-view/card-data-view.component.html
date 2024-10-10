@@ -1,17 +1,4 @@
-<!-- <div 
-  [style.background-color]="bgColor"
-  [style.margin]="mg"
-  [style.border]="border"
-  [style.border-radius]="borderRadius"
-  [style.color]="textColor"
-  [style.width]="width"
-  [style.height]="height"
-  [ngClass]="disabled?'disable':''"
-  [style.padding]="pd"
->
-    <ng-content select="[card-body]"></ng-content>
-    <ng-content select="[card-body]"></ng-content>
-</div> -->
+
 
 <div class="container" [style.display]="'flex'" [style.margin]="mg" [style.flex-direction]="displayAsRow?'row':'column'">
         <!-- Master -->
@@ -38,7 +25,7 @@
           </div>
         </div>
     
-      <!-- Details -->
+      <!-- Details --> 
       <div  #dynamicDetail class="right-side"
       [style.width]="rWidth"
       [style.height]="rHeight"

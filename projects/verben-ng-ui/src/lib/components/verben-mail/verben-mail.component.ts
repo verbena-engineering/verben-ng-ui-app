@@ -79,7 +79,7 @@ export class VerbenMailTemplate {
       }
     });
     if (validEmails.length === 0) {
-      this.toEmailError = 'Please provide at least one valid email';
+      this.toEmailError = 'email must be valid';
     } else {
       this.toEmailError = '';
     }

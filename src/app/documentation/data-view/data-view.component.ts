@@ -10,7 +10,7 @@ import { CardDataViewModule } from 'verben-ng-ui/src/public-api';
 })
 export class DataViewComponent {
   isGridView: boolean = true;
-
+  
   onViewChange(view: boolean): void {
     this.isGridView = view;
     console.log('Current view:', this.isGridView ? 'Grid' : 'List');

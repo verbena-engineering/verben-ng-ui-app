@@ -1,0 +1,19 @@
+<div [ngStyle] = "notificationStyles"> 
+    <div [ngStyle] = "innerWrapperStyles"> 
+        <verben-svg [icon] ="iconName" [width]="iconWidth" [height]="iconHeight"  [stroke]="stroke" [fill]="fill"></verben-svg>
+        <p>{{content}}</p>
+    </div>
+    <div [ngStyle]="btnWrapperStyle"> 
+        <button *ngFor="let button of buttons"
+                [ngStyle]="{'background-color': button.bgColor || 'white', 
+                'color': button.primarycolor || button.secondarycolor,
+                'font-size':button.fontSize,
+                'font-weight':button.fontWeigth,
+                'padding':'0px 8px',
+                'border-radius':'8px',
+            }"
+                (click)="onButtonClick(button)">
+            {{button.text}}
+        </button>
+    </div>
+</div>

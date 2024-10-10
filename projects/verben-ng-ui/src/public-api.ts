@@ -15,15 +15,26 @@ export * from './lib/components/drop-down/DropdownChangeEvent';
 export * from './lib/components/drop-down/DropdownLoadEvent';
 export * from './lib/components/chip/ChipChangeEvent';
 export * from './lib/components/drop-down/drop-down.module';
+export * from './lib/components/drop-down/drop-down.component';
 export * from './lib/components/chip/chip.module';
+export * from './lib/components/chip/chip.component';
 export * from './lib/components/shared.module';
+export * from './lib/components/TemplateDirective.directive';
 
 export * from './lib/components/image/image.module';
 export * from './lib/components/image/image.component';
 
+export * from './lib/components/tooltip/tooltip.component';
+export * from './lib/components/tooltip/tooltip.module';
+
 export * from './lib/components/svg/svg.module';
-export * from './lib/components/table-filter/table-filter.module';
 export * from './lib/components/svg/svg.component';
+
+export * from './lib/components/table-filter/table-filter.module';
+export * from './lib/components/table-filter/table-filter.component';
+
+export * from './lib/components/notification/notification.module';
+export * from './lib/components/notification/notification.component';
 
 export * from './lib/components/card/card.module';
 export * from './lib/components/card/card.component';
@@ -69,24 +80,24 @@ export * from './lib/models/table-filter';
 export * from './lib/models/mail-model';
 export * from './lib/button/button.directive'
 export * from './lib/button/button.module'
+export * from './lib/button/button.directive';
+export * from './lib/button/button.module';
 
-export * from './lib/textarea/textarea.directive'
-export * from './lib/textarea/textarea.module'
+export * from './lib/textarea/textarea.directive';
+export * from './lib/textarea/textarea.module';
 
-export * from './lib/validate/error-message.service'
-export * from './lib/validate/validate.directive'
-export * from './lib/validate/validate.module'
+export * from './lib/validate/error-message.service';
+export * from './lib/validate/validate.directive';
+export * from './lib/validate/validate.module';
 
+export * from './lib/Verbena-input/verbena-input.component';
+export * from './lib/Verbena-input/verbena-input.module';
 
-export * from './lib/Verbena-input/verbena-input.component'
-export * from './lib/Verbena-input/verbena-input.module'
+export * from './lib/verbena-button/verbena-button.component';
+export * from './lib/verbena-button/verbena-button.module';
 
-export * from './lib/verbena-button/verbena-button.component'
-export * from './lib/verbena-button/verbena-button.module'
-
-export * from './lib/verbena-badge/verbena-badge.component'
-export * from './lib/verbena-badge/verbena-badge.module'
-
+export * from './lib/verbena-badge/verbena-badge.component';
+export * from './lib/verbena-badge/verbena-badge.module';
 
 export * from './lib/verbena-textarea/verbena-textarea.component';
 export * from './lib/verbena-textarea/verbena-textarea.module';
@@ -96,3 +107,4 @@ export * from './lib/verbena-switch/verbena-switch.module';
 
 export * from './lib/components/verben-mail/verben-mail.module'
 export * from './lib/components/data-table'
+export * from './lib/components/data-table';

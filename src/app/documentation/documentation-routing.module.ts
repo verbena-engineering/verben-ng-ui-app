@@ -29,6 +29,18 @@ const routes: Routes = [
     loadChildren: () =>
       import('./data-view/data.view.module').then((m) => m.AppDataViewModule),
   },
+  {
+    path: 'dropdown',
+    loadChildren: () =>
+      import('./dropdown-sample/dropdown-sample.module').then(
+        (m) => m.DropdownSampleModule
+      ),
+  },
+  {
+    path: 'chip',
+    loadChildren: () =>
+      import('./chip/chip.module').then((m) => m.ChipExampleModule),
+  },
 ];
 
 @NgModule({

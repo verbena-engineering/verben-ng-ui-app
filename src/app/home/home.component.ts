@@ -8,20 +8,35 @@ import { IDataFilter } from '../../../projects/verben-ng-ui/src/lib/models/data-
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
- SortFilter=DataFilterType
- isGridView: boolean = true;
-
- onViewChange(view: boolean): void {
-   this.isGridView = view;
-   console.log('Current view:', this.isGridView ? 'Grid' : 'List');
+ filterArray:IDataFilter[] = [
+  {
+  name:'Name',
+  type: DataFilterType.String,
+  checked:false
+ },
+  {
+  name:'Age',
+  type: DataFilterType.Integer,
+  checked:false
+ },
+  {
+  name:'Salary',
+  type: DataFilterType.Decimal,
+  checked:false
+ },
+ {
+  name:'Date',
+  type: DataFilterType.Date,
+  checked:false
+ },
+ {
+  name:'Qualify for payment',
+  type: DataFilterType.Bool,
+  checked:false
  }
- onColumnsUpdated(updatedColumns: IDataFilter[]) {
-  console.log('Updated columns:', updatedColumns);
-}
-onSelectOptions(updatedOptions: IDataFilter[]) {
-  console.log('Updated Options:', updatedOptions);
-}
-onSubmitMail(mailPayload:MailPayload) {
-  console.log('payload:', mailPayload);
+]
+
+handleButtonClick(button: any) {
+  console.log('Button clicked', button);
 }
 }

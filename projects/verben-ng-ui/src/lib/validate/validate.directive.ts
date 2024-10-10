@@ -57,9 +57,9 @@ export class ValidateDirective {
   }
 
   private validateDecimal(input: any, value: string) {
-    const regex = /^\d+(\.\d+)?$/;
+    const regex = /^\d*\.?\d*$/;
     if (!regex.test(value)) {
-      this.blockInvalidInput(input, 'Please enter a valid decimal number');
+      this.showError(input, 'Please enter a valid decimal number');
     } else {
       this.clearError(input);
     }

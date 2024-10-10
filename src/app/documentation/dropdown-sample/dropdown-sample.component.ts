@@ -31,7 +31,11 @@ export class DropdownSampleComponent implements OnInit {
   chipValues: string[] = ['try', 'to'];
   basicChip: string[] = [];
 
-  options: string[] = ['Opt 1', 'Opt 2', 'Opt 3'];
+  options: string[] = [
+    'Opt 1',
+    'Opt 2',
+    'Opt 3yewwwwwweuweyweueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+  ];
   optionsTwo: TestDropdownObject[] = [
     { Id: '1', Name: 'One' },
     { Id: '2', Name: 'Two' },

@@ -8,7 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotificationsSampleComponent } from './views/notifications-sample/notifications-sample.component';
 import { ImageSampleComponent } from './views/image-sample/image-sample.component';
-import { QuillModule } from 'ngx-quill';
+
 
 import {
     ConvertToIntegerModule,
@@ -33,11 +33,6 @@ import {
     VerbenaSwitchModule,
     NotificationModule
      } from '../../projects/verben-ng-ui/src/public-api';
-import { CDVModule } from './Components/card-data-view/cdv.module';
-import { CardDataViewComponent } from './Components/card-data-view/cdv.component';
-import { HomeComponent } from './home/home.component';
-import { FormsModule } from '@angular/forms';
-
 
 @NgModule({
   declarations: [AppComponent, HomeComponent,CardDataViewComponent],

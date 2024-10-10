@@ -1,0 +1,76 @@
+<div
+  [style.background-color]="bgColor"
+  [style.box-shadow]="boxShadow"
+  [style.border]="border"
+  [style.border-radius]="borderRadius"
+  [style.color]="textColor"
+  [style.width]="width"
+  [style.height]="height"
+  [style.padding]="pd"
+  class="column-control"
+>
+  <div class="visible-column-header flex justify-between text-sm">
+    <span class="column-title"
+      >Column <sup>[{{ getSelectedColumnCount() }}]</sup></span
+    >
+    <span class="column-reset" (click)="resetColumns()">Reset</span>
+  </div>
+  <hr />
+  <ul
+    *ngFor="let column of columns; let i = index"
+    class="column-options-container"
+  >
+    <li
+      [attr.draggable]="enableDragAndDrop"
+      (dragstart)="onDragStart(i, $event)"
+      (dragover)="onDragOver($event)"
+      (drop)="onDrop(i, $event)"
+      *ngIf="i < displayedColumns"
+      [style.font-size]="'14px'"
+      [style.margin-top]="'14px'"
+      class="flex gap"
+    >
+      <verben-svg
+        *ngIf="enableDragAndDrop"
+        fill="black"
+        class="svg"
+        icon="square-dot"
+      ></verben-svg>
+      <label class="flex gap">
+        <input type="checkbox" [(ngModel)]="tempVisibleColumns[i]" />
+        {{ column.name }}
+      </label>
+    </li>
+  </ul>
+
+  <div>
+    <span
+      class="show-more"
+      *ngIf="columns.length > 5"
+      (click)="toggleShowMore()"
+    >
+      {{ showMore ? "Show Less" : "Show More" }}
+    </span>
+  </div>
+  <hr />
+  <div class="btn-wrapper">
+    <button
+      [style.margin-top]="'0.5rem'"
+      [style.outline]="'none'"
+      [style.border]="'none'"
+      [style.padding]="'0.2rem 1.6rem'"
+      [style.background-color]="primaryColor"
+      [style.color]="tertiaryColor"
+      [style.font-size]="'12px'"
+      [style.font-weight]="'600'"
+      [disabled]="getSelectedColumnCount() === 0"
+      [ngClass]="{
+    disabledBtn:getSelectedColumnCount()===0,
+      enableBtn:getSelectedColumnCount()!==0,
+    }"
+      (click)="saveColumnVisibility()"
+    >
+      Save
+    </button>
+  </div>
+</div>

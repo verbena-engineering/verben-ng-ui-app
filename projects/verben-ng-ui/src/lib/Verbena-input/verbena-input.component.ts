@@ -20,7 +20,10 @@ export class VerbenaInputComponent {
   @Input() labelPosition: string = 'start';
   @Input() labelColor: string = 'black';
 
-  // New input properties
+  // New input properties for range validation
+  @Input() min?: number; // Minimum value for number input
+  @Input() max?: number; // Maximum value for number input
+
   @Input() showBorder: boolean = true; // Control border visibility
   @Input() showErrorMessage: boolean = true; // Control error message visibility
   @Input() errorMessageColor: string = 'red'; // Color of the error message
@@ -36,18 +39,17 @@ export class VerbenaInputComponent {
     const newValue = input.value;
 
     // Validate based on type
-    if (this.type === 'integer' || this.type === 'number') {
-      const validInteger = /^\d*$/.test(newValue);
+    if (this.type === 'integer' || this.type === 'number' || this.type === 'decimal') {
+      const validInteger = /^\d+$/.test(newValue);
       const validNumber = /^\d*\.?\d*$/.test(newValue);
+      const validDecimal = /^\d+(\.\d+)?$/.test(newValue);
 
       if (this.type === 'integer' && !validInteger) {
-        this.value = this.value; // Keep the previous valid value
-        input.value = this.value;
-        this.errorMessage = 'Please enter a valid integer.';
+        this.setInvalidInput(input, 'Please enter a valid integer.');
       } else if (this.type === 'number' && !validNumber) {
-        this.value = this.value;
-        input.value = this.value;
-        this.errorMessage = 'Please enter a valid number.';
+        this.setInvalidInput(input, 'Please enter a valid number.');
+      } else if (this.type === 'decimal' && !validDecimal) {
+        this.setInvalidInput(input, 'Please enter a valid decimal.');
       } else {
         this.value = newValue;
         this.errorMessage = null;
@@ -55,32 +57,51 @@ export class VerbenaInputComponent {
     } else if (this.type === 'email') {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(newValue)) {
-        this.value = this.value; // Keep the previous valid value
-        input.value = this.value;
-        this.errorMessage = 'Please enter a valid email address.';
+        this.setInvalidInput(input, 'Please enter a valid email address.');
       } else {
-        this.value = newValue; // Update the value if valid
-        this.errorMessage = null; // Clear error message
+        this.value = newValue;
+        this.errorMessage = null;
       }
     } else {
-      this.value = newValue; // Update the value for text and decimal types
-      this.errorMessage = null; // Clear error message
+      this.value = newValue;
+      this.errorMessage = null;
     }
 
     this.validate();
     this.valueChange.emit(this.value);
   }
 
+  // Helper method for setting invalid input
+  setInvalidInput(input: HTMLInputElement, message: string) {
+    this.value = this.value; // Keep the previous valid value
+    input.value = this.value;
+    this.errorMessage = message;
+  }
+
   validate() {
     this.errorMessage = null;
 
+    // General validation
     if (this.required && !this.value) {
       this.errorMessage = 'This field is required.';
     } else if (this.minLength && this.value.length < this.minLength) {
       this.errorMessage = `Minimum length is ${this.minLength}.`;
     } else if (this.maxLength && this.value.length > this.maxLength) {
       this.errorMessage = `Maximum length is ${this.maxLength}.`;
-    } else if (this.type === 'integer' && !/^\d+$/.test(this.value)) {
+    }
+
+    // Number range validation
+    const numericValue = parseFloat(this.value);
+    if (this.type === 'integer' || this.type === 'number' || this.type === 'decimal') {
+      if (this.min !== undefined && numericValue < this.min) {
+        this.errorMessage = `Minimum value is ${this.min}.`;
+      } else if (this.max !== undefined && numericValue > this.max) {
+        this.errorMessage = `Maximum value is ${this.max}.`;
+      }
+    }
+
+    // Type-specific validation
+    if (this.type === 'integer' && !/^\d+$/.test(this.value)) {
       this.errorMessage = 'Please enter a valid integer.';
     } else if (this.type === 'number' && !/^\d*\.?\d*$/.test(this.value)) {
       this.errorMessage = 'Please enter a valid number.';
@@ -91,3 +112,4 @@ export class VerbenaInputComponent {
     }
   }
 }
+  

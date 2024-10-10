@@ -216,7 +216,8 @@ borderRadius="5px"
   'font-size': '35px',
   'font-weight':'700',
     'padding-bottom':'20px'
-}">Customizable Input Example <br> with Validation</h2>
+}">Customizable Input Example <br>
+ with Validation</h2>
  <div
  [ngStyle]="{
   'display': 'grid',
@@ -309,8 +310,77 @@ borderRadius="5px"
   [errorBorderColor]="'green'"
   [errorPosition]="'bottom'"
 ></verbena-input>
- </div>
 <!-- A submit button to trigger form submission -->
 <button (click)="submit()">Submit</button>
 
 </div>
+
+<h2 [ngStyle]="{
+  'font-size': '35px',
+  'font-weight':'700',
+    'padding-bottom':'20px'
+}">Number Range</h2>
+ <div
+ [ngStyle]="{
+  'display': 'grid',
+  'grid-template-columns': '1fr 1fr',
+  'gap': '20px',
+  'padding-bottom':'50px'
+
+}"
+ >
+  <verbena-input
+  [label]="'Max Number'"
+  [placeHolder]="'100 is the maximum number'"
+  [required]="true"
+  [type]="'number'"
+  appNumberRange
+
+  [max]="100"
+
+  [showBorder]="true"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'orange'"
+  [errorBorderColor]="'orange'"
+  [errorPosition]="'top'"
+></verbena-input>
+
+<!-- Input field for age with a blue error message displayed on the right -->
+<verbena-input
+  [label]="'Min Number'"
+  [placeHolder]="'minimum number is 10'"
+  [required]="true"
+  [type]="'integer'"
+  appValidate="number"
+  appNumberRange
+  [min]="10"
+  [showBorder]="true"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'blue'"
+  [errorBorderColor]="'blue'"
+  [errorPosition]="'right'"
+></verbena-input>
+
+<!-- Input for entering a decimal value with green error messages shown below -->
+<verbena-input
+  [label]="'Min and Max'"
+
+  [placeHolder]="'max number is 10 and min is 5'"
+  [min]="18"
+  [max]="60"
+  [required]="true"
+  [type]="'number'"
+  appNumberRange
+  [maxNumber]="10"
+  [minNumber]="5"
+
+
+  [showBorder]="false"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'green'"
+  [errorBorderColor]="'green'"
+  [errorPosition]="'bottom'"
+></verbena-input>
+
+
+ </div>

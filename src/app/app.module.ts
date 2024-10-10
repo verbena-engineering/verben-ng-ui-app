@@ -5,32 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import {
-<<<<<<< HEAD
-    ConvertToIntegerModule,
-    ConvertToNumberModule,
-    EmailValidatorModule,
-    NumberRangeModule,
-    PhoneNumberModule,
-    RequiredInputModule,
-    ValidateInputModule,
-    DropDownModule,
-    ImageModule,
-    SvgModule,
-    CardModule,
-    CardDataViewModule,
-    ValidationModule,
-
-    VerbenaButtonModule,
-    VerbenaBadgeModule,
-    VerbenaInputModule,
-    ChipModule,
-    TableFilterModule,
-    VerbenaTextareaModule,
-    VerbenaSwitchModule,
-    TooltipModule
-
-     } from '../../projects/verben-ng-ui/src/public-api';
-=======
   ConvertToIntegerModule,
   ConvertToNumberModule,
   EmailValidatorModule,
@@ -43,17 +17,17 @@ import {
   CardModule,
   CardDataViewModule,
   ValidationModule,
-  ButtonModule,
+
   VerbenaButtonModule,
   VerbenaBadgeModule,
   VerbenaInputModule,
-  ChipModule,
-  TableFilterModule,
+
+
   VerbenaTextareaModule,
   VerbenaSwitchModule,
-  NotificationModule,
+
 } from '../../projects/verben-ng-ui/src/public-api';
->>>>>>> 1935064e4fe0428690a5ce9566fa3f9e86e124eb
+
 import { CDVModule } from './Components/card-data-view/cdv.module';
 import { CardDataViewComponent } from './Components/card-data-view/cdv.component';
 import { HomeComponent } from './home/home.component';
@@ -65,17 +39,7 @@ import { ImageSampleComponent } from './views/image-sample/image-sample.componen
 
 
 @NgModule({
-<<<<<<< HEAD
-  declarations: [
-    AppComponent,
-    CardDataViewComponent,
-    HomeComponent,
-    DropdownSampleComponent,
-  
-  ],
-=======
   declarations: [AppComponent, CardDataViewComponent, HomeComponent],
->>>>>>> 1935064e4fe0428690a5ce9566fa3f9e86e124eb
   imports: [
     FormsModule,
     BrowserModule,
@@ -93,25 +57,12 @@ import { ImageSampleComponent } from './views/image-sample/image-sample.componen
     VerbenaInputModule,
     VerbenaButtonModule,
     SvgModule,
-    TableFilterModule,
+    
     CardModule,
     VerbenaTextareaModule,
     CardDataViewModule,
     VerbenaSwitchModule,
-<<<<<<< HEAD
-    TooltipModule
 
-
-],
-  providers: [
-    provideHttpClient(withFetch())
-=======
-    NotificationModule,
-    ImageSampleComponent,
-    NotificationsSampleComponent,
-    // TableFilterSampleComponent,
-    // TooltipSampleComponent,
->>>>>>> 1935064e4fe0428690a5ce9566fa3f9e86e124eb
   ],
   providers: [provideHttpClient(withFetch())],
   bootstrap: [AppComponent],

@@ -7,14 +7,7 @@ import { DataFilterType, IDataFilter } from '../../../projects/verben-ng-ui/src/
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-<<<<<<< HEAD
-  username: string = '';
 
-  onUsernameChange(value: string) {
-    this.username = value;
-    console.log('Username changed:', this.username);  
-  }
-=======
  filterArray:IDataFilter[] = [
   {
   name:'Name',
@@ -42,7 +35,7 @@ export class HomeComponent {
   checked:false
  }
 ]
->>>>>>> 1935064e4fe0428690a5ce9566fa3f9e86e124eb
+
 
 handleButtonClick(button: any) {
   console.log('Button clicked', button);

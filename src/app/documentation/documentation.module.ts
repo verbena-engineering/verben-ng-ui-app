@@ -14,27 +14,9 @@ import { VerbenaButtonModule } from "../../../projects/verben-ng-ui/src/lib/verb
 
 
 @NgModule({
-<<<<<<< HEAD
-  declarations: [
-    DocumentationComponent,
 
-    VerbenaValidationComponent,
-
-
-  ],
-  imports: [
-    CommonModule,
-    DocumentationRoutingModule,
-    VerbenaInputModule,
-    VerbenaSwitchModule,
-    VerbenaTextareaModule,
-    TooltipModule,
-    VerbenaBadgeModule,
-    VerbenaButtonModule
-]
-=======
   declarations: [DocumentationComponent],
   imports: [CommonModule, DocumentationRoutingModule],
->>>>>>> 1935064e4fe0428690a5ce9566fa3f9e86e124eb
+
 })
 export class DocumentationModule {}

@@ -16,8 +16,9 @@
 }
 
 .error-top {
-  position: absolute;
-  top: 0;
+ position: absolute;
+ top: 0;
+ left: 50%;
 }
 
 .error-bottom {
@@ -32,4 +33,5 @@
 .error-right {
   position: absolute;
   right: -10px;
+  top: 0px;
 }

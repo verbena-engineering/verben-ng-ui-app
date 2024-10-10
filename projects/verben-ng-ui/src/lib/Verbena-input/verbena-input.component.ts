@@ -11,7 +11,7 @@ export class VerbenaInputComponent {
   @Input() required: boolean = false;
   @Input() minLength?: number;
   @Input() maxLength?: number;
-  @Input() type: 'text' | 'integer' | 'number' | 'decimal' = 'text';
+  @Input() type: 'text' | 'integer' | 'number' | 'decimal' | 'email' = 'text';
   @Input() bgColor: string = '#f9f9f9';
   @Input() border: string = '1px solid #ccc';
   @Input() borderRadius: string = '5px';
@@ -37,18 +37,27 @@ export class VerbenaInputComponent {
 
     // Validate based on type
     if (this.type === 'integer' || this.type === 'number') {
-      // Allow only digits for integer and digits + optional decimal point for number
-      const validInteger = /^\d*$/.test(newValue); // Only digits for integer
-      const validNumber = /^\d*\.?\d*$/.test(newValue); // Digits and optional decimal point for number
+      const validInteger = /^\d*$/.test(newValue);
+      const validNumber = /^\d*\.?\d*$/.test(newValue);
 
       if (this.type === 'integer' && !validInteger) {
         this.value = this.value; // Keep the previous valid value
-        input.value = this.value; // Set the input to the previous valid value
+        input.value = this.value;
         this.errorMessage = 'Please enter a valid integer.';
       } else if (this.type === 'number' && !validNumber) {
-        this.value = this.value; // Keep the previous valid value
-        input.value = this.value; // Set the input to the previous valid value
+        this.value = this.value;
+        input.value = this.value;
         this.errorMessage = 'Please enter a valid number.';
+      } else {
+        this.value = newValue;
+        this.errorMessage = null;
+      }
+    } else if (this.type === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(newValue)) {
+        this.value = this.value; // Keep the previous valid value
+        input.value = this.value;
+        this.errorMessage = 'Please enter a valid email address.';
       } else {
         this.value = newValue; // Update the value if valid
         this.errorMessage = null; // Clear error message
@@ -58,9 +67,7 @@ export class VerbenaInputComponent {
       this.errorMessage = null; // Clear error message
     }
 
-    // Custom validation logic based on other conditions
     this.validate();
-
     this.valueChange.emit(this.value);
   }
 
@@ -79,6 +86,8 @@ export class VerbenaInputComponent {
       this.errorMessage = 'Please enter a valid number.';
     } else if (this.type === 'decimal' && !/^\d+(\.\d+)?$/.test(this.value)) {
       this.errorMessage = 'Please enter a valid decimal.';
+    } else if (this.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value)) {
+      this.errorMessage = 'Please enter a valid email address.';
     }
   }
 }

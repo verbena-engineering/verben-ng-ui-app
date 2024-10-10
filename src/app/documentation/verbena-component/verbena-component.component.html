@@ -116,7 +116,8 @@ height="40px"
 <div
 [ngStyle]="{
   'display': 'flex',
-  'gap': '10px'
+  'gap': '10px',
+  'padding-bottom':'50px'
 
 }"
 >
@@ -151,19 +152,34 @@ borderRadius="5px"
 </div>
 
 <!-- Input field for entering a username, label aligned to the left -->
-<h2>More Input Examples</h2>
+<h2 [ngStyle]="{
+  'font-size': '35px',
+  'font-weight':'700',
+    'padding-bottom':'20px'
+}">More Input Examples</h2>
 <verbena-input
   [label]="'Username'"
   [labelPosition]="'left'"
   [labelColor]="'blue'"
   [bgColor]="'#f0f0f0'"
   width="100%"
+  pd="0px 0px 0px 50px"
   appValidate="decimal"
 ></verbena-input>
 
 <!-- Text area for typing longer content -->
-<h2>Text Area Example</h2>
-<verbena-textarea
+<h2 [ngStyle]="{
+  'font-size': '35px',
+  'font-weight':'700',
+    'padding-bottom':'20px'
+}">Text Area Example</h2>
+<div  [ngStyle]="{
+  'display': 'flex',
+  'gap': '10px',
+  'padding-bottom':'50px'
+
+}">
+  <verbena-textarea
   label="Text Area"
   bgColor="#f8f8f8"
   textColor="#333"
@@ -173,20 +189,48 @@ borderRadius="5px"
   width="100%"
   height="100px"
 ></verbena-textarea>
+</div>
 
 <!-- A switch for toggling notifications on or off -->
-<h2>Switch Example</h2>
-<verbena-switch
+<h2  [ngStyle]="{
+  'font-size': '35px',
+  'font-weight':'700',
+    'padding-bottom':'20px'
+}">Switch Example</h2>
+
+<div  [ngStyle]="{
+  'display': 'flex',
+  'gap': '10px',
+  'padding-bottom':'50px'
+
+}">
+  <verbena-switch
   label="Enable Notifications"
 ></verbena-switch>
 
+</div>
+
+
 <!-- Customizable input field for email with error display at the top -->
-<h2>Customizable Input Example</h2>
-<verbena-input
+<h2 [ngStyle]="{
+  'font-size': '35px',
+  'font-weight':'700',
+    'padding-bottom':'20px'
+}">Customizable Input Example <br> with Validation</h2>
+ <div
+ [ngStyle]="{
+  'display': 'grid',
+  'grid-template-columns': '1fr 1fr',
+  'gap': '20px',
+  'padding-bottom':'50px'
+
+}"
+ >
+  <verbena-input
   [label]="'Email'"
   [placeHolder]="'Enter your email'"
   [required]="true"
-  [type]="'text'"
+  [type]="'email'"
   [(value)]="email"
   [showBorder]="true"
   [showErrorMessage]="true"
@@ -213,10 +257,13 @@ borderRadius="5px"
 <!-- Input for entering a decimal value with green error messages shown below -->
 <verbena-input
   [label]="'Decimal Value'"
+  [labelPosition]="'center'"
+  [labelColor]="'#796fab'"
   [placeHolder]="'Enter a decimal value'"
   [required]="true"
   [type]="'decimal'"
   [(value)]="decimalValue"
+
   [showBorder]="false"
   [showErrorMessage]="true"
   [errorMessageColor]="'green'"
@@ -224,6 +271,45 @@ borderRadius="5px"
   [errorPosition]="'bottom'"
 ></verbena-input>
 
+<verbena-input
+  [label]="'integer Value'"
+  [placeHolder]="'Enter a integer value'"
+  [required]="true"
+  [type]="'integer'"
+  appValidate="integer"
+  [showBorder]="false"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'green'"
+  [errorBorderColor]="'green'"
+  [errorPosition]="'bottom'"
+></verbena-input>
+
+<verbena-input
+  [label]="'number Value'"
+  [placeHolder]="'Enter a number value'"
+  [required]="true"
+  [type]="'number'"
+  appValidate="number"
+  [showBorder]="false"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'green'"
+  [errorBorderColor]="'green'"
+  [errorPosition]="'right'"
+></verbena-input>
+
+<verbena-input
+  [label]="'email Value'"
+  [placeHolder]="'Enter a email value'"
+  [required]="true"
+  [type]="'email'"
+
+  [showBorder]="false"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'green'"
+  [errorBorderColor]="'green'"
+  [errorPosition]="'bottom'"
+></verbena-input>
+ </div>
 <!-- A submit button to trigger form submission -->
 <button (click)="submit()">Submit</button>
 

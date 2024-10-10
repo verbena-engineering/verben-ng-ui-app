@@ -9,5 +9,6 @@ import { DataTableModule as LibDataTableModule } from '../../../../projects/verb
 @NgModule({
   declarations: [DataTableComponent],
   imports: [CommonModule, DataTableRoutingModule, LibDataTableModule, FormsModule],
+  exports:[DataTableComponent]
 })
 export class DataTableModule {}

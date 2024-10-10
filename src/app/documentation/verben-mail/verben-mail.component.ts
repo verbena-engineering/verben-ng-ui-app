@@ -3,7 +3,7 @@ import { MailPayload} from 'verben-ng-ui/src/public-api';
 
 @Component({
   selector: 'verben-mail',
-  templateUrl: './verben-mail.component.html',
+  templateUrl:'./verben-mail.component.html',
   styleUrl: './verben-mail.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,3 +1,4 @@
+import { NotificationModule } from './../../../../projects/verben-ng-ui/src/lib/components/notification/notification.module';
 import { Component } from '@angular/core';
 
 @Component({

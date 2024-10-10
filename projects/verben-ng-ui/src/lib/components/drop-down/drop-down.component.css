@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+* {
+  font-family: sans-serif;
+  font-size: 0.9rem;
+=======
 @import '../../../styles.css';
 
 .error-message {
@@ -27,6 +32,7 @@
   width: max-content;
   right: initial !important;
   transform: translateY(50%);
+>>>>>>> 1935064e4fe0428690a5ce9566fa3f9e86e124eb
 }
 
 .drop-down {

@@ -10,6 +10,11 @@ const routes: Routes = [
       import('./data-table/data-table.module').then((m) => m.DataTableModule),
   },
   {
+    path: 'verbena-component',
+    loadChildren: () =>
+      import('./verbena-component/verbena-component.module').then((m) => m.VerbenaComponentModule),
+  },
+  {
     path: 'sort-table',
     loadChildren: () =>
       import('./sort-table/sort-table.module').then((m) => m.SortModule),
@@ -30,6 +35,12 @@ const routes: Routes = [
       import('./data-view/data.view.module').then((m) => m.AppDataViewModule),
   },
   {
+    path: 'verbena-component',
+    loadChildren: () =>
+      import('./verbena-component/verbena-component.module').then((m) => m.VerbenaComponentModule),
+  },
+  {
+
     path: 'dropdown',
     loadChildren: () =>
       import('./dropdown-sample/dropdown-sample.module').then(
@@ -40,6 +51,7 @@ const routes: Routes = [
     path: 'chip',
     loadChildren: () =>
       import('./chip/chip.module').then((m) => m.ChipExampleModule),
+
   },
   {
     path: 'icons',
@@ -81,7 +93,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('../views/card-data-view/cdv.module').then((m)=>m.CDVModule),
   },
-  
+
 ];
 
 @NgModule({

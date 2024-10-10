@@ -2,30 +2,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
-  FormsModule,
   Validators,
 } from '@angular/forms';
-import { QuillModule } from 'ngx-quill';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { QuillConfiguration } from 'verben-ng-ui/src/config/quill-config';
-import { SvgModule } from '../svg/svg.module';
-import { MailPayload } from '../../models/mail-model';
-import { ChipModule } from '../chip/chip.module';
+import { MailPayload } from '../../models/mail-model';;
 
 @Component({
   selector: 'verben-mail-template',
   templateUrl: './verben-mail.component.html',
   styleUrls: ['./verben-mail.component.css'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    QuillModule,
-    ReactiveFormsModule,
-    ChipModule,
-    SvgModule,
-  ],
 })
 export class VerbenMailTemplate {
   @Input() containerWidth: string = '500px';
@@ -36,6 +21,7 @@ export class VerbenMailTemplate {
   @Input() border: string = '1px solid gray';
   @Input() pd: string = '20px';
   @Input() m: string = '';
+  @Input() max: number =10;
   mailForm: FormGroup;
   isRichText: boolean = false;
   quillConfig = QuillConfiguration;
@@ -78,7 +64,7 @@ export class VerbenMailTemplate {
       }
     });
     if (validEmails.length === 0) {
-      this.toEmailError = 'Please provide at least one valid email';
+      this.toEmailError = 'email must be valid';
     } else {
       this.toEmailError = '';
     }
@@ -100,7 +86,6 @@ export class VerbenMailTemplate {
     const validEmails = newValues.filter((email: string) =>
       emailRegex.test(email)
     );
-    console.log(this.mailForm.get('toEmails')?.value);
     this.bccEmails = validEmails;
   }
   validateEmail(email: string): boolean {

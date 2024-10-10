@@ -11,28 +11,36 @@ import { ImageSampleComponent } from './views/image-sample/image-sample.componen
 
 
 import {
-    ConvertToIntegerModule,
-    ConvertToNumberModule,
-    EmailValidatorModule,
-    NumberRangeModule,
-    PhoneNumberModule,
-    RequiredInputModule,
-    ValidateInputModule,
-    DropDownModule,
-    SvgModule,
-    CardModule,
-    CardDataViewModule,
-    ValidationModule,
-    ButtonModule,
-    VerbenaButtonModule,
-    VerbenaBadgeModule,
-    VerbenaInputModule,
-    ChipModule,
-    TableFilterModule,
-    VerbenaTextareaModule,
-    VerbenaSwitchModule,
-    NotificationModule
-     } from '../../projects/verben-ng-ui/src/public-api';
+  ConvertToIntegerModule,
+  ConvertToNumberModule,
+  EmailValidatorModule,
+  NumberRangeModule,
+  PhoneNumberModule,
+  RequiredInputModule,
+  ValidateInputModule,
+  SvgModule,
+  CardModule,
+  CardDataViewModule,
+  ValidationModule,
+
+  VerbenaButtonModule,
+  VerbenaBadgeModule,
+  VerbenaInputModule,
+  TableFilterModule,
+  VerbenaTextareaModule,
+  VerbenaSwitchModule,
+  NotificationModule,
+  SortTableModule,
+  VisibleColumnModule,
+  DataViewModule,
+  VerbenaMailTemplateModule,
+  DataTableModule,
+
+} from '../../projects/verben-ng-ui/src/public-api';
+
+import { CDVModule } from './views/card-data-view/cdv.module';
+import { CommonModule } from '@angular/common';
+
 
 @NgModule({
   declarations: [AppComponent, HomeComponent,CardDataViewComponent],
@@ -40,6 +48,7 @@ import {
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     NumberRangeModule,
     RequiredInputModule,
@@ -48,18 +57,24 @@ import {
     ConvertToIntegerModule,
     PhoneNumberModule,
     ValidationModule,
-    ButtonModule,
+
     VerbenaBadgeModule,
     ValidateInputModule,
     VerbenaInputModule,
     VerbenaButtonModule,
     SvgModule,
-    TableFilterModule,
+
     CardModule,
     VerbenaTextareaModule,
     CardDataViewModule,
     VerbenaSwitchModule,
-    NotificationModule,
+    SortTableModule,
+    VisibleColumnModule,
+    DataViewModule,
+    VerbenaMailTemplateModule,
+    DataTableModule,
+    CDVModule,
+    QuillModule.forRoot()
 
 ],
   providers: [

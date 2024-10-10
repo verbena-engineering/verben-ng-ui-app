@@ -1,0 +1,37 @@
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative; /* Needed for positioning elements */
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+}
+
+.error-message {
+  font-size: 12px;
+  margin: 0;
+}
+
+.error-top {
+ position: absolute;
+ top: 0;
+ left: 50%;
+}
+
+.error-bottom {
+  margin-top: 5px;
+}
+
+.error-left {
+  position: absolute;
+  left: -10px;
+}
+
+.error-right {
+  position: absolute;
+  right: -10px;
+  top: 0px;
+}

@@ -5,11 +5,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  {
-    path: 'card-data-view',
 
-    component: CardDataViewComponent,
-  },
   { path: 'home', component: HomeComponent, pathMatch: 'full' },
   { path: '', redirectTo: 'documentation', pathMatch: 'full' },
   {

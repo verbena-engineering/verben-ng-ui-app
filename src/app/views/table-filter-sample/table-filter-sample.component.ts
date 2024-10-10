@@ -1,3 +1,4 @@
+import { TableFilterModule } from './../../../../projects/verben-ng-ui/src/lib/components/table-filter/table-filter.module';
 import { Component } from '@angular/core';
 import { DataFilterType, IDataFilter } from '../../../../projects/verben-ng-ui/src/lib/models/table-filter';
 

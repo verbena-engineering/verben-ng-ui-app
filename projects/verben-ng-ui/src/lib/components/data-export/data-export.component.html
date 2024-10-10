@@ -1,26 +1,89 @@
-<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-  <input formControlName="name" placeholder="Profile Name" />
-  <div formArrayName="properties">
-    <div *ngFor="let prop of availableProperties; let i = index">
-      <label>
-        <input type="checkbox" [formControlName]="i" />
-        {{ prop }}
-      </label>
+<h2>Export Configuration</h2>
+
+<h3>Create Operation</h3>
+<form [formGroup]="operationForm" (ngSubmit)="onSubmitOperation()">
+  <input formControlName="name" placeholder="Operation Name" />
+  <select formControlName="field1">
+    <option value="">Select Field 1</option>
+    <option *ngFor="let prop of numericalProperties" [value]="prop">
+      {{ prop }}
+    </option>
+  </select>
+  <select formControlName="operator">
+    <option value="">Select Operator</option>
+    <option value="add">+</option>
+    <option value="subtract">-</option>
+    <option value="multiply">*</option>
+    <option value="divide">/</option>
+  </select>
+  <select formControlName="field2">
+    <option value="">Select Field 2</option>
+    <option *ngFor="let prop of numericalProperties" [value]="prop">
+      {{ prop }}
+    </option>
+  </select>
+  <button type="submit" [disabled]="!operationForm.valid">Add Operation</button>
+</form>
+
+<h3>Operations</h3>
+<ul>
+  <li *ngFor="let operation of exportService.getOperations()">
+    <span
+      >{{ operation.name }}: {{ operation.field1 }} {{ operation.operator }}
+      {{ operation.field2 }}</span
+    >
+    <div>
+      <button (click)="editOperation(operation)">Edit</button>
+      <button (click)="removeOperation(operation.id)">Remove</button>
     </div>
+  </li>
+</ul>
+
+<h3>Create Profile</h3>
+<form [formGroup]="profileForm" (ngSubmit)="onSubmitProfile()">
+  <input formControlName="name" placeholder="Profile Name" />
+  <div formArrayName="properties" class="checkbox-group">
+    <label
+      *ngFor="let prop of availableProperties; let i = index"
+      class="checkbox-label"
+    >
+      <input type="checkbox" [formControlName]="i" />
+      {{ prop }}
+    </label>
   </div>
   <button type="submit" [disabled]="!profileForm.valid">Save Profile</button>
 </form>
-<div>
-  <h3>Saved Profiles</h3>
-  <form [formGroup]="profileSelectionForm">
-    <div formArrayName="selectedProfiles">
-      <div *ngFor="let profile of exportService.getProfiles(); let i = index">
-        <label>
-          <input type="checkbox" [formControlName]="i" />
-          {{ profile.name }}
-        </label>
-      </div>
+
+<h3>Profiles</h3>
+<ul>
+  <li *ngFor="let profile of exportService.getProfiles()">
+    <span>{{ profile.name }}</span>
+    <div>
+      <button *ngIf="profile.id !== 'default'" (click)="editProfile(profile)">
+        Edit
+      </button>
+      <button
+        *ngIf="profile.id !== 'default'"
+        (click)="removeProfile(profile.id)"
+      >
+        Remove
+      </button>
     </div>
-  </form>
-</div>
+  </li>
+</ul>
+
+<button (click)="resetAll()">Reset All</button>
+
+<h3>Export</h3>
+<form [formGroup]="profileSelectionForm">
+  <div formArrayName="selectedProfiles" class="checkbox-group">
+    <label
+      *ngFor="let profile of exportService.getProfiles(); let i = index"
+      class="checkbox-label"
+    >
+      <input type="checkbox" [formControlName]="i" />
+      {{ profile.name }}
+    </label>
+  </div>
+</form>
 <button (click)="exportData()">Export Selected Profiles</button>

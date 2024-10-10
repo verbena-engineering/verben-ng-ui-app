@@ -1,48 +1,45 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, TemplateRef, ElementRef, ViewChild, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SvgComponent } from '../svg/svg.component';
 
 @Component({
-  selector: 'lib-tooltip',
+  selector: 'verben-tooltip',
   standalone: true,
-  imports:[CommonModule],
+  imports: [CommonModule,SvgComponent],
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.css']
 })
 export class TooltipComponent {
-  @Input() message?: string = ''; 
-  @Input() position: { 
-    top?: string; 
-    left?: string; 
-    right?: string; 
-    bottom?: string; 
-    transform?: string; 
-  } = { top: '100%', left: '50%', transform: 'translateX(-50%)' };
+  @Input() tooltipTemplate!: TemplateRef<any>; 
   @Input() customClass: string = ''; 
-  
+  @Input() backgroundColor: string = 'black'; 
+  @Input() textColor: string = 'white'; 
+  @Input() padding: string = '5px 10px'; 
+  @Input() borderRadius: string = '4px'; 
+  @Input() border: string = '';
+  @Input() width: string = '';
+  @Input() top?: string; 
+  @Input() bottom?: string; 
+  @Input() left?: string; 
+  @Input() right?: string; 
 
-  @Input() backgroundColor?: string; 
-  @Input() textColor?: string = 'white';
-  @Input() padding?: string = '5px 10px';
-  @Input() borderRadius?: string = '4px'; 
-  @Input() border?: string
+  @ViewChild('tooltipRef', { static: false }) tooltipRef!: ElementRef;
 
-  visible: boolean = false; 
-
-  show() {
-    this.visible = true;
-  }
-
-  hide() {
-    this.visible = false;
-  }
 
   get tooltipStyles() {
     return {
       'background-color': this.backgroundColor,
+      'width': this.width,
       'color': this.textColor,
       'padding': this.padding,
       'border-radius': this.borderRadius,
-      ...this.position 
+      'border': this.border,
+      'position': 'absolute',
+      'z-index': '9999',
+      'top': this.top,
+      'left': this.left,
+      'right': this.right,
+      'bottom': this.bottom,
     };
   }
 }

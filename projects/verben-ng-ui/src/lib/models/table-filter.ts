@@ -1,6 +1,6 @@
 export enum DataFilterType {
   String = 'String',
-  Number = 'Number',
+  Integer = 'Integer',
   Decimal = 'Decimal',
   Credit= 'Credit',
   Date = 'Date',
@@ -8,9 +8,23 @@ export enum DataFilterType {
 }
 
 export interface IDataFilter {
+  name:string,
   type: DataFilterType;
-  condition: string;
-  value: string | number; 
+  value?:any; 
   checked: boolean;
+  condition?:string;
 }
 
+export enum ConditionalOptions {
+  LessThan = 'LessThan',
+  GreaterThan = 'GreaterThan',
+  Equal = 'Equal',
+  On = 'On',
+  Before = 'Before',
+  After = 'After',
+}
+
+export interface ITypeOption {
+  type: DataFilterType;
+  options: string[];
+}

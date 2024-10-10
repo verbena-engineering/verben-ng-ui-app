@@ -1,5 +1,6 @@
-import { AfterContentInit, Component, ContentChild, ElementRef, Input, TemplateRef } from '@angular/core';
+import { AfterContentInit, Component, ContentChild, ElementRef, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { CardData } from './card-data';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'verben-card-data-view',
@@ -7,9 +8,7 @@ import { CardData } from './card-data';
   styleUrl: './card-data-view.component.css'
 })
 
-export class CardDataViewComponent implements AfterContentInit  {
-  hasCustomLeft:boolean=true;
-  hasCustomRight:boolean=true;
+export class CardDataViewComponent  {
   @Input() pd = '10px';
   @Input() mg = '0px';
   @Input() lHeight?:string="100%";
@@ -17,7 +16,8 @@ export class CardDataViewComponent implements AfterContentInit  {
   @Input() rWidth?:string="70%";
   @Input() lWidth?:string="30%";
   @Input() textColor?:string ;
-  @Input() bgColor?:string ;
+  @Input() lbgColor?:string ;
+  @Input() rbgColor?:string ;
   @Input() border?:string ;
   @Input() display?:string ;
   @Input() borderRadius?:string ;
@@ -25,13 +25,35 @@ export class CardDataViewComponent implements AfterContentInit  {
   @Input() inActiveCss?:string ;
   @Input() displayAsRow?:boolean =true;
   @Input() cardDataList:CardData[]=[];
+  @Input() dataId!:string;
+  @Input() totalRecords:number=0;
+  @Input() hidePaginator:boolean=false;
   // @Input() disabled:boolean=false ;
   // @Input() aspectRatio?:number ;
   @ContentChild('card') card!: TemplateRef<any>;
-  @ContentChild('leftContent', { static: false }) leftContent: ElementRef | undefined;
-  @ContentChild('rightContent', { static: false }) rightContent: ElementRef | undefined;
-    ngAfterContentInit() {
-    this.hasCustomLeft = this.leftContent?true:false;
-    this.hasCustomRight = this.rightContent?true:false;
+  // @ContentChild('content') content!: TemplateRef<any>;
+  currentItem:any={};
+  hasCurrentItem()
+  {
+    return !!Object.keys(this.currentItem).length
+  }
+  @Input() onItemClick(item:CardData){
+    item.selected= true;
+    this.cardDataList.forEach(element => {
+      if(element.data[this.dataId]==item.data[this.dataId])
+      {
+        this.currentItem= item;
+      }
+      else
+      {
+        element.selected=false;
+      }
+    });
+    return this.currentItem
+  }
+  @Output() loadMoreClick = new EventEmitter();
+  onLoadMoreClick()
+  {
+    this.loadMoreClick.emit();
   }
 }

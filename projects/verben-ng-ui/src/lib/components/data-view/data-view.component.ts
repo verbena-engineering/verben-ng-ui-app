@@ -14,29 +14,6 @@ import { CardData } from '../card-data-view/card-data';
 })
 export class DataViewComponent {
   isGridView: boolean = true; 
-  cardDataArray: CardData[] = [
-    {
-      title: 'Card 1',
-      body: [
-        { title: 'Detail 1', value: 'Value for detail 1' },
-        { title: 'Detail 2', value: 'Value for detail 2' }
-      ]
-    },
-    {
-      title: 'Card 2',
-      body: [
-        { title: 'Detail 1', value: 'Value for detail 1' },
-        { title: 'Detail 2', value: 'Value for detail 2' }
-      ]
-    },
-    {
-      title: 'Card 3',
-      body: [
-        { title: 'Detail 1', value: 'Value for detail 1' },
-        { title: 'Detail 2', value: 'Value for detail 2' }
-      ]
-    }
-  ];
   @Output() viewChange = new EventEmitter<boolean>();
 
   @Input() buttonClass?: string;

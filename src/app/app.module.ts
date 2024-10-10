@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { CardDataViewComponent } from './Components/card-data-view/cdv.component';
+import { CardDataViewComponent } from './views/card-data-view/cdv.component';
 import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotificationsSampleComponent } from './views/notifications-sample/notifications-sample.component';
@@ -36,9 +36,10 @@ import {
   VerbenaMailTemplateModule,
   DataTableModule,
 } from '../../projects/verben-ng-ui/src/public-api';
+import { CDVModule } from './views/card-data-view/cdv.module';
 
 @NgModule({
-  declarations: [AppComponent, CardDataViewComponent, HomeComponent],
+  declarations: [AppComponent, HomeComponent,CardDataViewComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -67,6 +68,7 @@ import {
     DataViewModule,
     VerbenaMailTemplateModule,
     DataTableModule,
+    CDVModule,
     QuillModule.forRoot() 
 
 ],

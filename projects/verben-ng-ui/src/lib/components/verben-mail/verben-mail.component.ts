@@ -36,6 +36,7 @@ export class VerbenMailTemplate {
   @Input() border: string = '1px solid gray';
   @Input() pd: string = '20px';
   @Input() m: string = '';
+  @Input() max: number =10;
   mailForm: FormGroup;
   isRichText: boolean = false;
   quillConfig = QuillConfiguration;
@@ -78,7 +79,7 @@ export class VerbenMailTemplate {
       }
     });
     if (validEmails.length === 0) {
-      this.toEmailError = 'Please provide at least one valid email';
+      this.toEmailError = 'email must be valid';
     } else {
       this.toEmailError = '';
     }
@@ -100,7 +101,6 @@ export class VerbenMailTemplate {
     const validEmails = newValues.filter((email: string) =>
       emailRegex.test(email)
     );
-    console.log(this.mailForm.get('toEmails')?.value);
     this.bccEmails = validEmails;
   }
   validateEmail(email: string): boolean {

@@ -34,12 +34,10 @@
               [invalidMessage]="toEmailError||'email must be provided'"
               (onChange)="onToChange()"
               formControlName="toEmails"
-              [max]="10"
+              [max]="max"
               [ngModel]="toEmails"
             >
-              <ng-template let-item vTemplate="item">
-                {{ item }}
-              </ng-template>
+             
             </verben-chip>
           </div>
         </div>
@@ -105,6 +103,7 @@
             *ngIf="isRichText"
             [modules]="quillConfig"
             formControlName="body"
+            [style.height]="'200px'"
           ></quill-editor>
           <textarea
             *ngIf="!isRichText"

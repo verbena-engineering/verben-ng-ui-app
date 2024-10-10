@@ -54,3 +54,7 @@ export * from './lib/email-validator/email-validator.module';
 export * from './lib/email-validator/email-validator.directive';
 
 export * from './lib/components/data-table'
+
+export * from './lib/components/data-export/data-export.module'
+export * from './lib/components/data-export/data-export.service'
+export * from './lib/components/data-export/data-export.component'

@@ -1,0 +1,26 @@
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+  <input formControlName="name" placeholder="Profile Name" />
+  <div formArrayName="properties">
+    <div *ngFor="let prop of availableProperties; let i = index">
+      <label>
+        <input type="checkbox" [formControlName]="i" />
+        {{ prop }}
+      </label>
+    </div>
+  </div>
+  <button type="submit" [disabled]="!profileForm.valid">Save Profile</button>
+</form>
+<div>
+  <h3>Saved Profiles</h3>
+  <form [formGroup]="profileSelectionForm">
+    <div formArrayName="selectedProfiles">
+      <div *ngFor="let profile of exportService.getProfiles(); let i = index">
+        <label>
+          <input type="checkbox" [formControlName]="i" />
+          {{ profile.name }}
+        </label>
+      </div>
+    </div>
+  </form>
+</div>
+<button (click)="exportData()">Export Selected Profiles</button>

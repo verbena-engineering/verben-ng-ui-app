@@ -1,46 +1,50 @@
-<!-- <div 
-  [style.background-color]="bgColor"
-  [style.margin]="mg"
-  [style.border]="border"
-  [style.border-radius]="borderRadius"
-  [style.color]="textColor"
-  [style.width]="width"
-  [style.height]="height"
-  [ngClass]="disabled?'disable':''"
-  [style.padding]="pd"
->
-    <ng-content select="[card-body]"></ng-content>
-    <ng-content select="[card-body]"></ng-content>
-</div> -->
 
-<div [style.display]="'flex'" [style.flex-direction]="displayAsRow?'row':'column'">
-    <ng-template [ngIf]="hasCustomLeft" [ngIfElse]="staticLeft">
-        <div>
-           <ng-content select="[leftContent]"></ng-content>  
+
+<div class="container" [style.display]="'flex'" [style.margin]="mg" [style.flex-direction]="displayAsRow?'row':'column'">
+        <!-- Master -->
+       <div #dynamicMaster class="flex-column">
+           <ng-content select="[master]"></ng-content>  
+       </div>
+        <div 
+           [style.width]="lWidth"
+           [style.height]="lHeight"
+           class="flex-column">
+          <div 
+            *ngIf="!dynamicMaster.children.length"
+            class="left-side"
+            [style.backgroundColor]="lbgColor"
+            >
+            @for (item of cardDataList; track item.title) {
+                <ng-content *ngTemplateOutlet="card;context: {$implicit: item}"></ng-content>
+            }
+          </div>
+          <div *ngIf="!hidePaginator" 
+          class="paginator flex-row">
+            <span class="paginator-text">{{totalRecords==0?cardDataList.length:totalRecords}} records loaded</span>
+            <button (click)="onLoadMoreClick()" class="load-more">Load more</button>
+          </div>
         </div>
-    </ng-template>
-    <ng-template #staticLeft>
-      <div 
-        class="left-side"
-        [style.width]="lWidth"
-        [style.height]="lHeight"
+    
+      <!-- Details --> 
+      <div  #dynamicDetail class="right-side"
+      [style.width]="rWidth"
+      [style.height]="rHeight"
+      [style.backgroundColor]="rbgColor"
       >
-        @for (item of cardDataList; track item.title) {
-            <ng-content *ngTemplateOutlet="card;context: {$implicit: item}"></ng-content>
-         }
+        <ng-container *ngIf="hasCurrentItem()">
+          <ng-content  select="[detail]" ></ng-content>  
+        </ng-container> 
       </div>
-    </ng-template>
 
-     <ng-template [ngIf]="hasCustomRight" [ngIfElse]="staticRight">
-          <ng-content select="[rightContent]"></ng-content>   
-    </ng-template>
-     <ng-template #staticRight>
-      <div class="left-side"
-           [style.width]="rWidth"
-           [style.height]="rHeight"
+
+      <div  *ngIf="!dynamicDetail.children.length" 
+      class="right-side"
+      [style.width]="rWidth"
+      [style.height]="rHeight"
+      [style.backgroundColor]="rbgColor"
       >
-
+      
       </div>
-    </ng-template>
-
+      
+ 
 </div>

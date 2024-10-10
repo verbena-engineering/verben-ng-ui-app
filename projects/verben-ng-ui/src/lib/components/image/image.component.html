@@ -1,19 +1,18 @@
 <div>
-    <img [src]="url" 
+    <img [src]="url"
          [attr.data-src]="lazyLoad ? url : null"
          (load)="isLoaded = true"
-         (error)="isLoaded = true; url = placeholder" 
-         [ngClass]="{'loaded': isLoaded}" 
-         [style.width]="width" 
-         [style.height]="height" 
+         (error)="isLoaded = true; url = placeholder"
+         [ngClass]="{'loaded': isLoaded}"
+         [style.width]="width"
+         [style.height]="height"
          alt="Image"/>
     <ng-container *ngIf="!isLoaded">
-        <img 
-        [src]="placeholder" 
-        [style.width]="width" 
-        [style.height]="height" 
-        alt="Placeholder Image" 
+        <img
+        [src]="placeholder"
+        [style.width]="width"
+        [style.height]="height"
+        alt="Placeholder Image"
       />
     </ng-container>
   </div>
-  

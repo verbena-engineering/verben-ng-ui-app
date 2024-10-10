@@ -1,5 +1,6 @@
+import { NotificationModule } from './../../../../projects/verben-ng-ui/src/lib/components/notification/notification.module';
 import { Component } from '@angular/core';
-import { NotificationComponent } from 'verben-ng-ui/src/public-api';
+;
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,7 +8,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './notifications-sample.component.html',
   styleUrl: './notifications-sample.component.scss',
   standalone:true,
-  imports:[NotificationComponent,CommonModule]
+  imports:[NotificationModule,CommonModule]
 })
 
 export class NotificationsSampleComponent {

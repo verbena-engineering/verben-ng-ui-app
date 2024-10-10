@@ -8,6 +8,7 @@ import { IDataFilter } from '../../../projects/verben-ng-ui/src/lib/models/data-
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+
  filterArray:IDataFilter[] = [
   {
   name:'Name',
@@ -35,6 +36,7 @@ export class HomeComponent {
   checked:false
  }
 ]
+
 
 handleButtonClick(button: any) {
   console.log('Button clicked', button);

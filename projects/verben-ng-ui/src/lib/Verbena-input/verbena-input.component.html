@@ -1,0 +1,50 @@
+<div class="input-container"
+  [ngStyle]="{
+
+  }"
+>
+  <div
+  [ngStyle]="{
+    'display': 'flex' ,
+
+    'justify-content': labelPosition,
+    'color': labelColor,
+    'padding': '0'
+
+  }"
+  class="input-field"
+
+  >
+    <label [for]="label">{{ label }}</label>
+  </div>
+  <div>
+    <input
+    [id]="label"
+    [attr.type]="type"
+    [attr.placeholder]="placeHolder"
+    [required]="required"
+    [attr.minlength]="minLength?.toString()"
+    [attr.maxlength]="maxLength?.toString()"
+    (input)="onInput($event)"
+    [(ngModel)]="value"
+    [ngStyle]="{
+      'background-color': bgColor,
+      'border': showBorder ? (errorMessage ? '1px solid ' + errorBorderColor : border) : 'none',
+      'border-radius': borderRadius,
+      'color': textColor
+    }"
+    class="input-field"
+  />
+
+  <!-- Conditional error message display based on position -->
+  <span *ngIf="errorMessage && showErrorMessage"
+        [ngStyle]="{ 'color': errorMessageColor }"
+        [ngClass]="{'error-message': true,
+                     'error-top': errorPosition === 'top',
+                     'error-bottom': errorPosition === 'bottom',
+                     'error-left': errorPosition === 'left',
+                     'error-right': errorPosition === 'right'}">
+    {{ errorMessage }}
+  </span>
+  </div>
+</div>

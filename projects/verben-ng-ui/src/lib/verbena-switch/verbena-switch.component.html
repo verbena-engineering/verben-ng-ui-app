@@ -1,0 +1,5 @@
+<div class="switch" [ngClass]="{'disabled': disabled}" (click)="toggleSwitch()" [style]="customStyles">
+  <input type="checkbox" [checked]="checked" class="check" (change)="onChange($event)" [disabled]="disabled" />
+  <span class="slider"></span>
+  <label *ngIf="label">{{ label }}</label>
+</div>

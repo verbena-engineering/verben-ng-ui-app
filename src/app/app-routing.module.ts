@@ -10,11 +10,7 @@ import { TableFilterSampleComponent } from './views/table-filter-sample/table-fi
 import { TooltipSampleComponent } from './views/tooltip-sample/tooltip-sample.component';
 
 const routes: Routes = [
-  {
-    path: 'card-data-view',
 
-    component: CardDataViewComponent,
-  },
   { path: 'home', component: HomeComponent, pathMatch: 'full' },
   { path: '', redirectTo: 'documentation', pathMatch: 'full' },
   {

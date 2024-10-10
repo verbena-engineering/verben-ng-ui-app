@@ -112,19 +112,19 @@
   <div class="bottom">
     <div class="savedWrapper">
       <h3 [style.font-size]="'13px'">Operation</h3>
-      <div [ngStyle]="{'position':'relative'}"> 
-        <verben-svg icon="dangerInfo" [width]="15" [height]="15" [fill]="'red'" 
+      <div [ngStyle]="{'position':'relative'}">
+        <verben-svg icon="dangerInfo" [width]="15" [height]="15" [fill]="'red'"
          (mouseenter)="showTooltip()" (mouseleave)="hideTooltip()" >
          </verben-svg>
-     
+
         <verben-tooltip
-         [backgroundColor]="'grey'" 
+         [backgroundColor]="'grey'"
          [textColor]="'white'"
          [padding]="'10px'"
          [borderRadius]="'8px'"
-         [top]="'0px'"                 
-         [right]="'30px'"   
-         #tooltip 
+         [top]="'0px'"
+         [right]="'30px'"
+         #tooltip
          *ngIf="tooltip"
          >
          <h3>{{duplicateMessage}}</h3>
@@ -166,14 +166,17 @@
       height="30px"
       pd="6px"
       [showBorder]="true"
-      [showErrorMessage]="false"
-      errorPosition="below"
-      type="date"
+
+      [showErrorMessage]="true"
+      [errorPosition]="'bottom'"
+
+
+
       [(ngModel)]="inputValue"
     ></verbena-input>
 
       <verbena-input
-      *ngIf="selectedFilterType === 'Credit' || selectedFilterType === 'Integer'" 
+      *ngIf="selectedFilterType === 'Credit' || selectedFilterType === 'Integer'"
       border="1px solid #ccc"
       borderRadius="5px"
       textColor="black"
@@ -182,14 +185,16 @@
       pd="6px"
       placeHolder="input integer"
       [showBorder]="true"
-      [showErrorMessage]="false"
-      errorPosition="below"
+
+      [showErrorMessage]="true"
+      [errorPosition]="'bottom'"
+
       appValidate="integer"
       [(ngModel)]="inputValue"
     ></verbena-input>
 
       <verbena-input
-      *ngIf="selectedFilterType === 'Decimal'" 
+      *ngIf="selectedFilterType === 'Decimal'"
       border="1px solid #ccc"
       borderRadius="5px"
       textColor="black"
@@ -199,7 +204,7 @@
       placeHolder="input a decimal"
       [showBorder]="true"
       [showErrorMessage]="false"
-      errorPosition="below"
+      [errorPosition]="'bottom'"
       appValidate="decimal"
       [(ngModel)]="inputValue"
     ></verbena-input>
@@ -214,8 +219,10 @@
       height="30px"
       pd="6px"
       [showBorder]="true"
-      [showErrorMessage]="false"
-      errorPosition="below"
+
+      [showErrorMessage]="true"
+      [errorPosition]="'bottom'"
+
       [(ngModel)]="inputValue"
     ></verbena-input>
 
@@ -264,6 +271,7 @@
       </button>
     </div>
 
- 
+
   </div>
+
 </section>

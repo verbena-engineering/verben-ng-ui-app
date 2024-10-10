@@ -1,5 +1,6 @@
 import { Directive, ElementRef, Input, HostListener, Renderer2 } from '@angular/core';
 import { ErrorMessageService } from './error-message.service';
+import './validate.directive.css'; // Ensure this path is correct
 
 @Directive({
   selector: '[appValidate]'
@@ -7,9 +8,13 @@ import { ErrorMessageService } from './error-message.service';
 export class ValidateDirective {
   @Input('appValidate') validationType: 'text' | 'number' | 'decimal' | 'integer' | 'email' = 'text';
   @Input() required: boolean = false;
-  @Input() showBorder: boolean = true;
+  @Input() showBorder: boolean = true;  // The controlling factor for the error icon
   @Input() showErrorMessage: boolean = true;
-  @Input() errorPosition: 'above' | 'below' = 'below';
+
+  @Input() errorBorderColor: string = 'red';  // Border color for errors
+  @Input() errorMessageColor: string = 'red';  // Color for error message
+  @Input() errorIconTooltipPosition: 'top' | 'bottom' | 'left' | 'right' = 'top'; // Tooltip position for error dot
+  @Input() showErrorIcon: boolean = true;
 
   constructor(
     private el: ElementRef,
@@ -48,7 +53,6 @@ export class ValidateDirective {
   }
 
   private validateNumber(input: any, value: string) {
-    // Prevent non-numeric values
     if (isNaN(+value)) {
       this.blockInvalidInput(input, 'Please enter a valid number');
     } else {
@@ -83,27 +87,25 @@ export class ValidateDirective {
     }
   }
 
-  // Block invalid input by resetting the input value and showing an error
   private blockInvalidInput(input: any, message: string) {
-    input.value = ''; // Clear the input value to prevent invalid entries
+    input.value = '';
     this.showError(input, message);
   }
 
   private showError(input: any, message: string) {
     if (this.showBorder) {
-      this.renderer.setStyle(input, 'borderColor', 'red');
-    }
-    if (this.showErrorMessage) {
-      this.errorMessageService.createErrorMessage(input, message, this.errorPosition);
+      this.renderer.setStyle(input, 'borderColor', this.errorBorderColor);
+      this.renderer.addClass(input, 'error-with-dot'); // Add error class
+
+
     }
   }
 
   private clearError(input: any) {
     if (this.showBorder) {
       this.renderer.removeStyle(input, 'borderColor');
+      this.renderer.removeClass(input, 'error-with-dot'); // Remove error class
     }
-    if (this.showErrorMessage) {
-      this.errorMessageService.removeErrorMessage(input);
-    }
+    this.errorMessageService.removeErrorMessage(input);
   }
 }

@@ -1,0 +1,20 @@
+.verbena-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.verbena-button i {
+  font-size: 16px;
+}
+
+.verbena-button svg {
+  display: inline-block;
+}
+
+.verbena-button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.6;
+}

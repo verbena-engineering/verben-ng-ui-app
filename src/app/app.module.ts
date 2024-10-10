@@ -22,7 +22,7 @@ import {
   CardModule,
   CardDataViewModule,
   ValidationModule,
-  ButtonModule,
+
   VerbenaButtonModule,
   VerbenaBadgeModule,
   VerbenaInputModule,
@@ -35,9 +35,12 @@ import {
   DataViewModule,
   VerbenaMailTemplateModule,
   DataTableModule,
+
 } from '../../projects/verben-ng-ui/src/public-api';
+
 import { CDVModule } from './views/card-data-view/cdv.module';
 import { CommonModule } from '@angular/common';
+
 
 @NgModule({
   declarations: [AppComponent, HomeComponent,CardDataViewComponent],
@@ -54,13 +57,13 @@ import { CommonModule } from '@angular/common';
     ConvertToIntegerModule,
     PhoneNumberModule,
     ValidationModule,
-    ButtonModule,
+
     VerbenaBadgeModule,
     ValidateInputModule,
     VerbenaInputModule,
     VerbenaButtonModule,
     SvgModule,
-    TableFilterModule,
+
     CardModule,
     VerbenaTextareaModule,
     CardDataViewModule,
@@ -71,7 +74,7 @@ import { CommonModule } from '@angular/common';
     VerbenaMailTemplateModule,
     DataTableModule,
     CDVModule,
-    QuillModule.forRoot() 
+    QuillModule.forRoot()
 
 ],
   providers: [provideHttpClient(withFetch()),  NotificationModule,

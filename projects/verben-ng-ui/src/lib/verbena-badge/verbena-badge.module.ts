@@ -7,4 +7,4 @@ import { VerbenaBadgeComponent } from './verbena-badge.component';
   imports: [CommonModule],
   exports: [VerbenaBadgeComponent]
 })
-export class VerbenaBadgeModule { }
+export class VerbenaBadgeModule {}

@@ -5,7 +5,7 @@
   <input formControlName="name" placeholder="Operation Name" />
   <select formControlName="field1">
     <option value="">Select Field 1</option>
-    <option *ngFor="let prop of numericalProperties" [value]="prop">
+    <option *ngFor="let prop of baseProperties" [value]="prop">
       {{ prop }}
     </option>
   </select>
@@ -18,7 +18,7 @@
   </select>
   <select formControlName="field2">
     <option value="">Select Field 2</option>
-    <option *ngFor="let prop of numericalProperties" [value]="prop">
+    <option *ngFor="let prop of baseProperties" [value]="prop">
       {{ prop }}
     </option>
   </select>
@@ -26,25 +26,26 @@
 </form>
 
 <h3>Operations</h3>
-<ul>
-  <li *ngFor="let operation of exportService.getOperations()">
-    <span
-      >{{ operation.name }}: {{ operation.field1 }} {{ operation.operator }}
-      {{ operation.field2 }}</span
-    >
-    <div>
-      <button (click)="editOperation(operation)">Edit</button>
-      <button (click)="removeOperation(operation.id)">Remove</button>
-    </div>
-  </li>
-</ul>
+<div
+  *ngFor="let operation of exportService.getOperations()"
+  class="operation-item"
+>
+  <span
+    >{{ operation.name }}: {{ operation.field1 }} {{ operation.operator }}
+    {{ operation.field2 }}</span
+  >
+  <div>
+    <button (click)="editOperation(operation)">Edit</button>
+    <button (click)="removeOperation(operation.id)">Remove</button>
+  </div>
+</div>
 
 <h3>Create Profile</h3>
 <form [formGroup]="profileForm" (ngSubmit)="onSubmitProfile()">
   <input formControlName="name" placeholder="Profile Name" />
   <div formArrayName="properties" class="checkbox-group">
     <label
-      *ngFor="let prop of availableProperties; let i = index"
+      *ngFor="let prop of allProperties; let i = index"
       class="checkbox-label"
     >
       <input type="checkbox" [formControlName]="i" />

@@ -1,8 +1,4 @@
-<lib-data-export
-  [availableProperties]="getDataProperties()"
-  [data]="tableData"
-  (exportDataEvent)="handleExport($event)"
->
+<lib-data-export [data]="tableData" (exportDataEvent)="handleExport($event)">
 </lib-data-export>
 
 <lib-data-table

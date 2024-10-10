@@ -16,14 +16,14 @@ import { ExportProfile, Operation } from './data-export.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataExportComponent {
-  @Input() availableProperties: string[] = [];
   @Input() data!: any[];
   @Output() exportDataEvent = new EventEmitter<Record<string, any>[]>();
 
   profileForm!: FormGroup;
   operationForm!: FormGroup;
   profileSelectionForm!: FormGroup;
-  numericalProperties: string[] = [];
+  baseProperties: string[] = [];
+  allProperties: string[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -32,8 +32,7 @@ export class DataExportComponent {
 
   ngOnInit() {
     this.initForms();
-    this.updateNumericalProperties();
-    this.exportService.updateDefaultProfile(this.availableProperties);
+    this.updateProperties();
   }
 
   private initForms() {
@@ -43,7 +42,7 @@ export class DataExportComponent {
   }
 
   private initProfileForm() {
-    const propertyControls = this.availableProperties.map(() => false);
+    const propertyControls = this.allProperties.map(() => false);
     this.profileForm = this.fb.group({
       name: ['', Validators.required],
       properties: this.fb.array(propertyControls),
@@ -66,12 +65,13 @@ export class DataExportComponent {
     });
   }
 
-  private updateNumericalProperties() {
+  private updateProperties() {
     if (this.data && this.data.length > 0) {
-      this.numericalProperties = Object.keys(this.data[0]).filter(
-        (key) => typeof this.data[0][key] === 'number'
-      );
+      this.baseProperties = Object.keys(this.data[0]);
+      this.exportService.setBaseProperties(this.baseProperties);
     }
+    this.allProperties = this.exportService.getAllProperties();
+    this.initProfileForm();
   }
 
   onSubmitOperation() {
@@ -82,14 +82,14 @@ export class DataExportComponent {
       };
       this.exportService.addOperation(operation);
       this.operationForm.reset();
-      this.updateAvailableProperties();
+      this.updateProperties();
     }
   }
 
   onSubmitProfile() {
     if (this.profileForm.valid) {
       const formValue = this.profileForm.value;
-      const selectedProperties = this.availableProperties.filter(
+      const selectedProperties = this.allProperties.filter(
         (_, i) => formValue.properties[i]
       );
       const newProfile: ExportProfile = {
@@ -109,13 +109,13 @@ export class DataExportComponent {
 
   removeOperation(id: string) {
     this.exportService.removeOperation(id);
-    this.updateAvailableProperties();
+    this.updateProperties();
   }
 
   editProfile(profile: ExportProfile) {
     this.profileForm.patchValue({
       name: profile.name,
-      properties: this.availableProperties.map((prop) =>
+      properties: this.allProperties.map((prop) =>
         profile.properties.includes(prop)
       ),
     });
@@ -129,16 +129,7 @@ export class DataExportComponent {
   resetAll() {
     this.exportService.resetAll();
     this.initForms();
-    this.updateAvailableProperties();
-  }
-
-  private updateAvailableProperties() {
-    this.availableProperties = [
-      ...Object.keys(this.data[0]),
-      ...this.exportService.getOperations().map((op) => op.name),
-    ];
-    this.initProfileForm();
-    this.exportService.updateDefaultProfile(this.availableProperties);
+    this.updateProperties();
   }
 
   exportData() {

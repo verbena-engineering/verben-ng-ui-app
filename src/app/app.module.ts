@@ -1,9 +1,15 @@
-import { ThemeSwitcherModule } from './../../projects/verben-ng-ui/src/lib/theme-switcher/theme-switcher.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { CardDataViewComponent } from './views/card-data-view/cdv.component';
+import { HomeComponent } from './home/home.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NotificationsSampleComponent } from './views/notifications-sample/notifications-sample.component';
+import { ImageSampleComponent } from './views/image-sample/image-sample.component';
+import { QuillModule } from 'ngx-quill';
+
 import {
     ConvertToIntegerModule,
     ConvertToNumberModule,
@@ -34,9 +40,10 @@ import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [AppComponent, CardDataViewComponent, HomeComponent],
+  declarations: [AppComponent, HomeComponent,CardDataViewComponent],
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     NumberRangeModule,

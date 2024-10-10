@@ -1,0 +1,24 @@
+<p [style.margin]="'20px 0px'" [style.width]="'700px'">
+  The verben-sort-table component is a customizable table that enables users to
+  sort and select options with drag-and-drop functionality. It supports various
+  input properties such as border, borderRadius, boxShadow, bgColor, width,
+  textColor, pd, and color options for primary, secondary, and tertiary
+  elements. The component emits the selected options through the
+  (selectedOptions) output, allowing for dynamic interactions. This component
+  provides a flexible styling system to meet diverse design requirements.
+</p>
+<verben-sort-table
+  border="1px solid rgba(212, 160, 7, 1)"
+  borderRadius="10px"
+  boxShadow="2px 2px 2px 0px silver"
+  bgColor="white"
+  width="500px"
+  textColor="black"
+  pd="1rem"
+  primaryColor="#FFE681"
+  secondaryColor="#3479E9"
+  tertiaryColor="#404040"
+  [enableDragAndDrop]="true"
+  (selectedOptions)="onSelectOptions($event)"
+  [sortOptions]="sortOptions"
+></verben-sort-table>

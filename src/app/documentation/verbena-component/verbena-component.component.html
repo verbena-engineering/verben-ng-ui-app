@@ -1,126 +1,57 @@
-<!--
-<verbena-input
-  label="Convert to Decimal:"
+<div
+  [ngStyle]="{
+    'margin': '40px'
+  }"
+>
 
+<!-- Buttons with different styles and icons -->
+<h2
+  [ngStyle]="{
+    'font-size': '35px',
+    'font-weight':'700',
+    'padding-bottom':'20px'
+  }"
+>Custom Buttons</h2>
 
-  [minLength]="3"
-  [maxLength]="10"
-></verbena-input>
-<verbena-input
-  label="Convert to Decimal:"
-  appValidate="number"
+<div
+  [ngStyle]="{
+    'display': 'flex',
+    'gap': '10px',
+    'padding-bottom':'50px'
 
-  errorPosition="below"
-  [minLength]="3"
-  [maxLength]="10"
-></verbena-input>
-
-
-<verbena-input
-  label="Enter my name"
-  bgColor="#f5f5f5"
-  mg="10px"
-  border="1px solid #ccc"
-  borderRadius="5px"
-  textColor="black"
-  width="300px"
-  height="40px"
-  aspectRatio="2/1"
-  pd="10px"
-  placeHolder="Enter your username"
-
-  appValidate="number"
-
-></verbena-input>
-
-<verbena-input
-  label="new input"
-  bgColor="#f5f5f5"
-  mg="10px"
-  border="1px solid blue"
-  borderRadius="5px"
-  textColor="black"
-  width="300px"
-  height="40px"
-  aspectRatio="2/1"
-  pd="10px"
-  placeHolder="Enter your username"
-  [disable]="false"
-  appValidate="number"
-
-
-
-
-
-></verbena-input>
-
-
-
-
-
-<verbena-input
-  label="Username"
-  [labelPosition]="'center'"
-  [labelColor]="'blue'"
-  bgColor="#f5f5f5"
-  mg="10px"
-  border="1px solid #ccc"
-  borderRadius="5px"
-  textColor="black"
-  width="300px"
-  height="40px"
-  pd="10px"
-  placeHolder="Enter your username"
-
-
-
-
-></verbena-input>
-
-
-
-<button (mouseover)="tooltip.show()" (mouseout)="tooltip.hide()">Hover me</button>
-<lib-tooltip
-  #tooltip
-  [message]="'This is a tooltip message!'"
-  [backgroundColor]="'black'"
-  [textColor]="'white'"
-  [position]="{ top: '100%', left: '50%', transform: 'translateX(-50%)' }"
-  [borderRadius]="'8px'"
-></lib-tooltip>
-
-
+  }"
+>
+  <!-- Submit button with green background and rounded corners -->
 <verbena-button
-  text="Submit"
-
-  bgColor="#28a745"
-  textColor="white"
-  border="1px solid #28a745"
-  borderRadius="5px"
-  pd="10px 20px"
-  width="150px"
-  height="40px"
+text="Submit"
+bgColor="#28a745"
+textColor="white"
+border="1px solid #28a745"
+borderRadius="5px"
+pd="10px 20px"
+width="150px"
+height="40px"
 ></verbena-button>
 
+<!-- Submit button with an alert icon on the left -->
 <verbena-button
-  text="Submit"
-  svg="'alert'"
-  iconPosition="left"
-  bgColor="#28a745"
-  textColor="white"
-  border="1px solid #28a745"
-  borderRadius="5px"
-  pd="10px 20px"
-  width="150px"
-  height="40px"
+text="Submit"
+svg="'alert'"
+iconPosition="left"
+bgColor="#28a745"
+textColor="white"
+border="1px solid #28a745"
+borderRadius="5px"
+pd="10px 20px"
+width="150px"
+height="40px"
 ></verbena-button>
 
-
+<!-- Button with an icon on the right, labeled "backward" -->
 <verbena-button
 text="backward"
 svg="backward"
-
-  svgColor="'white'"
+svgColor="'white'"
 svgPosition="right"
 bgColor="#28a745"
 textColor="white"
@@ -129,61 +60,67 @@ borderRadius="5px"
 pd="10px 20px"
 width="150px"
 height="40px"
+></verbena-button>
+
+<!-- Button with an academic cap icon on the right -->
+<verbena-button
+svg="academic-cap"
+[svgHeight]="20"
+[svgWidth]="20"
+svgColor="'white'"
+text="Submit"
+bgColor="#4CAF50"
+textColor="#fff"
+border="none"
+borderRadius="4px"
+pd="8px 16px"
+svgPosition="right"
+></verbena-button>
+
+<!-- Round button with a chevron icon inside -->
+<verbena-button
+svg="chevron"
+[svgHeight]="10"
+[svgWidth]="10"
+svgColor="'white'"
+bgColor="#007bff"
+textColor="white"
+border="none"
+borderRadius="50%"
+width="50px"
+height="50px"
+></verbena-button>
+
+<!-- Submit button with a home icon -->
+<verbena-button
+text="Submit"
+bgColor="#efc050"
+textColor="white"
+svg="home"
+[svgHeight]="20"
+[svgWidth]="20"
+svgColor="'white'"
+borderRadius="5px"
+pd="10px 20px"
+width="150px"
+height="40px"
+></verbena-button>
+</div>
+
+<!-- Badge showing the number 5 inside a blue circle -->
+<h2 [ngStyle]="{
+  'font-size': '35px',
+  'font-weight':'700',
+    'padding-bottom':'20px'
+}">Badges</h2>
+<div
+[ngStyle]="{
+  'display': 'flex',
+  'gap': '10px'
+
+}"
 >
-
-
-</verbena-button>
-
-
-<verbena-button
-  svg="academic-cap"
-  [svgHeight]="20"
-  [svgWidth]="20"
-  svgColor="'white'"
-  text="Submit"
-  bgColor="#4CAF50"
-  textColor="#fff"
-  border="none"
-  borderRadius="4px"
-  pd="8px 16px"
-
-
-  svgPosition="right"
-></verbena-button>
-
-<verbena-button
-  svg="chevron"
-  [svgHeight]="10"
-  [svgWidth]="10"
-  svgColor="'white'"
-  bgColor="#007bff"
-  textColor="white"
-  border="none"
-  borderRadius="50%"
-  width="50px"
-  height="50px"
-
-></verbena-button>
-
-<verbena-button
-  text="Submit"
-
-  bgColor="#efc050"
-  textColor="white"
-  svg="home"
-  [svgHeight]="20"
-  [svgWidth]="20"
-  svgColor="'white'"
-
-  borderRadius="5px"
-  pd="10px 20px"
-  width="150px"
-  height="40px"
-></verbena-button>
-
-
-
-<verbena-badge
+  <verbena-badge
   text="5"
   bgColor="#3498db"
   textColor="white"
@@ -194,49 +131,40 @@ height="40px"
   fontSize="20px"
 ></verbena-badge>
 
-width and height
-
-<br><br>
+<!-- Large badge with a green background saying "new product" -->
 <verbena-badge
-  width="100px"
-  height="100px"
+
   borderRadius="50%"
   bgColor="green"
-  text="new product"
+  text="new "
 ></verbena-badge>
 
-
-<verbena-input
-  [label]="'Username'"
-  [labelPosition]="'left'"
-  [labelColor]="'blue'"
-  [bgColor]="'#f0f0f0'"
-  [width]="'100%'"
-  appValidate="decimal"
-></verbena-input>
-
+<!-- Another badge showing "New" with red background -->
 <verbena-badge
-  text="New"
+borderRadius="5px"
+  text="Sold"
   bgColor="red"
   textColor="white"
   pd="5px 15px"
   fontSize="12px"
 ></verbena-badge>
+</div>
 
-<input type="text" appValidate="email" [required]="true"  errorIconTooltipPosition="left">
-
-<br><br><br>
+<!-- Input field for entering a username, label aligned to the left -->
+<h2>More Input Examples</h2>
 <verbena-input
   [label]="'Username'"
   [labelPosition]="'left'"
-  [labelColor]="'#efc050'"
-> <br><br>
+  [labelColor]="'blue'"
+  [bgColor]="'#f0f0f0'"
+  width="100%"
+  appValidate="decimal"
+></verbena-input>
 
-</verbena-input> -->
-
+<!-- Text area for typing longer content -->
+<h2>Text Area Example</h2>
 <verbena-textarea
   label="Text Area"
-
   bgColor="#f8f8f8"
   textColor="#333"
   border="1px solid #ccc"
@@ -246,16 +174,17 @@ width and height
   height="100px"
 ></verbena-textarea>
 
+<!-- A switch for toggling notifications on or off -->
+<h2>Switch Example</h2>
 <verbena-switch
   label="Enable Notifications"
-
 ></verbena-switch>
-<h2>Customizable Input Example</h2>
 
+<!-- Customizable input field for email with error display at the top -->
+<h2>Customizable Input Example</h2>
 <verbena-input
   [label]="'Email'"
   [placeHolder]="'Enter your email'"
-
   [required]="true"
   [type]="'text'"
   [(value)]="email"
@@ -266,6 +195,7 @@ width and height
   [errorPosition]="'top'"
 ></verbena-input>
 
+<!-- Input field for age with a blue error message displayed on the right -->
 <verbena-input
   [label]="'Age'"
   [placeHolder]="'Enter your age'"
@@ -280,10 +210,10 @@ width and height
   [errorPosition]="'right'"
 ></verbena-input>
 
+<!-- Input for entering a decimal value with green error messages shown below -->
 <verbena-input
   [label]="'Decimal Value'"
   [placeHolder]="'Enter a decimal value'"
-
   [required]="true"
   [type]="'decimal'"
   [(value)]="decimalValue"
@@ -294,4 +224,7 @@ width and height
   [errorPosition]="'bottom'"
 ></verbena-input>
 
+<!-- A submit button to trigger form submission -->
 <button (click)="submit()">Submit</button>
+
+</div>

@@ -17,6 +17,8 @@ export class VerbenaInputComponent {
   @Input() borderRadius: string = '5px';
   @Input() textColor: string = '#333';
   @Input() value: string = '';
+  @Input() labelPosition: string = 'start';
+  @Input() labelColor: string = 'black';
 
   // New input properties
   @Input() showBorder: boolean = true; // Control border visibility

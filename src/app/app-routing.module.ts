@@ -10,15 +10,7 @@ import { TableFilterSampleComponent } from './views/table-filter-sample/table-fi
 import { TooltipSampleComponent } from './views/tooltip-sample/tooltip-sample.component';
 
 const routes: Routes = [
-  {
-    path: 'card-data-view',
 
-    component: CardDataViewComponent,
-  },
-<<<<<<< HEAD
-
-=======
->>>>>>> 1935064e4fe0428690a5ce9566fa3f9e86e124eb
   { path: 'home', component: HomeComponent, pathMatch: 'full' },
   { path: '', redirectTo: 'documentation', pathMatch: 'full' },
   {
@@ -27,9 +19,6 @@ const routes: Routes = [
       import('./documentation/documentation.module').then(
         (m) => m.DocumentationModule
       ),
-<<<<<<< HEAD
-
-=======
   },
   {
     path: 'icons',
@@ -50,7 +39,6 @@ const routes: Routes = [
   {
     path: 'tooltips',
     component: TooltipSampleComponent,
->>>>>>> 1935064e4fe0428690a5ce9566fa3f9e86e124eb
   },
 ];
 

@@ -11,13 +11,13 @@ import { DataFilterType} from 'verben-ng-ui/src/public-api';
 export class VisibleColumnComponent {
   SortFilter = DataFilterType;
   columns: IDataFilter[] = [
-    { checked: true, name: 'Column 1', type: DataFilterType.Bool },
+    { checked: false, name: 'Column 1', type: DataFilterType.Bool },
     { checked: false, name: 'Column 2', type: DataFilterType.Bool },
-    { checked: true, name: 'Column 3', type: DataFilterType.Bool },
+    { checked: false, name: 'Column 3', type: DataFilterType.Bool },
     { checked: false, name: 'Column 4', type: DataFilterType.Bool },
-    { checked: true, name: 'Column 5', type: DataFilterType.Bool },
+    { checked: false, name: 'Column 5', type: DataFilterType.Bool },
     { checked: false, name: 'Column 6', type: DataFilterType.Bool },
-    { checked: true, name: 'Column 7', type: DataFilterType.Bool },
+    { checked: false, name: 'Column 7', type: DataFilterType.Bool },
     { checked: false, name: 'Column 8', type: DataFilterType.Bool}
   ];
 

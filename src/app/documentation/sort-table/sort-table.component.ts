@@ -9,7 +9,6 @@ import { DataFilterType} from 'verben-ng-ui/src/public-api';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SortTableComponent {
-  isGridView: boolean = true;
   sortOptions: IDataFilter[] = [
     {
       name: 'Amount',

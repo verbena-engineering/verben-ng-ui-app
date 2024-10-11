@@ -8,7 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotificationsSampleComponent } from './views/notifications-sample/notifications-sample.component';
 import { ImageSampleComponent } from './views/image-sample/image-sample.component';
-import { QuillModule } from 'ngx-quill';
+
 
 import {
   ConvertToIntegerModule,
@@ -71,7 +71,6 @@ import { CommonModule } from '@angular/common';
     VerbenaMailTemplateModule,
     DataTableModule,
     CDVModule,
-    QuillModule.forRoot() 
 
 ],
   providers: [provideHttpClient(withFetch()),  NotificationModule,

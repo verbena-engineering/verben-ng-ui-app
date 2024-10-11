@@ -24,7 +24,7 @@ export class Config {
         },
         {
           type: DataFilterType.Bool,
-          options: [ConditionalOptions.Equal]
+          options: [ConditionalOptions.Yes,ConditionalOptions.No]
         }
       ];
 

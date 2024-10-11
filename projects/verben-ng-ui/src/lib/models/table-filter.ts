@@ -23,7 +23,9 @@ export enum ConditionalOptions {
   On = 'On',
   Before = 'Before',
   After = 'After',
-}
+  Yes = 'Yes',
+  No = 'No'
+ }
 
 export interface ITypeOption {
   type: DataFilterType;

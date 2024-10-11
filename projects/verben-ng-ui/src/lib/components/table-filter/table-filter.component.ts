@@ -25,7 +25,7 @@ export class TableFilterComponent implements OnInit {
   @Input() selectWidth?: string;
   @Input() maxFilterLength:number = 3
   @Input() tooltip:boolean = false
-  @Output() filtersApplied = new EventEmitter<IDataFilter[]>();
+  @Output() filtersApplied = new EventEmitter<any>();
   
   filterArray:string[] = [];
   selectedFilterValue: string = '';
@@ -43,13 +43,26 @@ export class TableFilterComponent implements OnInit {
   disableApplyFilterBtn: boolean = true;
   duplicateMessage?:string = '';
   configInstance: Config;
+  storageKey: string = 'savedFilters';
 
   constructor(){ 
     this.configInstance = new Config();
   }
 
   ngOnInit(): void {
-    this.filterArray = this.filterOptions.map(item => item.name)  
+    this.filterArray = this.filterOptions.map(item => item.name);  
+    this.loadFiltersFromLocalStorage(); 
+  }
+  
+  loadFiltersFromLocalStorage() {
+    const savedFiltersFromStorage = localStorage.getItem(this.storageKey);
+    if (savedFiltersFromStorage) {
+      this.savedFilters = JSON.parse(savedFiltersFromStorage);
+    }
+  }
+
+  saveFiltersToLocalStorage() {
+    localStorage.setItem(this.storageKey, JSON.stringify(this.savedFilters));
   }
 
   onFilterNameChange(selectedFilterValue: string) {
@@ -72,10 +85,16 @@ export class TableFilterComponent implements OnInit {
     this.isDuplicateFilter = false;
     this.disableApplyFilterBtn = true;
     this.duplicateMessage = ''
+    localStorage.removeItem(this.storageKey);
   }
 
 
   addFilter() {
+    console.log({ 
+      x:this.selectedFilterValue,
+      y:this.selectedCondition,
+      z:this.inputValue
+    })
     if (!this.selectedFilterValue || !this.selectedCondition || !this.inputValue) {
         return;
     }
@@ -113,7 +132,7 @@ export class TableFilterComponent implements OnInit {
         }
         this.savedFilters.push(newFilter);
     }
-
+    this.saveFiltersToLocalStorage(); 
     this.clearOperationSection();
     this.checkFilterButton(); 
   }
@@ -146,6 +165,7 @@ export class TableFilterComponent implements OnInit {
   applyFilters() {
     this.selectedFilters = this.savedFilters.filter(filter => filter.checked);
     this.filtersApplied.emit(this.selectedFilters);
+    this.filtersApplied.emit(this.storageKey);
   }
 
   toggleShowMore() {
@@ -196,15 +216,5 @@ export class TableFilterComponent implements OnInit {
         this.duplicateMessage = exists ? 'This entry is a duplicate and cannot be added.' : '';
     }
    }
-
-   showTooltip(){ 
-    this.tooltip = true;
-   }
-
-   hideTooltip(){ 
-    this.tooltip = false;
-   }
-
 }
-
 

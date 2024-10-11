@@ -12,7 +12,7 @@
     <h3 [style.color]="tertiaryColor" [style.font-size]="'14px'">
       Filters
       <span [style.color]="secondaryColor"
-        ><sup>({{ savedFilters.length }})</sup></span
+        ><sup>({{ selectedFilters.length }})</sup></span
       >
     </h3>
     <button
@@ -113,15 +113,28 @@
     <div class="savedWrapper">
       <h3 [style.font-size]="'13px'">Operation</h3>
       <div [ngStyle]="{'position':'relative'}"> 
-        <verben-svg icon="info" [width]="15" [height]="15"  
-        (mouseenter)="showTooltip()" 
-        (mouseleave)="hideTooltip()"  
+        
+        <verben-tooltip 
+        [tooltipContent]="tooltipTemplate"
+        [backgroundColor]="'grey'"
+        width="200px" 
+        [top]="'20px'"                 
+        [right]="'0px'"  
+        >
+        <verben-svg 
+        icon="info" 
+        [width]="15" 
+        [height]="15"   
         *ngIf="isDuplicateFilter"
         fill="red"
         >
         </verben-svg>
-     
-        <verben-tooltip
+        </verben-tooltip>
+      
+      <ng-template #tooltipTemplate>
+       {{duplicateMessage}}
+      </ng-template>
+        <!-- <verben-tooltip
          [backgroundColor]="'grey'"
          [textColor]="'white'"
          [padding]="'10px'"
@@ -133,7 +146,7 @@
          *ngIf="tooltip"
          >
          <h3>{{duplicateMessage}}</h3>
-        </verben-tooltip>
+        </verben-tooltip> -->
       </div>
       <verben-svg
         icon="info"
@@ -146,7 +159,7 @@
 
     <div class="inputsWrapper">
       <verben-drop-down
-        width="'8rem'"
+        width="7rem"
         placeholder="Select value"
         [options]="filterArray"
         [(ngModel)]="selectedFilterValue"
@@ -154,10 +167,11 @@
       >
       </verben-drop-down>
       <verben-drop-down
-        (onChange)="checkDuplicateFilter()"
-        width="8rem"
+        width="7rem"
+        placeholder="Select value"
         placeholder="Select value"
         [options]="conditionOptions"
+        (onChange)="checkDuplicateFilter()"
         [(ngModel)]="selectedCondition"
       >
       </verben-drop-down>
@@ -167,12 +181,13 @@
       border="1px solid #ccc"
       borderRadius="5px"
       textColor="black"
-      width="100px"
+      width="80px"
       height="25px"
       pd="6px"
       [showBorder]="true"
       [showErrorMessage]="true"
       [errorPosition]="'bottom'"
+      [type]="'date'"
       [(ngModel)]="inputValue"
     ></verbena-input>
 

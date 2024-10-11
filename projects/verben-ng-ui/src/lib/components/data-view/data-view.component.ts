@@ -13,7 +13,7 @@ import { CardData } from '../card-data-view/card-data';
   styleUrls: ['./data-view.component.css']
 })
 export class DataViewComponent {
-  isGridView: boolean = true; 
+  isGridView: boolean =false; 
   @Output() viewChange = new EventEmitter<boolean>();
 
   @Input() buttonClass?: string;

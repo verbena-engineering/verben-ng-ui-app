@@ -28,7 +28,7 @@ export class VerbenMailTemplate {
   toEmailInput: string = '';
   ccEmailInput: string = '';
   bccEmailInput: string = '';
-
+  mailData: any;
   toEmailError: string | null = null;
   ccEmailError: string | null = null;
   bccEmailError: string | null = null;
@@ -67,7 +67,7 @@ export class VerbenMailTemplate {
   }
 
   onCcChange(): void {
-    const newValues = this.mailForm.get('ccEmails')?.value;
+    const newValues = this.mailForm.get('ccEmails')?.value||[];
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const validEmails = newValues.filter((email: string) =>
       emailRegex.test(email)
@@ -75,7 +75,7 @@ export class VerbenMailTemplate {
     this.ccEmails = validEmails;
   }
   onBccChange(): void {
-    const newValues = this.mailForm.get('bccEmails')?.value;
+    const newValues = this.mailForm.get('bccEmails')?.value||[];
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const validEmails = newValues.filter((email: string) =>
       emailRegex.test(email)
@@ -131,6 +131,21 @@ export class VerbenMailTemplate {
         attachment: this.uploadedFileName,
       };
       this.mailPayload.emit(emailData);
+      this.resetForm();
     }
+  }
+  resetForm() {
+    this.mailForm.get('toEmails')?.reset('');
+    this.mailForm.get('ccEmails')?.reset('');
+    this.mailForm.get('bccEmails')?.reset('');
+    this.mailForm.get("subject")?.reset('')
+    this.mailForm.get("body")?.reset('')
+    this.toEmailError = null;
+    this.ccEmailError = null;
+    this.bccEmailError = null;
+    this.uploadedFileName = null;
+    this.fileUploadError = null;
+    this.isUploading = false;
+    this.isRichText = false;
   }
 }

@@ -55,7 +55,6 @@ input[type="checkbox"].checked {
 }
 
 .disabledBtn {
-  filter: blur(1px);
   cursor: not-allowed;
 }
 .enabledBtn {

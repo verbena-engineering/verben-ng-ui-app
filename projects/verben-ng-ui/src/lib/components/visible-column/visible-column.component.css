@@ -61,7 +61,6 @@ hr{
   justify-content: end;
 }
 .disabledBtn {
-  filter: blur(1px);
   cursor: not-allowed;
 }
 .enabledBtn {

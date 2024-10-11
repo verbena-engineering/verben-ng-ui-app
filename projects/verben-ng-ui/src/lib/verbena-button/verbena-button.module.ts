@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VerbenaButtonComponent } from './verbena-button.component';
-import { SvgModule } from '../../public-api';
+import { SvgModule } from '../components/svg/svg.module';
 
 @NgModule({
   declarations: [VerbenaButtonComponent],

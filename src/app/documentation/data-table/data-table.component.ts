@@ -1,6 +1,7 @@
 import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table/data-table.types';
+import { DataExportService } from 'verben-ng-ui/src/public-api';
 
 @Component({
   selector: 'app-data-table',
@@ -47,7 +48,10 @@ export class DataTableComponent {
 
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private exportService: DataExportService
+  ) {}
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -80,6 +84,40 @@ export class DataTableComponent {
         this.tableData = [...this.tableData];
       }
       console.log('Saved row:', row);
+    }
+  }
+
+  getDataProperties(): string[] {
+    if (this.tableData && this.tableData.length > 0) {
+      return Object.keys(this.tableData[0]);
+    }
+    return [];
+  }
+
+  handleExport(exportedData: Partial<any>[]) {
+    // Here you would implement the actual download functionality
+    console.log('Exported data:', exportedData);
+    // For example, you could convert to CSV and trigger a download
+    this.downloadCSV(exportedData);
+  }
+
+  private downloadCSV(data: Partial<any>[]) {
+    const headers = Object.keys(data[0]);
+    const csvContent = [
+      headers.join(','),
+      ...data.map((row) => headers.map((header) => row[header]).join(',')),
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'export.csv');
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   }
 }

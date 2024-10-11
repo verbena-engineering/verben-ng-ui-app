@@ -33,6 +33,7 @@ import {
 } from '../../projects/verben-ng-ui/src/public-api';
 import { CDVModule } from './views/card-data-view/cdv.module';
 import { CommonModule } from '@angular/common';
+import { CardViewModule } from './views/card-view/card-view.module';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -65,6 +66,7 @@ import { CommonModule } from '@angular/common';
     VerbenaMailTemplateModule,
     DataTableModule,
     CDVModule,
+    CardViewModule
   ],
   providers: [provideHttpClient(withFetch())],
   bootstrap: [AppComponent],

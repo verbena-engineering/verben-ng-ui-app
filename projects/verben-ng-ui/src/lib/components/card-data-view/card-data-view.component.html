@@ -1,8 +1,8 @@
 
 
-<div class="container" [style.display]="'flex'" [style.margin]="mg" [style.flex-direction]="displayAsRow?'row':'column'">
+<!-- <div class="container" [style.display]="'flex'" [style.margin]="mg" [style.flex-direction]="displayAsRow?'row':'column'"> -->
         <!-- Master -->
-       <div #dynamicMaster class="flex-column">
+       <!-- <div #dynamicMaster class="flex-column">
            <ng-content select="[master]"></ng-content>  
        </div>
         <div 
@@ -23,10 +23,10 @@
             <span class="paginator-text">{{totalRecords==0?cardDataList.length:totalRecords}} records loaded</span>
             <button (click)="onLoadMoreClick()" class="load-more">Load more</button>
           </div>
-        </div>
+        </div> -->
     
       <!-- Details --> 
-      <div  #dynamicDetail class="right-side"
+      <!-- <div  #dynamicDetail class="right-side"
       [style.width]="rWidth"
       [style.height]="rHeight"
       [style.backgroundColor]="rbgColor"
@@ -34,17 +34,34 @@
         <ng-container *ngIf="hasCurrentItem()">
           <ng-content  select="[detail]" ></ng-content>  
         </ng-container> 
-      </div>
+      </div> -->
 
 
-      <div  *ngIf="!dynamicDetail.children.length" 
+      <!-- <div  *ngIf="!dynamicDetail.children.length" 
       class="right-side"
       [style.width]="rWidth"
       [style.height]="rHeight"
       [style.backgroundColor]="rbgColor"
       >
       
-      </div>
-      
- 
+      </div> -->
+<!-- </div> -->
+
+
+<div class="container" [style.display]="'flex'" [style.margin]="mg" [style.flex-direction]="displayAsRow?'row':'column'">
+  <ng-content select="verben-left-card-data-view">
+
+  </ng-content>
+
+  <ng-content select="verben-right-card-data-view">
+
+  </ng-content>
+  
+<!--   
+  <verben-left-card-data-view>
+
+  </verben-left-card-data-view> -->
+  <!-- <verben-right-card-data-view>
+
+  </verben-right-card-data-view> -->
 </div>

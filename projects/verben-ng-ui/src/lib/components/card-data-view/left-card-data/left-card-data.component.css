@@ -1,0 +1,8 @@
+.left-side
+{
+    border:1.5px solid rgb(246, 191, 109);
+    border-radius: 8px;
+    padding: 10px;
+   left: 0;
+box-sizing: border-box;
+}

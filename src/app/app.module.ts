@@ -19,11 +19,9 @@ import {
   CardModule,
   CardDataViewModule,
   ValidationModule,
-
   VerbenaButtonModule,
   VerbenaBadgeModule,
   VerbenaInputModule,
-  TableFilterModule,
   VerbenaTextareaModule,
   VerbenaSwitchModule,
   NotificationModule,
@@ -32,16 +30,12 @@ import {
   DataViewModule,
   VerbenaMailTemplateModule,
   DataTableModule,
-
 } from '../../projects/verben-ng-ui/src/public-api';
-
 import { CDVModule } from './views/card-data-view/cdv.module';
 import { CommonModule } from '@angular/common';
-import { QuillModule } from 'ngx-quill';
-
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent,CardDataViewComponent],
+  declarations: [AppComponent, HomeComponent, CardDataViewComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -55,13 +49,12 @@ import { QuillModule } from 'ngx-quill';
     ConvertToIntegerModule,
     PhoneNumberModule,
     ValidationModule,
-
+    NotificationModule,
     VerbenaBadgeModule,
     ValidateInputModule,
     VerbenaInputModule,
     VerbenaButtonModule,
     SvgModule,
-
     CardModule,
     VerbenaTextareaModule,
     CardDataViewModule,
@@ -72,12 +65,8 @@ import { QuillModule } from 'ngx-quill';
     VerbenaMailTemplateModule,
     DataTableModule,
     CDVModule,
-    QuillModule.forRoot()
-
-],
-  providers: [
-    provideHttpClient(withFetch())
   ],
-  bootstrap: [AppComponent]
+  providers: [provideHttpClient(withFetch())],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

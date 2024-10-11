@@ -1,6 +1,13 @@
-<form [style.width]="containerWidth" [formGroup]="mailForm" (ngSubmit)="sendEmail()">
-  <div class="button-container flex flex-end gap" [style.margin-bottom]="'10px'">
-    <button  class="button" type="button" (click)="toggleEditor()">
+<form
+  [style.width]="containerWidth"
+  [formGroup]="mailForm"
+  (ngSubmit)="sendEmail()"
+>
+  <div
+    class="button-container flex flex-end gap"
+    [style.margin-bottom]="'10px'"
+  >
+    <button class="button" type="button" (click)="toggleEditor()">
       {{ isRichText ? "Switch to Plain" : "View Designer" }}
     </button>
     <button
@@ -16,7 +23,12 @@
       Send
     </button>
   </div>
-  <div class="container"[style.border-radius]="borderRadius" [style.border]="border" [style.padding]="pd">
+  <div
+    class="container"
+    [style.border-radius]="borderRadius"
+    [style.border]="border"
+    [style.padding]="pd"
+  >
     <div class="verben-mail-container">
       <div class="verben-mail-form">
         <!-- Subject Field -->
@@ -31,13 +43,12 @@
           <div class="email-tags-container">
             <verben-chip
               [required]="true"
-              [invalidMessage]="toEmailError||'email must be provided'"
+              [invalidMessage]="toEmailError || 'email must be provided'"
               (onChange)="onToChange()"
               formControlName="toEmails"
               [max]="max"
               [ngModel]="toEmails"
             >
-             
             </verben-chip>
           </div>
         </div>
@@ -46,7 +57,11 @@
         <div class="form-element">
           <label for="cc">CC:</label>
           <div class="email-tags-container">
-            <verben-chip (onChange)="onCcChange()" formControlName="ccEmails"  [ngModel]="ccEmails" >
+            <verben-chip
+              (onChange)="onCcChange()"
+              formControlName="ccEmails"
+              [ngModel]="ccEmails"
+            >
               <ng-template let-item vTemplate="item">
                 {{ item }}
               </ng-template>
@@ -58,7 +73,11 @@
         <div class="form-element">
           <label for="bcc">BCC:</label>
           <div class="email-tags-container">
-            <verben-chip (onChange)="onBccChange()"   [ngModel]="bccEmails" formControlName="bccEmails">
+            <verben-chip
+              (onChange)="onBccChange()"
+              [ngModel]="bccEmails"
+              formControlName="bccEmails"
+            >
               <ng-template let-item vTemplate="item">
                 {{ item }}
               </ng-template>
@@ -97,21 +116,22 @@
         </div>
 
         <!-- Email Body -->
+
         <hr [style.color]="'#00000066'" />
         <div class="form-element quill" [style.margin-top]="'30px'">
-          <quill-editor
-            *ngIf="isRichText"
-            [modules]="quillConfig"
-            formControlName="body"
-            [style.min-height]="'300px'"
-          ></quill-editor>
-          <textarea
-            *ngIf="!isRichText"
-            formControlName="body"
-            class="block"
-            rows="10"
-            cols="50"
-          ></textarea>
+          <div *ngIf="isRichText; else textArea">
+            <ng-content select="[rich-text]">rich text should be here </ng-content>
+          </div>
+          <ng-template #textArea>
+            <ng-content select="[text-arae]">
+              <textarea
+                formControlName="body"
+                class="block"
+                rows="10"
+                cols="50"
+              ></textarea>
+            </ng-content>
+          </ng-template>
         </div>
       </div>
     </div>

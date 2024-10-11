@@ -1,11 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { QuillConfiguration } from 'verben-ng-ui/src/config/quill-config';
-import { MailPayload } from '../../models/mail-model';;
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MailPayload } from '../../models/mail-model';
 
 @Component({
   selector: 'verben-mail-template',
@@ -21,10 +16,9 @@ export class VerbenMailTemplate {
   @Input() border: string = '1px solid gray';
   @Input() pd: string = '20px';
   @Input() m: string = '';
-  @Input() max: number =10;
+  @Input() max: number = 10;
   mailForm: FormGroup;
   isRichText: boolean = false;
-  quillConfig = QuillConfiguration;
   isUploading: boolean = false;
   uploadedFileName: string | null = null;
   fileUploadError: string | null = null;
@@ -93,7 +87,6 @@ export class VerbenMailTemplate {
     return emailRegex.test(email);
   }
 
- 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -110,7 +103,7 @@ export class VerbenMailTemplate {
         this.uploadedFileName = file.name;
       }
     } else {
-      this.isUploading = false; 
+      this.isUploading = false;
     }
   }
 
@@ -125,15 +118,6 @@ export class VerbenMailTemplate {
 
   toggleEditor() {
     this.isRichText = !this.isRichText;
-    if (!this.isRichText) {
-      const body = this.mailForm.value.body;
-      this.mailForm.get('body')?.setValue(this.stripHtml(body));
-    }
-  }
-
-  stripHtml(html: string): string {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    return doc.body.textContent || '';
   }
 
   sendEmail() {

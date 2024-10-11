@@ -1,19 +1,10 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SvgComponent } from '../svg/svg.component';
-import { DataFilterType, IDataFilter } from '../../models/table-filter';
-import { DropDownComponent } from '../drop-down/drop-down.component';
-import { VerbenaInputModule } from '../../Verbena-input/verbena-input.module';
-import { TooltipModule } from '../tooltip/tooltip.module';
-import { ValidationModule } from '../../validate/validate.module';
+import { IDataFilter } from '../../models/table-filter';
 import { Config } from '../../config';
 
 
 @Component({
   selector: 'verben-table-filter',
-  standalone: true,
-  imports: [CommonModule, FormsModule, SvgComponent, DropDownComponent, VerbenaInputModule,TooltipModule,ValidationModule],
   templateUrl: './table-filter.component.html',
   styleUrls: ['./table-filter.component.css']
 })

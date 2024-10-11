@@ -36,10 +36,7 @@ export class CardDataViewComponent {
       { title:'Description',value:'description3'}
     ]}
    ]
-   clearData()
-   {
-    this.currentData={} as CardData
-   }
+
    loadMore()
    {
     this.cardData= this.cardData.concat(this.cardData)

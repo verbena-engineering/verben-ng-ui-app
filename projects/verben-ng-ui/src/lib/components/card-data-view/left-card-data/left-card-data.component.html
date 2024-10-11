@@ -1,8 +1,4 @@
-   <!-- <div 
-            class="left-side"
-            [style.backgroundColor]="lbgColor"
-            >
             @for (item of cardDataList; track item.title) {
-                <ng-content *ngTemplateOutlet="card;context: {$implicit: item}"></ng-content>
+                <ng-content  *ngTemplateOutlet="card;context: {$implicit: item}"></ng-content>
             }
-   </div> -->
+

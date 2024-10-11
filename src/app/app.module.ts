@@ -66,7 +66,8 @@ import { CardViewModule } from './views/card-view/card-view.module';
     VerbenaMailTemplateModule,
     DataTableModule,
     CDVModule,
-    CardViewModule
+    CardViewModule,
+    
   ],
   providers: [provideHttpClient(withFetch())],
   bootstrap: [AppComponent],

@@ -1,5 +1,5 @@
-  <verben-card-data-view (loadMoreClick)="loadMore()" #vdcv  dataId="mailAddress"  border="5px" pd="5px 10px" [cardDataList]="cardData" mg="20px">
-    <!-- <ng-template #card let-item card-body >
+  <verben-card-data-view rBorderRadius="12px" (loadMoreClick)="loadMore()" #vdcv  dataId="mailAddress"  border="5px"  [cardDataList]="cardData" mg="20px" bg="rgba(245, 246, 249, 1)">
+   <!-- <ng-template #card let-item card-body >
       <div (click)="currentData=vdcv.onItemClick(item);"class="flex cursor-pointer   bg-secondary rounded-xl my-2 ">
         <div class="w-3 rounded-xl rounded-tr-none rounded-br-none" [ngClass]="item.selected? 'bg-primary':'bg-secondary-200'"></div>
         <div class="flex flex-col py-2 px-4 w-full">
@@ -27,6 +27,54 @@
            <input name="name" type="text" [(ngModel)]="currentData.data.name"  class="border-secondary-200 rounded-xl border-2 px-2 py-1" /> 
           </div>
         </form>
-    </div>     -->
-  </verben-card-data-view>
+       </div>  -->  
+
+    
+
+    <verben-card-data-view-header>
+      <h1>Header</h1>
+    </verben-card-data-view-header>
+    
+    <verben-left-card-data-view >
+       <verben-left-card-data [cardDataList]="cardData">
+        <ng-template #card let-item >
+          <div (click)="currentData=vdcv.onItemClick(item);"class="flex cursor-pointer   bg-secondary rounded-xl my-2">
+            <div class="w-3 rounded-xl rounded-tr-none rounded-br-none" [ngClass]="item.selected? 'bg-primary':'bg-secondary-200'"></div>
+            <div class="flex flex-col py-2 px-4 w-full">
+            <div class="flex">
+              <span class="font-normal text-sm">{{item.title}}</span>
+            </div>
+            @for (ciItem of item.body; track ciItem.value) {
+              <div class="">
+                <span class="text-muted font-light text-xs">{{ciItem.title}}:</span>
+                <span class="text-black">{{ciItem.value}}</span>
+              </div>
+            }
+            </div>
+         </div>
+        </ng-template>
+       </verben-left-card-data>
+    </verben-left-card-data-view>
+    
+    <verben-right-card-data-view class="bg-secondary" *ngIf="currentData && currentData.title">
+        <form class="flex flex-col  p-3 rounded-xl h-full w-full">
+          <div class="flex flex-col"> 
+           <label class="text-muted font-extralight text-sm " for="convertToDecimal">Mail Address:</label>
+           <input name="mailAddress" type="text" [(ngModel)]="currentData.data.mailAddress"   class="border-secondary-200 rounded-xl border-2 px-2 py-1" /> 
+          </div>
+          <div class="flex flex-col"> 
+           <label class="text-muted font-extralight text-sm " for="convertToDecimal">Name:</label>
+           <input name="name" type="text" [(ngModel)]="currentData.data.name"  class="border-secondary-200 rounded-xl border-2 px-2 py-1" /> 
+          </div>
+        </form>
+    </verben-right-card-data-view> 
+     
+    <verben-card-data-view-footer>
+       <div  class="flex-row">
+             <span class="paginator-text">{{cardData.length}} records loaded</span>
+             <button (click)="loadMore()" class="load-more">Load more</button>
+      </div>
+    </verben-card-data-view-footer>
+
+  </verben-card-data-view> 
 

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CardData } from '../card-data';
 
 @Component({
   selector: 'verben-left-card-data-view',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './left-card-data-view.component.css'
 })
 export class LeftCardDataViewComponent {
+   @Input() cardDataList:CardData[]=[];
 
 }

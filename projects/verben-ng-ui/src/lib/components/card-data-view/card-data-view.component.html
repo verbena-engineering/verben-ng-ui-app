@@ -48,20 +48,75 @@
 <!-- </div> -->
 
 
-<div class="container" [style.display]="'flex'" [style.margin]="mg" [style.flex-direction]="displayAsRow?'row':'column'">
-  <ng-content select="verben-left-card-data-view">
 
-  </ng-content>
 
-  <ng-content select="verben-right-card-data-view">
 
-  </ng-content>
-  
-<!--   
-  <verben-left-card-data-view>
+<div #container class="container flex-col" [style.display]="'flex'" [style.margin]="mg" > 
+       <!-- <ng-container *ngIf="container.getElementsByTagName('verben-left-card-data-view')">
+          <div>
+                <ng-content select="cardViewWrapper">
+                   <ng-container *ngIf="container.getElementsByTagName('verben-right-card-data-view')">
+                    <div 
+                      [style.width]="lWidth"
+                      [style.height]="lHeight"
+                      class="flex-column">
+                      <div 
+                        class="left-side"
+                        [style.backgroundColor]="lbgColor"
+                        >
+                        @for (item of cardDataList; track item.title) {
+                            <ng-content *ngTemplateOutlet="card;context: {$implicit: item}"></ng-content>
+                        }
+                      </div>
+                      <div *ngIf="!hidePaginator" 
+                      class="paginator flex-row">
+                        <span class="paginator-text">{{totalRecords==0?cardDataList.length:totalRecords}} records loaded</span>
+                        <button (click)="onLoadMoreClick()" class="load-more">Load more</button>
+                      </div>
+                  </div> 
+                   </ng-container>
+                </ng-content>
+          </div>
+       </ng-container>
+ 
+      <div  class="right-side"
+      [style.width]="rWidth"
+      [style.height]="rHeight"
+      [style.backgroundColor]="rbgColor"
+      >
+        <ng-container *ngIf="hasCurrentItem()">
+          <ng-content  select="cardDetail" ></ng-content>  
+        </ng-container> 
+      </div> -->
+    
+     <!-- Header -->
+     <ng-container ngProjectAs="verben-card-data-view-header">
+        <ng-content select='verben-card-data-view-header'></ng-content>
+     </ng-container>
 
-  </verben-left-card-data-view> -->
-  <!-- <verben-right-card-data-view>
+     <div [style.padding]="pd" class="row" >
+      <!-- Card and Footer -->
+        <div [style.width]="!hasCurrentItem()?'100%':lWidth"  [style.backgroundColor]="bg" class="flex-col ">
+          <!-- Card section -->
+          <ng-container ngProjectAs="verben-left-card-data-view">
+            <ng-content select='verben-left-card-data-view'></ng-content>
+          </ng-container>
 
-  </verben-right-card-data-view> -->
+          <!-- Footer-->
+          <ng-container ngProjectAs="verben-card-data-view-footer">
+            <ng-content select='verben-card-data-view-footer'></ng-content>
+          </ng-container>
+        </div>
+      <!-- Detail Section-->
+       <div *ngIf="hasCurrentItem()" [style.width]="rWidth"  class="" [style.borderRadius]="rBorderRadius"  [style.backgroundColor]="bg" >
+         <verben-svg  (click)="clearData()" class="cursor-pointer toRight" icon="close" [width]="20" [height]="20" color="black"></verben-svg> 
+         <ng-container   ngProjectAs="verben-right-card-data-view">
+           <ng-content select='verben-right-card-data-view'></ng-content>
+         </ng-container>
+       </div>
+      
+     </div>
+   
+
+     
 </div>

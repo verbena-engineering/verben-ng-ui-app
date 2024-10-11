@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ContentChild, ElementRef, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { AfterContentInit, Component, ContentChild, ElementRef, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { CardData } from './card-data';
 import { Title } from '@angular/platform-browser';
 
@@ -17,10 +17,10 @@ export class CardDataViewComponent  {
   @Input() lWidth?:string="30%";
   @Input() textColor?:string ;
   @Input() lbgColor?:string ;
-  @Input() rbgColor?:string ;
+  @Input() bg?:string ;
   @Input() border?:string ;
   @Input() display?:string ;
-  @Input() borderRadius?:string ;
+  @Input() rBorderRadius?:string ;
   @Input() activeCss?:string ;
   @Input() inActiveCss?:string ;
   @Input() displayAsRow?:boolean =true;
@@ -28,8 +28,7 @@ export class CardDataViewComponent  {
   @Input() dataId!:string;
   @Input() totalRecords:number=0;
   @Input() hidePaginator:boolean=false;
-  // @Input() disabled:boolean=false ;
-  // @Input() aspectRatio?:number ;
+
   @ContentChild('card') card!: TemplateRef<any>;
   // @ContentChild('content') content!: TemplateRef<any>;
   currentItem:any={};
@@ -37,6 +36,10 @@ export class CardDataViewComponent  {
   {
     return !!Object.keys(this.currentItem).length
   }
+  clearData()
+   {
+    this.currentItem={} as CardData
+   }
   @Input() onItemClick(item:CardData){
     item.selected= true;
     this.cardDataList.forEach(element => {

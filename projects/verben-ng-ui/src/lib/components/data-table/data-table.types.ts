@@ -9,6 +9,5 @@ export interface ColumnDefinition<T> {
   cellEditTemplate?: TemplateRef<any>;
   headerTemplate?: TemplateRef<any>;
   footerTemplate?: TemplateRef<any>;
-  enableSorting?: boolean;
-  enableHiding?: boolean;
+  sortAction?: 'ASC' | 'DESC';
 }

@@ -30,7 +30,7 @@ export class VisibleColumnComponent {
   @Input() borderRadius?: string;
   @Input() selectWidth?: string;
   @Output() columnsUpdated = new EventEmitter<IDataFilter[]>();
-
+  originalColumnOrder: IDataFilter[] = [];
   visibleColumns: boolean[] = [];
   tempVisibleColumns: boolean[] = [];
   initialVisibleColumns: boolean[] = [];
@@ -39,6 +39,7 @@ export class VisibleColumnComponent {
 
   ngOnInit() {
     this.initializeColumnVisibility();
+    this.originalColumnOrder = [...this.columns];
   }
 
   private initializeColumnVisibility() {
@@ -50,6 +51,8 @@ export class VisibleColumnComponent {
 
   resetColumns() {
     this.tempVisibleColumns = [...this.originalVisibleColumns];
+    this.columns = [...this.originalColumnOrder];
+    this.saveColumnVisibility();
   }
 
   getSelectedColumnCount(): number {

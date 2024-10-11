@@ -42,8 +42,9 @@ export class SortTableComponent {
   showMore: boolean = false;
   disableSortButton: boolean = false;
   selectedOrders: Map<number, 'asc' | 'desc'> = new Map();
-
+  defaultSortOptions: IDataFilter[] = [];
   ngOnInit() {
+    this.defaultSortOptions = [...this.sortOptions];
     this.updateVisibleOptions();
     this.updateSortButtonState();
   }
@@ -116,6 +117,9 @@ export class SortTableComponent {
       option.checked = false;
       this.selectedOrders.delete(index);
     });
+  
+    this.sortOptions = [...this.defaultSortOptions];
+    this.updateVisibleOptions();
     this.updateSortButtonState();
   }
 

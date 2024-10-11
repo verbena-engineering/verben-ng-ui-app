@@ -2,51 +2,13 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'verbena-button',
-  template: `
-    <button [ngStyle]="{
-        'background-color': bgColor,
-        'color': textColor,
-        'border': border,
-        'border-radius': borderRadius,
-        'padding': pd,
-        'width': width,
-        'height': height
-      }"
-      [disabled]="disable"
-      class="verbena-button"
-    >
-      <ng-container *ngIf="icon && iconPosition === 'left'">
-        <i [class]="icon" style="margin-right: 8px;"></i>
-      </ng-container>
-
-      <span *ngIf="text">{{ text }}</span>
-
-      <ng-container *ngIf="icon && iconPosition === 'right'">
-        <i [class]="icon" style="margin-left: 8px;"></i>
-      </ng-container>
-    </button>
-  `,
-  styles: [`
-    .verbena-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .verbena-button i {
-      font-size: 16px;
-    }
-    .verbena-button[disabled] {
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-  `]
+  templateUrl: './verbena-button.component.html',
+  styleUrls: ['./verbena-button.component.css']
 })
 export class VerbenaButtonComponent {
   @Input() text: string = '';
-  @Input() icon: string = '';
-  @Input() iconPosition: 'left' | 'right' = 'left';
+  @Input() icon: string = ''; // Class for icon fonts (e.g., FontAwesome)
+  @Input() svgPosition: 'left' | 'right' = 'left'; // Position for icon or SVG
   @Input() bgColor: string = '';
   @Input() textColor: string = '';
   @Input() border: string = '';
@@ -55,4 +17,11 @@ export class VerbenaButtonComponent {
   @Input() width: string = '';
   @Input() height: string = '';
   @Input() disable: boolean = false;
+
+  // Inputs for SVG support
+  @Input() svg: string = '';
+  @Input() svgWidth: number = 20; // Change type to number
+  @Input() svgHeight: number = 20; // Change type to number
+  @Input() svgColor: string = ''; // SVG color
+
 }

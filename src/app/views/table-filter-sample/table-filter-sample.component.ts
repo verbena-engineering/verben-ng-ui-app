@@ -1,14 +1,11 @@
+import { TableFilterModule } from './../../../../projects/verben-ng-ui/src/lib/components/table-filter/table-filter.module';
 import { Component } from '@angular/core';
-import { TableFilterComponent } from 'verben-ng-ui/src/public-api';
 import { DataFilterType, IDataFilter } from '../../../../projects/verben-ng-ui/src/lib/models/table-filter';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-table-filter-sample',
   templateUrl: './table-filter-sample.component.html',
   styleUrl: './table-filter-sample.component.scss',
-  standalone:true,
-  imports:[TableFilterComponent,CommonModule]
 })
 export class TableFilterSampleComponent {
   filterArray:IDataFilter[] = [

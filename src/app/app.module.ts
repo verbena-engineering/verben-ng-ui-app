@@ -6,9 +6,6 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { CardDataViewComponent } from './views/card-data-view/cdv.component';
 import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NotificationsSampleComponent } from './views/notifications-sample/notifications-sample.component';
-import { ImageSampleComponent } from './views/image-sample/image-sample.component';
-
 
 import {
   ConvertToIntegerModule,
@@ -22,11 +19,9 @@ import {
   CardModule,
   CardDataViewModule,
   ValidationModule,
-  ButtonModule,
   VerbenaButtonModule,
   VerbenaBadgeModule,
   VerbenaInputModule,
-  TableFilterModule,
   VerbenaTextareaModule,
   VerbenaSwitchModule,
   NotificationModule,
@@ -40,7 +35,7 @@ import { CDVModule } from './views/card-data-view/cdv.module';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent,CardDataViewComponent],
+  declarations: [AppComponent, HomeComponent, CardDataViewComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -54,13 +49,12 @@ import { CommonModule } from '@angular/common';
     ConvertToIntegerModule,
     PhoneNumberModule,
     ValidationModule,
-    ButtonModule,
+    NotificationModule,
     VerbenaBadgeModule,
     ValidateInputModule,
     VerbenaInputModule,
     VerbenaButtonModule,
     SvgModule,
-    TableFilterModule,
     CardModule,
     VerbenaTextareaModule,
     CardDataViewModule,
@@ -71,11 +65,8 @@ import { CommonModule } from '@angular/common';
     VerbenaMailTemplateModule,
     DataTableModule,
     CDVModule,
-
-],
-  providers: [provideHttpClient(withFetch()),  NotificationModule,
-    ImageSampleComponent,
-    NotificationsSampleComponent,],
+  ],
+  providers: [provideHttpClient(withFetch())],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

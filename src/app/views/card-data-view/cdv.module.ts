@@ -7,6 +7,7 @@ import {
   SvgModule,
 } from '../../../../projects/verben-ng-ui/src/public-api';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 const routes: Routes = [
   {
     path: '',
@@ -19,8 +20,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes), CardDataViewModule, CommonModule],
-  declarations: [],
+  imports: [RouterModule.forChild(routes), CardDataViewModule, CommonModule,SvgModule,FormsModule],
+  declarations: [CardDataViewComponent],
   // exports: [RouterModule,CardDataViewComponent]
 })
 export class CDVModule {}

@@ -35,7 +35,7 @@ import { CDVModule } from './views/card-data-view/cdv.module';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, CardDataViewComponent],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,

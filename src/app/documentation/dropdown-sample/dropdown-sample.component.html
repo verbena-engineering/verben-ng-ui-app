@@ -1,0 +1,108 @@
+<div class="dropdown-sample-container flex flex-col">
+  <div>
+    <input disabled="true" class="verben-input" />
+  </div>
+  <div>
+    <button class="verben-button secondary">Save</button>
+  </div>
+
+  <div class="example-section flex flex-col">
+    <h1>Normal Example</h1>
+    <verben-drop-down [minChar]="3" [required]="true" placeholder="Select Parent" [lazyLoad]="true"
+      [asyncLabel]="this.getParentLabel.bind(this)" invalidMessage="No value was provided" [filter]="true"
+      filterBy="Name" [showClear]="true" [search]="this.searchParents" [load]="this.loadMoreParents"
+      (onChange)="onDropdownChange($event)" [(ngModel)]="selectedParent" optionLabel="Name" optionValue="Id"
+      [options]="testParents"></verben-drop-down>
+  </div>
+  <div class="example-section flex flex-col">
+    <h1>Grouped Example</h1>
+    <verben-drop-down></verben-drop-down>
+  </div>
+
+  <div class="example-section flex flex-col">
+    <h1>Basic Dropdown. Single Select. No Group</h1>
+    <verben-drop-down placeholder="Select Value" (onChange)="onDropdownChange($event)" [options]="options"
+      [(ngModel)]="basicOption"></verben-drop-down>
+  </div>
+
+  <button (click)="this.clearSelection()">Reset</button>
+
+  <div class="example-section flex flex-col">
+    <h1>Single select. Grouped. Option Value Id</h1>
+    <verben-drop-down [group]="true" placeholder="Select test item Value" [lazyLoad]="true" optionValue="Id"
+      [load]="this.mockAsyncFunctionThree.bind(this)" [asyncLabel]="this.getAsyncLabel.bind(this)"
+      (onChange)="onDropdownChange($event)" [(options)]="optionsThree"
+      [(ngModel)]="selectedOptionThree"></verben-drop-down>
+  </div>
+
+  <div class="example-section flex flex-col">
+    <h1>Single select. Grouped. Paged parents.</h1>
+    <verben-drop-down [group]="true" placeholder="Select test item" [lazyLoad]="true"
+      [load]="this.mockAsyncFunctionThree.bind(this)" (onChange)="onDropdownChange($event)" [(options)]="optionsThree"
+      [(ngModel)]="selectedOptionFour"></verben-drop-down>
+  </div>
+
+  <div class="example-section flex flex-col">
+    <h1>Single select. Grouped. No pagination</h1>
+    <verben-drop-down [group]="true" placeholder="Select test item" (onChange)="onDropdownChange($event)"
+      [(options)]="optionsThree" [(ngModel)]="selectedOptionFive"></verben-drop-down>
+  </div>
+
+  <div class="example-section flex flex-col">
+    <h1>Multiselect, No group, Not paged. Select All Allowed. Filter on. Default view</h1>
+    <verben-drop-down [filter]="true" [multiselect]="true" [showClear]="true" placeholder="Second Test"
+      [load]="this.mockAsyncFunction.bind(this)" (onChange)="onDropdownChange($event)" [(options)]="options"
+      [(ngModel)]="selectedOption"></verben-drop-down>
+  </div>
+
+  <div class="example-section flex flex-col">
+    <h1>Multiselect, No group, Not paged. Select All Allowed. Filter on. Chip view</h1>
+    <verben-drop-down [filter]="true" display="chip" [multiselect]="true" [showClear]="true" placeholder="Second Test"
+      [load]="this.mockAsyncFunction.bind(this)" (onChange)="onDropdownChange($event)" [(options)]="options"
+      [(ngModel)]="selectedOption"></verben-drop-down>
+  </div>
+
+  <div class="example-section flex flex-col">
+    <h1> Multiselect, No group. Option Value Id</h1>
+    <verben-drop-down [multiselect]="true" placeholder="Select test item"
+      [asyncLabel]="this.getAsyncLabelTwo.bind(this)" [lazyLoad]="true" optionValue="Id" optionLabel="Name"
+      [load]="this.mockAsyncFunctionTwo.bind(this)" (onChange)="onDropdownChange($event)" [(options)]="optionsTwo"
+      [(ngModel)]="selectedOptionTwo"></verben-drop-down>
+  </div>
+
+  <div class="example-section flex flex-col">
+    <h1>Multiselect. No group. Templated</h1>
+    <verben-drop-down styleClass="testClass" [multiselect]="true" [filter]="true" [showClear]="true"
+      placeholder="First Test" (onChange)="onDropdownChange($event)" [(options)]="options" [(ngModel)]="selectedOption">
+      <ng-template let-items vTemplate="selected">
+        <span *ngFor="let item of items">
+          {{item}} Test Selected Template
+        </span>
+      </ng-template>
+      <ng-template let-item vTemplate="item">
+        {{item}} Test Item Template
+      </ng-template>
+      <ng-template let-item vTemplate="group">
+        {{item}} Test Group Template
+      </ng-template>
+    </verben-drop-down>
+  </div>
+
+  <div class="example-section flex flex-col">
+    <h1>Multiselect multiple nested paged content. Filter off</h1>
+    <verben-drop-down display="chip" [multiselect]="true" [required]="true" [filter]="true" [showClear]="true"
+      [group]="true" placeholder="Select test item" [lazyLoad]="true" [asyncLabel]="this.getAsyncLabelObject.bind(this)"
+      [load]="this.mockAsyncFunctionFour.bind(this)" [search]="this.searchItems.bind(this)"
+      (onChange)="onDropdownChange($event)" [(options)]="optionsFour"
+      [(ngModel)]="selectedOptionSix"></verben-drop-down>
+  </div>
+
+  <div class="example-section flex flex-col">
+    <h1>Multiselect multiple nested paged content. Filter on</h1>
+    <verben-drop-down display="chip" [multiselect]="true" [required]="true" [filter]="true" [showClear]="true"
+      [group]="true" placeholder="Select test item" [lazyLoad]="true" [asyncLabel]="this.getAsyncLabelObject.bind(this)"
+      [load]="this.mockAsyncFunctionFour.bind(this)" [search]="this.searchItems.bind(this)"
+      (onChange)="onDropdownChange($event)" [(options)]="optionsFour"
+      [(ngModel)]="selectedOptionSix"></verben-drop-down>
+  </div>
+</div>

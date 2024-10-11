@@ -1,7 +1,15 @@
+export type ExportItemType = 'property' | 'operation';
+
+export interface ExportItem {
+  id: string;
+  name: string;
+  type: ExportItemType;
+}
+
 export interface ExportProfile {
   id: string;
   name: string;
-  properties: string[];
+  items: ExportItem[];
 }
 
 export interface Operation {

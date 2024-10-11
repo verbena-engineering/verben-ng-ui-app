@@ -42,10 +42,10 @@ export class DataExportComponent {
   }
 
   private initProfileForm() {
-    const propertyControls = this.allProperties.map(() => false);
+    const itemControls = this.exportService.getAllItems().map(() => false);
     this.profileForm = this.fb.group({
       name: ['', Validators.required],
-      properties: this.fb.array(propertyControls),
+      items: this.fb.array(itemControls),
     });
   }
 
@@ -67,10 +67,12 @@ export class DataExportComponent {
 
   private updateProperties() {
     if (this.data && this.data.length > 0) {
-      this.baseProperties = Object.keys(this.data[0]);
-      this.exportService.setBaseProperties(this.baseProperties);
+      const baseProperties = Object.keys(this.data[0]);
+      this.exportService.setBaseProperties(baseProperties);
     }
-    this.allProperties = this.exportService.getAllProperties();
+    this.allProperties = this.exportService
+      .getAllItems()
+      .map((item) => item.id);
     this.initProfileForm();
   }
 
@@ -89,18 +91,29 @@ export class DataExportComponent {
   onSubmitProfile() {
     if (this.profileForm.valid) {
       const formValue = this.profileForm.value;
-      const selectedProperties = this.allProperties.filter(
-        (_, i) => formValue.properties[i]
-      );
+      const selectedItems = this.exportService
+        .getAllItems()
+        .filter((_, i) => formValue.items[i]);
       const newProfile: ExportProfile = {
         id: Date.now().toString(),
         name: formValue.name,
-        properties: selectedProperties,
+        items: selectedItems,
       };
       this.exportService.addProfile(newProfile);
       this.profileForm.reset();
       this.initProfileSelectionForm();
     }
+  }
+
+  editProfile(profile: ExportProfile) {
+    this.profileForm.patchValue({
+      name: profile.name,
+      items: this.exportService
+        .getAllItems()
+        .map((item) =>
+          profile.items.some((profileItem) => profileItem.id === item.id)
+        ),
+    });
   }
 
   editOperation(operation: Operation) {
@@ -110,15 +123,6 @@ export class DataExportComponent {
   removeOperation(id: string) {
     this.exportService.removeOperation(id);
     this.updateProperties();
-  }
-
-  editProfile(profile: ExportProfile) {
-    this.profileForm.patchValue({
-      name: profile.name,
-      properties: this.allProperties.map((prop) =>
-        profile.properties.includes(prop)
-      ),
-    });
   }
 
   removeProfile(id: string) {

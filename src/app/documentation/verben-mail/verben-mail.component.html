@@ -1,0 +1,12 @@
+<p [style.margin]="'20px 0px'" [style.width]="'700px'">
+  The verben-mail-template component is a customizable interface designed for
+  handling email-related functionalities. It emits a (mailPayload) event when an
+  email payload is ready for submission, allowing users to manage email content
+  and options dynamically. This component is flexible and can be integrated into
+  various applications that require email interactions, providing a seamless
+  user experience for sending and managing emails.
+</p>
+<verben-mail-template
+  (mailPayload)="onSubmitMail($event)"
+>
+</verben-mail-template>

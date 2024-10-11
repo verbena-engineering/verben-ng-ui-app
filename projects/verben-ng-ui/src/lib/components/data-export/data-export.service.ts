@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
-import { ExportProfile, Operation } from './data-export.types';
+import {
+  ExportProfile,
+  Operation,
+  ExportItem,
+  ExportItemType,
+} from './data-export.types';
 
 @Injectable()
 export class DataExportService {
   private profiles: ExportProfile[] = [];
   private operations: Operation[] = [];
+  private baseProperties: string[] = [];
 
   constructor() {
     this.initializeDefaultProfile();
@@ -15,7 +21,7 @@ export class DataExportService {
       {
         id: 'default',
         name: 'All',
-        properties: [],
+        items: [],
       },
     ];
   }
@@ -61,50 +67,65 @@ export class DataExportService {
     this.updateDefaultProfile();
     // Remove operation from all profiles
     this.profiles.forEach((profile) => {
-      profile.properties = profile.properties.filter((prop) => prop !== id);
+      profile.items = profile.items.filter((item) => item.id !== id);
     });
   }
 
   resetAll(): void {
     this.operations = [];
+    this.baseProperties = [];
     this.initializeDefaultProfile();
   }
 
-  getAllProperties(): string[] {
-    return [...this.getBaseProperties(), ...this.operations.map((op) => op.id)];
+  getAllItems(): ExportItem[] {
+    return [
+      ...this.baseProperties.map((prop) => ({
+        id: prop,
+        name: prop,
+        type: 'property' as ExportItemType,
+      })),
+      ...this.operations.map((op) => ({
+        id: op.id,
+        name: op.name,
+        type: 'operation' as ExportItemType,
+      })),
+    ];
   }
 
   getBaseProperties(): string[] {
-    return this.profiles[0].properties;
+    return this.baseProperties;
   }
 
   setBaseProperties(properties: string[]): void {
-    this.profiles[0].properties = properties;
+    this.baseProperties = properties;
     this.updateDefaultProfile();
   }
 
   private updateDefaultProfile(): void {
-    this.profiles[0].properties = this.getAllProperties();
+    this.profiles[0].items = this.getAllItems();
   }
 
   exportData<T>(
     data: T[],
     selectedProfiles: ExportProfile[]
   ): Record<string, any>[] {
-    const uniqueProperties = new Set<string>();
+    const uniqueItems = new Set<ExportItem>();
     selectedProfiles.forEach((profile) => {
-      profile.properties.forEach((prop) => uniqueProperties.add(prop));
+      profile.items.forEach((item) => uniqueItems.add(item));
     });
 
     return data.map((item) => {
       const exportedItem: Record<string, any> = {};
-      uniqueProperties.forEach((prop) => {
-        if (this.getBaseProperties().includes(prop)) {
-          exportedItem[prop] = (item as any)[prop];
+      uniqueItems.forEach((exportItem) => {
+        if (exportItem.type === 'property') {
+          exportedItem[exportItem.id] = (item as any)[exportItem.id];
         } else {
-          const operation = this.operations.find((o) => o.id === prop);
+          const operation = this.operations.find((o) => o.id === exportItem.id);
           if (operation) {
-            exportedItem[prop] = this.calculateOperation(item, operation);
+            exportedItem[exportItem.id] = this.calculateOperation(
+              item,
+              operation
+            );
           }
         }
       });

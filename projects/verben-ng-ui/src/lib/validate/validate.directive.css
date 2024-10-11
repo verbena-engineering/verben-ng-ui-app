@@ -1,0 +1,30 @@
+input.error-with-dot {
+  position: relative;
+  padding-right: 25px; /* Make space for the dot inside the input */
+}
+
+input.error-with-dot::after {
+  content: '';
+  position: absolute;
+  top: 50%; /* Center vertically */
+  right: 10px; /* Position from the right */
+  width: 8px; /* Size of the dot */
+  height: 8px; /* Size of the dot */
+  background-color: red; /* Color of the dot */
+  border-radius: 50%; /* Make it a circle */
+  transform: translateY(-50%); /* Center the dot vertically */
+  pointer-events: none; /* Ensure the dot does not interfere with input */
+
+}
+
+
+/* Add this to validate.directive.css */
+
+.error-message {
+  margin: 4px 0;
+  font-weight: bold;
+}
+
+
+
+

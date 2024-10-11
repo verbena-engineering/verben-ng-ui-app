@@ -1,0 +1,133 @@
+<!-- If group mode is false, display a flat list -->
+<ng-container *ngIf="!group">
+
+  <div class="option-items-container flex flex-col">
+    <ng-container *ngFor="let item of options">
+      <ng-container *ngIf="itemTemplate; else defaultItem">
+        <div *ngIf="!multiselect" [ngClass]="{'active-item': isEqual(this.activeItem, this.getValue(item))}"
+          (click)="onSelect && onSelect(item, $event)" class="item-wrapper">
+          <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
+        </div>
+        <div *ngIf="multiselect"
+          [ngClass]="{'multi-select-active-item': isSelected(this.activeItems, this.getValue(item))}"
+          (click)="onSelect && onSelect(item, $event)" class="item-wrapper multi-select flex">
+          <input type="checkbox" [checked]="isSelected(this.activeItems, this.getValue(item))"
+            class="custom-checkbox" />
+          <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
+        </div>
+      </ng-container>
+
+      <ng-template #defaultItem>
+        <div *ngIf="!multiselect" [ngClass]="{'active-item': isEqual(this.activeItem, this.getValue(item))}"
+          (click)="onSelect && onSelect(item, $event)" class="default-item item-wrapper flex flex-col">
+          <div [ngClass]="{'has-sub-label': optionSubLabel}" class="item-label">{{this.getOptionLabel(item)}}</div>
+          <div *ngIf="optionSubLabel || (group && item.subLabel)" class="item-sub-label">
+            {{this.getOptionSubLabel(item)}}</div>
+        </div>
+        <div *ngIf="multiselect"
+          [ngClass]="{'multi-select-active-item': isSelected(this.activeItems, this.getValue(item))}"
+          (click)="onSelect && onSelect(item, $event)" class="default-item item-wrapper multi-select flex">
+          <input type="checkbox" [checked]="isSelected(this.activeItems, this.getValue(item))"
+            class="custom-checkbox" />
+          <div class="flex flex-col">
+            <div [ngClass]="{'has-sub-label': optionSubLabel}" class="item-label">{{this.getOptionLabel(item)}}</div>
+            <div *ngIf="optionSubLabel || (group && item.subLabel)" class="item-sub-label">
+              {{this.getOptionSubLabel(item)}}</div>
+          </div>
+        </div>
+      </ng-template>
+    </ng-container>
+  </div>
+</ng-container>
+
+<!-- If group mode is true, display groups and sub-groups recursively -->
+<ng-container *ngIf="group">
+  <div class="option-items-container flex flex-col">
+    <ng-container *ngFor="let item of options">
+      <!-- Display as group header if the item has children -->
+      <div *ngIf="!item.items">
+        <ng-container *ngIf="itemTemplate; else defaultItem">
+          <div *ngIf="!multiselect" [ngClass]="{'active-item': isEqual(this.activeItem, this.getValue(item))}"
+            (click)="onSelect && onSelect(item, $event)" class="item-wrapper">
+            <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
+          </div>
+          <div *ngIf="multiselect"
+            [ngClass]="{'multi-select-active-item': isSelected(this.activeItems, this.getValue(item))}"
+            (click)="onSelect && onSelect(item, $event)" class="item-wrapper multi-select flex">
+            <input type="checkbox" [checked]="isSelected(this.activeItems, this.getValue(item))"
+              class="custom-checkbox" />
+            <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
+          </div>
+        </ng-container>
+
+        <ng-template #defaultItem>
+          <div *ngIf="!multiselect" [ngClass]="{'active-item': isEqual(this.activeItem, this.getValue(item))}"
+            (click)="onSelect && onSelect(item, $event)" class="default-item item-wrapper flex flex-col">
+            <div [ngClass]="{'has-sub-label': item.subLabel}" class="item-label">{{item.label}}</div>
+            <div *ngIf="item.subLabel" class="item-sub-label">{{item.subLabel}}</div>
+          </div>
+          <div *ngIf="multiselect"
+            [ngClass]="{'multi-select-active-item': isSelected(this.activeItems, this.getValue(item))}"
+            (click)="onSelect && onSelect(item, $event)" class="default-item item-wrapper multi-select flex">
+            <input type="checkbox" [checked]="isSelected(this.activeItems, this.getValue(item))"
+              class="custom-checkbox" />
+            <div class="flex flex-col">
+              <div [ngClass]="{'has-sub-label': item.subLabel}" class="item-label">{{item.label}}</div>
+              <div *ngIf="item.subLabel" class="item-sub-label">{{item.subLabel}}</div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Display as normal item if it doesn't have children -->
+      <div class="flex flex-col" *ngIf="item.items">
+        <ng-container *ngIf="groupTemplate; else defaultGroup">
+          <div class="group-wrapper" (click)="onExpand && onExpand(item, options)">
+            <ng-container *ngTemplateOutlet="groupTemplate; context: { $implicit: item }"></ng-container>
+          </div>
+        </ng-container>
+
+        <ng-template #defaultGroup>
+          <div (click)="onExpand && onExpand(item, options)" class="default-group group-wrapper flex">
+            <span *ngIf="!item.expanded">
+              <verben-svg icon="plus" fill="#5d6674" [width]="15" [height]="15"></verben-svg>
+              <!-- <svg class="plus-minus-icon" width="12" height="12" viewBox="0 0 12 12" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M5.33214 6.66578H5.26102C3.95858 6.66578 2.65614 6.6663 1.35371 6.66544C1.06528 6.66527 0.850553 6.53571 0.728192 6.27369C0.525115 5.83859 0.844383 5.33734 1.32491 5.33322C1.64624 5.33031 1.96756 5.33271 2.28889 5.33271C3.28285 5.33271 4.27682 5.33271 5.27079 5.33271H5.33214V5.27633C5.33214 3.96674 5.33214 2.65714 5.33214 1.34755C5.33214 1.03086 5.53162 0.767472 5.82998 0.688643C6.25515 0.576225 6.66577 0.896512 6.66645 1.34327C6.66748 1.96311 6.66679 2.58294 6.66679 3.20278C6.66679 3.89254 6.66679 4.58229 6.66679 5.27222V5.33305H6.7242C8.0323 5.33305 9.34056 5.33305 10.6487 5.33305C10.933 5.33305 11.1737 5.48848 11.2788 5.73902C11.4659 6.18527 11.1431 6.66475 10.6533 6.66595C10.1549 6.66698 9.6564 6.66612 9.15805 6.66612C8.34968 6.66612 7.54148 6.66612 6.73311 6.66612H6.66679V6.72713C6.66679 8.03535 6.66679 9.34357 6.66679 10.6516C6.66679 10.9808 6.45343 11.2475 6.13485 11.3177C5.75989 11.4003 5.38252 11.1309 5.33899 10.749C5.33471 10.7107 5.33231 10.6722 5.33231 10.6336C5.33197 9.33123 5.33197 8.02867 5.33197 6.72627V6.66612L5.33214 6.66578Z"
+                  fill="currentColor" />
+              </svg> -->
+            </span>
+            <span *ngIf="item.expanded">
+              <verben-svg icon="minus" fill="#5d6674" [width]="15" [height]="2"></verben-svg>
+              <!-- <svg class="plus-minus-icon" width="10" height="2" viewBox="0 0 10 2" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.333984 0.332031H9.66732V1.66536H0.333984V0.332031Z" fill="currentColor" />
+              </svg> -->
+            </span>
+            <div class="default-item flex flex-col">
+              <div [ngClass]="{'has-sub-label': item.subLabel}" class="item-label">{{item.label}}</div>
+              <div *ngIf="item.subLabel" class="item-sub-label">{{item.subLabel}}</div>
+            </div>
+          </div>
+        </ng-template>
+        <!-- Recursive rendering of sub-items (groups or individual items) -->
+        <ng-container *ngIf="item.expanded">
+          <div class="group-wrapper-items flex flex-col">
+            <drop-down-item [itemTemplate]="itemTemplate" [groupTemplate]="groupTemplate" [activeItem]="activeItem"
+              [activeItems]="activeItems" [multiselect]="multiselect" [optionValue]="optionValue"
+              [optionLabel]="optionLabel" [optionSubLabel]="optionSubLabel" [loadMoreCaption]="loadMoreCaption"
+              [options]="item.items" [group]="group" [onExpand]="onExpand" [onLoadMore]="onLoadMore"
+              [onSelect]="onSelect"></drop-down-item>
+            <div *ngIf="item.lazyLoad" class="see-more-container flex">
+              <span class="see-more-caption" (click)="onLoadMore && onLoadMore(item)">{{loadMoreCaption}}</span>
+            </div>
+            <div *ngIf="item.isLoading" class="loading-overlay">
+              <div class="loader"></div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>

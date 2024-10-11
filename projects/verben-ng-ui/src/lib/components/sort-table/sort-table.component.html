@@ -1,0 +1,152 @@
+<div
+  [style.background-color]="bgColor"
+  [style.box-shadow]="boxShadow"
+  [style.border]="border"
+  [style.border-radius]="borderRadius"
+  [style.color]="textColor"
+  [style.width]="width"
+  [style.height]="height"
+  [style.padding]="pd"
+>
+  <!-- Header Section -->
+  <div
+    class="sort-header flex justify-between text-sm"
+  >
+    <span class="sort-title font-semibold">
+      Sort
+      <sup [style.color]="secondaryColor">[{{ countSelectedSorts() }}]</sup>
+    </span>
+    <span
+      [style.color]="secondaryColor"
+      [style.border]="'none'"
+      [style.cursor]="'pointer'"
+      [style.font-size]="'12px'"
+      class="cursor-pointer"
+      (click)="resetSort()"
+      >{{ resetText }}</span
+    >
+  </div>
+<hr/>
+  <!-- Sort Options -->
+  <div class="sort-options">
+    <div class="sort-options-header flex justify-between">
+      <p>{{ propertyText }}</p>
+      <verben-svg [width]="15" class="svg" icon="info"></verben-svg>
+    </div>
+
+    <div
+      *ngFor="let option of visibleSortOptions; let i = index"
+      [attr.draggable]="enableDragAndDrop"
+      (dragstart)="onDragStart(i, $event)"
+      (dragover)="onDragOver($event)"
+      (drop)="onDrop(i, $event)"
+      class="sort-option"
+    >
+      <div
+        class="sort-item"
+        [style.font-size]="'14px'"
+        [style.margin-top]="'14px'"
+      >
+        <div class="sort-field flex gap">
+          <verben-svg
+            *ngIf="enableDragAndDrop"
+            fill="black"
+            [width]="25"
+            class="svg"
+            icon="square-dot"
+          ></verben-svg>
+          <input
+            type="checkbox"
+            [checked]="option.checked"
+            (change)="toggleSort(i)"
+          />
+          <span>{{ option.name }}</span>
+        </div>
+
+        <!-- Sorting Controls -->
+        <div class="sort-order" [style.margin-left]="'35px'">
+          <label *ngIf="option.type === 'Number'">
+            <input
+              type="radio"
+              name="sortOrder{{ i }}"
+              value="asc"
+              [checked]="selectedOrders.get(i) === 'asc'"
+              [disabled]="!option.checked"
+              (change)="setSortOrder(i, 'asc')"
+            />
+            1-100
+          </label>
+          <label *ngIf="option.type === 'Number'">
+            <input
+              type="radio"
+              name="sortOrder{{ i }}"
+              value="desc"
+              [checked]="selectedOrders.get(i) === 'desc'"
+              [disabled]="!option.checked"
+              (change)="setSortOrder(i, 'desc')"
+            />
+            100-1
+          </label>
+          
+          <label *ngIf="option.type === 'String' || option.type === 'Date'">
+            <input
+              type="radio"
+              name="sortOrder{{ i }}"
+              value="asc"
+              [checked]="selectedOrders.get(i) === 'asc'"
+              [disabled]="!option.checked"
+              (change)="setSortOrder(i, 'asc')"
+            />
+            A-Z
+          </label>
+          <label *ngIf="option.type === 'String' || option.type === 'Date'">
+            <input
+              type="radio"
+              name="sortOrder{{ i }}"
+              value="desc"
+              [checked]="selectedOrders.get(i) === 'desc'"
+              [disabled]="!option.checked"
+              (change)="setSortOrder(i, 'desc')"
+            />
+            Z-A
+          </label>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- Show More Options -->
+    <div *ngIf="showMore && hiddenSortOptions.length > 0">
+      <span
+        [style.padding-top]="'20px'"
+        [style.color]="'gray'"
+        class="text-sm cursor-pointer block"
+        (click)="toggleShowMore()"
+      >
+        {{ showMoreText }}
+      </span>
+    </div>
+  </div>
+<hr/>
+  <!-- Sort Button -->
+  <div class="btn-wrapper">
+    <button
+      [style.margin-top]="'0.5rem'"
+      [style.outline]="'none'"
+      [style.border]="'none'"
+      [style.padding]="'0.2rem 1.6rem'"
+      [style.background-color]="primaryColor"
+      [style.color]="tertiaryColor"
+      [style.font-size]="'12px'"
+      [style.font-weight]="'600'"
+      [disabled]="countSelectedSorts() === 0"
+      [ngClass]="{
+      disabledBtn:countSelectedSorts()===0,
+      enableBtn:countSelectedSorts()!==0,
+      }"
+      (click)="applySort()"
+    >
+      {{ sortButtonText }}
+    </button>
+  </div>
+</div>

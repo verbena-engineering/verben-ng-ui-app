@@ -43,13 +43,13 @@
 <h3>Create Profile</h3>
 <form [formGroup]="profileForm" (ngSubmit)="onSubmitProfile()">
   <input formControlName="name" placeholder="Profile Name" />
-  <div formArrayName="properties" class="checkbox-group">
+  <div formArrayName="items" class="checkbox-group">
     <label
-      *ngFor="let prop of allProperties; let i = index"
+      *ngFor="let item of exportService.getAllItems(); let i = index"
       class="checkbox-label"
     >
       <input type="checkbox" [formControlName]="i" />
-      {{ prop }}
+      {{ item.name }} ({{ item.type }})
     </label>
   </div>
   <button type="submit" [disabled]="!profileForm.valid">Save Profile</button>

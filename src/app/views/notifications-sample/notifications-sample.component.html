@@ -1,0 +1,40 @@
+<p>Use cases for notifications</p>
+<p [ngStyle]="{'margin-top':'20px'}"></p>
+<verben-notification
+ [content]="'Saved Successfully!'"
+ [textColor] = "'#2DB76F'"
+ [borderRadius]="'15px'"
+ [bgColor]="'#D6F3E6'"
+ [width]="'650px'"
+ [height]="'50px'"
+ [iconName]="'success'"
+ [iconWidth]="25"
+ [iconHeight]="25"
+ [stroke]="'#D6F3E6'"
+ [buttons]="[
+        { text: 'Yes', bgColor: 'white', primarycolor : '#2DB76F',fontSize:'14px'  }
+    ]"
+    (buttonClick)="handleButtonClick($event)"
+></verben-notification>
+
+<p [ngStyle]="{'margin-top':'20px'}"></p>
+<verben-notification
+ [content]="'Are you sure you want to delete?'"
+ [textColor] = "'#E20000'"
+ [borderRadius]="'15px'"
+ [bgColor]="'#FFE681'"
+ [width]="'650px'"
+ [height]="'50px'"
+ [iconName]="'alert'"
+ [iconWidth]="25"
+ [iconHeight]="25"
+ [stroke]="'#E20000'"
+ [fill]="'#FFE681'"
+ [buttons]="[
+        { text: 'Yes', bgColor: 'white', primarycolor : '#E20000',fontSize:'14px' },
+        { text: 'No', bgColor: 'white', primarycolor: 'black',fontSize:'14px'  }
+    ]"
+    (buttonClick)="handleButtonClick($event)"
+></verben-notification>
+
+

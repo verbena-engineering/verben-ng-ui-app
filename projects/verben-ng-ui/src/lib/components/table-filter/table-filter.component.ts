@@ -44,6 +44,7 @@ export class TableFilterComponent implements OnInit {
   duplicateMessage?:string = '';
   configInstance: Config;
   storageKey: string = 'savedFilters';
+  filterCount:number = 0
 
   constructor(){ 
     this.configInstance = new Config();
@@ -58,6 +59,7 @@ export class TableFilterComponent implements OnInit {
     const savedFiltersFromStorage = localStorage.getItem(this.storageKey);
     if (savedFiltersFromStorage) {
       this.savedFilters = JSON.parse(savedFiltersFromStorage);
+      this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
     }
   }
 
@@ -88,13 +90,7 @@ export class TableFilterComponent implements OnInit {
     localStorage.removeItem(this.storageKey);
   }
 
-
   addFilter() {
-    console.log({ 
-      x:this.selectedFilterValue,
-      y:this.selectedCondition,
-      z:this.inputValue
-    })
     if (!this.selectedFilterValue || !this.selectedCondition || !this.inputValue) {
         return;
     }
@@ -108,7 +104,7 @@ export class TableFilterComponent implements OnInit {
         type: this.selectedFilterType,
         condition: this.selectedCondition,
         value: this.inputValue,
-        checked: false
+        checked: true
     };
 
     if (this.editIndex !== null) {
@@ -131,6 +127,7 @@ export class TableFilterComponent implements OnInit {
             return;
         }
         this.savedFilters.push(newFilter);
+        this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
     }
     this.saveFiltersToLocalStorage(); 
     this.clearOperationSection();
@@ -141,12 +138,15 @@ export class TableFilterComponent implements OnInit {
   toggleCheckbox(index: number) {
     this.savedFilters[index].checked = !this.savedFilters[index].checked;
     this.checkAll = this.savedFilters.every(item => item.checked);
+    this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
   }
 
   deleteFilter(index: number) {
     this.savedFilters.splice(index, 1);
     this.checkDuplicateFilter();
     this.checkFilterButton();
+    this.saveFiltersToLocalStorage(); 
+    this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
     if (this.savedFilters.length === 0) {
       this.checkAll = false;
     }
@@ -156,7 +156,7 @@ export class TableFilterComponent implements OnInit {
     const filter = this.savedFilters[index];
     this.selectedFilterType = filter.type;
     this.selectedFilterValue = filter.name;
-    this.onFilterNameChange( this.selectedFilterValue) 
+    this.onFilterNameChange(this.selectedFilterValue) 
     this.selectedCondition = filter.condition;
     this.inputValue = filter.value;
     this.editIndex = index;
@@ -191,6 +191,7 @@ export class TableFilterComponent implements OnInit {
   toggleSelectAll(): void {
     this.checkAll = !this.checkAll;
     this.savedFilters.forEach(filter => filter.checked = this.checkAll);
+    this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
   }
 
   checkDuplicateFilter(): void {

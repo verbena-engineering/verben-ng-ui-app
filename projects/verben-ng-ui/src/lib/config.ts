@@ -4,7 +4,7 @@ export class Config {
     typeOptions: ITypeOption[] = [
         {
           type: DataFilterType.String,
-          options: [ConditionalOptions.Equal]
+          options: [ConditionalOptions.Equal,ConditionalOptions.NotEqual]
         },
         {
           type: DataFilterType.Integer,

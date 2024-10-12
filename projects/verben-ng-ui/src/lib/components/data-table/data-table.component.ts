@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { ColumnDefinition } from './data-table.types';
 import { ColumnDirective } from './column.directive';
+import { BaseStyles, TableStyles } from './style.types';
 
 @Component({
   selector: 'lib-data-table',
@@ -25,6 +26,8 @@ export class DataTableComponent<T extends { id: string | number }>
 {
   @Input({ required: true }) data!: T[];
   @Input({ required: true }) columns!: ColumnDefinition<T>[];
+
+  @Input() styleConfig: TableStyles = defaultTableStyles;
 
   @ContentChildren(ColumnDirective)
   columnTemplates!: QueryList<ColumnDirective>;
@@ -264,8 +267,70 @@ export class DataTableComponent<T extends { id: string | number }>
       data: this.data,
     };
   }
+
+  getRowStyle(rowIndex: number): BaseStyles {
+    if (this.styleConfig?.rows) {
+      const rowStyles = this.styleConfig.rows;
+
+      if ('even' in rowStyles && 'odd' in rowStyles) {
+        // TableSectionStyles
+        return (rowIndex % 2 === 0 ? rowStyles.even : rowStyles.odd) || {};
+      } else if ('nth' in rowStyles && rowStyles.nth) {
+        // TableSectionStyles with nth
+        const { interval, style } = rowStyles.nth;
+        return ((rowIndex + 1) % (interval || 1) === 0 ? style : {}) || {};
+      } else {
+        // TableStyles
+        return rowStyles as BaseStyles;
+      }
+    }
+    return {};
+  }
 }
 
 type EditedData<T> = {
   [K in keyof T]?: T[K] extends object ? Partial<T[K]> : T[K];
+};
+
+// Default styles
+const defaultTableStyles: TableStyles = {
+  border: '1px solid #e0e0e0',
+  borderRadius: '4px',
+  overflow: 'hidden',
+  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+  width: '100%',
+  header: {
+    backgroundColor: '#f5f5f5',
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'left',
+    padding: '12px 16px',
+    borderBottom: '2px solid #e0e0e0',
+  },
+  rows: {
+    even: {
+      backgroundColor: '#ffffff',
+    },
+    odd: {
+      backgroundColor: '#f9f9f9',
+    },
+    nth: {
+      interval: 5,
+      style: {
+        backgroundColor: '#f0f0f0',
+      },
+    },
+  },
+  cells: {
+    padding: '12px 16px',
+    borderBottom: '1px solid #e0e0e0',
+  },
+  footer: {
+    backgroundColor: '#f5f5f5',
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'left',
+    padding: '12px 16px',
+    borderTop: '2px solid #e0e0e0',
+  },
 };

@@ -1,6 +1,5 @@
 import { Directive, ElementRef, Input, HostListener, Renderer2 } from '@angular/core';
 import { ErrorMessageService } from './error-message.service';
-import './validate.directive.css'; // Ensure this path is correct
 
 @Directive({
   selector: '[appValidate]'

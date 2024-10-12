@@ -6,9 +6,6 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { CardDataViewComponent } from './views/card-data-view/cdv.component';
 import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NotificationsSampleComponent } from './views/notifications-sample/notifications-sample.component';
-import { ImageSampleComponent } from './views/image-sample/image-sample.component';
-import { QuillModule } from 'ngx-quill';
 
 import {
   ConvertToIntegerModule,
@@ -22,11 +19,9 @@ import {
   CardModule,
   CardDataViewModule,
   ValidationModule,
-
   VerbenaButtonModule,
   VerbenaBadgeModule,
   VerbenaInputModule,
-  TableFilterModule,
   VerbenaTextareaModule,
   VerbenaSwitchModule,
   NotificationModule,
@@ -35,15 +30,13 @@ import {
   DataViewModule,
   VerbenaMailTemplateModule,
   DataTableModule,
-
 } from '../../projects/verben-ng-ui/src/public-api';
-
 import { CDVModule } from './views/card-data-view/cdv.module';
 import { CommonModule } from '@angular/common';
-
+import { CardViewModule } from './views/card-view/card-view.module';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent,CardDataViewComponent],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -57,13 +50,12 @@ import { CommonModule } from '@angular/common';
     ConvertToIntegerModule,
     PhoneNumberModule,
     ValidationModule,
-
+    NotificationModule,
     VerbenaBadgeModule,
     ValidateInputModule,
     VerbenaInputModule,
     VerbenaButtonModule,
     SvgModule,
-
     CardModule,
     VerbenaTextareaModule,
     CardDataViewModule,
@@ -74,12 +66,9 @@ import { CommonModule } from '@angular/common';
     VerbenaMailTemplateModule,
     DataTableModule,
     CDVModule,
-    QuillModule.forRoot()
-
-],
-  providers: [provideHttpClient(withFetch()),  NotificationModule,
-    ImageSampleComponent,
-    NotificationsSampleComponent,],
+    CardViewModule
+  ],
+  providers: [provideHttpClient(withFetch())],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

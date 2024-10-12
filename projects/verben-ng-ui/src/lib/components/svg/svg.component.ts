@@ -4,8 +4,6 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'verben-svg',
-  standalone: true,
-  imports: [],
   template: '<span #svgContainer></span>',
   styleUrls: ['./svg.component.css']
 })

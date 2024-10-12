@@ -1,12 +1,9 @@
 import { Component, Input, OnInit, ElementRef, AfterViewInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'verben-image',
   templateUrl: './image.component.html',
   styleUrl: './image.component.css',
-  standalone:true,
-  imports:[CommonModule]
 })
 
 export class ImageComponent implements OnInit, AfterViewInit {

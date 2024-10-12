@@ -30,7 +30,6 @@ export * from './lib/components/tooltip/tooltip.module';
 export * from './lib/components/svg/svg.module';
 export * from './lib/components/svg/svg.component';
 
-
 export * from './lib/components/table-filter/table-filter.module';
 export * from './lib/components/table-filter/table-filter.component';
 
@@ -43,8 +42,11 @@ export * from './lib/components/card/card.component';
 
 export * from './lib/convert-to-number/convert-to-number.module';
 export * from './lib/convert-to-integer/convert-to-integer.module';
+export * from './lib/components/sort-table/sort-table.component';
 export * from './lib/components/sort-table/sort-table.module';
+export * from './lib/components/visible-column/visible-column.component';
 export * from './lib/components/visible-column/visible-column.module';
+export * from './lib/components/data-view/data-view.component';
 export * from './lib/components/data-view/data-view.module';
 
 // export * from './lib/convert-to-decimal/convert-to-decimal.module';
@@ -74,6 +76,16 @@ export * from './lib/required-input/required-input.directive';
 export * from './lib/email-validator/email-validator.module';
 export * from './lib/email-validator/email-validator.directive';
 
+export * from './lib/components/data-table/data-table.module';
+export * from './lib/components/data-table/data-table.component';
+export * from './lib/components/data-table/column.directive';
+export * from './lib/components/data-table/data-table.types';
+
+export * from './lib/components/data-export/data-export.module'
+export * from './lib/components/data-export/data-export.service'
+export * from './lib/components/data-export/data-export.component'
+export * from './lib/components/data-export/data-export.types'
+
 // Exporting ControlOptionModule and ControlOptionDirective
 export * from './lib/control-options/control-options.module';
 export * from './lib/control-options/control-options.directive';
@@ -97,14 +109,11 @@ export * from './lib/verbena-button/verbena-button.module';
 export * from './lib/verbena-badge/verbena-badge.component';
 export * from './lib/verbena-badge/verbena-badge.module';
 
-
 export * from './lib/verbena-textarea/verbena-textarea.component';
 export * from './lib/verbena-textarea/verbena-textarea.module';
-
 
 export * from './lib/verbena-switch/verbena-switch.component';
 export * from './lib/verbena-switch/verbena-switch.module';
 
 export * from './lib/components/verben-mail/verben-mail.module'
-export * from './lib/components/data-table'
-export * from './lib/components/data-table';
+export * from './lib/components/verben-mail/verben-mail.component'

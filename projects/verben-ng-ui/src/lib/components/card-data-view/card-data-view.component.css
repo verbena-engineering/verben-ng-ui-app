@@ -1,55 +1,32 @@
-.left-side
-{
-    border:1.5px solid rgb(246, 191, 109);
-    border-radius: 8px;
-    padding: 10px;
-   left: 0;
-box-sizing: border-box;
-}
-.right-side{
-  right: 0;
-box-sizing: border-box;
-}
 .container
 {
   gap: 10px;
   min-height: 100vh;
 }
-.load-more{
-  margin-left: auto;
-  text-decoration: underline;
-  color: blue;
+:host{
+    border-radius: 12px;
 }
-.card-detail-space{
-  
+.master-detail-container
+{
+  display: grid;
+  grid-template-columns: 30% 70%;
+  gap:15px;
+  justify-content: center;
+  margin-top: 20px;
 }
+.master-only-container
+{
+  display: grid;
+  grid-template-columns: 100%;
+  justify-content: center;
+  margin-top: 20px;
+
+}
+
 .paginator-text
 {
   margin-left: auto;
   margin-right: auto;
-}
-.col-1 {width: 8.33%;}
-.col-2 {width: 16.66%;}
-.col-3 {width: 25%;}
-.col-4 {width: 33.33%;}
-.col-5 {width: 41.66%;}
-.col-6 {width: 50%;}
-.col-7 {width: 58.33%;}
-.col-8 {width: 66.66%;}
-.col-9 {width: 75%;}
-.col-10 {width: 83.33%;}
-.col-11 {width: 91.66%;}
-.col-12 {width: 100%;}
-
-[class*="col-"] 
-{
-  float: left;
-  padding: 15px;
-}
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
 }
 .cursor-pointer 
 {
@@ -58,12 +35,5 @@ box-sizing: border-box;
 .toRight
 {
  float:right;
-}
-.pad15px
-{
- padding: 15px;
-}
-.marg15px
-{
- margin: 15px;
+ margin: 5px 10px 0px 0px;
 }

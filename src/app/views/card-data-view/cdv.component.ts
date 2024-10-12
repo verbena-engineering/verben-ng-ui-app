@@ -14,7 +14,7 @@ export class CardDataViewComponent {
    currentData!:CardData
    cardData:CardData[]=[
      { 
-      selected:true, title:"Title1",
+      selected:false, title:"Title1",
       data:{name:'Ade', mailAddress:'ademail@yahoo.com'} as Model,
        body:[
       { title:'Code',value:'code1'},

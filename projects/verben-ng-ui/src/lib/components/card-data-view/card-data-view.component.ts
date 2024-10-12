@@ -17,17 +17,18 @@ export class CardDataViewComponent  {
   @Input() lWidth?:string="30%";
   @Input() textColor?:string ;
   @Input() lbgColor?:string ;
-  @Input() bg?:string ;
+  @Input() rbgColor?:string ;
   @Input() border?:string ;
   @Input() display?:string ;
-  @Input() rBorderRadius?:string ;
+  @Input() borderRadius?:string="12px";
   @Input() activeCss?:string ;
   @Input() inActiveCss?:string ;
   @Input() displayAsRow?:boolean =true;
   @Input() cardDataList:CardData[]=[];
   @Input() dataId!:string;
   @Input() totalRecords:number=0;
-  @Input() hidePaginator:boolean=false;
+  @Input() footer:boolean=false;
+
 
   @ContentChild('card') card!: TemplateRef<any>;
   // @ContentChild('content') content!: TemplateRef<any>;
@@ -39,6 +40,9 @@ export class CardDataViewComponent  {
   clearData()
    {
     this.currentItem={} as CardData
+    this.cardDataList.forEach(_=>{
+      _.selected=false;
+    });
    }
   @Input() onItemClick(item:CardData){
     item.selected= true;

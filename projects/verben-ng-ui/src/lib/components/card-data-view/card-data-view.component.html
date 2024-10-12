@@ -1,102 +1,13 @@
 
-
-<!-- <div class="container" [style.display]="'flex'" [style.margin]="mg" [style.flex-direction]="displayAsRow?'row':'column'"> -->
-        <!-- Master -->
-       <!-- <div #dynamicMaster class="flex-column">
-           <ng-content select="[master]"></ng-content>  
-       </div>
-        <div 
-           [style.width]="lWidth"
-           [style.height]="lHeight"
-           class="flex-column">
-          <div 
-            *ngIf="!dynamicMaster.children.length"
-            class="left-side"
-            [style.backgroundColor]="lbgColor"
-            >
-            @for (item of cardDataList; track item.title) {
-                <ng-content *ngTemplateOutlet="card;context: {$implicit: item}"></ng-content>
-            }
-          </div>
-          <div *ngIf="!hidePaginator" 
-          class="paginator flex-row">
-            <span class="paginator-text">{{totalRecords==0?cardDataList.length:totalRecords}} records loaded</span>
-            <button (click)="onLoadMoreClick()" class="load-more">Load more</button>
-          </div>
-        </div> -->
-    
-      <!-- Details --> 
-      <!-- <div  #dynamicDetail class="right-side"
-      [style.width]="rWidth"
-      [style.height]="rHeight"
-      [style.backgroundColor]="rbgColor"
-      >
-        <ng-container *ngIf="hasCurrentItem()">
-          <ng-content  select="[detail]" ></ng-content>  
-        </ng-container> 
-      </div> -->
-
-
-      <!-- <div  *ngIf="!dynamicDetail.children.length" 
-      class="right-side"
-      [style.width]="rWidth"
-      [style.height]="rHeight"
-      [style.backgroundColor]="rbgColor"
-      >
-      
-      </div> -->
-<!-- </div> -->
-
-
-
-
-
-<div #container class="container flex-col" [style.display]="'flex'" [style.margin]="mg" > 
-       <!-- <ng-container *ngIf="container.getElementsByTagName('verben-left-card-data-view')">
-          <div>
-                <ng-content select="cardViewWrapper">
-                   <ng-container *ngIf="container.getElementsByTagName('verben-right-card-data-view')">
-                    <div 
-                      [style.width]="lWidth"
-                      [style.height]="lHeight"
-                      class="flex-column">
-                      <div 
-                        class="left-side"
-                        [style.backgroundColor]="lbgColor"
-                        >
-                        @for (item of cardDataList; track item.title) {
-                            <ng-content *ngTemplateOutlet="card;context: {$implicit: item}"></ng-content>
-                        }
-                      </div>
-                      <div *ngIf="!hidePaginator" 
-                      class="paginator flex-row">
-                        <span class="paginator-text">{{totalRecords==0?cardDataList.length:totalRecords}} records loaded</span>
-                        <button (click)="onLoadMoreClick()" class="load-more">Load more</button>
-                      </div>
-                  </div> 
-                   </ng-container>
-                </ng-content>
-          </div>
-       </ng-container>
- 
-      <div  class="right-side"
-      [style.width]="rWidth"
-      [style.height]="rHeight"
-      [style.backgroundColor]="rbgColor"
-      >
-        <ng-container *ngIf="hasCurrentItem()">
-          <ng-content  select="cardDetail" ></ng-content>  
-        </ng-container> 
-      </div> -->
-    
+<div class="container flex-col" [style.display]="'flex'" [style.margin]="mg" > 
      <!-- Header -->
      <ng-container ngProjectAs="verben-card-data-view-header">
         <ng-content select='verben-card-data-view-header'></ng-content>
      </ng-container>
 
-     <div [style.padding]="pd" class="row" >
+     <div [style.padding]="pd"  [ngClass]="!hasCurrentItem()?'master-only-container':'master-detail-container'"  >
       <!-- Card and Footer -->
-        <div [style.width]="!hasCurrentItem()?'100%':lWidth"  [style.backgroundColor]="bg" class="flex-col ">
+        <div [style.borderRadius]="borderRadius" [style.backgroundColor]="lbgColor" class="flex-col ">
           <!-- Card section -->
           <ng-container ngProjectAs="verben-left-card-data-view">
             <ng-content select='verben-left-card-data-view'></ng-content>
@@ -108,15 +19,11 @@
           </ng-container>
         </div>
       <!-- Detail Section-->
-       <div *ngIf="hasCurrentItem()" [style.width]="rWidth"  class="" [style.borderRadius]="rBorderRadius"  [style.backgroundColor]="bg" >
-         <verben-svg  (click)="clearData()" class="cursor-pointer toRight" icon="close" [width]="20" [height]="20" color="black"></verben-svg> 
+       <div [style.backgroundColor]="rbgColor" *ngIf="hasCurrentItem()" [style.borderRadius]="borderRadius">
+         <verben-svg  (click)="clearData()" class="cursor-pointer toRight" icon="close" [width]="20" [height]="20"  color="black"></verben-svg> 
          <ng-container   ngProjectAs="verben-right-card-data-view">
            <ng-content select='verben-right-card-data-view'></ng-content>
          </ng-container>
        </div>
-      
      </div>
-   
-
-     
 </div>

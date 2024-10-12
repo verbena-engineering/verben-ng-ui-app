@@ -58,19 +58,11 @@
     
     <verben-right-card-data-view  *ngIf="currentData && currentData.title">
         <form class="flex flex-col  px-3 pb-3 rounded-xl h-full w-full relative">
-          <!-- <div class="flex flex-col">  -->
-           <!-- <label class="text-muted font-extralight text-sm " for="convertToDecimal">Mail Address:</label>
-           <input name="mailAddress" type="text" [(ngModel)]="currentData.data.mailAddress"   class="border-secondary-200 rounded-xl border-2 px-2 py-1" />  -->
            <verbena-input name="mailAddress" label="Mail Address:" [(ngModel)]="currentData.data.mailAddress"   />
-          <!-- </div> -->
-          <!-- <div class="flex flex-col"> 
-           <label class="text-muted font-extralight text-sm " for="convertToDecimal">Name:</label> -->
            <verbena-input label="Name:" name="name" type="text" [(ngModel)]="currentData.data.name"   /> 
            <verbena-input label="Description" name="name" type="text" [(ngModel)]="currentData.data.description"   /> 
-
-          <!-- </div> -->
-
-          <div class="flex justify-between bottom-0 absolute">
+           <!-- buttons -->
+          <div class="flex justify-between bottom-8 left-0 right-0 px-3 pb-2 absolute">
             <verbena-button text="Delete" class="bg-secondary-200 text-[black]"/>
             <verbena-button text="Save" class="bg-primary text-[black]"/>
           </div>

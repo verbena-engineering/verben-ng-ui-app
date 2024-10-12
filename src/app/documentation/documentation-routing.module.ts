@@ -10,9 +10,19 @@ const routes: Routes = [
       import('./data-table/data-table.module').then((m) => m.DataTableModule),
   },
   {
-    path: 'verbena-component',
+    path: 'button-badge',
     loadChildren: () =>
-      import('./verbena-component/verbena-component.module').then((m) => m.VerbenaComponentModule),
+      import('./button-badge/button-badge.module').then((m) => m.ButtonBadgeModule),
+  },
+  {
+    path: 'input-textarea',
+    loadChildren: () =>
+      import('./verbena-input-textarea/verbena-input-textarea.module').then((m) => m.VerbenaInputTextareaModule),
+  },
+  {
+    path: 'switch',
+    loadChildren: () =>
+      import('./switch/switch.module').then((m) => m.SwitchModule),
   },
   {
     path: 'sort-table',
@@ -34,11 +44,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./data-view/data.view.module').then((m) => m.AppDataViewModule),
   },
-  {
-    path: 'verbena-component',
-    loadChildren: () =>
-      import('./verbena-component/verbena-component.module').then((m) => m.VerbenaComponentModule),
-  },
+
   {
 
     path: 'dropdown',
@@ -53,12 +59,51 @@ const routes: Routes = [
       import('./chip/chip.module').then((m) => m.ChipExampleModule),
 
   },
+  {
+    path: 'icons',
+    loadChildren: () =>
+      import('../views/icons-sample/icons-sample.module').then(
+        (m) => m.IconSampleModule
+      ),
+  },
+  {
+    path: 'images',
+    loadChildren: () =>
+      import('../views/image-sample/image-sample.module').then(
+        (m) => m.ImageSampleModule
+      ),
+  },
+  {
+    path: 'notifications',
+    loadChildren: () =>
+      import('../views/notifications-sample/notifications-sample.module').then(
+        (m) => m.NotificationsSampleModule
+      ),
+  },
+  {
+    path: 'table-filter',
+    loadChildren: () =>
+      import('../views/table-filter-sample/table-filter-sample.module').then(
+        (m) => m.TableFilterSampleModule
+      ),
+  },
+  {
+    path: 'tooltip',
+    loadChildren: () =>
+      import('../views/tooltip-sample/tooltip-sample.module').then(
+        (m) => m.TooltipSampleModule
+      ),
+  },
     {
     path: 'card-data-view',
     loadChildren: () =>
       import('../views/card-data-view/cdv.module').then((m)=>m.CDVModule),
   },
-
+  {
+      path: 'card-view',
+      loadChildren: () =>
+        import('../views/card-view/card-view.module').then((m)=>m.CardViewModule),
+    },
 ];
 
 @NgModule({

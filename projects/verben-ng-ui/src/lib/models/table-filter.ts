@@ -17,13 +17,16 @@ export interface IDataFilter {
 }
 
 export enum ConditionalOptions {
-  LessThan = 'LessThan',
-  GreaterThan = 'GreaterThan',
+  LessThan = 'Less than',
+  GreaterThan = 'Greater than',
   Equal = 'Equal',
+  NotEqual = 'Not equal',
   On = 'On',
   Before = 'Before',
   After = 'After',
-}
+  Yes = 'Yes',
+  No = 'No'
+ }
 
 export interface ITypeOption {
   type: DataFilterType;

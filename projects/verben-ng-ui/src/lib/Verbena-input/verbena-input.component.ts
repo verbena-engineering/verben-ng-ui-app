@@ -1,17 +1,26 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'verbena-input',
   templateUrl: './verbena-input.component.html',
-  styleUrls: ['./verbena-input.component.css']
+  styleUrls: ['./verbena-input.component.css'],
+
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VerbenaInputComponent),
+      multi: true
+    }
+  ]
 })
-export class VerbenaInputComponent {
+export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() label: string = '';
   @Input() placeHolder: string = '';
   @Input() required: boolean = false;
   @Input() minLength?: number;
   @Input() maxLength?: number;
-  @Input() type: 'text' | 'integer' | 'number' | 'decimal' | 'email' = 'text';
+  @Input() type: 'text' | 'integer' | 'number' | 'decimal' | 'email' | 'date' = 'text';
   @Input() bgColor: string = '#f9f9f9';
   @Input() border: string = '1px solid #ccc';
   @Input() borderRadius: string = '5px';
@@ -19,7 +28,7 @@ export class VerbenaInputComponent {
   @Input() value: string = '';
   @Input() labelPosition: string = 'start';
   @Input() labelColor: string = 'black';
-
+  @Input() disable: boolean = false;
   // New input properties for range validation
   @Input() min?: number; // Minimum value for number input
   @Input() max?: number; // Maximum value for number input
@@ -32,54 +41,32 @@ export class VerbenaInputComponent {
 
   @Output() valueChange = new EventEmitter<string>();
 
-  errorMessage: string | null = null;
+  errorMessage: string | undefined;
+  inputId: string = '';
+
+  onChange: any = () => {};
+  onTouch: any = () => {};
+
+  ngOnInit() {
+    this.inputId = `verbena-input-${Math.random().toString(36).substr(2, 9)}`;
+  }
 
   onInput(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const newValue = input.value;
-
-    // Validate based on type
-    if (this.type === 'integer' || this.type === 'number' || this.type === 'decimal') {
-      const validInteger = /^\d+$/.test(newValue);
-      const validNumber = /^\d*\.?\d*$/.test(newValue);
-      const validDecimal = /^\d+(\.\d+)?$/.test(newValue);
-
-      if (this.type === 'integer' && !validInteger) {
-        this.setInvalidInput(input, 'Please enter a valid integer.');
-      } else if (this.type === 'number' && !validNumber) {
-        this.setInvalidInput(input, 'Please enter a valid number.');
-      } else if (this.type === 'decimal' && !validDecimal) {
-        this.setInvalidInput(input, 'Please enter a valid decimal.');
-      } else {
-        this.value = newValue;
-        this.errorMessage = null;
-      }
-    } else if (this.type === 'email') {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(newValue)) {
-        this.setInvalidInput(input, 'Please enter a valid email address.');
-      } else {
-        this.value = newValue;
-        this.errorMessage = null;
-      }
-    } else {
-      this.value = newValue;
-      this.errorMessage = null;
-    }
-
-    this.validate();
+    const target = event.target as HTMLInputElement;
+    this.value = target.value;
+    this.onChange(this.value);
     this.valueChange.emit(this.value);
   }
 
-  // Helper method for setting invalid input
-  setInvalidInput(input: HTMLInputElement, message: string) {
-    this.value = this.value; // Keep the previous valid value
-    input.value = this.value;
-    this.errorMessage = message;
-  }
+  // // Helper method for setting invalid input
+  // setInvalidInput(input: HTMLInputElement, message: string) {
+  //   this.value = this.value; // Keep the previous valid value
+  //   input.value = this.value;
+  //   this.errorMessage = message;
+  // }
 
   validate() {
-    this.errorMessage = null;
+    this.errorMessage = '';
 
     // General validation
     if (this.required && !this.value) {
@@ -111,5 +98,22 @@ export class VerbenaInputComponent {
       this.errorMessage = 'Please enter a valid email address.';
     }
   }
+
+  writeValue(value: any): void {
+    this.value = value;
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouch = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disable = isDisabled;
+  }
+
 }
   

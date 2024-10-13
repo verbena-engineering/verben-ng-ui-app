@@ -88,6 +88,7 @@ export class TableFilterComponent implements OnInit {
     this.disableApplyFilterBtn = true;
     this.duplicateMessage = ''
     localStorage.removeItem(this.storageKey);
+    this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
   }
 
   addFilter() {
@@ -134,11 +135,11 @@ export class TableFilterComponent implements OnInit {
     this.checkFilterButton(); 
   }
 
-
   toggleCheckbox(index: number) {
     this.savedFilters[index].checked = !this.savedFilters[index].checked;
     this.checkAll = this.savedFilters.every(item => item.checked);
     this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
+    this.saveFiltersToLocalStorage(); 
   }
 
   deleteFilter(index: number) {
@@ -192,6 +193,7 @@ export class TableFilterComponent implements OnInit {
     this.checkAll = !this.checkAll;
     this.savedFilters.forEach(filter => filter.checked = this.checkAll);
     this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
+    this.saveFiltersToLocalStorage(); 
   }
 
   checkDuplicateFilter(): void {

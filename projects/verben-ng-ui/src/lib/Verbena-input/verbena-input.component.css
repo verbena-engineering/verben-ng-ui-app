@@ -57,27 +57,3 @@
   cursor: pointer;
 }
 
-.error-message {
-  margin-top: 4px;
-  font-size: 12px;
-}
-
-.error-top {
-  position: absolute;
-  top: -20px;
-}
-
-.error-bottom {
-  position: absolute;
-  bottom: -20px;
-}
-
-.error-left {
-  position: absolute;
-  left: -100px;
-}
-
-.error-right {
-  position: absolute;
-  right: -100px;
-}

@@ -39,6 +39,19 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
   @Input() capitalization: 'none' | 'uppercase' | 'lowercase' | 'sentencecase' | 'pascalcase' | 'camelcase' = 'none';
 
+  // New property for custom error messages
+  @Input() customErrorMessages: {
+    required?: string;
+    minLength?: string;
+    maxLength?: string;
+    minValue?: string;
+    maxValue?: string;
+    integer?: string;
+    number?: string;
+    decimal?: string;
+    email?: string;
+  } = {};
+
   @Output() valueChange = new EventEmitter<string>();
 
   errorMessage: string | undefined;
@@ -84,17 +97,17 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
     this.errorMessage = '';
 
     if (this.required && !this.value) {
-      this.errorMessage = 'This field is required.';
+      this.errorMessage = this.customErrorMessages.required || 'This field is required.';
       return;
     }
 
     if (this.minLength && this.value.length < this.minLength) {
-      this.errorMessage = `Minimum length is ${this.minLength}.`;
+      this.errorMessage = this.customErrorMessages.minLength || `Minimum length is ${this.minLength}.`;
       return;
     }
 
     if (this.maxLength && this.value.length > this.maxLength) {
-      this.errorMessage = `Maximum length is ${this.maxLength}.`;
+      this.errorMessage = this.customErrorMessages.maxLength || `Maximum length is ${this.maxLength}.`;
       return;
     }
 
@@ -103,31 +116,31 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
     if (['integer', 'number', 'decimal'].includes(this.type)) {
       if (this.min !== undefined && numericValue < this.min) {
-        this.errorMessage = `Minimum value is ${this.min}.`;
+        this.errorMessage = this.customErrorMessages.minValue || `Minimum value is ${this.min}.`;
         return;
       } else if (this.max !== undefined && numericValue > this.max) {
-        this.errorMessage = `Maximum value is ${this.max}.`;
+        this.errorMessage = this.customErrorMessages.maxValue || `Maximum value is ${this.max}.`;
         return;
       }
     }
 
-    if (this.type === 'integer' && !/^\d{1,3}(,\d{3})*$/.test(this.value)) {
-      this.errorMessage = 'Please enter a valid integer.';
+    if (this.type === 'integer' && !/^\d+$/.test(this.value)) {
+      this.errorMessage = this.customErrorMessages.integer || 'Please enter a valid integer.';
       return;
     }
 
-    if (this.type === 'number' && !/^\d{1,3}(,\d{3})*(\.\d*)?$/.test(this.value)) {
-      this.errorMessage = 'Please enter a valid number.';
+    if (this.type === 'number' && !/^\d+(\.\d+)?$/.test(this.value)) {
+      this.errorMessage = this.customErrorMessages.number || 'Please enter a valid number.';
       return;
     }
 
-    if (this.type === 'decimal' && !/^\d{1,3}(,\d{3})*(\.\d+)?$/.test(this.value)) {
-      this.errorMessage = 'Please enter a valid decimal.';
+    if (this.type === 'decimal' && !/^\d+(\.\d+)?$/.test(this.value)) {
+      this.errorMessage = this.customErrorMessages.decimal || 'Please enter a valid decimal.';
       return;
     }
 
     if (this.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value)) {
-      this.errorMessage = 'Please enter a valid email address.';
+      this.errorMessage = this.customErrorMessages.email || 'Please enter a valid email address.';
     }
   }
 

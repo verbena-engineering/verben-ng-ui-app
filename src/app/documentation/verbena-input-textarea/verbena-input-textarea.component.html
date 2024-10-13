@@ -150,6 +150,7 @@
   [placeHolder]="'100 is the maximum number'"
   [required]="true"
   [type]="'number'"
+
   appNumberRange
 
   [max]="100"
@@ -168,13 +169,17 @@
   [required]="true"
   [type]="'integer'"
   appValidate="number"
-  appNumberRange
   [min]="10"
   [showBorder]="true"
   [showErrorMessage]="true"
   [errorMessageColor]="'blue'"
   [errorBorderColor]="'blue'"
   [errorPosition]="'right'"
+  [customErrorMessages]="{
+    required: 'Please fill this out!',
+    minLength: 'Input is too short!',
+    integer: 'Please enter a number'
+  }"
 ></verbena-input>
 
 <!-- Input for entering a decimal value with green error messages shown below -->

@@ -1,17 +1,25 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'verbena-input',
   templateUrl: './verbena-input.component.html',
-  styleUrls: ['./verbena-input.component.css']
+  styleUrls: ['./verbena-input.component.css'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VerbenaInputComponent),
+      multi: true
+    }
+  ]
 })
-export class VerbenaInputComponent {
+export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() label: string = '';
   @Input() placeHolder: string = '';
   @Input() required: boolean = false;
   @Input() minLength?: number;
   @Input() maxLength?: number;
-  @Input() type: 'text' | 'integer' | 'number' | 'decimal' | 'email'|'search'= 'text';
+  @Input() type: 'text' | 'integer' | 'number' | 'decimal' | 'email' | 'date' = 'text';
   @Input() bgColor: string = '#f9f9f9';
   @Input() border: string = '1px solid #ccc';
   @Input() borderRadius: string = '5px';
@@ -19,97 +27,136 @@ export class VerbenaInputComponent {
   @Input() value: string = '';
   @Input() labelPosition: string = 'start';
   @Input() labelColor: string = 'black';
+  @Input() disable: boolean = false;
+  @Input() min?: number;
+  @Input() max?: number;
 
-  // New input properties for range validation
-  @Input() min?: number; // Minimum value for number input
-  @Input() max?: number; // Maximum value for number input
+  @Input() showBorder: boolean = true;
+  @Input() showErrorMessage: boolean = true;
+  @Input() errorMessageColor: string = 'red';
+  @Input() errorBorderColor: string = 'red';
+  @Input() errorPosition: 'left' | 'right' | 'top' | 'bottom' = 'bottom';
 
-  @Input() showBorder: boolean = true; // Control border visibility
-  @Input() showErrorMessage: boolean = true; // Control error message visibility
-  @Input() errorMessageColor: string = 'red'; // Color of the error message
-  @Input() errorBorderColor: string = 'red'; // Color of the error border
-  @Input() errorPosition: 'left' | 'right' | 'top' | 'bottom' = 'bottom'; // Position of the error message
+  @Input() capitalization: 'none' | 'uppercase' | 'lowercase' | 'sentencecase' | 'pascalcase' | 'camelcase' = 'none';
+
+  // New property for custom error messages
+  @Input() customErrorMessages: {
+    required?: string;
+    minLength?: string;
+    maxLength?: string;
+    minValue?: string;
+    maxValue?: string;
+    integer?: string;
+    number?: string;
+    decimal?: string;
+    email?: string;
+  } = {};
 
   @Output() valueChange = new EventEmitter<string>();
 
-  errorMessage: string | null = null;
+  errorMessage: string | undefined;
+  inputId: string = '';
 
-  onInput(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const newValue = input.value;
+  onChange: any = () => {};
+  onTouch: any = () => {};
 
-    // Validate based on type
-    if (this.type === 'integer' || this.type === 'number' || this.type === 'decimal') {
-      const validInteger = /^\d+$/.test(newValue);
-      const validNumber = /^\d*\.?\d*$/.test(newValue);
-      const validDecimal = /^\d+(\.\d+)?$/.test(newValue);
-
-      if (this.type === 'integer' && !validInteger) {
-        this.setInvalidInput(input, 'Please enter a valid integer.');
-      } else if (this.type === 'number' && !validNumber) {
-        this.setInvalidInput(input, 'Please enter a valid number.');
-      } else if (this.type === 'decimal' && !validDecimal) {
-        this.setInvalidInput(input, 'Please enter a valid decimal.');
-      } else {
-        this.value = newValue;
-        this.errorMessage = null;
-      }
-    } else if (this.type === 'email') {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(newValue)) {
-        this.setInvalidInput(input, 'Please enter a valid email address.');
-      } else {
-        this.value = newValue;
-        this.errorMessage = null;
-      }
-    } else {
-      this.value = newValue;
-      this.errorMessage = null;
-    }
-
-    this.validate();
-    this.valueChange.emit(this.value);
+  ngOnInit() {
+    this.inputId = `verbena-input-${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  // Helper method for setting invalid input
-  setInvalidInput(input: HTMLInputElement, message: string) {
-    this.value = this.value; // Keep the previous valid value
-    input.value = this.value;
-    this.errorMessage = message;
+  onInput(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.value = target.value.trim();
+    this.value = this.applyCapitalization(this.value, this.capitalization);
+    this.validate();
+    const sanitizedValue = this.sanitizeValue(this.value);
+    this.onChange(sanitizedValue);
+    this.valueChange.emit(sanitizedValue);
+  }
+
+  applyCapitalization(value: string, format: string): string {
+    switch (format) {
+      case 'uppercase': return value.toUpperCase();
+      case 'lowercase': return value.toLowerCase();
+      case 'sentencecase': return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+      case 'pascalcase': return value.replace(/\w+/g, (w) => w[0].toUpperCase() + w.slice(1).toLowerCase());
+      case 'camelcase': return value.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) =>
+        index === 0 ? match.toLowerCase() : match.toUpperCase()).replace(/\s+/g, '');
+      default: return value;
+    }
+  }
+
+  sanitizeValue(value: string): string {
+    if (['number', 'decimal', 'integer'].includes(this.type)) {
+      return value.replace(/,/g, '');
+    }
+    return value;
   }
 
   validate() {
-    this.errorMessage = null;
+    this.errorMessage = '';
 
-    // General validation
     if (this.required && !this.value) {
-      this.errorMessage = 'This field is required.';
-    } else if (this.minLength && this.value.length < this.minLength) {
-      this.errorMessage = `Minimum length is ${this.minLength}.`;
-    } else if (this.maxLength && this.value.length > this.maxLength) {
-      this.errorMessage = `Maximum length is ${this.maxLength}.`;
+      this.errorMessage = this.customErrorMessages.required || 'This field is required.';
+      return;
     }
 
-    // Number range validation
-    const numericValue = parseFloat(this.value);
-    if (this.type === 'integer' || this.type === 'number' || this.type === 'decimal') {
+    if (this.minLength && this.value.length < this.minLength) {
+      this.errorMessage = this.customErrorMessages.minLength || `Minimum length is ${this.minLength}.`;
+      return;
+    }
+
+    if (this.maxLength && this.value.length > this.maxLength) {
+      this.errorMessage = this.customErrorMessages.maxLength || `Maximum length is ${this.maxLength}.`;
+      return;
+    }
+
+    const sanitizedValue = this.sanitizeValue(this.value);
+    const numericValue = parseFloat(sanitizedValue);
+
+    if (['integer', 'number', 'decimal'].includes(this.type)) {
       if (this.min !== undefined && numericValue < this.min) {
-        this.errorMessage = `Minimum value is ${this.min}.`;
+        this.errorMessage = this.customErrorMessages.minValue || `Minimum value is ${this.min}.`;
+        return;
       } else if (this.max !== undefined && numericValue > this.max) {
-        this.errorMessage = `Maximum value is ${this.max}.`;
+        this.errorMessage = this.customErrorMessages.maxValue || `Maximum value is ${this.max}.`;
+        return;
       }
     }
 
-    // Type-specific validation
     if (this.type === 'integer' && !/^\d+$/.test(this.value)) {
-      this.errorMessage = 'Please enter a valid integer.';
-    } else if (this.type === 'number' && !/^\d*\.?\d*$/.test(this.value)) {
-      this.errorMessage = 'Please enter a valid number.';
-    } else if (this.type === 'decimal' && !/^\d+(\.\d+)?$/.test(this.value)) {
-      this.errorMessage = 'Please enter a valid decimal.';
-    } else if (this.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value)) {
-      this.errorMessage = 'Please enter a valid email address.';
+      this.errorMessage = this.customErrorMessages.integer || 'Please enter a valid integer.';
+      return;
+    }
+
+    if (this.type === 'number' && !/^\d+(\.\d+)?$/.test(this.value)) {
+      this.errorMessage = this.customErrorMessages.number || 'Please enter a valid number.';
+      return;
+    }
+
+    if (this.type === 'decimal' && !/^\d+(\.\d+)?$/.test(this.value)) {
+      this.errorMessage = this.customErrorMessages.decimal || 'Please enter a valid decimal.';
+      return;
+    }
+
+    if (this.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value)) {
+      this.errorMessage = this.customErrorMessages.email || 'Please enter a valid email address.';
     }
   }
+
+  writeValue(value: any): void {
+    this.value = value ? this.applyCapitalization(value.trim(), this.capitalization) : '';
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouch = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disable = isDisabled;
+  }
 }
-  

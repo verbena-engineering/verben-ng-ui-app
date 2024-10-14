@@ -1,27 +1,28 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CardDataViewComponent } from './cdv.component';
 import { AppComponent } from '../../app.component';
 import {
   CardDataViewModule,
+  CardModule,
   SvgModule,
 } from '../../../../projects/verben-ng-ui/src/public-api';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CardViewComponent } from './card-view.component';
 const routes: Routes = [
   {
     path: '',
-    component: CardDataViewComponent,
+    component: CardViewComponent,
   },
   {
-    path: 'card-data-view',
-    component: CardDataViewComponent,
+    path: 'card-view',
+    component: CardViewComponent,
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes), CardDataViewModule, CommonModule,SvgModule,FormsModule],
-  declarations: [CardDataViewComponent],
+  imports: [RouterModule.forChild(routes), CardModule, CommonModule,SvgModule,FormsModule],
+  declarations: [CardViewComponent],
   // exports: [RouterModule,CardDataViewComponent]
 })
-export class CDVModule {}
+export class CardViewModule {}

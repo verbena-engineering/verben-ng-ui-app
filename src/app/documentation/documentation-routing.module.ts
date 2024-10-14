@@ -93,7 +93,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('../views/card-data-view/cdv.module').then((m)=>m.CDVModule),
   },
-
+  {
+      path: 'card-view',
+      loadChildren: () =>
+        import('../views/card-view/card-view.module').then((m)=>m.CardViewModule),
+    },
 ];
 
 @NgModule({

@@ -44,16 +44,16 @@
 }
 
 .group-wrapper-items {
-  padding-left: 10px;
+  padding-left: 15px;
   position: relative;
   z-index: 0;
 }
 
 .item-label {
   font-weight: 500;
-  /* white-space: normal;
-word-wrap: break-word;
-word-break: break-all; */
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .item-label.has-sub-label {

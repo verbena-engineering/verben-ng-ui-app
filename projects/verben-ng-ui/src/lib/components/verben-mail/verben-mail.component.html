@@ -120,7 +120,7 @@
         <hr [style.color]="'#00000066'" />
         <div class="form-element quill" [style.margin-top]="'30px'">
           <div *ngIf="isRichText; else textArea">
-            <ng-content select="[rich-text]">rich text should be here </ng-content>
+            <ng-content select="[rich-text]">widget should appear here </ng-content>
           </div>
           <ng-template #textArea>
             <ng-content select="[text-arae]">

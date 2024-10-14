@@ -10,16 +10,23 @@
   class="column-control"
 >
   <div class="visible-column-header flex justify-between text-sm">
-    <span class="column-title"
-      >Column <sup>[{{ getSelectedColumnCount() }}]</sup></span
-    >
+    <span class="column-title">
+      Column <sup>[{{ getSelectedColumnCount() }}]</sup>
+    </span>
     <span class="column-reset" (click)="resetColumns()">Reset</span>
   </div>
   <hr />
-  <ul
-    *ngFor="let column of columns; let i = index"
-    class="column-options-container"
-  >
+
+  <!-- Select All Checkbox -->
+  <div class="flex items-center gap" [style.padding]="'4px 10px'">
+    <label [style.font-size]="'13px'" [style.font-weight]="'500'">
+      <input type="checkbox" [checked]="selectAll" (change)="toggleSelectAll()" />
+      Select All
+    </label>
+  </div>
+
+  <!-- Columns List -->
+  <ul *ngFor="let column of columns; let i = index" class="column-options-container">
     <li
       [attr.draggable]="enableDragAndDrop"
       (dragstart)="onDragStart(i, $event)"
@@ -28,31 +35,25 @@
       *ngIf="i < displayedColumns"
       [style.font-size]="'14px'"
       [style.margin-top]="'14px'"
-      class="flex gap"
+      class="flex gap-sm items-center"
     >
-      <verben-svg
-        *ngIf="enableDragAndDrop"
-        fill="black"
-        class="svg"
-        icon="square-dot"
-      ></verben-svg>
-      <label class="flex gap">
-        <input type="checkbox" [(ngModel)]="tempVisibleColumns[i]" />
+      <verben-svg *ngIf="enableDragAndDrop" fill="black" class="svg" icon="square-dot"></verben-svg>
+      <label class="flex gap-md items-center">
+        <input type="checkbox" [(ngModel)]="visibleColumns[i]" (ngModelChange)="updateSelectAllStatus()" />
         {{ column.name }}
       </label>
     </li>
   </ul>
 
-  <div>
-    <span
-      class="show-more"
-      *ngIf="columns.length > 5"
-      (click)="toggleShowMore()"
-    >
+  <!-- Show More / Show Less -->
+  <div *ngIf="visibleColumns.length>=displayedColumns" class="cursor-pointer" [style.padding]="'20px 10px 0px 10px'">
+    <span (click)="toggleShowMore()">
       {{ showMore ? "Show Less" : "Show More" }}
     </span>
   </div>
   <hr />
+
+  <!-- Save Button -->
   <div class="btn-wrapper">
     <button
       [style.margin-top]="'0.5rem'"
@@ -65,9 +66,9 @@
       [style.font-weight]="'600'"
       [disabled]="getSelectedColumnCount() === 0"
       [ngClass]="{
-    disabledBtn:getSelectedColumnCount()===0,
-      enableBtn:getSelectedColumnCount()!==0,
-    }"
+        disabledBtn: getSelectedColumnCount() === 0,
+        enableBtn: getSelectedColumnCount() !== 0
+      }"
       (click)="saveColumnVisibility()"
     >
       Save

@@ -9,5 +9,6 @@ import { SortTableModule } from 'verben-ng-ui/src/public-api';
 @NgModule({
   declarations: [SortTableComponent],
   imports: [CommonModule, SortTableRoutingModule, SortTableModule, FormsModule],
+  exports:[SortTableComponent]
 })
 export class SortModule {}

@@ -34,7 +34,7 @@ export class DropdownSampleComponent implements OnInit {
   options: string[] = [
     'Opt 1',
     'Opt 2',
-    'Opt 3yewwwwwweuweyweueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+    'Opt 3yewrrrrrrrrrrrrrrrrrrrrwwwwweuweyweueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
   ];
   optionsTwo: TestDropdownObject[] = [
     { Id: '1', Name: 'One' },

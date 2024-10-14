@@ -226,6 +226,22 @@
   overflow-y: auto; */
 }
 
+.multiselect-items-container-two-tooltip {
+  display: grid;
+  flex-wrap: wrap;
+  gap: 10px 5px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.multiselect-items-container-two-tooltip-normal {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.multiselect-items-container-two-tooltip .multiselect-item-chip {
+  justify-content: space-between;
+}
+
 .multiselect-item-chip {
   align-items: center;
   gap: 5px;
@@ -249,6 +265,16 @@
 .multiselect-item-chip>svg {
   width: 12px;
   height: 12px;
+}
+
+verben-tooltip {
+  width: 100%;
+}
+
+::ng-deep .custom-tooltip-width {
+  max-width: 300px;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .loading-overlay {

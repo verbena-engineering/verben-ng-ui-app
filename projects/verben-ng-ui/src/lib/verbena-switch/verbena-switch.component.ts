@@ -9,7 +9,9 @@ export class VerbenaSwitchComponent {
   @Input() label: string = '';
   @Input() checked: boolean = false;
   @Input() disabled: boolean = false;
-  @Input() customStyles: string = '';
+  @Input() offColor: string = '#ccc'; // Default off color
+  @Input() onColor: string = '#4caf50'; // Default on color
+  @Input() customStyles: string = ''; // Accepts user-defined class for extra styling
 
   @Output() change = new EventEmitter<boolean>();
 

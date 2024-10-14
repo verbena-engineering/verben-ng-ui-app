@@ -1,11 +1,9 @@
-<lib-data-export [data]="tableData" (exportDataEvent)="handleExport($event)">
-</lib-data-export>
-
 <lib-data-table
   [data]="tableData"
   [columns]="tableColumns"
   (rowEdit)="onRowEdit($event)"
   (rowSave)="onRowSave($event)"
+  
   (selectionChange)="onSelectionChange($event)"
 >
   <ng-container libColumn="select">

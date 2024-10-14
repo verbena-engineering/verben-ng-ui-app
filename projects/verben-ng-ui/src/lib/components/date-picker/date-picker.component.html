@@ -1,0 +1,60 @@
+<div class="date-picker">
+    <input
+      type="text"
+      [placeholder]="placeholder"
+      [value]="displayDate"
+      (focus)="toggleCalendar()"
+      readonly
+    />
+    <div *ngIf="showCalendar" class="calendar">
+      <div class="calendar-header">
+        <ng-container *ngIf="!useDropdowns; else dropdowns">
+          <button (click)="previousMonth()">
+            <verben-svg [width]="20" [icon]="'chevron-left'"></verben-svg>
+          </button>
+          
+          <!-- Display the current month and year -->
+          <span>{{ months[selectedMonth] }} {{ selectedYear }}</span>
+          
+          <button (click)="nextMonth()">
+            <verben-svg [width]="20" [icon]="'chevron-right'"></verben-svg>
+          </button>
+        </ng-container>
+  
+        <ng-template #dropdowns>
+          <verben-drop-down
+            [placeholder]="yearPlaceholder"
+            (onChange)="onDropdownYearChange($event)"
+            [options]="yearRange"
+            [(ngModel)]="selectedYear"
+          ></verben-drop-down>
+          <verben-drop-down
+            placeholder="Select a month"
+            (onChange)="onDropdownMonthChange($event)"
+            [options]="months"
+            [(ngModel)]="selectedMonth"
+          ></verben-drop-down>
+        </ng-template>
+      </div>
+  
+      <div class="calendar-body">
+        <div class="weekdays">
+          <span *ngFor="let day of weekDays">{{ day }}</span>
+        </div>
+        <div class="dates">
+          <button
+            *ngFor="let day of getDaysInMonth()"
+            [class.selected]="isSelected(day)"
+            (click)="selectTemporaryDate(day)"
+          >
+            {{ day.getDate() }}
+          </button>
+        </div>
+      </div>
+      <div class="calendar-footer">
+        <button (click)="cancel()">Cancel</button>
+        <button (click)="confirm()">OK</button>
+      </div>
+    </div>
+  </div>
+  

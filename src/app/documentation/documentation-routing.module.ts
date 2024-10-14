@@ -104,6 +104,11 @@ const routes: Routes = [
       loadChildren: () =>
         import('../views/card-view/card-view.module').then((m)=>m.CardViewModule),
     },
+    {
+      path: 'date-picker',
+      loadChildren: () =>
+        import('./date-picker/date-picker.module').then((m)=>m.AppDatePickerSample),
+    },
 ];
 
 @NgModule({

@@ -30,6 +30,7 @@ import {
   DataViewModule,
   VerbenaMailTemplateModule,
   DataTableModule,
+  DatePickerModule,
 } from '../../projects/verben-ng-ui/src/public-api';
 import { CDVModule } from './views/card-data-view/cdv.module';
 import { CommonModule } from '@angular/common';
@@ -66,7 +67,8 @@ import { CardViewModule } from './views/card-view/card-view.module';
     VerbenaMailTemplateModule,
     DataTableModule,
     CDVModule,
-    CardViewModule
+    CardViewModule,
+    DatePickerModule
   ],
   providers: [provideHttpClient(withFetch())],
   bootstrap: [AppComponent],

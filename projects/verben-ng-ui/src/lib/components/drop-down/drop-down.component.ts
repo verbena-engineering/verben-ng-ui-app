@@ -26,6 +26,7 @@ import { isEqual, cloneDeep } from 'lodash';
 import { debounceTime, Subject } from 'rxjs';
 import { SharedModule } from '../shared.module';
 import { SvgModule } from '../svg/svg.module';
+import { TooltipModule } from '../tooltip/tooltip.module';
 
 export interface DropdownMenuItemWrapper extends DropdownMenuItem {
   expanded: boolean;
@@ -45,6 +46,7 @@ export interface DropdownMenuItemWrapper extends DropdownMenuItem {
     SharedModule,
     FormsModule,
     SvgModule,
+    TooltipModule,
   ],
   templateUrl: './drop-down.component.html',
   styleUrl: './drop-down.component.css',

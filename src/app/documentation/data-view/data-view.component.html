@@ -7,44 +7,142 @@
   (selectedOptions) output, allowing for dynamic interactions. This component
   provides a flexible styling system to meet diverse design requirements.
 </p>
-<verben-data-view (viewChange)="onViewChange($event)"> 
+<verben-data-view
+  [showColumnChild]="showColumn"
+  [showSortChild]="showSort"
+  (sortChange)="onSortChange($event)"
+  (columnChange)="onColumnChange($event)"
+  (selectedChange)="onSelectedUpdate($event)"
+  [selectedColumnCount]="selectedColumnCount"
+  [selectedSortCount]="selectedSortCount"
+  [selectedFilterTableCount]="selectedFilterTableCount"
+  (viewChange)="onViewChange($event)"
+>
   <div list-content>
-    <verben-card-data-view (loadMoreClick)="loadMore()" #vdcv  dataId="mailAddress"  border="5px" pd="5px 10px" [cardDataList]="cardData" mg="20px">
-      <ng-template #card let-item card-body >
-        <div (click)="currentData=vdcv.onItemClick(item);"class="flex cursor-pointer   bg-secondary rounded-xl my-2 ">
-          <div class="w-3 rounded-xl rounded-tr-none rounded-br-none" [ngClass]="item.selected? 'bg-primary':'bg-secondary-200'"></div>
+    <verben-card-data-view
+      (loadMoreClick)="loadMore()"
+      #vdcv
+      dataId="mailAddress"
+      [border]="'5px'"
+      pd="5px 10px"
+      [cardDataList]="cardData"
+      mg="20px"
+    >
+      <ng-template #card let-item card-body>
+        <div
+          (click)="currentData = vdcv.onItemClick(item)"
+          class="flex cursor-pointer bg-secondary rounded-xl my-2"
+        >
+          <div
+            class="w-3 rounded-xl rounded-tr-none rounded-br-none"
+            [ngClass]="item.selected ? 'bg-primary' : 'bg-secondary-200'"
+          ></div>
           <div class="flex flex-col py-2 px-4 w-full">
-          <div class="flex">
-            <span class="font-normal text-sm">{{item.title}}</span>
-            <!-- <verben-svg class="ml-auto" icon="close" [width]="20" [height]="20" color="black"></verben-svg>  -->
-          </div>
-          @for (ciItem of item.body; track ciItem.value) {
-            <div class="gap-2">
-              <span class="text-muted font-light text-xs">{{ciItem.title}}:</span>
-              <span class="text-black">{{ciItem.value}}</span>
+            <div class="flex">
+              <span class="font-normal text-sm">{{ item.title }}</span>
+              <!-- <verben-svg class="ml-auto" icon="close" [width]="20" [height]="20" color="black"></verben-svg>  -->
             </div>
-          }
+            @for (ciItem of item.body; track ciItem.value) {
+            <div class="gap-2">
+              <span class="text-muted font-light text-xs"
+                >{{ ciItem.title }}:</span
+              >
+              <span class="text-black">{{ ciItem.value }}</span>
+            </div>
+            }
           </div>
         </div>
       </ng-template>
-        <div  detail *ngIf="currentData && currentData.title">
-          <form class="flex flex-col bg-secondary p-3 rounded-xl h-full w-full">
-            <verben-svg  (click)="clearData()" class="cursor-pointer ml-auto" icon="close" [width]="20" [height]="20" color="black"></verben-svg> 
-            <div class="flex flex-col"> 
-             <label class="text-muted font-extralight text-sm " for="convertToDecimal">Mail Address:</label>
-             <input name="mailAddress" type="text" [(ngModel)]="currentData.data.mailAddress"   class="border-secondary-200 rounded-xl border-2 px-2 py-1" /> 
-            </div>
-            <div class="flex flex-col"> 
-             <label class="text-muted font-extralight text-sm " for="convertToDecimal">Name:</label>
-             <input name="name" type="text" [(ngModel)]="currentData.data.name"  class="border-secondary-200 rounded-xl border-2 px-2 py-1" /> 
-            </div>
-          </form>
-      </div>    
+      <div detail *ngIf="currentData && currentData.title">
+        <form class="flex flex-col bg-secondary p-3 rounded-xl h-full w-full">
+          <verben-svg
+            (click)="clearData()"
+            class="cursor-pointer ml-auto"
+            icon="close"
+            [width]="20"
+            [height]="20"
+            color="black"
+          ></verben-svg>
+          <div class="flex flex-col">
+            <label
+              class="text-muted font-extralight text-sm"
+              for="convertToDecimal"
+              >Mail Address:</label
+            >
+            <input
+              name="mailAddress"
+              type="text"
+              [(ngModel)]="currentData.data.mailAddress"
+              class="border-secondary-200 rounded-xl border-2 px-2 py-1"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label
+              class="text-muted font-extralight text-sm"
+              for="convertToDecimal"
+              >Name:</label
+            >
+            <input
+              name="name"
+              type="text"
+              [(ngModel)]="currentData.data.name"
+              class="border-secondary-200 rounded-xl border-2 px-2 py-1"
+            />
+          </div>
+        </form>
+      </div>
     </verben-card-data-view>
-  
-  
   </div>
   <div grid-content>
     <app-data-table></app-data-table>
+  </div>
+  <div sort-content>
+    <verben-sort-table
+      (selectedOptions)="onSortUpdated($event)"
+      [border]="'1px solid rgba(212, 160, 7, 1)'"
+      borderRadius="10px"
+      boxShadow="2px 2px 2px 0px silver"
+      bgColor="white"
+      width="400px"
+      textColor="black"
+      pd="1rem"
+      primaryColor="#FFE681"
+      secondaryColor="#3479E9"
+      tertiaryColor="#404040"
+      [enableDragAndDrop]="true"
+      [sortOptions]="sortOptions"
+    ></verben-sort-table>
+  </div>
+  <div column-content>
+    <verben-visible-column
+      (columnsUpdated)="onColumnsUpdated($event)"
+      [border]="'1px solid rgba(212, 160, 7, 1)'"
+      borderRadius="10px"
+      boxShadow="2px 2px 2px 0px silver"
+      bgColor="white"
+      width="400px"
+      textColor="black"
+      pd="1rem"
+      primaryColor="#FFE681"
+      secondaryColor="#3479E9"
+      [columns]="columns"
+      [displayedColumns]="5"
+    ></verben-visible-column>
+  </div>
+  <div filter-content>
+    <verben-table-filter
+      [border]="'1px solid rgba(212, 160, 7, 1)'"
+      borderRadius="10px"
+      boxShadow="2px 2px 2px 0px silver"
+      bgColor="white"
+      width="420px"
+      textColor="black"
+      pd="1rem"
+      primaryColor="#FFE681"
+      secondaryColor="#3479E9"
+      tertiaryColor="#404040"
+      [filterOptions]="filterArray"
+      [maxFilterLength]="3"
+    ></verben-table-filter>
   </div>
 </verben-data-view>

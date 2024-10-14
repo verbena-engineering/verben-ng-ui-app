@@ -11,7 +11,7 @@ export class VerbenaInputComponent {
   @Input() required: boolean = false;
   @Input() minLength?: number;
   @Input() maxLength?: number;
-  @Input() type: 'text' | 'integer' | 'number' | 'decimal' | 'email' = 'text';
+  @Input() type: 'text' | 'integer' | 'number' | 'decimal' | 'email'|'search'= 'text';
   @Input() bgColor: string = '#f9f9f9';
   @Input() border: string = '1px solid #ccc';
   @Input() borderRadius: string = '5px';

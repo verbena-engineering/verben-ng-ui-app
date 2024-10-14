@@ -3,7 +3,7 @@ import { IDataFilter } from 'verben-ng-ui/src/lib/models/data-filter';
 import { DataFilterType} from 'verben-ng-ui/src/public-api';
 
 @Component({
-  selector: 'sort-table',
+  selector: 'app-sort-table',
   templateUrl: './sort-table.component.html',
   styleUrl: './sort-table.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

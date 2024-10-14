@@ -32,7 +32,7 @@ export class SortTableComponent {
   @Input() primaryColor?: string;
   @Input() secondaryColor?: string;
   @Input() tertiaryColor?: string;
-  @Input() border?: string;
+  @Input() border?: string="";
   @Input() borderRadius?: string;
   @Input() selectWidth?: string;
   @Output() selectedOptions = new EventEmitter<IDataFilter[]>();
@@ -43,6 +43,7 @@ export class SortTableComponent {
   disableSortButton: boolean = false;
   selectedOrders: Map<number, 'asc' | 'desc'> = new Map();
   defaultSortOptions: IDataFilter[] = [];
+  checkAll: boolean = false;
   ngOnInit() {
     this.defaultSortOptions = [...this.sortOptions];
     this.updateVisibleOptions();
@@ -103,13 +104,36 @@ export class SortTableComponent {
   toggleSort(index: number) {
     const option = this.sortOptions[index];
     option.checked = !option.checked;
-  
+    if (!option.checked) {
+      this.checkAll = false; 
+    } else if (this.sortOptions.every(option => option.checked)) {
+      this.checkAll = true; 
+    }
+    
     if (option.checked) {
       this.selectedOrders.set(index, 'asc');
     } else {
       this.selectedOrders.delete(index);
     }
     this.updateSortButtonState();
+  }
+  toggleSelectAll() {
+    this.checkAll = !this.checkAll;  // Toggle checkAll state
+  
+    // Set all options to checked/unchecked and assign default sort order when checked
+    this.sortOptions.forEach((option, index) => {
+      option.checked = this.checkAll;
+      
+      if (this.checkAll) {
+        // If checked, set the default sort order to 'asc' for all
+        this.selectedOrders.set(index, 'asc');
+      } else {
+        // If unchecked, remove the sort order
+        this.selectedOrders.delete(index);
+      }
+    });
+  
+    this.updateSortButtonState(); // Update the state of the sort button
   }
   
   resetSort() {
@@ -121,6 +145,7 @@ export class SortTableComponent {
     this.sortOptions = [...this.defaultSortOptions];
     this.updateVisibleOptions();
     this.updateSortButtonState();
+    this.checkAll=false
   }
 
   updateSortButtonState() {

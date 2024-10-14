@@ -87,6 +87,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   }
 
   sanitizeValue(value: string): string {
+    // Sanitize by removing commas but leave for display
     if (['number', 'decimal', 'integer'].includes(this.type)) {
       return value.replace(/,/g, '');
     }
@@ -112,7 +113,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
     }
 
     const sanitizedValue = this.sanitizeValue(this.value);
-    const numericValue = parseFloat(sanitizedValue);
+    const numericValue = parseFloat(sanitizedValue.replace(/,/g, ''));
 
     if (['integer', 'number', 'decimal'].includes(this.type)) {
       if (this.min !== undefined && numericValue < this.min) {
@@ -124,17 +125,20 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
       }
     }
 
-    if (this.type === 'integer' && !/^\d+$/.test(this.value)) {
+    // Integer validation with commas allowed
+    if (this.type === 'integer' && !/^\d+(,\d{3})*$/.test(this.value)) {
       this.errorMessage = this.customErrorMessages.integer || 'Please enter a valid integer.';
       return;
     }
 
-    if (this.type === 'number' && !/^\d+(\.\d+)?$/.test(this.value)) {
+    // Number validation with commas allowed
+    if (this.type === 'number' && !/^\d{1,3}(,\d{3})*(\.\d+)?$/.test(this.value)) {
       this.errorMessage = this.customErrorMessages.number || 'Please enter a valid number.';
       return;
     }
 
-    if (this.type === 'decimal' && !/^\d+(\.\d+)?$/.test(this.value)) {
+    // Decimal validation with commas allowed
+    if (this.type === 'decimal' && !/^\d{1,3}(,\d{3})*(\.\d+)?$/.test(this.value)) {
       this.errorMessage = this.customErrorMessages.decimal || 'Please enter a valid decimal.';
       return;
     }

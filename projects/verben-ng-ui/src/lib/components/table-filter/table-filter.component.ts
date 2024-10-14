@@ -52,20 +52,8 @@ export class TableFilterComponent implements OnInit {
 
   ngOnInit(): void {
     this.filterArray = this.filterOptions.map(item => item.name);  
-    this.loadFiltersFromLocalStorage(); 
   }
   
-  loadFiltersFromLocalStorage() {
-    const savedFiltersFromStorage = localStorage.getItem(this.storageKey);
-    if (savedFiltersFromStorage) {
-      this.savedFilters = JSON.parse(savedFiltersFromStorage);
-      this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
-    }
-  }
-
-  saveFiltersToLocalStorage() {
-    localStorage.setItem(this.storageKey, JSON.stringify(this.savedFilters));
-  }
 
   onFilterNameChange(selectedFilterValue: string) {
     const selectedFilter = this.filterOptions.find(option => option.name === selectedFilterValue);
@@ -130,7 +118,6 @@ export class TableFilterComponent implements OnInit {
         this.savedFilters.push(newFilter);
         this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
     }
-    this.saveFiltersToLocalStorage(); 
     this.clearOperationSection();
     this.checkFilterButton(); 
   }
@@ -139,14 +126,12 @@ export class TableFilterComponent implements OnInit {
     this.savedFilters[index].checked = !this.savedFilters[index].checked;
     this.checkAll = this.savedFilters.every(item => item.checked);
     this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
-    this.saveFiltersToLocalStorage(); 
   }
 
   deleteFilter(index: number) {
     this.savedFilters.splice(index, 1);
     this.checkDuplicateFilter();
     this.checkFilterButton();
-    this.saveFiltersToLocalStorage(); 
     this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
     if (this.savedFilters.length === 0) {
       this.checkAll = false;
@@ -193,7 +178,6 @@ export class TableFilterComponent implements OnInit {
     this.checkAll = !this.checkAll;
     this.savedFilters.forEach(filter => filter.checked = this.checkAll);
     this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
-    this.saveFiltersToLocalStorage(); 
   }
 
   checkDuplicateFilter(): void {

@@ -35,5 +35,8 @@ export class NotificationsSampleComponent {
 
   handleButtonClick(button: any) {
     console.log('Button clicked', button);
+    this.showNotification = false;
+    this.showNotification1 = false;
+    this.showNotification2 = false;
   }
 }

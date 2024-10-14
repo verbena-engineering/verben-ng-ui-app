@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { TooltipSampleComponent } from './tooltip-sample.component';
 import { CommonModule } from '@angular/common';
-// import { TooltipModule } from 'verben-ng-ui/src/public-api';
 import { TooltipModule } from '../../../../projects/verben-ng-ui/src/lib/components/tooltip/tooltip.module';
 import { RouterModule, Routes } from '@angular/router';
 

@@ -34,6 +34,7 @@ export class SortTableComponent {
   @Input() border?: string="";
   @Input() borderRadius?: string;
   @Input() selectWidth?: string;
+  @Input() containerHeight?:string="400px"
   @Output() selectedOptions = new EventEmitter<IDataFilter[]>();
   draggedIndex: number | null = null;
   visibleSortOptions: IDataFilter[]= [];

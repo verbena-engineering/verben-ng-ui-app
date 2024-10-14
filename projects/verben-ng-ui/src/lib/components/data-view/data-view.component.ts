@@ -49,7 +49,7 @@ export class DataViewComponent implements OnInit {
   @Input() selectedColumnCount?: number = 0;
   @Input() selectedSortCount: number = 0;
   @Input() selectedFilterTableCount: number = 0;
-
+  @Input() inputWidth: string="350px";
   @Input()showColumnChild: boolean = false;
   @Input() showSortChild: boolean = false;
   @Input() showFilterChild: boolean = false;

@@ -17,7 +17,7 @@
       </button>
     </div>
     <!-- Search Input -->
-    <div [style.width]="'500px'" class="search-input" *ngIf="viewState.isSearch">
+    <div [style.width]="inputWidth" class="search-input" *ngIf="viewState.isSearch">
       <verbena-input
         [type]="'text'"
         [placeHolder]="'Search...'"

@@ -1,11 +1,9 @@
-<lib-data-export [data]="tableData" (exportDataEvent)="handleExport($event)">
-</lib-data-export>
-
 <lib-data-table
-  [data]="tableData"
+  [data]="tableData()"
   [columns]="tableColumns"
   (rowEdit)="onRowEdit($event)"
   (rowSave)="onRowSave($event)"
+  (rowDelete)="onRowDelete($event)"
   (selectionChange)="onSelectionChange($event)"
 >
   <ng-container libColumn="select">
@@ -91,3 +89,188 @@
     </ng-template>
   </ng-container>
 </lib-data-table>
+
+<hr style="margin-block: 4rem" />
+
+<lib-data-table
+  [data]="tableData()"
+  [columns]="tableColumns2"
+  (rowEdit)="onRowEdit($event)"
+  (rowSave)="onRowSave($event)"
+  (rowDelete)="onRowDelete($event)"
+  (selectionChange)="onSelectionChange($event)"
+  [styleConfig]="table2Styles"
+>
+  <ng-container libColumn="select">
+    <ng-template
+      #cell
+      let-isSelected="isSelected"
+      let-toggleRowSelection="toggleRowSelection"
+    >
+      <input
+        type="checkbox"
+        [checked]="isSelected"
+        (change)="toggleRowSelection()"
+      />
+    </ng-template>
+    <ng-template
+      #header
+      let-allRowsSelected="allRowsSelected"
+      let-someRowsSelected="someRowsSelected"
+      let-toggleAllRows="toggleAllRows"
+    >
+      <input
+        type="checkbox"
+        [checked]="allRowsSelected()"
+        [indeterminate]="someRowsSelected()"
+        (change)="toggleAllRows()"
+      />
+    </ng-template>
+  </ng-container>
+
+  <ng-container libColumn="role">
+    <ng-template #cell let-value="value">
+      <div>
+        <p>{{ value }}</p>
+      </div>
+    </ng-template>
+    <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+      <!-- <input [ngModel]="value" (ngModelChange)="updateValue($event)" /> -->
+      <verben-drop-down
+        placeholder="Select Value"
+        (ngModelChange)="updateValue($event)"
+        [options]="dropdownOptions"
+        [ngModel]="value"
+      ></verben-drop-down>
+    </ng-template>
+  </ng-container>
+
+  <ng-container libColumn="name">
+    <ng-template #cell let-value="value">
+      <div>
+        <p>{{ value }}</p>
+      </div>
+    </ng-template>
+    <ng-template
+      #cellEdit
+      let-value="value"
+      let-updateNestedValue="updateNestedValue"
+    >
+      <!-- <input
+        [ngModel]="value.firstName"
+        (ngModelChange)="updateNestedValue('name', $event)"
+      />
+      <input
+        [ngModel]="value.lastName"
+        (ngModelChange)="updateNestedValue('name', $event)"
+      /> -->
+      <!-- <input
+        type="number"
+        [ngModel]="value.participants"
+        (ngModelChange)="updateNestedValue('participants', $event)"
+      /> -->
+    </ng-template>
+    <ng-template #header>
+      <strong>Full Name</strong>
+    </ng-template>
+    <!-- <ng-template #footer let-data="data"> Total: {{ data }} </ng-template> -->
+  </ng-container>
+
+  <ng-container libColumn="age">
+    <ng-template #cell let-value="value">
+      <div>
+        <p>{{ value }}</p>
+      </div>
+    </ng-template>
+    <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+      <!-- <input
+        type="number"
+        [ngModel]="value"
+        (ngModelChange)="updateValue($event)"
+      /> -->
+      <verbena-input
+        [placeHolder]="'Enter your age'"
+        [required]="true"
+        [type]="'integer'"
+        appValidate="number"
+        [value]="value"
+        (valueChange)="updateValue($event)"
+        [showBorder]="true"
+        [showErrorMessage]="true"
+        [errorMessageColor]="'blue'"
+        [errorBorderColor]="'blue'"
+        [errorPosition]="'right'"
+      ></verbena-input>
+    </ng-template>
+  </ng-container>
+
+  <ng-container libColumn="money">
+    <ng-template #cell let-value="value">
+      <div>
+        <p>{{ value | currency }}</p>
+      </div>
+    </ng-template>
+    <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+      <verbena-input
+        [label]="'Decimal Value'"
+        [labelPosition]="'center'"
+        [labelColor]="'#796fab'"
+        [placeHolder]="'Enter a decimal value'"
+        [required]="true"
+        [type]="'decimal'"
+        [value]="value"
+        (valueChange)="updateValue($event)"
+        [showBorder]="false"
+        [showErrorMessage]="true"
+        [errorMessageColor]="'green'"
+        [errorBorderColor]="'green'"
+        [errorPosition]="'bottom'"
+      ></verbena-input>
+    </ng-template>
+  </ng-container>
+
+  <ng-container libColumn="message">
+    <ng-template #cell let-value="value">
+      <div>
+        <p>{{ value }}</p>
+      </div>
+    </ng-template>
+    <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+      <textarea
+        [value]="value"
+        (change)="updateValue($event)"
+        id=""
+        cols="30"
+        rows="10"
+      ></textarea>
+    </ng-template>
+  </ng-container>
+
+  <ng-container libColumn="actions">
+    <ng-template
+      #cell
+      let-isEditing="isEditing"
+      let-toggleRowEdit="toggleRowEdit"
+      let-deleteRow="deleteRow"
+    >
+      <button (click)="toggleRowEdit()">
+        {{ isEditing ? "Save" : "Edit" }}
+      </button>
+
+      <button (click)="deleteRow()">Remove</button>
+    </ng-template>
+    <ng-template #header>
+      <strong>Actions</strong>
+    </ng-template>
+  </ng-container>
+</lib-data-table>
+
+<app-table-export
+  [data]="tableData()"
+  (exportDataEvent)="handleExport($event)"
+></app-table-export>
+
+<!-- <app-table-export></app-table-export> -->
+
+<!-- <lib-data-export [data]="tableData()" (exportDataEvent)="handleExport($event)">
+</lib-data-export> -->

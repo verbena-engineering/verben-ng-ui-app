@@ -1,0 +1,167 @@
+<!-- <button (click)="tooltip = !tooltip">Export</button>
+
+<verben-tooltip
+  [backgroundColor]="'grey'"
+  [textColor]="'white'"
+  [padding]="'10px'"
+  [borderRadius]="'8px'"
+  [top]="'20px'"
+  [right]="'0px'"
+  width="250px"
+  #tooltip
+  *ngIf="tooltip"
+> -->
+<verben-card
+  width="24rem"
+  borderRadius="1rem"
+  [border]="'1px solid #D4A007'"
+  class="w-full max-w-2xl border-yellow-200 border-2 rounded-lg"
+>
+  <div card-header class="flex flex-row justify-between items-center">
+    <h4 class="font-semibold">Export</h4>
+    <span class="text-blue-500 cursor-pointer" (click)="resetAll()">Reset</span>
+  </div>
+  <div card-body class="p-4 space-y-6">
+    <section class="space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-semibold">Profiles</h3>
+        <i class="h-5 w-5 text-gray-500">ℹ️</i>
+      </div>
+      <div
+        *ngFor="let profile of profiles; let i = index"
+        class="flex justify-between items-center"
+      >
+        <div class="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            [id]="'profile-' + i"
+            [(ngModel)]="profile.selected"
+          />
+          <label
+            [for]="'profile-' + i"
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            {{ profile.name }}
+          </label>
+        </div>
+        <div class="flex space-x-2">
+          <i
+            class="h-4 w-4 text-gray-500 cursor-pointer"
+            (click)="editProfile(profile)"
+            >✏️</i
+          >
+          <i
+            class="h-4 w-4 text-gray-500 cursor-pointer"
+            (click)="removeProfile(profile)"
+            >🗑️</i
+          >
+        </div>
+      </div>
+      <div class="flex items-center text-gray-500 cursor-pointer">
+        <span>Show more</span>
+        <i class="h-4 w-4 ml-1">▼</i>
+      </div>
+    </section>
+
+    <section class="space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-semibold">Group</h3>
+        <i class="h-5 w-5 text-gray-500">ℹ️</i>
+      </div>
+      <input
+        placeholder="Search group"
+        class="w-full p-2 border rounded"
+        [(ngModel)]="groupSearchTerm"
+      />
+      <div
+        *ngFor="let item of filteredGroupItems; let i = index"
+        class="flex justify-between items-center"
+      >
+        <div class="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            [id]="'group-' + i"
+            [(ngModel)]="item.selected"
+          />
+          <label
+            [for]="'group-' + i"
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            {{ item.name }}
+          </label>
+        </div>
+        <div class="flex space-x-2" *ngIf="item.type === 'operation'">
+          <i
+            class="h-4 w-4 text-gray-500 cursor-pointer"
+            (click)="editOperation(item)"
+            >✏️</i
+          >
+          <i
+            class="h-4 w-4 text-gray-500 cursor-pointer"
+            (click)="removeOperation(item)"
+            >🗑️</i
+          >
+        </div>
+      </div>
+      <div class="flex items-center text-gray-500 cursor-pointer">
+        <span>Show more</span>
+        <i class="h-4 w-4 ml-1">▼</i>
+      </div>
+      <div
+        class="flex items-center text-blue-500 cursor-pointer"
+        (click)="addProfile()"
+      >
+        <i class="h-4 w-4 mr-1">+</i>
+        <span>Add Profile</span>
+      </div>
+    </section>
+
+    <section class="space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-semibold">Operation</h3>
+        <i class="h-5 w-5 text-gray-500">ℹ️</i>
+      </div>
+      <input
+        placeholder="Operation name"
+        class="w-full p-2 border rounded"
+        [(ngModel)]="newOperation.name"
+      />
+      <div class="grid grid-cols-3 gap-4">
+        <select [(ngModel)]="newOperation.field1" class="p-2 border rounded">
+          <option value="">Select Field 1</option>
+          <option *ngFor="let prop of numericProperties" [value]="prop">
+            {{ prop }}
+          </option>
+        </select>
+        <select [(ngModel)]="newOperation.operator" class="p-2 border rounded">
+          <option value="add">+</option>
+          <option value="subtract">-</option>
+          <option value="multiply">*</option>
+          <option value="divide">/</option>
+        </select>
+        <select [(ngModel)]="newOperation.field2" class="p-2 border rounded">
+          <option value="">Select Field 2</option>
+          <option *ngFor="let prop of numericProperties" [value]="prop">
+            {{ prop }}
+          </option>
+        </select>
+      </div>
+      <div
+        class="flex items-center text-blue-500 cursor-pointer"
+        (click)="addOrUpdateOperation()"
+      >
+        <i class="h-4 w-4 mr-1">+</i>
+        <span>{{ isEditingOperation ? "Update" : "Add" }}</span>
+      </div>
+    </section>
+  </div>
+  <div card-footer class="p-4">
+    <button
+      class="w-full bg-yellow-400 hover:bg-yellow-500 text-black p-2 rounded"
+      (click)="exportData()"
+    >
+      Export
+    </button>
+  </div>
+</verben-card>
+<!-- </verben-tooltip> -->

@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [DataExportComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  providers: [],
+  providers: [DataExportService],
   exports: [DataExportComponent],
 })
 export class DataExportModule {}

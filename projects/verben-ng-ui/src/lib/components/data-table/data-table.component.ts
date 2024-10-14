@@ -34,6 +34,7 @@ export class DataTableComponent<T extends { id: string | number }>
 
   @Output() rowEdit = new EventEmitter<T>();
   @Output() rowSave = new EventEmitter<T>();
+  @Output() rowDelete = new EventEmitter<T>();
   @Output() selectionChange = new EventEmitter<T[]>();
 
   private editingRowsSignal = signal<Set<string | number>>(new Set());
@@ -226,6 +227,13 @@ export class DataTableComponent<T extends { id: string | number }>
     });
   }
 
+  deleteRow = (rowId: string | number) => {
+    const rowToDelete = this.data.find((row) => row.id === rowId);
+    if (rowToDelete) {
+      this.rowDelete.emit(rowToDelete);
+    }
+  };
+
   getCellContext(row: T, column: ColumnDefinition<T>, rowIndex: number) {
     const rowId = row.id;
     const isEditing = this.isRowEditing(rowId);
@@ -248,6 +256,7 @@ export class DataTableComponent<T extends { id: string | number }>
       isSelected: this.isRowSelected(rowId),
       toggleRowSelection: () => this.toggleRowSelection(rowId),
       toggleRowEdit: () => this.toggleRowEdit(rowId),
+      deleteRow: () => this.deleteRow(rowId), // Add delete function to context
       updateValue: (newValue: any) =>
         this.updateEditedValue(rowId, column.id as keyof T, newValue),
       updateNestedValue: (nestedField: string, newValue: any) =>

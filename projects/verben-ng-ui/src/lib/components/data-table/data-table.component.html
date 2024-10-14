@@ -1,8 +1,8 @@
-<!-- <table [ngStyle]="styleConfig">
+<table [ngStyle]="styleConfig">
   <thead>
-    <tr [ngStyle]="styleConfig?.header">
+    <tr [ngStyle]="styleConfig.header">
       @for (column of columnsSignal(); track column.id) {
-      <th [ngStyle]="styleConfig?.cells">
+      <th [ngStyle]="styleConfig.cells">
         @if (column.headerTemplate) {
         <ng-container
           [ngTemplateOutlet]="column.headerTemplate"
@@ -19,7 +19,7 @@
     @for (row of data; track row.id; let rowIndex = $index) {
     <tr [ngStyle]="getRowStyle(rowIndex)">
       @for (column of columnsSignal(); track column.id) {
-      <td [ngStyle]="styleConfig?.cells">
+      <td [ngStyle]="styleConfig.cells">
         @if (isRowEditing(row.id) && column.cellEditTemplate) {
         <ng-container
           [ngTemplateOutlet]="column.cellEditTemplate"
@@ -39,9 +39,9 @@
     }
   </tbody>
   <tfoot>
-    <tr [ngStyle]="styleConfig?.footer">
+    <tr [ngStyle]="styleConfig.footer">
       @for (column of columnsSignal(); track column.id) {
-      <td [ngStyle]="styleConfig?.cells">
+      <td [ngStyle]="styleConfig.cells">
         @if (column.footerTemplate) {
         <ng-container
           [ngTemplateOutlet]="column.footerTemplate"
@@ -52,4 +52,4 @@
       }
     </tr>
   </tfoot>
-</table> -->
+</table>

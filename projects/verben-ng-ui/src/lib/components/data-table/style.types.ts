@@ -52,4 +52,6 @@ export interface TableStyles extends BaseStyles {
   cells?: TableSectionStyles | BaseStyles;
   footer?: BaseStyles;
   header?: BaseStyles;
+  borderCollapse?: 'separate' | 'collapse';
+  borderSpacing?: string;
 }

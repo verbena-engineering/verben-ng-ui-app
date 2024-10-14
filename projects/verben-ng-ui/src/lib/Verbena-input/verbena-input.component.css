@@ -22,6 +22,7 @@
 }
 
 .error-bottom {
+  position: relative;
   margin-top: 5px;
 }
 
@@ -35,3 +36,24 @@
   right: -10px;
   top: 0px;
 }
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-field {
+  width: 100%;
+  padding: 8px;
+}
+
+.error-dot {
+  position: absolute;
+  top: 0%;
+  right: -10px;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+

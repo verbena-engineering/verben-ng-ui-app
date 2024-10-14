@@ -47,9 +47,10 @@ export class VisibleColumnComponent {
   }
 
   resetColumns() {
-    this.columns = [...this.originalColumnOrder];
+    // Reset columns to the original order
+    this.columns = JSON.parse(JSON.stringify(this.originalColumnOrder)); // Ensure it's a deep copy
     this.initializeColumnVisibility();
-    this.selectAll = false;
+    this.selectAll = false; // Reset select all
     this.updateSelectAllStatus();
   }
 
@@ -68,10 +69,16 @@ export class VisibleColumnComponent {
   }
 
   toggleShowMore() {
-    this.showMore = !this.showMore;
-    this.displayedColumns = this.showMore ? this.columns.length : 5;
+    const nextCount = this.displayedColumns + 5; // Increase displayed columns by 5
+    if (nextCount >= this.columns.length) {
+      this.displayedColumns= this.columns.length; // Show all columns if it's the last batch
+    } else {
+      this.displayedColumns = nextCount; // Otherwise, increase by 5
+    }
   }
-
+  toggleShowLess() {
+    this.displayedColumns = Math.max(this.columns.length,this.displayedColumns - 5); // Decrease displayed columns by 5, but not below the initial count
+  }
   toggleSelectAll() {
     this.selectAll = !this.selectAll;
     this.visibleColumns = this.visibleColumns.map(() => this.selectAll);

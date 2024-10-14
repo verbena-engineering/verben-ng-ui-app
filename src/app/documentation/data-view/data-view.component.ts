@@ -28,9 +28,7 @@ export class DataViewComponent {
     { checked: false, name: 'Column 3', type: DataFilterType.Bool },
     { checked: false, name: 'Column 4', type: DataFilterType.Bool },
     { checked: false, name: 'Column 5', type: DataFilterType.Bool },
-    { checked: false, name: 'Column 6', type: DataFilterType.Bool },
-    { checked: false, name: 'Column 7', type: DataFilterType.Bool },
-    { checked: false, name: 'Column 8', type: DataFilterType.Bool },
+
   ];
   filterArray: IDataFilter[] = [
     {

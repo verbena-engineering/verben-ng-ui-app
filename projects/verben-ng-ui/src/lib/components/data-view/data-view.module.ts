@@ -4,8 +4,10 @@ import { DataViewComponent } from './data-view.component';
 import { CardDataViewModule } from '../card-data-view/card-data-view.module';
 
 import { SvgModule } from '../svg/svg.module';
-import { DataTableModule, VerbenaButtonModule, VerbenaInputModule } from 'verben-ng-ui/src/public-api';
+import { DataTableModule } from '../data-table/data-table.module';
 import { OutSideClickDirective } from './data-view-click-outside.directive';
+import {VerbenaInputModule} from "../../Verbena-input/verbena-input.module"
+import {VerbenaButtonModule} from "../../verbena-button/verbena-button.module"
 @NgModule({
   declarations:[DataViewComponent],
   imports: [CommonModule,CardDataViewModule,DataTableModule,SvgModule,VerbenaInputModule,VerbenaButtonModule,OutSideClickDirective],

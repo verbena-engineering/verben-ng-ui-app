@@ -94,7 +94,6 @@ export class ChipComponent
 
   ngOnInit(): void {}
   ngAfterContentInit(): void {
-    console.log({ Templates: this.templates });
     this.templates.forEach((templateDirective) => {
       if (templateDirective.vTemplate === 'item') {
         this.itemTemplate = templateDirective.template;
@@ -107,7 +106,6 @@ export class ChipComponent
       return;
     }
     const inputValue = (event.target as HTMLInputElement).value;
-    console.log({ Key: event.key, InputVal: inputValue });
     // Check for 'Enter' key or custom separator
     if (event.key === 'Enter' || event.key == this.separator) {
       event.preventDefault();

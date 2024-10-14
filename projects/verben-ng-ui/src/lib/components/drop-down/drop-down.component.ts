@@ -212,7 +212,6 @@ export class DropDownComponent
     }
   }
   ngAfterContentInit(): void {
-    console.log({ Templates: this.templates });
     this.templates.forEach((templateDirective) => {
       if (templateDirective.vTemplate === 'selected') {
         this.selectedItemTemplate = templateDirective.template;

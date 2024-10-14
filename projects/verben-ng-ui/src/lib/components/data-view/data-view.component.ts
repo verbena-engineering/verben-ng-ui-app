@@ -11,7 +11,6 @@ import {
   selector: 'verben-data-view',
   templateUrl: './data-view.component.html',
   styleUrls: ['./data-view.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataViewComponent implements OnInit {
   @Input() buttonClass?: string;

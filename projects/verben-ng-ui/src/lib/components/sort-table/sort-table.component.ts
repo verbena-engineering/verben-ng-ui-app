@@ -3,7 +3,6 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewEncapsulation,
 } from '@angular/core';
 import { DataFilterType } from '../../models/table-filter';
 import { IDataFilter } from '../../models/data-filter';
@@ -12,7 +11,7 @@ import { IDataFilter } from '../../models/data-filter';
   selector: 'verben-sort-table',
   templateUrl: './sort-table.component.html',
   styleUrls: ['./sort-table.component.css'],
-  encapsulation: ViewEncapsulation.Emulated,
+
 })
 export class SortTableComponent {
   @Input() enableDragAndDrop: boolean = false;

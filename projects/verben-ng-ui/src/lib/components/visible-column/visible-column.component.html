@@ -46,9 +46,9 @@
   </ul>
 
   <!-- Show More / Show Less -->
-  <div *ngIf="displayedColumns < columns.length" class="cursor-pointer" [style.padding]="'20px 10px 0px 10px'">
+  <div *ngIf="displayedColumns <= columns.length" class="cursor-pointer" [style.padding]="'20px 10px 0px 10px'">
     <span (click)="toggleShowMore()">
-      {{  "Show More" }}
+      {{ displayedColumns === columns.length ? "Show Less" : "Show More" }}
     </span>
   </div>
   <hr />

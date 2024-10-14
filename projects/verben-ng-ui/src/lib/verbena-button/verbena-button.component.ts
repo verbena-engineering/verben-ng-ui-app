@@ -30,8 +30,8 @@ export class VerbenaButtonComponent {
     switch (this.styleType) {
       case 'primary':
         return {
-          bgColor: this.bgColor || '#007bff',
-          textColor: this.textColor || '#ffffff',
+          bgColor: this.bgColor || '#D9D9D940',
+          textColor: this.textColor || '#000000',
           border: this.border || 'none',
           borderRadius: this.borderRadius || '4px',
           pd: this.pd || '10px 15px'

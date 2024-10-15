@@ -1,0 +1,67 @@
+
+
+hr{
+  border: 1px solid rgba(232, 234, 241, 1);
+   margin:0.8rem 0rem;
+ }
+.flex{
+  display: flex;
+}
+.justify-between{
+  justify-content: space-between;
+}
+.items-center{
+  align-items: center;
+}
+.font-semibold{
+  font-weight: 600;
+}
+.font-semibold{
+  font-weight: 600;
+}
+.font-normal{
+  font-weight: 400;
+}
+.text-sm{
+  font-size: 14px;
+}
+.gap{
+  gap: 7px;
+}
+.gap-sm{
+  gap: 4px;
+}
+.cursor-pointer{
+  cursor: pointer;
+}
+.cursor-not-allowed{
+  cursor: not-allowed;
+}
+.pd{
+  padding: 10px 10px 10px 10px;
+}
+.sort-header {
+  margin-bottom: 10px;
+  padding: 10px 0px 10px 0px;
+}
+
+input[type="checkbox"].checked {
+  accent-color: #3479E9
+}
+
+.block{
+  display: block;
+}
+.btn-wrapper{ 
+  display: flex;
+  justify-content: end;
+}
+.gap-md{
+  gap: 2px;
+}
+.disabledBtn {
+  cursor: not-allowed;
+}
+.enabledBtn {
+  cursor:pointer;
+}

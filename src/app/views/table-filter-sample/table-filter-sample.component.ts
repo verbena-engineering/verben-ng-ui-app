@@ -29,10 +29,10 @@ export class TableFilterSampleComponent {
     type: DataFilterType.Date,
     checked:false
    },
-   {
-    name:'Qualify for payment',
-    type: DataFilterType.Bool,
-    checked:false
-   }
+  //  {
+  //   name:'Qualify for payment',
+  //   type: DataFilterType.Bool,
+  //   checked:false
+  //  }
   ]
 }

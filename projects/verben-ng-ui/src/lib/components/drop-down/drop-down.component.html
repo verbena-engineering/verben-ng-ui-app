@@ -26,31 +26,63 @@
           </div>
           <div *ngIf="multiselect" class="default-item multi-select flex">
             <div class="dropdown-label place-holder" *ngIf="this.selectedOptions.length == 0">{{placeholder}}</div>
-            <div *ngIf="this.selectedOptions.length > 0" class="item-label dropdown-label">
-              <div *ngIf="display == 'chip'" class="multiselect-items-container-two chip">
-                <span *ngFor="let item of selectedOptionLabels; index as i"
-                  class="multiselect-item-chip multi-select flex">
-                  <span>{{item}}</span>
-                  <verben-svg (click)="onMultiselectItemClosed(i, $event); $event.stopPropagation();"
-                    icon="close-circle" [width]="15" [height]="15"></verben-svg>
-                  <!-- <svg (click)="onMultiselectItemClosed(i, $event); $event.stopPropagation();" width="10" height="10"
-                    viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M5.00065 9.33333C7.30184 9.33333 9.16732 7.46785 9.16732 5.16667C9.16732 2.86548 7.30184 1 5.00065 1C2.69946 1 0.833984 2.86548 0.833984 5.16667C0.833984 7.46785 2.69946 9.33333 5.00065 9.33333Z"
-                      stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M6.25 3.91797L3.75 6.41797" stroke="currentColor" stroke-linecap="round"
-                      stroke-linejoin="round" />
-                    <path d="M3.75 3.91797L6.25 6.41797" stroke="currentColor" stroke-linecap="round"
-                      stroke-linejoin="round" />
-                  </svg> -->
-                </span>
+            <verben-tooltip customClass="custom-tooltip-width" border="1px solid #334155" backgroundColor="white"
+              [tooltipContent]="multiselectTooltip">
+              <div *ngIf="this.selectedOptions.length > 0" class="item-label dropdown-label">
+                <div *ngIf="display == 'chip'" class="multiselect-items-container-two chip">
+                  <span *ngFor="let item of selectedOptionLabels; index as i"
+                    class="multiselect-item-chip multi-select flex">
+                    <span>{{item}}</span>
+                    <verben-svg (click)="onMultiselectItemClosed(i, $event); $event.stopPropagation();"
+                      icon="close-circle-full" [width]="15" [height]="15"></verben-svg>
+                    <!-- <svg (click)="onMultiselectItemClosed(i, $event); $event.stopPropagation();" width="10" height="10"
+                      viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M5.00065 9.33333C7.30184 9.33333 9.16732 7.46785 9.16732 5.16667C9.16732 2.86548 7.30184 1 5.00065 1C2.69946 1 0.833984 2.86548 0.833984 5.16667C0.833984 7.46785 2.69946 9.33333 5.00065 9.33333Z"
+                        stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M6.25 3.91797L3.75 6.41797" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                      <path d="M3.75 3.91797L6.25 6.41797" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    </svg> -->
+                  </span>
+                </div>
+                <div *ngIf="display != 'chip'" class="multiselect-items-container-two normal">
+                  <span *ngFor="let item of selectedOptionLabels; index as i" class="multiselect-item">
+                    {{i !== selectedOptionLabels.length - 1? item + ', ':item}}
+                  </span>
+                </div>
               </div>
-              <div *ngIf="display != 'chip'" class="multiselect-items-container-two normal">
-                <span *ngFor="let item of selectedOptionLabels; index as i" class="multiselect-item">
-                  {{i !== selectedOptionLabels.length - 1? item + ', ':item}}
-                </span>
+            </verben-tooltip>
+            <ng-template #multiselectTooltip>
+              <div class="multi-select-full-view">
+                <div *ngIf="this.selectedOptions.length > 0" class="item-label dropdown-label">
+                  <div *ngIf="display == 'chip'" class="multiselect-items-container-two-tooltip chip">
+                    <span *ngFor="let item of selectedOptionLabels; index as i"
+                      class="multiselect-item-chip multi-select flex">
+                      <span>{{item}}</span>
+                      <verben-svg (click)="onMultiselectItemClosed(i, $event); $event.stopPropagation();"
+                        icon="close-circle-full" [width]="15" [height]="15"></verben-svg>
+                      <!-- <svg (click)="onMultiselectItemClosed(i, $event); $event.stopPropagation();" width="10" height="10"
+                        viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M5.00065 9.33333C7.30184 9.33333 9.16732 7.46785 9.16732 5.16667C9.16732 2.86548 7.30184 1 5.00065 1C2.69946 1 0.833984 2.86548 0.833984 5.16667C0.833984 7.46785 2.69946 9.33333 5.00065 9.33333Z"
+                          stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M6.25 3.91797L3.75 6.41797" stroke="currentColor" stroke-linecap="round"
+                          stroke-linejoin="round" />
+                        <path d="M3.75 3.91797L6.25 6.41797" stroke="currentColor" stroke-linecap="round"
+                          stroke-linejoin="round" />
+                      </svg> -->
+                    </span>
+                  </div>
+                  <div *ngIf="display != 'chip'" class="multiselect-items-container-two-tooltip-normal">
+                    <span *ngFor="let item of selectedOptionLabels; index as i" class="multiselect-item">
+                      {{i !== selectedOptionLabels.length - 1? item + ', ':item}}
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
+            </ng-template>
           </div>
         </ng-template>
       </div>
@@ -83,7 +115,7 @@
       <div *ngIf="display == 'chip'" class="multiselect-items-container chip flex">
         <span *ngFor="let item of selectedOptionLabels; index as i" class="multiselect-item-chip flex">
           <span>{{item}}</span>
-          <verben-svg (click)="onMultiselectItemClosed(i, $event)" icon="close-circle" [width]="15"
+          <verben-svg (click)="onMultiselectItemClosed(i, $event)" icon="close-circle-full" [width]="15"
             [height]="15"></verben-svg>
           <!-- <svg (click)="onMultiselectItemClosed(i, $event)" width="10" height="10" viewBox="0 0 10 10" fill="none"
             xmlns="http://www.w3.org/2000/svg">

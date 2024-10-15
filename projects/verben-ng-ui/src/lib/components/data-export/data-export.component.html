@@ -1,90 +1,275 @@
-<h2>Export Configuration</h2>
-
-<h3>Create Operation</h3>
-<form [formGroup]="operationForm" (ngSubmit)="onSubmitOperation()">
-  <input formControlName="name" placeholder="Operation Name" />
-  <select formControlName="field1">
-    <option value="">Select Field 1</option>
-    <option *ngFor="let prop of baseProperties" [value]="prop">
-      {{ prop }}
-    </option>
-  </select>
-  <select formControlName="operator">
-    <option value="">Select Operator</option>
-    <option value="add">+</option>
-    <option value="subtract">-</option>
-    <option value="multiply">*</option>
-    <option value="divide">/</option>
-  </select>
-  <select formControlName="field2">
-    <option value="">Select Field 2</option>
-    <option *ngFor="let prop of baseProperties" [value]="prop">
-      {{ prop }}
-    </option>
-  </select>
-  <button type="submit" [disabled]="!operationForm.valid">Add Operation</button>
-</form>
-
-<h3>Operations</h3>
-<div
-  *ngFor="let operation of exportService.getOperations()"
-  class="operation-item"
->
-  <span
-    >{{ operation.name }}: {{ operation.field1 }} {{ operation.operator }}
-    {{ operation.field2 }}</span
-  >
-  <div>
-    <button (click)="editOperation(operation)">Edit</button>
-    <button (click)="removeOperation(operation.id)">Remove</button>
-  </div>
-</div>
-
-<h3>Create Profile</h3>
-<form [formGroup]="profileForm" (ngSubmit)="onSubmitProfile()">
-  <input formControlName="name" placeholder="Profile Name" />
-  <div formArrayName="items" class="checkbox-group">
-    <label
-      *ngFor="let item of exportService.getAllItems(); let i = index"
-      class="checkbox-label"
+<section>
+  <div class="top">
+    <h3 [style.color]="tertiaryColor" [style.font-size]="'14px'">
+      Export
+      <!-- <span [style.color]="secondaryColor"
+        ><sup>({{ savedFilters.length }})</sup></span
+      > -->
+    </h3>
+    <button
+      [style.color]="secondaryColor"
+      [style.background-color]="bgColor"
+      [style.border]="'none'"
+      [style.cursor]="'pointer'"
+      [style.font-size]="'12px'"
+      (click)="resetAll()"
     >
-      <input type="checkbox" [formControlName]="i" />
-      {{ item.name }} ({{ item.type }})
-    </label>
+      Reset
+    </button>
   </div>
-  <button type="submit" [disabled]="!profileForm.valid">Save Profile</button>
-</form>
+  <hr />
 
-<h3>Profiles</h3>
-<ul>
-  <li *ngFor="let profile of exportService.getProfiles()">
-    <span>{{ profile.name }}</span>
-    <div>
-      <button *ngIf="profile.id !== 'default'" (click)="editProfile(profile)">
-        Edit
-      </button>
-      <button
-        *ngIf="profile.id !== 'default'"
-        (click)="removeProfile(profile.id)"
+  <!-- Saved Filters Section -->
+  <div class="center">
+    <div class="savedWrapper">
+      <h3 [style.font-size]="'13px'">Profiles</h3>
+      <verben-svg
+        icon="info"
+        [width]="15"
+        [height]="15"
+        fill="grey"
+      ></verben-svg>
+    </div>
+    <!-- <div class="selectAllWrapper" *ngIf="savedFilters.length">
+      <input
+        type="checkbox"
+        [checked]="checkAll"
+        (change)="toggleSelectAll()"
+      />
+      <p [style.font-size]="'13px'" [style.font-weight]="'500'">Select All</p>
+    </div> -->
+    <div
+      *ngFor="let profile of profiles.slice(0, showing); let i = index"
+      class="centerInnerWrapper"
+    >
+      <div class="checkboxWrapper">
+        <span
+          ><input
+            type="checkbox"
+            [id]="'profile-' + i"
+            [(ngModel)]="profile.selected"
+        /></span>
+        <label
+          [for]="'profile-' + i"
+          [style.font-size]="'13px'"
+          [style.font-weight]="'500'"
+          [style.color]="tertiaryColor"
+        >
+          {{ profile.name }}
+        </label>
+      </div>
+      <div class="iconWrapper">
+        <verben-svg
+          icon="edit"
+          [width]="15"
+          [height]="15"
+          stroke="#3479E9"
+          fill="white"
+          (click)="editProfile(profile)"
+        ></verben-svg>
+        <verben-svg
+          icon="delete"
+          [width]="15"
+          [height]="15"
+          stroke="#E20000"
+          (click)="removeProfile(profile)"
+        ></verben-svg>
+      </div>
+    </div>
+
+    <div
+      class="moreWrapper"
+      *ngIf="profiles.length > 3"
+      (click)="
+        showing === profiles.length
+          ? (showing = 3)
+          : (showing = profiles.length)
+      "
+    >
+      <p
+        [style.font-size]="'12px'"
+        [style.font-weight]="'500'"
+        [style.color]="tertiaryColor"
       >
-        Remove
+        {{ showing === profiles.length ? "Show less" : "Show more" }}
+      </p>
+      <verben-svg
+        icon="chevron"
+        [width]="8"
+        [height]="6"
+        fill="black"
+        stroke="black"
+      ></verben-svg>
+    </div>
+  </div>
+  <hr />
+
+  <!-- Operation Section -->
+  <div class="bottom">
+    <div class="savedWrapper">
+      <h3 [style.font-size]="'13px'">Group</h3>
+      <!-- <div [ngStyle]="{ position: 'relative' }">
+        <verben-svg
+          icon="info"
+          [width]="15"
+          [height]="15"
+          (mouseenter)="showTooltip()"
+          (mouseleave)="hideTooltip()"
+          *ngIf="isDuplicateFilter"
+          fill="red"
+        >
+        </verben-svg>
+
+        <verben-tooltip
+          [backgroundColor]="'grey'"
+          [textColor]="'white'"
+          [padding]="'10px'"
+          [borderRadius]="'8px'"
+          [top]="'20px'"
+          [right]="'0px'"
+          width="250px"
+          #tooltip
+          *ngIf="tooltip"
+        >
+          <h3>{{ duplicateMessage }}</h3>
+        </verben-tooltip>
+      </div> -->
+      <verben-svg
+        icon="info"
+        [width]="15"
+        [height]="15"
+        fill="grey"
+      ></verben-svg>
+    </div>
+
+    <!-- <div class="inputsWrapper">
+      <verben-drop-down
+        width="'8rem'"
+        placeholder="Select value"
+        [options]="filterArray"
+        [(ngModel)]="selectedFilterValue"
+        (ngModelChange)="onFilterNameChange(selectedFilterValue)"
+      >
+      </verben-drop-down>
+      <verben-drop-down
+        (onChange)="checkDuplicateFilter()"
+        width="8rem"
+        placeholder="Select value"
+        [options]="conditionOptions"
+        [(ngModel)]="selectedCondition"
+      >
+      </verben-drop-down>
+
+      <verbena-input
+        *ngIf="selectedFilterType === 'Date'"
+        border="1px solid #ccc"
+        borderRadius="5px"
+        textColor="black"
+        width="100px"
+        height="25px"
+        pd="6px"
+        [showBorder]="true"
+        [showErrorMessage]="true"
+        [errorPosition]="'bottom'"
+        [(ngModel)]="inputValue"
+      ></verbena-input>
+
+      <verbena-input
+        *ngIf="
+          selectedFilterType === 'Credit' || selectedFilterType === 'Integer'
+        "
+        border="1px solid #ccc"
+        borderRadius="5px"
+        textColor="black"
+        width="100px"
+        height="25px"
+        pd="6px"
+        placeHolder="input integer"
+        [showBorder]="true"
+        [showErrorMessage]="true"
+        [errorPosition]="'bottom'"
+        appValidate="integer"
+        [(ngModel)]="inputValue"
+      ></verbena-input>
+
+      <verbena-input
+        *ngIf="selectedFilterType === 'Decimal'"
+        border="1px solid #ccc"
+        borderRadius="5px"
+        textColor="black"
+        width="100px"
+        height="25px"
+        pd="6px"
+        placeHolder="input a decimal"
+        [showBorder]="true"
+        [showErrorMessage]="false"
+        [errorPosition]="'bottom'"
+        appValidate="decimal"
+        [(ngModel)]="inputValue"
+      ></verbena-input>
+
+      <verbena-input
+        *ngIf="
+          selectedFilterType !== 'Credit' &&
+          selectedFilterType !== 'Date' &&
+          selectedFilterType !== 'Integer' &&
+          selectedFilterType !== 'Decimal'
+        "
+        border="1px solid #ccc"
+        placeHolder="input value"
+        borderRadius="5px"
+        textColor="black"
+        width="100px"
+        height="25px"
+        pd="6px"
+        [showBorder]="true"
+        [showErrorMessage]="true"
+        [errorPosition]="'bottom'"
+        [(ngModel)]="inputValue"
+      ></verbena-input>
+    </div>
+
+    <div class="btnWrapper">
+      <button
+        [style.margin-top]="'0.5rem'"
+        [style.outline]="'none'"
+        [style.border]="'none'"
+        [style.border-radius]="borderRadius"
+        [style.background-color]="'transparent'"
+        [style.color]="secondaryColor"
+        [style.font-size]="'12px'"
+        [style.font-weight]="'500'"
+        [disabled]="disableAddFilterBtn"
+        [ngClass]="{
+          disablebtn: disableAddFilterBtn,
+          enableBtn: !disableAddFilterBtn
+        }"
+        (click)="addFilter()"
+      >
+        + Add
       </button>
     </div>
-  </li>
-</ul>
+    <hr />
 
-<button (click)="resetAll()">Reset All</button>
-
-<h3>Export</h3>
-<form [formGroup]="profileSelectionForm">
-  <div formArrayName="selectedProfiles" class="checkbox-group">
-    <label
-      *ngFor="let profile of exportService.getProfiles(); let i = index"
-      class="checkbox-label"
-    >
-      <input type="checkbox" [formControlName]="i" />
-      {{ profile.name }}
-    </label>
+    <div class="btnWrapper">
+      <button
+        [style.margin-top]="'0.5rem'"
+        [style.outline]="'none'"
+        [style.border]="'none'"
+        [style.padding]="'0.2rem 1.6rem'"
+        [style.background-color]="primaryColor"
+        [style.color]="tertiaryColor"
+        [style.font-size]="'12px'"
+        [style.font-weight]="'600'"
+        (click)="applyFilters()"
+        [disabled]="disableApplyFilterBtn"
+        [ngClass]="{
+          disablebtn: disableApplyFilterBtn,
+          enableBtn: !disableApplyFilterBtn
+        }"
+      >
+        Filter
+      </button>
+    </div> -->
   </div>
-</form>
-<button (click)="exportData()">Export Selected Profiles</button>
+</section>

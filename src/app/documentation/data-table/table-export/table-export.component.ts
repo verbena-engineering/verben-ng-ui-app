@@ -5,6 +5,7 @@ import {
   ExportItem,
   ExportProfile,
   Operation,
+  Operators,
 } from 'verben-ng-ui/src/public-api';
 
 @Component({
@@ -23,12 +24,16 @@ export class TableExportComponent {
     id: '',
     name: '',
     field1: '',
-    operator: 'add',
+    operator: Operators.add,
     field2: '',
   };
   numericProperties: string[] = [];
   isEditingOperation: boolean = false;
   tooltip: boolean = false;
+
+  showing: number = 3;
+  showing2: number = 3;
+  operators: Operators[] = Object.values(Operators);
 
   constructor(private exportService: DataExportService) {}
 
@@ -143,7 +148,7 @@ export class TableExportComponent {
       id: '',
       name: '',
       field1: '',
-      operator: 'add',
+      operator: Operators.add,
       field2: '',
     };
     this.isEditingOperation = false;

@@ -1,0 +1,93 @@
+h3,
+p {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+.top {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+}
+
+hr {
+  border: 1px solid rgba(232, 234, 241, 1);
+  margin: 0.8rem 0rem;
+}
+
+.centerInnerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.savedWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.checkboxWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  cursor: pointer;
+}
+
+.moreWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.inputsWrapper {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* justify-content: space-between; */
+  /* flex-wrap: wrap; */
+}
+
+.btnWrapper {
+  display: flex;
+  justify-content: end;
+}
+
+.inputsWrapper select:nth-of-type(1) {
+  width: 120px;
+}
+
+.inputsWrapper select:nth-of-type(2) {
+  width: 70px;
+}
+
+input[type="checkbox"].checked {
+  accent-color: #3479e9;
+}
+
+.selectAllWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.selectAllWrapper > input {
+  cursor: pointer;
+}
+
+.disablebtn {
+  filter: blur(2px);
+  cursor: not-allowed;
+}
+.enableBtn {
+  cursor: pointer;
+}

@@ -1,34 +1,35 @@
-<!-- <button (click)="tooltip = !tooltip">Export</button>
-
-<verben-tooltip
-  [backgroundColor]="'grey'"
-  [textColor]="'white'"
-  [padding]="'10px'"
-  [borderRadius]="'8px'"
-  [top]="'20px'"
-  [right]="'0px'"
-  width="250px"
-  #tooltip
-  *ngIf="tooltip"
-> -->
 <verben-card
   width="24rem"
   borderRadius="1rem"
   [border]="'1px solid #D4A007'"
-  class="w-full max-w-2xl border-yellow-200 border-2 rounded-lg"
+  class="w-full max-w-2xl border-yellow-200 border-2 rounded-lg text-xs"
 >
   <div card-header class="flex flex-row justify-between items-center">
-    <h4 class="font-semibold">Export</h4>
-    <span class="text-blue-500 cursor-pointer" (click)="resetAll()">Reset</span>
+    <h4 class="font-semibold text-[13px]">Export</h4>
+    <button
+      [style.color]="'#3479E9'"
+      [style.background-color]="'transparent'"
+      [style.border]="'none'"
+      [style.cursor]="'pointer'"
+      [style.font-size]="'12px'"
+      (click)="resetAll()"
+    >
+      Reset
+    </button>
   </div>
-  <div card-body class="p-4 space-y-6">
+  <div card-body class="space-y-4">
     <section class="space-y-4">
       <div class="flex justify-between items-center">
-        <h3 class="text-lg font-semibold">Profiles</h3>
-        <i class="h-5 w-5 text-gray-500">ℹ️</i>
+        <h3 class="text-[13px]">Profiles</h3>
+        <verben-svg
+          icon="info"
+          [width]="15"
+          [height]="15"
+          fill="grey"
+        ></verben-svg>
       </div>
       <div
-        *ngFor="let profile of profiles; let i = index"
+        *ngFor="let profile of profiles.slice(0, showing2); let i = index"
         class="flex justify-between items-center"
       >
         <div class="flex items-center space-x-2">
@@ -39,40 +40,73 @@
           />
           <label
             [for]="'profile-' + i"
-            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            class="leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             {{ profile.name }}
           </label>
         </div>
         <div class="flex space-x-2">
-          <i
-            class="h-4 w-4 text-gray-500 cursor-pointer"
+          <verben-svg
+            icon="edit"
+            [width]="15"
+            [height]="15"
+            stroke="#3479E9"
+            fill="white"
             (click)="editProfile(profile)"
-            >✏️</i
-          >
-          <i
-            class="h-4 w-4 text-gray-500 cursor-pointer"
+          ></verben-svg>
+          <verben-svg
+            icon="delete"
+            [width]="15"
+            [height]="15"
+            stroke="#E20000"
             (click)="removeProfile(profile)"
-            >🗑️</i
-          >
+          ></verben-svg>
         </div>
       </div>
-      <div class="flex items-center text-gray-500 cursor-pointer">
-        <span>Show more</span>
-        <i class="h-4 w-4 ml-1">▼</i>
+      <div
+        *ngIf="profiles.length > 3"
+        (click)="
+          showing2 === profiles.length
+            ? (showing2 = 3)
+            : (showing2 = profiles.length)
+        "
+        class="flex items-center text-gray-500 cursor-pointer"
+      >
+        <span>{{
+          showing2 === profiles.length ? "Show less" : "Show more"
+        }}</span>
+        <verben-svg
+          icon="chevron"
+          [width]="8"
+          [height]="6"
+          fill="black"
+          stroke="black"
+        ></verben-svg>
       </div>
     </section>
-
+    <hr class="text-[#E8EAF1]" />
     <section class="space-y-4">
       <div class="flex justify-between items-center">
-        <h3 class="text-lg font-semibold">Group</h3>
-        <i class="h-5 w-5 text-gray-500">ℹ️</i>
+        <h3 class="text-[13px]">Group</h3>
+        <verben-svg
+          icon="info"
+          [width]="15"
+          [height]="15"
+          fill="grey"
+        ></verben-svg>
       </div>
-      <input
-        placeholder="Search group"
-        class="w-full p-2 border rounded"
+      <verbena-input
+        border="1px solid #ccc"
+        borderRadius="5px"
+        textColor="black"
+        width="100%"
+        height="20px"
+        pd="4px 6px"
+        [showBorder]="true"
+        [showErrorMessage]="true"
+        [errorPosition]="'bottom'"
         [(ngModel)]="groupSearchTerm"
-      />
+      ></verbena-input>
       <div
         *ngFor="let item of filteredGroupItems; let i = index"
         class="flex justify-between items-center"
@@ -85,55 +119,114 @@
           />
           <label
             [for]="'group-' + i"
-            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            class="leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             {{ item.name }}
           </label>
         </div>
         <div class="flex space-x-2" *ngIf="item.type === 'operation'">
-          <i
-            class="h-4 w-4 text-gray-500 cursor-pointer"
+          <verben-svg
+            icon="edit"
+            [width]="15"
+            [height]="15"
+            stroke="#3479E9"
+            fill="white"
             (click)="editOperation(item)"
-            >✏️</i
-          >
-          <i
-            class="h-4 w-4 text-gray-500 cursor-pointer"
+          ></verben-svg>
+          <verben-svg
+            icon="delete"
+            [width]="15"
+            [height]="15"
+            stroke="#E20000"
             (click)="removeOperation(item)"
-            >🗑️</i
-          >
+          ></verben-svg>
         </div>
       </div>
-      <div class="flex items-center text-gray-500 cursor-pointer">
-        <span>Show more</span>
-        <i class="h-4 w-4 ml-1">▼</i>
-      </div>
       <div
-        class="flex items-center text-blue-500 cursor-pointer"
+        *ngIf="filteredGroupItems.length > 3"
+        (click)="
+          showing === filteredGroupItems.length
+            ? (showing = 3)
+            : (showing = filteredGroupItems.length)
+        "
+        class="flex items-center text-gray-500 cursor-pointer"
+      >
+        <span>{{
+          showing === filteredGroupItems.length ? "Show less" : "Show more"
+        }}</span>
+        <verben-svg
+          icon="chevron"
+          [width]="8"
+          [height]="6"
+          fill="black"
+          stroke="black"
+        ></verben-svg>
+      </div>
+
+      <button
+        [style.margin-top]="'0.5rem'"
+        [style.outline]="'none'"
+        [style.border]="'none'"
+        [style.background-color]="'transparent'"
+        [style.color]="'#3479E9'"
+        [style.font-size]="'12px'"
+        [style.font-weight]="'500'"
         (click)="addProfile()"
       >
-        <i class="h-4 w-4 mr-1">+</i>
-        <span>Add Profile</span>
-      </div>
+        + Add
+      </button>
     </section>
-
+    <hr class="text-[#E8EAF1]" />
     <section class="space-y-4">
       <div class="flex justify-between items-center">
-        <h3 class="text-lg font-semibold">Operation</h3>
-        <i class="h-5 w-5 text-gray-500">ℹ️</i>
+        <h3 class="text-[13px]">Operation</h3>
+        <verben-svg
+          icon="info"
+          [width]="15"
+          [height]="15"
+          fill="grey"
+        ></verben-svg>
       </div>
-      <input
+      <!-- <input
         placeholder="Operation name"
         class="w-full p-2 border rounded"
         [(ngModel)]="newOperation.name"
-      />
+      /> -->
+      <verbena-input
+        placeholder="Operation name"
+        border="1px solid #ccc"
+        borderRadius="5px"
+        textColor="black"
+        width="100%"
+        height="20px"
+        pd="2px 6px"
+        [showBorder]="true"
+        [showErrorMessage]="true"
+        [errorPosition]="'bottom'"
+        [(ngModel)]="newOperation.name"
+      ></verbena-input>
       <div class="grid grid-cols-3 gap-4">
-        <select [(ngModel)]="newOperation.field1" class="p-2 border rounded">
+        <verben-drop-down
+          width="'8rem'"
+          placeholder="Select field"
+          [options]="numericProperties"
+          [(ngModel)]="newOperation.field1"
+        >
+        </verben-drop-down>
+        <!-- <select [(ngModel)]="newOperation.field1" class="p-2 border rounded">
           <option value="">Select Field 1</option>
           <option *ngFor="let prop of numericProperties" [value]="prop">
             {{ prop }}
           </option>
-        </select>
-        <select [(ngModel)]="newOperation.operator" class="p-2 border rounded">
+        </select> -->
+        <verben-drop-down
+          width="'8rem'"
+          placeholder="Select operator"
+          [options]="operators"
+          [(ngModel)]="newOperation.operator"
+        >
+        </verben-drop-down>
+        <!-- <select [(ngModel)]="newOperation.operator" class="p-2 border rounded">
           <option value="add">+</option>
           <option value="subtract">-</option>
           <option value="multiply">*</option>
@@ -144,24 +237,43 @@
           <option *ngFor="let prop of numericProperties" [value]="prop">
             {{ prop }}
           </option>
-        </select>
+        </select> -->
+        <verben-drop-down
+          width="'8rem'"
+          placeholder="Select field"
+          [options]="numericProperties"
+          [(ngModel)]="newOperation.field2"
+        >
+        </verben-drop-down>
       </div>
-      <div
-        class="flex items-center text-blue-500 cursor-pointer"
+      <button
+        [style.margin-top]="'0.5rem'"
+        [style.outline]="'none'"
+        [style.border]="'none'"
+        [style.background-color]="'transparent'"
+        [style.color]="'#3479E9'"
+        [style.font-size]="'12px'"
+        [style.font-weight]="'500'"
         (click)="addOrUpdateOperation()"
       >
-        <i class="h-4 w-4 mr-1">+</i>
-        <span>{{ isEditingOperation ? "Update" : "Add" }}</span>
-      </div>
+        + {{ isEditingOperation ? "Update" : "Add" }}
+      </button>
     </section>
   </div>
-  <div card-footer class="p-4">
+  <div card-footer class="flex justify-end bg-transparent">
     <button
-      class="w-full bg-yellow-400 hover:bg-yellow-500 text-black p-2 rounded"
+      class="ml-auto"
+      [style.margin-top]="'0.5rem'"
+      [style.outline]="'none'"
+      [style.border]="'none'"
+      [style.padding]="'0.2rem 1.6rem'"
+      [style.background-color]="'#FFE681'"
+      [style.color]="'#404040'"
+      [style.font-size]="'12px'"
+      [style.font-weight]="'600'"
       (click)="exportData()"
     >
       Export
     </button>
   </div>
 </verben-card>
-<!-- </verben-tooltip> -->

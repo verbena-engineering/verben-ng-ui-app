@@ -47,7 +47,8 @@ export * from './lib/components/visible-column/visible-column.component';
 export * from './lib/components/visible-column/visible-column.module';
 export * from './lib/components/data-view/data-view.component';
 export * from './lib/components/data-view/data-view.module';
-
+export * from './lib/components/date-picker/date-picker.component';
+export * from './lib/components/date-picker/date-picker.module';
 // export * from './lib/convert-to-decimal/convert-to-decimal.module';
 export * from './lib/phone-number/phone-number.module';
 

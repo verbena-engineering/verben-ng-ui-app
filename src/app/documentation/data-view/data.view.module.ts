@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { DataViewComponentRoutingModule } from './data-view-routing.module';
 import { DataViewComponent  } from './data-view.component';
 import {CardDataViewModule,DataViewModule, SortTableModule, SvgModule, TableFilterModule, VisibleColumnModule } from 'verben-ng-ui/src/public-api';
-import { DataTableModule } from '../data-table/data-table.module';
+import { DataTableModule } from 'verben-ng-ui/src/public-api';
 
 
 

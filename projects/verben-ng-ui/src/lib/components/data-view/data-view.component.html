@@ -1,140 +1,137 @@
-<div class="toolbar flex gap items-center" [style.margin-left]="'35px'">
-  <div class="toggle-button-container">
-    <button type="button" (click)="toggleView()" [ngClass]="buttonClass">
-      <verben-svg
-        [icon]="listIcon"
-        [class.active]="!isGridView"
-        [width]="25"
-        [height]="25"
-        [ngClass]="!isGridView ? activeIconClass : iconClass"
-      ></verben-svg>
-      <verben-svg
-        [icon]="gridIcon"
-        [class.active]="isGridView"
-        [ngClass]="isGridView ? activeIconClass : iconClass"
-      ></verben-svg>
-    </button>
+<div class="toolbar flex gap justify-between items-center" [style.margin]="'0px 35px'">
+  <div class="flex items-center gap">
+    <div class="toggle-button-container">
+      <button type="button" (click)="toggleView()" [ngClass]="buttonClass">
+        <verben-svg
+          [icon]="gridIcon"
+          [class.active]="!isGridView"
+          [ngClass]="!isGridView ? activeIconClass : iconClass"
+        ></verben-svg>
+        <verben-svg
+          [icon]="listIcon"
+          [class.active]="isGridView"
+          [ngClass]="isGridView ? activeIconClass : iconClass"
+          [width]="25"
+          [height]="25"
+        ></verben-svg>
+      </button>
+    </div>
+    <!-- Search Input -->
+    <div [style.width]="inputWidth" class="search-input" *ngIf="viewState.isSearch">
+      <verbena-input
+        [type]="'text'"
+        [placeHolder]="'Search...'"
+        (input)="onSearch($event)"
+        [borderRadius]="'10px'"
+        [border]="'0'"
+      />
+    </div>
   </div>
-  <div   class="search-input" *ngIf="isSearch">
-    <verbena-input
-      [type]="'text'"
-      [placeHolder]="'Search...'"
-      (input)="onSearch($event)"
-      [borderRadius]="'10px'"
-      [border]="'0'"
-    />
-  </div>
-  <div class="flex items-center gap" [style.margin-left]="'10px'">
-    <div class="relative">
-      <ng-container
-        [appOutSideClick]="showColumnChild"
-        (outSideClick)="showColumnChild = false"
-        *ngIf="isColumn && isGridView"
-      >
-        <ng-container *ngIf="columnTemplate; else defaultColumn">
-        </ng-container>
-        <ng-template #defaultColumn>
-          <span
-            class="flex gap text-xs items-center pd rounded cursor-pointer"
-            [style.background-color]="'#D9D9D940'"
-            (click)="onColumnClick()"
-          >
-            <verben-svg [width]="15" [icon]="'column'"></verben-svg>
-            <span
-              >Columns <sup>({{ selectedColumnCount }})</sup></span
-            >
-          </span>
-          <div class="data-view-element">
-            <ng-content
-              *ngIf="showColumnChild"
-              select="[column-content]"
-            ></ng-content>
-          </div>
-        </ng-template>
-      </ng-container>
-    </div>
-    <div class="relative">
-      <ng-container
-        [appOutSideClick]="showFilterChild"
-        (outSideClick)="showFilterChild = false"
-        *ngIf="isFilter"
-      >
-        <ng-container *ngIf="filterTemplate; else defaultFilter">
-        </ng-container>
-        <ng-template #defaultFilter>
-          <span
-            class="flex gap text-xs items-center pd rounded cursor-pointer"
-            [style.background-color]="'#D9D9D940'"
-            (click)="onFilterClick()"
-          >
-            <verben-svg [width]="15" [icon]="'filter'"></verben-svg>
-            <span
-              >Filter <sup>({{ selectedFilterTableCount }})</sup></span
-            >
-          </span>
-          <div class="data-view-element">
-            <ng-content
-              *ngIf="showFilterChild"
-              select="[filter-content]"
-            ></ng-content>
-          </div>
-        </ng-template>
-      </ng-container>
-    </div>
 
-    <div class="relative">
-      <ng-container
-        [appOutSideClick]="showSortChild"
-        (outSideClick)="showSortChild = false"
-        *ngIf="isSort"
-      >
-        <ng-container *ngIf="sortTemplate; else defaultSort"> </ng-container>
-        <ng-template #defaultSort>
-          <span
-            class="flex gap text-xs items-center pd rounded cursor-pointer"
-            [style.background-color]="'#D9D9D940'"
-            (click)="onSortClick()"
-          >
-            <verben-svg [width]="15" [icon]="'sort'"></verben-svg>
-            <span
-              >Sort <sup>({{ selectedSortCount }})</sup></span
-            >
-          </span>
-          <div class="data-view-element">
-            <ng-content
-              *ngIf="showSortChild"
-              select="[sort-content]"
-            ></ng-content>
-          </div>
-        </ng-template>
-      </ng-container>
-    </div>
-
-    <div *ngIf="isExport">
-      <span
-        class="flex gap text-xs items-center pd rounded cursor-pointer"
-        [style.background-color]="'#D9D9D940'"
-        (click)="onExportClick()"
-      >
-        <verben-svg [width]="15" [icon]="'export'"></verben-svg>
-        Export
-      </span>
-    </div>
-    <div *ngIf="isSelect">
-     
-
+  <div class="flex items-center relative gap" [style.margin-left]="'10px'">
+    <!-- Column Section -->
+    <ng-container
+      [appOutSideClick]="showColumnChild"
+      (outSideClick)="showColumnChild = false"
+      *ngIf="viewState.isColumn && isGridView"
+    >
+      <ng-container *ngIf="columnTemplate; else defaultColumn"></ng-container>
+      <ng-template #defaultColumn>
         <span
           class="flex gap text-xs items-center pd rounded cursor-pointer"
           [style.background-color]="'#D9D9D940'"
-          (click)="onSelectAllClick()"
+          (click)="toggleChildView('column')"
         >
-          <verben-svg [width]="15" [icon]="'select'"></verben-svg>
-          <span>Select</span>
-          <verben-svg [width]="6" [icon]="'chevron-down'"></verben-svg>
+          <verben-svg [width]="15" [icon]="'column'"></verben-svg>
+          <span>Columns <sup>({{ selectedColumnCount }})</sup></span>
         </span>
-      </div>
+        <div class="data-view-element">
+          <ng-content *ngIf="showColumnChild" select="[column-content]"></ng-content>
+        </div>
+      </ng-template>
+    </ng-container>
 
-    <div>
+    <!-- Filter Section -->
+    <ng-container
+      [appOutSideClick]="showFilterChild"
+      (outSideClick)="showFilterChild = false"
+      *ngIf="viewState.isFilter"
+    >
+      <ng-container *ngIf="filterTemplate; else defaultFilter"></ng-container>
+      <ng-template #defaultFilter>
+        <span
+          class="flex gap text-xs items-center pd rounded cursor-pointer"
+          [style.background-color]="'#D9D9D940'"
+          (click)="toggleChildView('filter')"
+        >
+          <verben-svg [width]="15" [icon]="'filter'"></verben-svg>
+          <span>Filter <sup>({{ selectedFilterTableCount }})</sup></span>
+        </span>
+        <div class="data-view-element">
+          <ng-content *ngIf="showFilterChild" select="[filter-content]"></ng-content>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <!-- Sort Section -->
+    <ng-container
+      [appOutSideClick]="showSortChild"
+      (outSideClick)="showSortChild = false"
+      *ngIf="viewState.isSort"
+    >
+      <ng-container *ngIf="sortTemplate; else defaultSort"></ng-container>
+      <ng-template #defaultSort>
+        <span
+          class="flex gap text-xs items-center pd rounded cursor-pointer"
+          [style.background-color]="'#D9D9D940'"
+          (click)="toggleChildView('sort')"
+        >
+          <verben-svg [width]="15" [icon]="'sort'"></verben-svg>
+          <span>Sort <sup>({{ selectedSortCount }})</sup></span>
+        </span>
+        <div class="data-view-element">
+          <ng-content *ngIf="showSortChild" select="[sort-content]"></ng-content>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <!-- Export Section -->
+    <ng-container
+      [appOutSideClick]="showExportChild"
+      (outSideClick)="showExportChild = false"
+      *ngIf="viewState.isExport"
+    >
+      <ng-container *ngIf="exportTemplate; else defaultExport"></ng-container>
+      <ng-template #defaultExport>
+        <span
+          class="flex gap text-xs items-center pd rounded cursor-pointer"
+          [style.background-color]="'#D9D9D940'"
+          (click)="toggleChildView('export')"
+        >
+          <verben-svg [width]="15" [icon]="'export'"></verben-svg>
+          Export
+        </span>
+        <div class="data-view-element">
+          <ng-content *ngIf="showExportChild" select="[export-content]"></ng-content>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <!-- Select Section -->
+    <div *ngIf="viewState.isSelect">
+      <span
+        class="flex gap text-xs items-center pd rounded cursor-pointer"
+        [style.background-color]="'#D9D9D940'"
+        (click)="toggleChildView('select')"
+      >
+        <verben-svg [width]="15" [icon]="'select'"></verben-svg>
+        <span>Select</span>
+        <verben-svg [width]="6" [icon]="'chevron-down'"></verben-svg>
+      </span>
+    </div>
+
+    <!-- Create Button -->
+    <div *ngIf="viewState.isCreate">
       <verbena-button
         class="text-sm font-semibold"
         [bgColor]="'#FFE681'"
@@ -144,10 +141,14 @@
         [svg]="'add'"
         [svgPosition]="'right'"
         [text]="'Create New'"
-      ></verbena-button>
+        (click)="toggleChildView('create')"
+      >
+    </verbena-button>
     </div>
+  </div>
 </div>
-</div>
+
+<!-- Grid and List View Handling -->
 <div *ngIf="isGridView; else listViewTemplate">
   <div class="grid-view">
     <ng-content select="[grid-content]"></ng-content>

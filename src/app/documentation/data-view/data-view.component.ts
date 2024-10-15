@@ -116,10 +116,12 @@ export class DataViewComponent {
     this.cardData = this.cardData.concat(this.cardData);
   }
   onColumnChange(event: boolean) {
-    this.showColumn = event;
+    this.showColumn=event
   }
   onSortChange(event: boolean) {
     this.showSort = event;
+    console.log(event);
+    
   }
   onColumnsUpdated(updatedColumns: IDataFilter[]) {
     this.onColumnChange(false);
@@ -130,10 +132,12 @@ export class DataViewComponent {
     this.selectedSortCount = updatedSorts.length;
     console.log(updatedSorts);
   }
-  onSelectedUpdate(event:boolean) {
-    this.selectedAll=event
+
+  onViewChange(isGridView: boolean): void {
+    console.log('View changed to:', isGridView ? 'Grid View' : 'List View');
   }
-  onViewChange(view: boolean): void {
-    this.isGridView = view;
+
+  onStateChange(event: { key: string; value: boolean }): void {
+    console.log(`State changed for ${event.key}:`, event.value);
   }
 }

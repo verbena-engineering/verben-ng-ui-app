@@ -36,7 +36,6 @@ export * from './lib/components/table-filter/table-filter.component';
 export * from './lib/components/notification/notification.module';
 export * from './lib/components/notification/notification.component';
 
-
 export * from './lib/components/card/card.module';
 export * from './lib/components/card/card.component';
 
@@ -48,7 +47,8 @@ export * from './lib/components/visible-column/visible-column.component';
 export * from './lib/components/visible-column/visible-column.module';
 export * from './lib/components/data-view/data-view.component';
 export * from './lib/components/data-view/data-view.module';
-
+export * from './lib/components/date-picker/date-picker.component';
+export * from './lib/components/date-picker/date-picker.module';
 // export * from './lib/convert-to-decimal/convert-to-decimal.module';
 export * from './lib/phone-number/phone-number.module';
 
@@ -81,10 +81,10 @@ export * from './lib/components/data-table/data-table.component';
 export * from './lib/components/data-table/column.directive';
 export * from './lib/components/data-table/data-table.types';
 
-export * from './lib/components/data-export/data-export.module'
-export * from './lib/components/data-export/data-export.service'
-export * from './lib/components/data-export/data-export.component'
-export * from './lib/components/data-export/data-export.types'
+export * from './lib/components/data-export/data-export.module';
+export * from './lib/components/data-export/data-export.service';
+export * from './lib/components/data-export/data-export.component';
+export * from './lib/components/data-export/data-export.types';
 
 // Exporting ControlOptionModule and ControlOptionDirective
 export * from './lib/control-options/control-options.module';
@@ -92,9 +92,6 @@ export * from './lib/control-options/control-options.directive';
 // Exporting Enum type for sort table
 export * from './lib/models/table-filter';
 export * from './lib/models/mail-model';
-
-
-
 
 export * from './lib/validate/error-message.service';
 export * from './lib/validate/validate.directive';
@@ -115,5 +112,5 @@ export * from './lib/verbena-textarea/verbena-textarea.module';
 export * from './lib/verbena-switch/verbena-switch.component';
 export * from './lib/verbena-switch/verbena-switch.module';
 
-export * from './lib/components/verben-mail/verben-mail.module'
-export * from './lib/components/verben-mail/verben-mail.component'
+export * from './lib/components/verben-mail/verben-mail.module';
+export * from './lib/components/verben-mail/verben-mail.component';

@@ -8,11 +8,11 @@
 .slider {
   width: 34px;
   height: 20px;
-  background-color: #ccc;
+  background-color: #ccc; /* Off state color */
   border-radius: 34px;
   position: relative;
-  transition: background-color 0.2s;
-  margin-right: 10px;
+  transition: background-color 0.2s; /* Smooth color transition */
+  margin-right: 10px; /* Space between slider and label */
 }
 
 .slider::before {
@@ -23,23 +23,23 @@
   left: 2px;
   bottom: 2px;
   background-color: white;
-  border-radius: 50%;
-  transition: transform 0.2s;
+  border-radius: 50%; /* Makes the knob circular */
+  transition: transform 0.2s; /* Smooth knob movement */
 }
 
 input:checked + .slider {
-  background-color: #4caf50;
+  background-color: #4caf50; /* On state color */
 }
 
 input:checked + .slider::before {
-  transform: translateX(14px);
+  transform: translateX(14px); /* Moves the knob to the right when checked */
 }
 
 .disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
+  cursor: not-allowed; /* Prevents interaction */
+  opacity: 0.5; /* Makes the switch look faded */
 }
 
 .check {
-  display: none;
+  display: none; /* Hides the actual checkbox input */
 }

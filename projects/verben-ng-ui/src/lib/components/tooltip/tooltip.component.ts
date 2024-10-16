@@ -75,8 +75,8 @@ export class TooltipComponent {
       'border': this.border,
       'position': 'absolute',
       'z-index': '9999',
-      'top': this.tooltipPosition.top || this.top,
-      'left': this.tooltipPosition.left || this.left,
+      'top':  this.top || this.tooltipPosition.top,
+      'left': this.left || this.tooltipPosition.left,
       'right': this.right,
       'bottom': this.bottom,
     };

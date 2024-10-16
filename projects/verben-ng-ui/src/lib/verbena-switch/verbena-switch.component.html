@@ -1,5 +1,8 @@
-<div class="switch" [ngClass]="{'disabled': disabled}" (click)="toggleSwitch()" [style]="customStyles">
+<div class="switch"
+     [ngClass]="{'disabled': disabled}"
+     
+     (click)="toggleSwitch()">
   <input type="checkbox" [checked]="checked" class="check" (change)="onChange($event)" [disabled]="disabled" />
-  <span class="slider"></span>
+  <span class="slider" [ngStyle]="{ 'background-color': checked ? onColor : offColor }"></span>
   <label *ngIf="label">{{ label }}</label>
 </div>

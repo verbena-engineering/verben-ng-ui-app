@@ -31,57 +31,55 @@ export class VisibleColumnComponent {
   @Input() selectWidth?: string;
   @Output() columnsUpdated = new EventEmitter<IDataFilter[]>();
 
+  originalColumnOrder: IDataFilter[] = [];
   visibleColumns: boolean[] = [];
-  tempVisibleColumns: boolean[] = [];
-  initialVisibleColumns: boolean[] = [];
-  originalVisibleColumns: boolean[] = [];
   draggedIndex: number | null = null;
+  selectAll: boolean = false;
 
   ngOnInit() {
+    this.originalColumnOrder = [...this.columns];
     this.initializeColumnVisibility();
   }
 
   private initializeColumnVisibility() {
     this.visibleColumns = this.columns.map((column) => column.checked);
-    this.tempVisibleColumns = [...this.visibleColumns];
-    this.initialVisibleColumns = [...this.visibleColumns];
-    this.originalVisibleColumns = [...this.visibleColumns];
+    this.updateSelectAllStatus();
   }
 
   resetColumns() {
-    this.tempVisibleColumns = [...this.originalVisibleColumns];
+    // Reset columns to the original order
+    this.columns = JSON.parse(JSON.stringify(this.originalColumnOrder)); // Ensure it's a deep copy
+    this.initializeColumnVisibility();
+    this.selectAll = false; // Reset select all
+    this.updateSelectAllStatus();
   }
 
   getSelectedColumnCount(): number {
-    return this.tempVisibleColumns.filter((isVisible) => isVisible).length;
+    return this.visibleColumns.filter((isVisible) => isVisible).length;
   }
 
   saveColumnVisibility() {
     this.columns.forEach((column, index) => {
-      column.checked = this.tempVisibleColumns[index];
+      column.checked = this.visibleColumns[index];
     });
 
-    const selectedColumns: IDataFilter[] = this.columns.filter(
-      (column) => column.checked
-    ).map((column:IDataFilter) => ({
-      name: column.name,
-      checked: column.checked,
-      type: column.type,
-      value: column.name,
-    }));
+    const selectedColumns = this.columns.filter(column => column.checked);
     this.columnsUpdated.emit(selectedColumns);
-
-    this.visibleColumns = [...this.tempVisibleColumns];
-    this.initialVisibleColumns = [...this.tempVisibleColumns];
-  }
-
-  cancelChanges() {
-    this.tempVisibleColumns = [...this.visibleColumns];
+    console.log(selectedColumns);
   }
 
   toggleShowMore() {
     this.showMore = !this.showMore;
     this.displayedColumns = this.showMore ? this.columns.length : 5;
+  }
+
+  toggleSelectAll() {
+    this.selectAll = !this.selectAll;
+    this.visibleColumns = this.visibleColumns.map(() => this.selectAll);
+  }
+
+  updateSelectAllStatus() {
+    this.selectAll = this.visibleColumns.every(isVisible => isVisible);
   }
 
   onDragStart(index: number, event: DragEvent) {
@@ -95,20 +93,14 @@ export class VisibleColumnComponent {
 
   onDrop(index: number, event: DragEvent) {
     event.preventDefault();
-    const draggedIndex = this.draggedIndex;
-    if (draggedIndex !== null && draggedIndex !== index) {
-      this.swapColumns(draggedIndex, index);
+    if (this.draggedIndex !== null && this.draggedIndex !== index) {
+      this.swapColumns(this.draggedIndex, index);
     }
     this.draggedIndex = null;
   }
 
-  swapColumns(fromIndex: number, toIndex: number) {
-    const tempColumn = this.columns[fromIndex];
-    this.columns[fromIndex] = this.columns[toIndex];
-    this.columns[toIndex] = tempColumn;
-
-    const tempVisible = this.tempVisibleColumns[fromIndex];
-    this.tempVisibleColumns[fromIndex] = this.tempVisibleColumns[toIndex];
-    this.tempVisibleColumns[toIndex] = tempVisible;
+  private swapColumns(fromIndex: number, toIndex: number) {
+    [this.columns[fromIndex], this.columns[toIndex]] = [this.columns[toIndex], this.columns[fromIndex]];
+    [this.visibleColumns[fromIndex], this.visibleColumns[toIndex]] = [this.visibleColumns[toIndex], this.visibleColumns[fromIndex]];
   }
 }

@@ -1,6 +1,13 @@
-<section> 
-  <div class="tooltip" [ngStyle]="tooltipStyles" [ngClass]="customClass" #tooltipRef>
-    <ng-content></ng-content>
+<span class="tooltip-container" 
+(mouseenter)="onMouseEnter($event)" 
+(mouseleave)="onMouseLeave()"
+>
+  <ng-content></ng-content>
+  <div [ngStyle]="tooltipStyles" [ngClass]="customClass" *ngIf="visible">
+    <ng-container *ngIf="tooltipContent">
+      <ng-template [ngTemplateOutlet]="tooltipContent"></ng-template>
+    </ng-container>
   </div>
-</section>
+</span>
+
 

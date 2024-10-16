@@ -3,7 +3,6 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewEncapsulation,
 } from '@angular/core';
 import { DataFilterType } from '../../models/table-filter';
 import { IDataFilter } from '../../models/data-filter';
@@ -12,7 +11,7 @@ import { IDataFilter } from '../../models/data-filter';
   selector: 'verben-sort-table',
   templateUrl: './sort-table.component.html',
   styleUrls: ['./sort-table.component.css'],
-  encapsulation: ViewEncapsulation.Emulated,
+
 })
 export class SortTableComponent {
   @Input() enableDragAndDrop: boolean = false;
@@ -32,9 +31,10 @@ export class SortTableComponent {
   @Input() primaryColor?: string;
   @Input() secondaryColor?: string;
   @Input() tertiaryColor?: string;
-  @Input() border?: string;
+  @Input() border?: string="";
   @Input() borderRadius?: string;
   @Input() selectWidth?: string;
+  @Input() containerHeight?:string="400px"
   @Output() selectedOptions = new EventEmitter<IDataFilter[]>();
   draggedIndex: number | null = null;
   visibleSortOptions: IDataFilter[]= [];
@@ -42,8 +42,10 @@ export class SortTableComponent {
   showMore: boolean = false;
   disableSortButton: boolean = false;
   selectedOrders: Map<number, 'asc' | 'desc'> = new Map();
-
+  defaultSortOptions: IDataFilter[] = [];
+  checkAll: boolean = false;
   ngOnInit() {
+    this.defaultSortOptions = [...this.sortOptions];
     this.updateVisibleOptions();
     this.updateSortButtonState();
   }
@@ -102,7 +104,12 @@ export class SortTableComponent {
   toggleSort(index: number) {
     const option = this.sortOptions[index];
     option.checked = !option.checked;
-  
+    if (!option.checked) {
+      this.checkAll = false; 
+    } else if (this.sortOptions.every(option => option.checked)) {
+      this.checkAll = true; 
+    }
+    
     if (option.checked) {
       this.selectedOrders.set(index, 'asc');
     } else {
@@ -110,13 +117,35 @@ export class SortTableComponent {
     }
     this.updateSortButtonState();
   }
+  toggleSelectAll() {
+    this.checkAll = !this.checkAll;  // Toggle checkAll state
+  
+    // Set all options to checked/unchecked and assign default sort order when checked
+    this.sortOptions.forEach((option, index) => {
+      option.checked = this.checkAll;
+      
+      if (this.checkAll) {
+        // If checked, set the default sort order to 'asc' for all
+        this.selectedOrders.set(index, 'asc');
+      } else {
+        // If unchecked, remove the sort order
+        this.selectedOrders.delete(index);
+      }
+    });
+  
+    this.updateSortButtonState(); // Update the state of the sort button
+  }
   
   resetSort() {
     this.sortOptions.forEach((option, index) => {
       option.checked = false;
       this.selectedOrders.delete(index);
     });
+  
+    this.sortOptions = [...this.defaultSortOptions];
+    this.updateVisibleOptions();
     this.updateSortButtonState();
+    this.checkAll=false
   }
 
   updateSortButtonState() {

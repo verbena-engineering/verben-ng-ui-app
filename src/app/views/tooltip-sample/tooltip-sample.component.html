@@ -1,6 +1,6 @@
 <p>tooltip-sample works!</p>
 
-<p [ngStyle]="{'margin-top':'20px','padding-left':'100px'}"></p>
+<!-- <p [ngStyle]="{'margin-top':'20px','padding-left':'100px'}"></p>
 
 <div [ngStyle]="{'position':'relative','width':'300px',}"> 
     <span  (mouseenter)="showTooltip(0)" (mouseleave)="hideTooltip(0)">hover to show table</span>
@@ -10,7 +10,7 @@
     [padding]="'10px'"
     [width]="''"
     [borderRadius]="'8px'"
-    [top]="'100%'"                 
+    [top]="'0'"                 
     [right]="'0'"   
     #tooltip
     *ngIf="tooltips[0]"
@@ -44,11 +44,42 @@
     padding="10px"
     borderRadius="8px"
     width="150px"
-    top="100%"                 
+    top="-40px"                 
     left="0px"   
     #tooltip
     *ngIf="tooltips[1]"
     >
     <h3>Hello world!!</h3>
     </verben-tooltip>
-</div>
+</div> -->
+
+
+
+  <verben-tooltip 
+  [tooltipContent]="tooltipTemplate"
+  customClass="customClass"
+  >
+  <button> 
+    Hover me for dynamic tooltip!
+  </button>
+  </verben-tooltip>
+
+<ng-template #tooltipTemplate>
+  <div>
+    <h4>Dynamic Tooltip</h4>
+    <p>This tooltip adjusts its position based on available space! tooltip adjusts its position based on available space</p>
+  </div>
+</ng-template>
+<p>yesd</p>
+<p>yesd</p>
+<p>yesd</p>
+<p>yesd</p>
+
+
+
+
+
+
+
+
+

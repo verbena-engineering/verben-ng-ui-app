@@ -9,9 +9,7 @@
   [style.padding]="pd"
 >
   <!-- Header Section -->
-  <div
-    class="sort-header flex justify-between text-sm"
-  >
+  <div class="sort-header flex justify-between text-sm">
     <span class="sort-title font-semibold">
       Sort
       <sup [style.color]="secondaryColor">[{{ countSelectedSorts() }}]</sup>
@@ -25,13 +23,18 @@
       (click)="resetSort()"
       >{{ resetText }}</span
     >
+
   </div>
-<hr/>
+  <hr />
   <!-- Sort Options -->
-  <div class="sort-options">
-    <div class="sort-options-header flex justify-between">
-      <p>{{ propertyText }}</p>
-      <verben-svg [width]="15" class="svg" icon="info"></verben-svg>
+  <div [style.max-height]="containerHeight" class="sort-options">
+    <p class="pd">{{ propertyText }}</p>
+    <div class="flex items-center gap" [style.padding]="'4px 10px'">
+      <label [style.font-size]="'13px'" [style.font-weight]="'500'">
+        <input type="checkbox" [checked]="checkAll"
+        (change)="toggleSelectAll()" />
+        Select All
+      </label>
     </div>
 
     <div
@@ -42,12 +45,8 @@
       (drop)="onDrop(i, $event)"
       class="sort-option"
     >
-      <div
-        class="sort-item"
-        [style.font-size]="'14px'"
-        [style.margin-top]="'14px'"
-      >
-        <div class="sort-field flex gap">
+      <div [style.font-size]="'14px'" [style.margin-top]="'13px'">
+        <div class="flex items-center gap-md">
           <verben-svg
             *ngIf="enableDragAndDrop"
             fill="black"
@@ -55,17 +54,22 @@
             class="svg"
             icon="square-dot"
           ></verben-svg>
-          <input
-            type="checkbox"
-            [checked]="option.checked"
-            (change)="toggleSort(i)"
-          />
-          <span>{{ option.name }}</span>
+          <div class="flex items-center gap">
+            <input
+              type="checkbox"
+              [checked]="option.checked"
+              (change)="toggleSort(i)"
+            />
+            <span>{{ option.name }}</span>
+          </div>
         </div>
 
         <!-- Sorting Controls -->
-        <div class="sort-order" [style.margin-left]="'35px'">
-          <label *ngIf="option.type === 'Number'">
+        <div class="flex items-center gap" [style.margin-left]="'35px'">
+          <label
+            class="flex items-center gap-sm"
+            *ngIf="option.type === 'Number'"
+          >
             <input
               type="radio"
               name="sortOrder{{ i }}"
@@ -76,7 +80,10 @@
             />
             1-100
           </label>
-          <label *ngIf="option.type === 'Number'">
+          <label
+            class="flex items-center gap-sm"
+            *ngIf="option.type === 'Number'"
+          >
             <input
               type="radio"
               name="sortOrder{{ i }}"
@@ -87,8 +94,11 @@
             />
             100-1
           </label>
-          
-          <label *ngIf="option.type === 'String' || option.type === 'Date'">
+
+          <label
+            class="flex items-center gap-sm"
+            *ngIf="option.type === 'String' || option.type === 'Date'"
+          >
             <input
               type="radio"
               name="sortOrder{{ i }}"
@@ -99,7 +109,10 @@
             />
             A-Z
           </label>
-          <label *ngIf="option.type === 'String' || option.type === 'Date'">
+          <label
+            class="flex items-center gap-sm"
+            *ngIf="option.type === 'String' || option.type === 'Date'"
+          >
             <input
               type="radio"
               name="sortOrder{{ i }}"
@@ -110,7 +123,6 @@
             />
             Z-A
           </label>
-          
         </div>
       </div>
     </div>
@@ -118,16 +130,16 @@
     <!-- Show More Options -->
     <div *ngIf="showMore && hiddenSortOptions.length > 0">
       <span
-        [style.padding-top]="'20px'"
-        [style.color]="'gray'"
-        class="text-sm cursor-pointer block"
+        [style.padding]="'20px 10px 0px 10px'"
+        [style.color]="'black'"
+        class="cursor-pointer block"
         (click)="toggleShowMore()"
       >
         {{ showMoreText }}
       </span>
     </div>
   </div>
-<hr/>
+  <hr />
   <!-- Sort Button -->
   <div class="btn-wrapper">
     <button

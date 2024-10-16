@@ -1,0 +1,163 @@
+<div
+  [ngStyle]="{
+    'margin': '40px'
+  }"
+>
+
+<!-- Buttons with different styles and icons -->
+<h2
+  [ngStyle]="{
+    'font-size': '35px',
+    'font-weight':'700',
+    'padding-bottom':'20px'
+  }"
+>Custom Buttons</h2>
+
+<div
+  [ngStyle]="{
+    'display': 'flex',
+    'gap': '10px',
+    'padding-bottom':'50px'
+
+  }"
+>
+  <!-- Submit button with green background and rounded corners -->
+<verbena-button
+text="Submit"
+bgColor="#28a745"
+textColor="white"
+border="1px solid #28a745"
+borderRadius="5px"
+pd="10px 20px"
+width="150px"
+height="40px"
+></verbena-button>
+
+<!-- Submit button with an alert icon on the left -->
+<verbena-button
+text="Submit"
+svg="'alert'"
+iconPosition="left"
+bgColor="#28a745"
+textColor="white"
+border="1px solid #28a745"
+borderRadius="5px"
+pd="10px 20px"
+width="150px"
+height="40px"
+></verbena-button>
+
+<!-- Button with an icon on the right, labeled "backward" -->
+<verbena-button
+text="backward"
+svg="backward"
+svgColor="'white'"
+svgPosition="right"
+bgColor="#28a745"
+textColor="white"
+border="1px solid #28a745"
+borderRadius="5px"
+pd="10px 20px"
+width="150px"
+height="40px"
+></verbena-button>
+
+<!-- Button with an academic cap icon on the right -->
+<verbena-button
+svg="academic-cap"
+[svgHeight]="20"
+[svgWidth]="20"
+svgColor="'white'"
+text="Submit"
+bgColor="#4CAF50"
+textColor="#fff"
+border="none"
+borderRadius="4px"
+pd="8px 16px"
+svgPosition="right"
+></verbena-button>
+
+<!-- Round button with a chevron icon inside -->
+<verbena-button
+svg="chevron"
+[svgHeight]="10"
+[svgWidth]="10"
+svgColor="'white'"
+bgColor="#007bff"
+textColor="white"
+border="none"
+borderRadius="50%"
+width="50px"
+height="50px"
+></verbena-button>
+
+<!-- Submit button with a home icon -->
+<verbena-button
+text="Submit"
+
+svg="home"
+[svgHeight]="20"
+[svgWidth]="20"
+svgColor="'white'"
+
+styleType="danger"
+
+></verbena-button>
+</div>
+
+<!-- Badge showing the number 5 inside a blue circle -->
+<h2 [ngStyle]="{
+  'font-size': '35px',
+  'font-weight':'700',
+    'padding-bottom':'20px'
+}">Badges</h2>
+<div
+[ngStyle]="{
+  'display': 'flex',
+  'gap': '10px',
+  'padding-bottom':'50px'
+
+}"
+>
+  <verbena-badge
+  text="5"
+  bgColor="#3498db"
+  textColor="white"
+  width="40px"
+  height="40px"
+  borderRadius="50%"
+  pd="5px 8px"
+  fontSize="20px"
+></verbena-badge>
+
+<!-- Large badge with a green background saying "new product" -->
+<verbena-badge
+
+  borderRadius="50%"
+  bgColor="green"
+  text="new "
+></verbena-badge>
+
+<!-- Another badge showing "New" with red background -->
+<verbena-badge
+borderRadius="5px"
+  text="Sold"
+  bgColor="red"
+  textColor="white"
+  pd="5px 15px"
+  fontSize="12px"
+></verbena-badge>
+</div>
+
+
+<verbena-button text="Primary Button" styleType="small"
+svg="chevron"
+[svgHeight]="10"
+[svgWidth]="10"
+svgColor="'white'"
+></verbena-button>
+<verbena-button text="Secondary Button" styleType="secondary"></verbena-button>
+<verbena-button text="Danger Button" styleType="danger"></verbena-button>
+<verbena-button text="outline" styleType="outline"></verbena-button>
+<verbena-button text="outline" styleType="ylw-outline" ></verbena-button>
+

@@ -27,6 +27,12 @@ hr{
 .gap{
   gap: 10px;
 }
+.gap-sm{
+  gap: 2px;
+}
+.gap-md{
+  gap: 6px;
+}
 .cursor-pointer{
   cursor: pointer;
 }
@@ -61,7 +67,6 @@ hr{
   justify-content: end;
 }
 .disabledBtn {
-  filter: blur(1px);
   cursor: not-allowed;
 }
 .enabledBtn {

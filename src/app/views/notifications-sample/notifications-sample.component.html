@@ -1,5 +1,5 @@
 <p>Use cases for notifications</p>
-<p [ngStyle]="{'margin-top':'20px'}"></p>
+<p [ngStyle]="{'margin-top':'20px'}">success message</p>
 <verben-notification
  [content]="'Saved Successfully!'"
  [textColor] = "'#2DB76F'"
@@ -17,7 +17,7 @@
     (buttonClick)="handleButtonClick($event)"
 ></verben-notification>
 
-<p [ngStyle]="{'margin-top':'20px'}"></p>
+<p [ngStyle]="{'margin-top':'20px'}">Delete warning</p>
 
 <verben-notification
  [content]="'Are you sure you want to delete?'"
@@ -26,14 +26,35 @@
  [bgColor]="'#FFE681'"
  [width]="'650px'"
  [height]="'50px'"
- [iconName]="'alert'"
+ [iconName]="'warning'"
  [iconWidth]="25"
  [iconHeight]="25"
  [stroke]="'#E20000'"
- [fill]="'#FFE681'"
+ [fill]="'#E20000'"
  [buttons]="[
         { text: 'Yes', bgColor: 'white', primarycolor : '#E20000',fontSize:'14px' },
         { text: 'No', bgColor: 'white', primarycolor: 'black',fontSize:'14px'  }
+    ]"
+    (buttonClick)="handleButtonClick($event)"
+></verben-notification>
+
+<p [ngStyle]="{'margin-top':'20px'}">Delete error</p>
+
+<verben-notification
+ [content]="'Are you sure you want to delete?'"
+ [textColor] = "'#E20000'"
+ [borderRadius]="'15px'"
+ [bgColor]="'#FFE681'"
+ [width]="'650px'"
+ [height]="'50px'"
+ [iconName]="'dangerInfo'"
+ [iconWidth]="26"
+ [iconHeight]="26"
+ [stroke]="'#E20000'"
+ [fill]="'#E20000'"
+ [buttons]="[
+        { text: 'Retry', bgColor: 'white', primarycolor : '#E20000',fontSize:'14px' },
+        { text: 'Ok', bgColor: 'white', primarycolor: 'black',fontSize:'14px'  }
     ]"
     (buttonClick)="handleButtonClick($event)"
 ></verben-notification>

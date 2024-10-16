@@ -14,6 +14,7 @@ import {
   SvgModule,
   TooltipModule,
   VerbenaInputModule,
+  VerbenaTextareaModule,
 } from 'verben-ng-ui/src/public-api';
 import { TableExportComponent } from './table-export/table-export.component';
 
@@ -31,6 +32,7 @@ import { TableExportComponent } from './table-export/table-export.component';
     CardModule,
     SvgModule,
     TooltipModule,
+    VerbenaTextareaModule,
   ],
   exports: [DataTableComponent],
   providers: [DataExportService],

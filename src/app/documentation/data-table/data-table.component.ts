@@ -64,9 +64,9 @@ export class DataTableComponent {
       header: 'Select',
     },
     {
-      id: 'name',
+      id: 'names',
       header: 'Full Name',
-      accessorFn: (row) => row.names?.firstName + ' ' + row.names?.lastName,
+      accessorFn: (row) => `${row.names?.firstName} ${row.names?.lastName}`,
     },
     {
       id: 'role',
@@ -220,12 +220,14 @@ interface YourDataType {
 // Default styles
 const defaultTableStyles: TableStyles = {
   // borderCollapse: 'collapse',
+  position: 'relative',
   borderSpacing: '0px',
   border: '1px solid #D4A007',
   borderRadius: '16px',
   overflow: 'hidden',
   boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
   width: '100%',
+  maxHeight: '678px',
   header: {
     backgroundColor: '#f5f5f5',
     fontWeight: 'bold',
@@ -233,6 +235,8 @@ const defaultTableStyles: TableStyles = {
     textAlign: 'left',
     padding: '12px 16px',
     borderBottom: '2px solid #e0e0e0',
+    position: 'sticky',
+    top: '0px',
   },
   rows: {
     even: {
@@ -261,3 +265,58 @@ const defaultTableStyles: TableStyles = {
     borderTop: '2px solid #e0e0e0',
   },
 };
+
+// const stickyTableStyles: TableStyles = {
+//   fontFamily: '"Fraunces", serif',
+//   fontSize: '125%',
+//   whiteSpace: 'nowrap',
+//   margin: '0',
+//   border: '1px solid black',
+//   borderCollapse: 'separate',
+//   borderSpacing: '0',
+//   tableLayout: 'fixed',
+//   cells: {
+//     border: '1px solid black',
+//     padding: '0.5rem 1rem',
+//   },
+//   header: {
+//     stickyTop: true,
+//     zIndex: 1,
+//     cells: {
+//       padding: '3px',
+//       width: '25vw',
+//       background: 'lightyellow',
+//     },
+//   },
+//   footer: {
+//     stickyBottom: true,
+//     zIndex: 1,
+//     cells: {
+//       padding: '3px',
+//       width: '25vw',
+//       background: 'lightyellow',
+//     },
+//   },
+//   body: {
+//     cells: {
+//       background: '#fff',
+//       padding: '4px 5px',
+//       textAlign: 'center',
+//     },
+//   },
+//   firstColumn: {
+//     stickyLeft: true,
+//     zIndex: 2,
+//     background: 'lightyellow',
+//     cells: {
+//       fontWeight: '100',
+//       // fontStyle: 'italic',
+//       textAlign: 'left',
+//     },
+//   },
+//   // lastColumn: {
+//   //   stickyRight: true,
+//   //   zIndex: 1,
+//   //   background: 'lightyellow',
+//   // },
+// };

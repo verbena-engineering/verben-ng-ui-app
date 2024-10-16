@@ -29,7 +29,7 @@
         ></verben-svg>
       </div>
       <div
-        *ngFor="let profile of profiles.slice(0, showing2); let i = index"
+        *ngFor="let profile of visibleProfiles; let i = index"
         class="flex justify-between items-center"
       >
         <div class="flex items-center space-x-2">
@@ -65,16 +65,10 @@
       </div>
       <div
         *ngIf="profiles.length > 3"
-        (click)="
-          showing2 === profiles.length
-            ? (showing2 = 3)
-            : (showing2 = profiles.length)
-        "
+        (click)="toggleShowAllProfiles()"
         class="flex items-center text-gray-500 cursor-pointer"
       >
-        <span>{{
-          showing2 === profiles.length ? "Show less" : "Show more"
-        }}</span>
+        <span>{{ showAllProfiles ? "Show less" : "Show more" }}</span>
         <verben-svg
           icon="chevron"
           [width]="8"
@@ -95,20 +89,23 @@
           fill="grey"
         ></verben-svg>
       </div>
-      <verbena-input
-        border="1px solid #ccc"
-        borderRadius="5px"
-        textColor="black"
-        width="100%"
-        height="20px"
-        pd="4px 6px"
-        [showBorder]="true"
-        [showErrorMessage]="true"
-        [errorPosition]="'bottom'"
-        [(ngModel)]="groupSearchTerm"
-      ></verbena-input>
+      <form [formGroup]="newGroupForm" (ngSubmit)="addGroup()">
+        <verbena-input
+          placeholder="Group name"
+          border="1px solid #ccc"
+          borderRadius="5px"
+          textColor="black"
+          width="100%"
+          height="20px"
+          pd="4px 6px"
+          [showBorder]="true"
+          [showErrorMessage]="true"
+          [errorPosition]="'bottom'"
+          formControlName="name"
+        ></verbena-input>
+      </form>
       <div
-        *ngFor="let item of filteredGroupItems; let i = index"
+        *ngFor="let item of visibleGroups; let i = index"
         class="flex justify-between items-center"
       >
         <div class="flex items-center space-x-2">
@@ -143,17 +140,11 @@
         </div>
       </div>
       <div
-        *ngIf="filteredGroupItems.length > 3"
-        (click)="
-          showing === filteredGroupItems.length
-            ? (showing = 3)
-            : (showing = filteredGroupItems.length)
-        "
+        *ngIf="groupItems.length > 3"
+        (click)="toggleShowAllGroups()"
         class="flex items-center text-gray-500 cursor-pointer"
       >
-        <span>{{
-          showing === filteredGroupItems.length ? "Show less" : "Show more"
-        }}</span>
+        <span>{{ showAllGroups ? "Show less" : "Show more" }}</span>
         <verben-svg
           icon="chevron"
           [width]="8"
@@ -171,7 +162,7 @@
         [style.color]="'#3479E9'"
         [style.font-size]="'12px'"
         [style.font-weight]="'500'"
-        (click)="addProfile()"
+        (click)="addGroup()"
       >
         + Add
       </button>
@@ -187,11 +178,6 @@
           fill="grey"
         ></verben-svg>
       </div>
-      <!-- <input
-        placeholder="Operation name"
-        class="w-full p-2 border rounded"
-        [(ngModel)]="newOperation.name"
-      /> -->
       <verbena-input
         placeholder="Operation name"
         border="1px solid #ccc"
@@ -209,43 +195,27 @@
         <verben-drop-down
           width="'8rem'"
           placeholder="Select field"
-          [options]="numericProperties"
+          [options]="numericProperties.concat(stringProperties)"
           [(ngModel)]="newOperation.field1"
+          (ngModelChange)="onField1Change()"
         >
         </verben-drop-down>
-        <!-- <select [(ngModel)]="newOperation.field1" class="p-2 border rounded">
-          <option value="">Select Field 1</option>
-          <option *ngFor="let prop of numericProperties" [value]="prop">
-            {{ prop }}
-          </option>
-        </select> -->
         <verben-drop-down
           width="'8rem'"
           placeholder="Select operator"
-          [options]="operators"
+          [options]="availableOperators"
           [(ngModel)]="newOperation.operator"
         >
         </verben-drop-down>
-        <!-- <select [(ngModel)]="newOperation.operator" class="p-2 border rounded">
-          <option value="add">+</option>
-          <option value="subtract">-</option>
-          <option value="multiply">*</option>
-          <option value="divide">/</option>
-        </select>
-        <select [(ngModel)]="newOperation.field2" class="p-2 border rounded">
-          <option value="">Select Field 2</option>
-          <option *ngFor="let prop of numericProperties" [value]="prop">
-            {{ prop }}
-          </option>
-        </select> -->
         <verben-drop-down
           width="'8rem'"
           placeholder="Select field"
-          [options]="numericProperties"
+          [options]="availableFields2"
           [(ngModel)]="newOperation.field2"
         >
         </verben-drop-down>
       </div>
+
       <button
         [style.margin-top]="'0.5rem'"
         [style.outline]="'none'"
@@ -256,7 +226,7 @@
         [style.font-weight]="'500'"
         (click)="addOrUpdateOperation()"
       >
-        + {{ isEditingOperation ? "Update" : "Add" }}
+        {{ isEditingOperation ? "Update" : "+ Add" }}
       </button>
     </section>
   </div>

@@ -25,4 +25,7 @@ export enum Operators {
   subtract = 'subtract',
   multiply = 'multiply',
   divide = 'divide',
+  concatenateSpace = 'concatenateSpace',
+  concatenateCommaSpace = 'concatenateCommaSpace',
+  concatenateComma = 'concatenateComma',
 }

@@ -134,7 +134,10 @@ export class DataExportService {
     });
   }
 
-  private calculateOperation<T>(item: T, operation: Operation): number {
+  private calculateOperation<T>(
+    item: T,
+    operation: Operation
+  ): number | string {
     const value1 = Number((item as any)[operation.field1]);
     const value2 = Number((item as any)[operation.field2]);
     switch (operation.operator) {
@@ -146,6 +149,12 @@ export class DataExportService {
         return value1 * value2;
       case Operators.divide:
         return value2 !== 0 ? value1 / value2 : NaN;
+      case Operators.concatenateSpace:
+        return `${value1} ${value2}`;
+      case Operators.concatenateCommaSpace:
+        return `${value1}, ${value2}`;
+      case Operators.concatenateComma:
+        return `${value1},${value2}`;
       default:
         return NaN;
     }

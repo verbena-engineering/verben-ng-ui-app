@@ -18,11 +18,6 @@ export interface BaseStyles {
   color?: string;
   shadow?: string;
   boxShadow?: string;
-  position?: string;
-  top?: string;
-  left?: string;
-  right?: string;
-  bottom?: string;
   borderRadius?: string;
   padding?: string;
   margin?: string;
@@ -31,9 +26,16 @@ export interface BaseStyles {
   textAlign?: string;
   verticalAlign?: string;
   cursor?: string;
-  overflow?: string;
-  zIndex?: string;
   opacity?: string;
+  position?: 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
+  top?: string;
+  bottom?: string;
+  left?: string;
+  right?: string;
+  zIndex?: string;
+  overflow?: 'visible' | 'hidden' | 'scroll' | 'auto';
+  overflowX?: 'visible' | 'hidden' | 'scroll' | 'auto';
+  overflowY?: 'visible' | 'hidden' | 'scroll' | 'auto';
 }
 
 interface NTHStyles {
@@ -52,6 +54,8 @@ export interface TableStyles extends BaseStyles {
   cells?: TableSectionStyles | BaseStyles;
   footer?: BaseStyles;
   header?: BaseStyles;
+  body?: BaseStyles;
+  tableLayout?: 'auto' | 'fixed';
   borderCollapse?: 'separate' | 'collapse';
   borderSpacing?: string;
 }

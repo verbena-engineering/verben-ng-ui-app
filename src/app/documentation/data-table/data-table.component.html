@@ -5,6 +5,7 @@
   (rowSave)="onRowSave($event)"
   (rowDelete)="onRowDelete($event)"
   (selectionChange)="onSelectionChange($event)"
+  [styleConfig]="table2Styles"
 >
   <ng-container libColumn="select">
     <ng-template
@@ -145,7 +146,7 @@
     </ng-template>
   </ng-container>
 
-  <ng-container libColumn="name">
+  <ng-container libColumn="names">
     <ng-template #cell let-value="value">
       <div>
         <p>{{ value }}</p>
@@ -156,24 +157,20 @@
       let-value="value"
       let-updateNestedValue="updateNestedValue"
     >
-      <!-- <input
-        [ngModel]="value.firstName"
-        (ngModelChange)="updateNestedValue('name', $event)"
+      <input
+        [ngModel]="value?.firstName"
+        (ngModelChange)="updateNestedValue('firstName', $event)"
+        placeholder="First Name"
       />
       <input
-        [ngModel]="value.lastName"
-        (ngModelChange)="updateNestedValue('name', $event)"
-      /> -->
-      <!-- <input
-        type="number"
-        [ngModel]="value.participants"
-        (ngModelChange)="updateNestedValue('participants', $event)"
-      /> -->
+        [ngModel]="value?.lastName"
+        (ngModelChange)="updateNestedValue('lastName', $event)"
+        placeholder="Last Name"
+      />
     </ng-template>
     <ng-template #header>
       <strong>Full Name</strong>
     </ng-template>
-    <!-- <ng-template #footer let-data="data"> Total: {{ data }} </ng-template> -->
   </ng-container>
 
   <ng-container libColumn="age">
@@ -212,7 +209,6 @@
     </ng-template>
     <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
       <verbena-input
-        [label]="'Decimal Value'"
         [labelPosition]="'center'"
         [labelColor]="'#796fab'"
         [placeHolder]="'Enter a decimal value'"
@@ -220,7 +216,7 @@
         [type]="'decimal'"
         [value]="value"
         (valueChange)="updateValue($event)"
-        [showBorder]="false"
+        [showBorder]="true"
         [showErrorMessage]="true"
         [errorMessageColor]="'green'"
         [errorBorderColor]="'green'"
@@ -236,13 +232,17 @@
       </div>
     </ng-template>
     <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
-      <textarea
+      <verbena-textarea
+        bgColor="#f8f8f8"
+        textColor="#333"
+        border="1px solid #ccc"
+        borderRadius="5px"
+        pd="8px"
+        width="100%"
+        height="100px"
         [value]="value"
-        (change)="updateValue($event)"
-        id=""
-        cols="30"
-        rows="10"
-      ></textarea>
+        (valueChange)="updateValue($event)"
+      ></verbena-textarea>
     </ng-template>
   </ng-container>
 

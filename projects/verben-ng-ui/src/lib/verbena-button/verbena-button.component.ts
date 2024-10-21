@@ -9,8 +9,8 @@ export class VerbenaButtonComponent {
   @Input() text: string = '';
   @Input() icon: string = '';
   @Input() svgPosition: 'left' | 'right' = 'left';
-  @Input() bgColor: string = '';
-  @Input() textColor: string = '';
+  @Input() bgColor?: string = '';
+  @Input() textColor?: string = '';
   @Input() border: string = '';
   @Input() borderRadius: string = '';
   @Input() pd: string = '';

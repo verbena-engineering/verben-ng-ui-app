@@ -49,6 +49,7 @@
   [required]="true"
   [type]="'email'"
   [(value)]="email"
+  svg="backward"
   [showBorder]="true"
   [showErrorMessage]="false"
   [errorMessageColor]="'orange'"
@@ -64,11 +65,21 @@
   [type]="'integer'"
   appValidate="number"
   [(value)]="age"
+  svg="backward"
+  [svgPosition]="'right'"
   [showBorder]="true"
   [showErrorMessage]="true"
   [errorMessageColor]="'blue'"
   [errorBorderColor]="'blue'"
   [errorPosition]="'top'"
+></verbena-input>
+<verbena-input
+    [label]="'tel'"
+    [type]="'tel'"
+></verbena-input>
+<verbena-input
+    [label]="'passwordgitgi'"
+    [type]="'password'"
 ></verbena-input>
 
 <!-- Input for entering a decimal value with green error messages shown below -->

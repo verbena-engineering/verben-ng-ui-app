@@ -52,20 +52,8 @@ export class TableFilterComponent implements OnInit {
 
   ngOnInit(): void {
     this.filterArray = this.filterOptions.map(item => item.name);  
-    this.loadFiltersFromLocalStorage(); 
   }
   
-  loadFiltersFromLocalStorage() {
-    const savedFiltersFromStorage = localStorage.getItem(this.storageKey);
-    if (savedFiltersFromStorage) {
-      this.savedFilters = JSON.parse(savedFiltersFromStorage);
-      this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
-    }
-  }
-
-  saveFiltersToLocalStorage() {
-    localStorage.setItem(this.storageKey, JSON.stringify(this.savedFilters));
-  }
 
   onFilterNameChange(selectedFilterValue: string) {
     const selectedFilter = this.filterOptions.find(option => option.name === selectedFilterValue);
@@ -88,6 +76,7 @@ export class TableFilterComponent implements OnInit {
     this.disableApplyFilterBtn = true;
     this.duplicateMessage = ''
     localStorage.removeItem(this.storageKey);
+    this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
   }
 
   addFilter() {
@@ -129,11 +118,9 @@ export class TableFilterComponent implements OnInit {
         this.savedFilters.push(newFilter);
         this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
     }
-    this.saveFiltersToLocalStorage(); 
     this.clearOperationSection();
     this.checkFilterButton(); 
   }
-
 
   toggleCheckbox(index: number) {
     this.savedFilters[index].checked = !this.savedFilters[index].checked;
@@ -145,7 +132,6 @@ export class TableFilterComponent implements OnInit {
     this.savedFilters.splice(index, 1);
     this.checkDuplicateFilter();
     this.checkFilterButton();
-    this.saveFiltersToLocalStorage(); 
     this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
     if (this.savedFilters.length === 0) {
       this.checkAll = false;

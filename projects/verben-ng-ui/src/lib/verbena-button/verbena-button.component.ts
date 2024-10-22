@@ -9,8 +9,8 @@ export class VerbenaButtonComponent {
   @Input() text: string = '';
   @Input() icon: string = '';
   @Input() svgPosition: 'left' | 'right' = 'left';
-  @Input() bgColor: string = '';
-  @Input() textColor: string = '';
+  @Input() bgColor?: string = '';
+  @Input() textColor?: string = '';
   @Input() border: string = '';
   @Input() borderRadius: string = '';
   @Input() pd: string = '';
@@ -26,12 +26,15 @@ export class VerbenaButtonComponent {
   @Input() svgHeight: number = 20;
   @Input() svgColor: string = '';
 
+
+  @Input() buttonClass: string = ''; // Custom class for button
+
   get buttonStyles() {
     switch (this.styleType) {
       case 'primary':
         return {
-          bgColor: this.bgColor || '#007bff',
-          textColor: this.textColor || '#ffffff',
+          bgColor: this.bgColor || 'lightgrey',
+          textColor: this.textColor || '#000000',
           border: this.border || 'none',
           borderRadius: this.borderRadius || '4px',
           pd: this.pd || '10px 15px'

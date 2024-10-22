@@ -17,9 +17,10 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() label: string = '';
   @Input() placeHolder: string = '';
   @Input() required: boolean = false;
+  @Input() svgPosition: 'left' | 'right' = 'left';
   @Input() minLength?: number;
   @Input() maxLength?: number;
-  @Input() type: 'text' | 'integer' | 'number' | 'decimal' | 'email' | 'date' = 'text';
+  @Input() type: 'text' | 'password' | 'integer' | 'number' | 'decimal' | 'email' | 'date' | 'tel' | 'url' = 'text';
   @Input() bgColor: string = '#f9f9f9';
   @Input() border: string = '1px solid #ccc';
   @Input() borderRadius: string = '5px';
@@ -37,6 +38,11 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() errorBorderColor: string = 'red';
   @Input() errorPosition: 'left' | 'right' | 'top' | 'bottom' = 'bottom';
 
+  @Input() svg: string = '';
+  @Input() svgWidth: number = 20;
+  @Input() svgHeight: number = 20;
+  @Input() svgColor: string = '';
+
   @Input() capitalization: 'none' | 'uppercase' | 'lowercase' | 'sentencecase' | 'pascalcase' | 'camelcase' = 'none';
 
   // New property for custom error messages
@@ -50,6 +56,9 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
     number?: string;
     decimal?: string;
     email?: string;
+    password?: string;
+    tel?: string;
+    url?: string;
   } = {};
 
   @Output() valueChange = new EventEmitter<string>();
@@ -141,6 +150,22 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
     if (this.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value)) {
       this.errorMessage = this.customErrorMessages.email || 'Please enter a valid email address.';
+      return;
+    }
+
+    if (this.type === 'password' && this.value.length < 8) {
+      this.errorMessage = this.customErrorMessages.password || 'Password must be at least 8 characters long.';
+      return;
+    }
+
+    if (this.type === 'tel' && !/^\+?[1-9]\d{1,14}$/.test(this.value)) {
+      this.errorMessage = this.customErrorMessages.tel || 'Please enter a valid telephone number.';
+      return;
+    }
+
+    if (this.type === 'url' && !/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/.test(this.value)) {
+      this.errorMessage = this.customErrorMessages.url || 'Please enter a valid URL.';
+      return;
     }
   }
 

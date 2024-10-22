@@ -21,29 +21,12 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataExportComponent {
-  /**
-   * Optional style properties
-   */
-  @Input() pd?: string;
-  @Input() mg?: string;
-  @Input() height?: string;
-  @Input() width?: string;
-  @Input() bgColor?: string;
-  @Input() boxShadow?: string;
-  @Input() textColor?: string;
-  @Input() primaryColor?: string;
-  @Input() secondaryColor?: string;
-  @Input() tertiaryColor?: string;
-  @Input() border?: string;
-  @Input() borderRadius?: string;
-  @Input() selectWidth?: string;
-
   @Input() data!: any[];
   @Output() exportDataEvent = new EventEmitter<Record<string, any>[]>();
 
   profiles: (ExportProfile & { selected: boolean })[] = [];
   groupItems: (ExportItem & { selected: boolean })[] = [];
-  groupSearchTerm: string = '';
+  newGroupForm: FormGroup;
   newOperation: Operation = {
     id: '',
     name: '',
@@ -52,12 +35,31 @@ export class DataExportComponent {
     field2: '',
   };
   numericProperties: string[] = [];
+  stringProperties: string[] = [];
   isEditingOperation: boolean = false;
-  tooltip: boolean = false;
+  showAllProfiles: boolean = false;
+  showAllGroups: boolean = false;
 
-  showing: number = 3;
+  operatorsNumeric: Operators[] = [
+    Operators.add,
+    Operators.subtract,
+    Operators.multiply,
+    Operators.divide,
+  ];
+  operatorsString: Operators[] = [
+    Operators.concatenateSpace,
+    Operators.concatenateCommaSpace,
+    Operators.concatenateComma,
+  ];
 
-  constructor(private exportService: DataExportService) {}
+  constructor(
+    private exportService: DataExportService,
+    private fb: FormBuilder
+  ) {
+    this.newGroupForm = this.fb.group({
+      name: ['', Validators.required],
+    });
+  }
 
   ngOnInit() {
     this.initializeGroupItems();
@@ -70,10 +72,12 @@ export class DataExportComponent {
     }
   }
 
-  get filteredGroupItems() {
-    return this.groupItems.filter((item) =>
-      item.name.toLowerCase().includes(this.groupSearchTerm.toLowerCase())
-    );
+  get visibleProfiles() {
+    return this.showAllProfiles ? this.profiles : this.profiles.slice(0, 3);
+  }
+
+  get visibleGroups() {
+    return this.showAllGroups ? this.groupItems : this.groupItems.slice(0, 3);
   }
 
   initializeGroupItems() {
@@ -82,6 +86,9 @@ export class DataExportComponent {
       this.exportService.setBaseProperties(properties);
       this.numericProperties = properties.filter(
         (prop) => typeof this.data[0][prop] === 'number'
+      );
+      this.stringProperties = properties.filter(
+        (prop) => typeof this.data[0][prop] === 'string'
       );
       this.updateGroupItems();
     }
@@ -101,29 +108,32 @@ export class DataExportComponent {
     }));
   }
 
-  addProfile() {
-    const selectedItems = this.groupItems.filter((item) => item.selected);
-    if (selectedItems.length > 0) {
-      const newProfile: ExportProfile = {
-        id: Date.now().toString(),
-        name: `Profile ${this.profiles.length + 1}`,
-        items: selectedItems,
-      };
-      this.exportService.addProfile(newProfile);
-      this.updateProfiles();
-      this.groupItems.forEach((item) => (item.selected = false));
+  addGroup() {
+    console.log('in');
+    if (this.newGroupForm.valid) {
+      const selectedItems = this.groupItems.filter((item) => item.selected);
+      if (selectedItems.length > 0) {
+        const newProfile: ExportProfile = {
+          id: Date.now().toString(),
+          name: this.newGroupForm.get('name')?.value,
+          items: selectedItems,
+        };
+        this.exportService.addProfile(newProfile);
+        this.updateProfiles();
+        this.groupItems.forEach((item) => (item.selected = false));
+        this.newGroupForm.reset();
+        console.log('SELECTED');
+      }
+      console.log('VALID');
     }
   }
 
   editProfile(profile: ExportProfile & { selected: boolean }) {
-    // Set selected items in the group based on the profile's items
     this.groupItems.forEach((item) => {
       item.selected = profile.items.some(
         (profileItem) => profileItem.id === item.id
       );
     });
-
-    // Remove the profile from the list (it will be re-added when user clicks "Add Profile")
     this.removeProfile(profile);
   }
 
@@ -181,6 +191,7 @@ export class DataExportComponent {
     this.initializeGroupItems();
     this.updateProfiles();
     this.resetOperationForm();
+    this.newGroupForm.reset();
   }
 
   exportData() {
@@ -196,5 +207,36 @@ export class DataExportComponent {
     } else {
       console.log('No profiles selected for export');
     }
+  }
+
+  onField1Change() {
+    this.newOperation.field2 = '';
+    this.newOperation.operator = this.isNumericField(this.newOperation.field1)
+      ? Operators.add
+      : Operators.concatenateSpace;
+  }
+
+  isNumericField(field: string): boolean {
+    return this.numericProperties.includes(field);
+  }
+
+  get availableOperators(): Operators[] {
+    return this.isNumericField(this.newOperation.field1)
+      ? this.operatorsNumeric
+      : this.operatorsString;
+  }
+
+  get availableFields2(): string[] {
+    return this.isNumericField(this.newOperation.field1)
+      ? this.numericProperties
+      : this.stringProperties;
+  }
+
+  toggleShowAllProfiles() {
+    this.showAllProfiles = !this.showAllProfiles;
+  }
+
+  toggleShowAllGroups() {
+    this.showAllGroups = !this.showAllGroups;
   }
 }

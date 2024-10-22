@@ -256,23 +256,87 @@ export class DataTableComponent<T extends { id: string | number }>
     };
   }
 
-  getRowStyle(rowIndex: number): BaseStyles {
-    if (this.styleConfig?.rows) {
-      const rowStyles = this.styleConfig.rows;
+  getTableStyle(): any {
+    return {
+      ...this.styleConfig,
+      fontFamily: this.styleConfig.fontFamily,
+      fontSize: this.styleConfig.fontSize,
+      whiteSpace: this.styleConfig.whiteSpace,
+      margin: this.styleConfig.margin,
+      border: this.styleConfig.border,
+      borderCollapse: this.styleConfig.borderCollapse,
+      borderSpacing: this.styleConfig.borderSpacing,
+      tableLayout: this.styleConfig.tableLayout,
+      width: this.styleConfig.width,
+    };
+  }
 
-      if ('even' in rowStyles && 'odd' in rowStyles) {
-        // TableSectionStyles
-        return (rowIndex % 2 === 0 ? rowStyles.even : rowStyles.odd) || {};
-      } else if ('nth' in rowStyles && rowStyles.nth) {
-        // TableSectionStyles with nth
-        const { interval, style } = rowStyles.nth;
-        return ((rowIndex + 1) % (interval || 1) === 0 ? style : {}) || {};
-      } else {
-        // TableStyles
-        return rowStyles as BaseStyles;
-      }
+  getHeaderStyle(): any {
+    return {
+      ...this.styleConfig.header,
+      position: this.styleConfig.header?.stickyTop ? 'sticky' : 'static',
+      top: this.styleConfig.header?.stickyTop ? '0' : 'auto',
+      zIndex: this.styleConfig.header?.zIndex || 'auto',
+    };
+  }
+
+  getFooterStyle(): any {
+    return {
+      ...this.styleConfig.footer,
+      position: this.styleConfig.footer?.stickyBottom ? 'sticky' : 'static',
+      bottom: this.styleConfig.footer?.stickyBottom ? '0' : 'auto',
+      zIndex: this.styleConfig.footer?.zIndex || 'auto',
+    };
+  }
+
+  getRowStyle(rowIndex: number): any {
+    const rowStyles = this.styleConfig.rows;
+    if (rowStyles && 'even' in rowStyles && 'odd' in rowStyles) {
+      return rowIndex % 2 === 0 ? rowStyles.even : rowStyles.odd;
+    } else if (rowStyles && 'nth' in rowStyles && rowStyles.nth) {
+      const { interval, style } = rowStyles.nth;
+      return (rowIndex + 1) % (interval || 1) === 0 ? style : {};
+    } else {
+      return rowStyles || {};
     }
-    return {};
+  }
+
+  getCellStyle(rowIndex: number, colIndex: number): any {
+    const isFirstColumn = colIndex === 0;
+    const isLastColumn = colIndex === this.columnsSignal().length - 1;
+
+    let cellStyle = { ...this.styleConfig.cells };
+
+    if (isFirstColumn) {
+      cellStyle = {
+        ...cellStyle,
+        ...this.styleConfig.firstColumn,
+        position: this.styleConfig.firstColumn?.stickyLeft
+          ? 'sticky'
+          : 'static',
+        left: this.styleConfig.firstColumn?.stickyLeft ? '0' : 'auto',
+        zIndex: this.styleConfig.firstColumn?.zIndex || 'auto',
+      };
+    } else if (isLastColumn) {
+      cellStyle = {
+        ...cellStyle,
+        ...this.styleConfig.lastColumn,
+        position: this.styleConfig.lastColumn?.stickyRight
+          ? 'sticky'
+          : 'static',
+        right: this.styleConfig.lastColumn?.stickyRight ? '0' : 'auto',
+        zIndex: this.styleConfig.lastColumn?.zIndex || 'auto',
+      };
+    }
+
+    if (rowIndex >= 0) {
+      // Apply body styles to all cells
+      cellStyle = { ...cellStyle, ...this.styleConfig.body };
+    } else {
+      cellStyle = { ...this.styleConfig.header };
+    }
+
+    return cellStyle;
   }
 }
 

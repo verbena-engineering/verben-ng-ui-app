@@ -32,10 +32,11 @@ export interface BaseStyles {
   bottom?: string;
   left?: string;
   right?: string;
-  zIndex?: string;
+  zIndex?: number;
   overflow?: 'visible' | 'hidden' | 'scroll' | 'auto';
   overflowX?: 'visible' | 'hidden' | 'scroll' | 'auto';
   overflowY?: 'visible' | 'hidden' | 'scroll' | 'auto';
+  fontStyle?: string;
 }
 
 interface NTHStyles {
@@ -52,10 +53,27 @@ export interface TableSectionStyles {
 export interface TableStyles extends BaseStyles {
   rows?: TableSectionStyles | BaseStyles;
   cells?: TableSectionStyles | BaseStyles;
-  footer?: BaseStyles;
-  header?: BaseStyles;
+  footer?: BaseStyles & {
+    stickyBottom?: boolean;
+    zIndex?: number;
+  };
+  header?: BaseStyles & {
+    stickyTop?: boolean;
+    zIndex?: number;
+  };
   body?: BaseStyles;
   tableLayout?: 'auto' | 'fixed';
   borderCollapse?: 'separate' | 'collapse';
   borderSpacing?: string;
+  firstColumn?: BaseStyles & {
+    stickyLeft?: boolean;
+    zIndex?: number;
+  };
+  lastColumn?: BaseStyles & {
+    stickyRight?: boolean;
+    zIndex?: number;
+  };
+  fontSize?: string;
+  fontFamily?: string;
+  whiteSpace?: 'normal' | 'nowrap' | 'pre' | 'pre-wrap' | 'pre-line';
 }

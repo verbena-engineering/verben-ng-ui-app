@@ -58,6 +58,10 @@ export class DataTableComponent {
 
   table2Styles = defaultTableStyles;
 
+  stickyStyles = stickyTableStyles;
+
+  testTableStyles = testTableStyles;
+
   tableColumns2: ColumnDefinition<YourDataType>[] = [
     {
       id: 'select',
@@ -91,6 +95,29 @@ export class DataTableComponent {
     {
       id: 'actions',
       header: 'Actions',
+    },
+  ];
+
+  tableColumns3: ColumnDefinition<YourDataType>[] = [
+    {
+      id: 'names',
+      header: 'Full Name',
+      accessorFn: (row) => `${row.names?.firstName} ${row.names?.lastName}`,
+    },
+    {
+      id: 'role',
+      header: 'Role',
+      accessorKey: 'role',
+    },
+    {
+      id: 'age',
+      header: 'Age',
+      accessorKey: 'age',
+    },
+    {
+      id: 'money',
+      header: 'Money',
+      accessorKey: 'money',
     },
   ];
 
@@ -229,7 +256,7 @@ const defaultTableStyles: TableStyles = {
   width: '100%',
   maxHeight: '678px',
   header: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#ffffff',
     fontWeight: 'bold',
     color: '#333',
     textAlign: 'left',
@@ -240,10 +267,10 @@ const defaultTableStyles: TableStyles = {
   },
   rows: {
     even: {
-      backgroundColor: '#FDFDFD',
+      backgroundColor: '#F7F6FE',
     },
     odd: {
-      backgroundColor: '#F2F2F2',
+      backgroundColor: '#FFFFFF',
     },
     nth: {
       interval: 5,
@@ -266,57 +293,78 @@ const defaultTableStyles: TableStyles = {
   },
 };
 
-// const stickyTableStyles: TableStyles = {
-//   fontFamily: '"Fraunces", serif',
-//   fontSize: '125%',
-//   whiteSpace: 'nowrap',
-//   margin: '0',
-//   border: '1px solid black',
-//   borderCollapse: 'separate',
-//   borderSpacing: '0',
-//   tableLayout: 'fixed',
-//   cells: {
-//     border: '1px solid black',
-//     padding: '0.5rem 1rem',
-//   },
-//   header: {
-//     stickyTop: true,
-//     zIndex: 1,
-//     cells: {
-//       padding: '3px',
-//       width: '25vw',
-//       background: 'lightyellow',
-//     },
-//   },
-//   footer: {
-//     stickyBottom: true,
-//     zIndex: 1,
-//     cells: {
-//       padding: '3px',
-//       width: '25vw',
-//       background: 'lightyellow',
-//     },
-//   },
-//   body: {
-//     cells: {
-//       background: '#fff',
-//       padding: '4px 5px',
-//       textAlign: 'center',
-//     },
-//   },
-//   firstColumn: {
-//     stickyLeft: true,
-//     zIndex: 2,
-//     background: 'lightyellow',
-//     cells: {
-//       fontWeight: '100',
-//       // fontStyle: 'italic',
-//       textAlign: 'left',
-//     },
-//   },
-//   // lastColumn: {
-//   //   stickyRight: true,
-//   //   zIndex: 1,
-//   //   background: 'lightyellow',
-//   // },
-// };
+// Default styles
+const testTableStyles: TableStyles = {
+  // borderCollapse: 'collapse',
+  position: 'relative',
+  borderSpacing: '0px',
+  overflow: 'hidden',
+  width: '100%',
+  maxHeight: '678px',
+  fontSize: '14px',
+  header: {
+    backgroundColor: '#ffffff',
+    fontWeight: 'bold',
+    textAlign: 'left',
+    padding: '12px 16px',
+    position: 'sticky',
+    top: '0px',
+  },
+  rows: {
+    even: {
+      backgroundColor: '#F7F6FE',
+    },
+    odd: {
+      backgroundColor: '#FFFFFF',
+    },
+  },
+  cells: {
+    padding: '12px 16px',
+    fontWeight: '400',
+  },
+};
+
+const stickyTableStyles: TableStyles = {
+  fontFamily: '"Fraunces", serif',
+  fontSize: '125%',
+  whiteSpace: 'nowrap',
+  margin: '0',
+  border: '1px solid black',
+  borderCollapse: 'separate',
+  borderSpacing: '0',
+  tableLayout: 'fixed',
+  cells: {
+    border: '1px solid black',
+    padding: '0.5rem 1rem',
+  },
+  header: {
+    stickyTop: true,
+    zIndex: 1,
+    background: 'lightyellow',
+    padding: '3px',
+  },
+  footer: {
+    stickyBottom: true,
+    zIndex: 1,
+    background: 'lightyellow',
+    padding: '3px',
+  },
+  body: {
+    background: '#fff',
+    padding: '4px 5px',
+    textAlign: 'center',
+  },
+  firstColumn: {
+    stickyLeft: true,
+    zIndex: 2,
+    background: 'lightyellow',
+    fontWeight: '100',
+    fontStyle: 'italic',
+    textAlign: 'left',
+  },
+  lastColumn: {
+    stickyRight: true,
+    zIndex: 1,
+    background: 'lightyellow',
+  },
+};

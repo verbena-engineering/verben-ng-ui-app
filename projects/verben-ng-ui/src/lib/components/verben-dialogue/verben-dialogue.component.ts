@@ -13,14 +13,9 @@ import {
   styleUrls: ['./verben-dialogue.component.css'],
 })
 export class VerbenDialogueComponent {
-  @Input() header: string = '';
-  @Input() body: string = '';
-  @Input() footer: string = '';
-
   @Input() headerTemplate: TemplateRef<any> | null = null;
   @Input() bodyTemplate: TemplateRef<any> | null = null;
   @Input() footerTemplate: TemplateRef<any> | null = null;
-
   @Input() showCloseIcon: boolean = true;
   @Input() dismissOutsideClick: boolean = true;
   @Input() closeOnEscape: boolean = true;

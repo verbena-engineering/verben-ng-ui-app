@@ -26,11 +26,14 @@ export class VerbenaButtonComponent {
   @Input() svgHeight: number = 20;
   @Input() svgColor: string = '';
 
+
+  @Input() buttonClass: string = ''; // Custom class for button
+
   get buttonStyles() {
     switch (this.styleType) {
       case 'primary':
         return {
-          bgColor: this.bgColor || '#D9D9D940',
+          bgColor: this.bgColor || 'lightgrey',
           textColor: this.textColor || '#000000',
           border: this.border || 'none',
           borderRadius: this.borderRadius || '4px',

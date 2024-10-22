@@ -20,7 +20,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() svgPosition: 'left' | 'right' = 'left';
   @Input() minLength?: number;
   @Input() maxLength?: number;
-  @Input() type: 'text' | 'password' | 'integer' | 'number' | 'decimal' | 'email' | 'date' | 'tel' | 'url' = 'text';
+  @Input() type: 'text' | 'password' | 'integer' | 'number' | 'decimal' | 'email' | 'date' | 'tel' | 'url' | 'file' | 'color' = 'text';
   @Input() bgColor: string = '#f9f9f9';
   @Input() border: string = '1px solid #ccc';
   @Input() borderRadius: string = '5px';
@@ -45,6 +45,12 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
   @Input() capitalization: 'none' | 'uppercase' | 'lowercase' | 'sentencecase' | 'pascalcase' | 'camelcase' = 'none';
 
+   // New input properties to expose custom classes
+   @Input() inputContainerClass: string = ''; // Expose custom class for input container
+   @Input() inputFieldClass: string = ''; // Expose custom class for input field
+   @Input() inputWrapperClass: string = ''; // Expose custom class for input wrapper
+ 
+
   // New property for custom error messages
   @Input() customErrorMessages: {
     required?: string;
@@ -61,7 +67,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
     url?: string;
   } = {};
 
-  @Output() valueChange = new EventEmitter<string>();
+  @Output() valueChange = new EventEmitter<string | FileList>();
 
   errorMessage: string | undefined;
   inputId: string = '';
@@ -75,12 +81,19 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
   onInput(event: Event) {
     const target = event.target as HTMLInputElement;
-    this.value = target.value.trim();
-    this.value = this.applyCapitalization(this.value, this.capitalization);
-    this.validate();
-    const sanitizedValue = this.sanitizeValue(this.value);
-    this.onChange(sanitizedValue);
-    this.valueChange.emit(sanitizedValue);
+
+    if (this.type === 'file' && target.files) {
+      const files = target.files;
+      this.onChange(files); // Emit the selected files
+      this.valueChange.emit(files); // Emit selected files
+    } else {
+      this.value = target.value.trim();
+      this.value = this.applyCapitalization(this.value, this.capitalization);
+      this.validate();
+      const sanitizedValue = this.sanitizeValue(this.value);
+      this.onChange(sanitizedValue);
+      this.valueChange.emit(sanitizedValue);
+    }
   }
 
   applyCapitalization(value: string, format: string): string {

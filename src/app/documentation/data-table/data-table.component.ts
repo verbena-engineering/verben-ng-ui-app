@@ -1,6 +1,7 @@
 import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table/data-table.types';
+import { TableStyles } from 'verben-ng-ui/src/lib/components/data-table/style.types';
 import { DataExportService } from 'verben-ng-ui/src/public-api';
 
 @Component({
@@ -10,15 +11,24 @@ import { DataExportService } from 'verben-ng-ui/src/public-api';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataTableComponent {
-  tableData: YourDataType[] = Array.from({ length: 10 }, (_, index) => ({
-    id: `ACTIVITY-${index + 1}`,
-    activityDetails: Array.from(
-      { length: Math.floor(Math.random() * 5) + 1 },
-      () => generateRandomName()
-    ),
-    numberOfParticipants: Math.floor(Math.random() * 20) + 1,
-    role: 'Tester',
-  }));
+  dropdownOptions: string[] = ['Tester', 'Admin', 'Staff'];
+
+  tableData = signal<YourDataType[]>(
+    Array.from({ length: 10 }, (_, index) => ({
+      id: `ACTIVITY-${index + 1}`,
+      activityDetails: Array.from(
+        { length: Math.floor(Math.random() * 5) + 1 },
+        () => generateRandomName()
+      ),
+      numberOfParticipants: Math.floor(Math.random() * 20) + 1,
+      role: 'Tester',
+      names: generateRandomName(),
+      age: Math.floor(Math.random() * 50) + 1,
+      money: Math.floor(Math.random() * 500) + 1,
+      message:
+        'Dark seas and dark towers. Night sky and wry smile. Loneliness, nonetheless.',
+    }))
+  );
 
   tableColumns: ColumnDefinition<YourDataType>[] = [
     {
@@ -43,6 +53,71 @@ export class DataTableComponent {
     {
       id: 'actions',
       header: 'Actions',
+    },
+  ];
+
+  table2Styles = defaultTableStyles;
+
+  stickyStyles = stickyTableStyles;
+
+  testTableStyles = testTableStyles;
+
+  tableColumns2: ColumnDefinition<YourDataType>[] = [
+    {
+      id: 'select',
+      header: 'Select',
+    },
+    {
+      id: 'names',
+      header: 'Full Name',
+      accessorFn: (row) => `${row.names?.firstName} ${row.names?.lastName}`,
+    },
+    {
+      id: 'role',
+      header: 'Role',
+      accessorKey: 'role',
+    },
+    {
+      id: 'age',
+      header: 'Age',
+      accessorKey: 'age',
+    },
+    {
+      id: 'money',
+      header: 'Money',
+      accessorKey: 'money',
+    },
+    {
+      id: 'message',
+      header: 'Message',
+      accessorKey: 'message',
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+    },
+  ];
+
+  tableColumns3: ColumnDefinition<YourDataType>[] = [
+    {
+      id: 'names',
+      header: 'Full Name',
+      accessorFn: (row) => `${row.names?.firstName} ${row.names?.lastName}`,
+    },
+    {
+      id: 'role',
+      header: 'Role',
+      accessorKey: 'role',
+    },
+    {
+      id: 'age',
+      header: 'Age',
+      accessorKey: 'age',
+    },
+    {
+      id: 'money',
+      header: 'Money',
+      accessorKey: 'money',
     },
   ];
 
@@ -75,21 +150,25 @@ export class DataTableComponent {
 
   onRowSave(row: YourDataType) {
     if (this.form.valid) {
-      // Find the index of the row in tableData
-      const index = this.tableData.findIndex((item) => item.id === row.id);
-      if (index !== -1) {
-        // Update the row in tableData
-        this.tableData[index] = row;
-        // If you're using OnPush change detection, you might need to create a new reference
-        this.tableData = [...this.tableData];
-      }
+      this.tableData.update((data) => {
+        const index = data.findIndex((item) => item.id === row.id);
+        if (index !== -1) {
+          data[index] = row;
+        }
+        return [...data];
+      });
       console.log('Saved row:', row);
     }
   }
 
+  onRowDelete(row: YourDataType) {
+    this.tableData.update((data) => data.filter((item) => item.id !== row.id));
+    console.log('Deleted row:', row);
+  }
+
   getDataProperties(): string[] {
     if (this.tableData && this.tableData.length > 0) {
-      return Object.keys(this.tableData[0]);
+      return Object.keys(this.tableData()[0]);
     }
     return [];
   }
@@ -154,10 +233,138 @@ function generateRandomName(): { firstName: string; lastName: string } {
     lastName: lastNames[Math.floor(Math.random() * lastNames.length)],
   };
 }
-
 interface YourDataType {
   id: string;
   activityDetails: { firstName: string; lastName: string }[];
   numberOfParticipants: number;
   role?: string;
+  age?: number;
+  money?: number;
+  message?: string;
+  names?: { firstName: string; lastName: string };
 }
+
+// Default styles
+const defaultTableStyles: TableStyles = {
+  // borderCollapse: 'collapse',
+  position: 'relative',
+  borderSpacing: '0px',
+  border: '1px solid #D4A007',
+  borderRadius: '16px',
+  overflow: 'hidden',
+  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+  width: '100%',
+  maxHeight: '678px',
+  header: {
+    backgroundColor: '#ffffff',
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'left',
+    padding: '12px 16px',
+    borderBottom: '2px solid #e0e0e0',
+    position: 'sticky',
+    top: '0px',
+  },
+  rows: {
+    even: {
+      backgroundColor: '#F7F6FE',
+    },
+    odd: {
+      backgroundColor: '#FFFFFF',
+    },
+    nth: {
+      interval: 5,
+      style: {
+        backgroundColor: '#f0f0f0',
+      },
+    },
+  },
+  cells: {
+    padding: '12px 16px',
+    borderBottom: '1px solid #e0e0e0',
+  },
+  footer: {
+    backgroundColor: '#f5f5f5',
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'left',
+    padding: '12px 16px',
+    borderTop: '2px solid #e0e0e0',
+  },
+};
+
+// Default styles
+const testTableStyles: TableStyles = {
+  // borderCollapse: 'collapse',
+  position: 'relative',
+  borderSpacing: '0px',
+  overflow: 'hidden',
+  width: '100%',
+  maxHeight: '678px',
+  fontSize: '14px',
+  header: {
+    backgroundColor: '#ffffff',
+    fontWeight: 'bold',
+    textAlign: 'left',
+    padding: '12px 16px',
+    position: 'sticky',
+    top: '0px',
+  },
+  rows: {
+    even: {
+      backgroundColor: '#F7F6FE',
+    },
+    odd: {
+      backgroundColor: '#FFFFFF',
+    },
+  },
+  cells: {
+    padding: '12px 16px',
+    fontWeight: '400',
+  },
+};
+
+const stickyTableStyles: TableStyles = {
+  fontFamily: '"Fraunces", serif',
+  fontSize: '125%',
+  whiteSpace: 'nowrap',
+  margin: '0',
+  border: '1px solid black',
+  borderCollapse: 'separate',
+  borderSpacing: '0',
+  tableLayout: 'fixed',
+  cells: {
+    border: '1px solid black',
+    padding: '0.5rem 1rem',
+  },
+  header: {
+    stickyTop: true,
+    zIndex: 1,
+    background: 'lightyellow',
+    padding: '3px',
+  },
+  footer: {
+    stickyBottom: true,
+    zIndex: 1,
+    background: 'lightyellow',
+    padding: '3px',
+  },
+  body: {
+    background: '#fff',
+    padding: '4px 5px',
+    textAlign: 'center',
+  },
+  firstColumn: {
+    stickyLeft: true,
+    zIndex: 2,
+    background: 'lightyellow',
+    fontWeight: '100',
+    fontStyle: 'italic',
+    textAlign: 'left',
+  },
+  lastColumn: {
+    stickyRight: true,
+    zIndex: 1,
+    background: 'lightyellow',
+  },
+};

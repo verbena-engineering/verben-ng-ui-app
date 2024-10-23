@@ -40,7 +40,7 @@
 }
 
 input:checked + .slider .slider-knob {
-  right: 3px !important; /* Moves the knob to the right when checked */
+  transform: translateX(30px); /* Moves the knob to the right when checked */
 }
 
 input:checked + .slider {

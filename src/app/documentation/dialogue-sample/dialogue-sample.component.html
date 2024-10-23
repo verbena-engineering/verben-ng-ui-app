@@ -1,0 +1,32 @@
+<button (click)="openModal()">Open Modal</button>
+
+<!-- Modal Component -->
+<verben-dialogue
+  [showCloseIcon]="true"
+  [dismissOutsideClick]="true"
+  [closeOnEscape]="true"
+  [backdropColor]="'rgba(0, 0, 0, 0.7)'"
+  [size]="'small'"
+  [customClass]="'my-modal-custom-class'"
+  [disableFooter]="false"
+  [isVisible]="isModalVisible"
+  [headerTemplate]="headerTemplate"
+  [bodyTemplate]="bodyTemplate"
+  [footerTemplate]="footerTemplate"
+  (closeModal)="onModalClose()"
+>
+</verben-dialogue>
+
+<!-- Define templates -->
+<ng-template #headerTemplate>
+  <h2>Confirm Deletion</h2>
+</ng-template>
+
+<ng-template #bodyTemplate>
+  <p>Are you sure you want to delete this item?</p>
+</ng-template>
+
+<ng-template #footerTemplate>
+  <button class="btn btn-secondary" (click)="onModalClose()">Cancel</button>
+  <button class="btn btn-primary" (click)="onConfirm()">Confirm</button>
+</ng-template>

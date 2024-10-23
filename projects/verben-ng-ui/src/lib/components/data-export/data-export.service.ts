@@ -4,6 +4,7 @@ import {
   Operation,
   ExportItem,
   ExportItemType,
+  Operators,
 } from './data-export.types';
 
 @Injectable()
@@ -133,18 +134,27 @@ export class DataExportService {
     });
   }
 
-  private calculateOperation<T>(item: T, operation: Operation): number {
+  private calculateOperation<T>(
+    item: T,
+    operation: Operation
+  ): number | string {
     const value1 = Number((item as any)[operation.field1]);
     const value2 = Number((item as any)[operation.field2]);
     switch (operation.operator) {
-      case 'add':
+      case Operators.add:
         return value1 + value2;
-      case 'subtract':
+      case Operators.subtract:
         return value1 - value2;
-      case 'multiply':
+      case Operators.multiply:
         return value1 * value2;
-      case 'divide':
+      case Operators.divide:
         return value2 !== 0 ? value1 / value2 : NaN;
+      case Operators.concatenateSpace:
+        return `${value1} ${value2}`;
+      case Operators.concatenateCommaSpace:
+        return `${value1}, ${value2}`;
+      case Operators.concatenateComma:
+        return `${value1},${value2}`;
       default:
         return NaN;
     }

@@ -1,26 +1,19 @@
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DataExportService } from './data-export.service';
-import {
+  DataExportService,
   ExportItem,
   ExportProfile,
   Operation,
   Operators,
-} from './data-export.types';
+} from 'verben-ng-ui/src/public-api';
 
 @Component({
-  selector: 'lib-data-export',
-  templateUrl: './data-export.component.html',
-  styleUrl: './data-export.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-table-export',
+  templateUrl: './table-export.component.html',
+  styleUrl: './table-export.component.scss',
 })
-export class DataExportComponent {
+export class TableExportComponent {
   @Input() data!: any[];
   @Output() exportDataEvent = new EventEmitter<Record<string, any>[]>();
 

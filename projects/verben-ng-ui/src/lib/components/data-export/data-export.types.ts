@@ -16,6 +16,16 @@ export interface Operation {
   id: string;
   name: string;
   field1: string;
-  operator: 'add' | 'subtract' | 'multiply' | 'divide';
+  operator: Operators;
   field2: string;
+}
+
+export enum Operators {
+  add = 'add',
+  subtract = 'subtract',
+  multiply = 'multiply',
+  divide = 'divide',
+  concatenateSpace = 'concatenateSpace',
+  concatenateCommaSpace = 'concatenateCommaSpace',
+  concatenateComma = 'concatenateComma',
 }

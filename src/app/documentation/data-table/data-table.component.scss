@@ -1,0 +1,11 @@
+.cell-content {
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.cell-content:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}

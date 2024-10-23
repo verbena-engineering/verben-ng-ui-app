@@ -86,6 +86,7 @@ export * from './lib/components/data-table/data-table.module';
 export * from './lib/components/data-table/data-table.component';
 export * from './lib/components/data-table/column.directive';
 export * from './lib/components/data-table/data-table.types';
+export * from './lib/components/data-table/style.types';
 
 export * from './lib/components/data-export/data-export.module';
 export * from './lib/components/data-export/data-export.service';

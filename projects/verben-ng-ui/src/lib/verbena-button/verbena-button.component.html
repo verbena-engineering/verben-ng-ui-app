@@ -8,10 +8,12 @@
   'height': height,
   'font-size': fontSize,
   'display': 'flex',
+
+  'cursor':'pointer',
   'gap':'6px'
 }"
 [disabled]="disable"
-class="verbena-button"
+class="verbena-button {{ buttonClass }}"
 >
   <ng-container *ngIf="svg && svgPosition === 'left'">
     <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight" [stroke]="svgColor"></verben-svg>

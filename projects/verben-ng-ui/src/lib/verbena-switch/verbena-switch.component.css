@@ -1,38 +1,50 @@
 .switch {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   cursor: pointer;
   position: relative;
+  user-select: none;
 }
 
 .slider {
-  width: 34px;
-  height: 20px;
-  background-color: #ccc; /* Off state color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px; /* Default width */
+  height: 30px; /* Default height */
+  background-color: #ccc; /* Default off state color */
   border-radius: 34px;
   position: relative;
-  transition: background-color 0.2s; /* Smooth color transition */
-  margin-right: 10px; /* Space between slider and label */
+  transition: background-color 0.2s ease; /* Smooth color transition */
+  padding: 0; /* Remove padding to avoid label shifting */
 }
 
-.slider::before {
-  content: "";
+.slider-label {
   position: absolute;
-  height: 16px;
-  width: 16px;
-  left: 2px;
-  bottom: 2px;
+  color: white;
+  font-size: 12px;
+  z-index: 1; /* Ensure label stays above the knob */
+  pointer-events: none; /* Prevent the label from interfering with click */
+}
+
+.slider-knob {
+  position: absolute;
+  height: 24px;
+  width: 24px;
   background-color: white;
-  border-radius: 50%; /* Makes the knob circular */
-  transition: transform 0.2s; /* Smooth knob movement */
+  border-radius: 50%;
+  bottom: 3px;
+  left: 3px;
+  transition: transform 0.2s ease;
+  z-index: 2; /* Ensure the knob moves but stays below the label */
+}
+
+input:checked + .slider .slider-knob {
+  right: 3px !important; /* Moves the knob to the right when checked */
 }
 
 input:checked + .slider {
   background-color: #4caf50; /* On state color */
-}
-
-input:checked + .slider::before {
-  transform: translateX(14px); /* Moves the knob to the right when checked */
 }
 
 .disabled {

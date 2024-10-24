@@ -1,0 +1,249 @@
+<verben-card
+  width="24rem"
+  borderRadius="1rem"
+  [border]="'1px solid #D4A007'"
+  class="w-full max-w-2xl border-yellow-200 border-2 rounded-lg text-xs"
+>
+  <div card-header class="flex flex-row justify-between items-center">
+    <h4 class="font-semibold text-[13px]">Export</h4>
+    <button
+      [style.color]="'#3479E9'"
+      [style.background-color]="'transparent'"
+      [style.border]="'none'"
+      [style.cursor]="'pointer'"
+      [style.font-size]="'12px'"
+      (click)="resetAll()"
+    >
+      Reset
+    </button>
+  </div>
+  <div card-body class="space-y-4">
+    <section class="space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-[13px]">Profiles</h3>
+        <verben-svg
+          icon="info"
+          [width]="15"
+          [height]="15"
+          fill="grey"
+        ></verben-svg>
+      </div>
+      <div
+        *ngFor="let profile of visibleProfiles; let i = index"
+        class="flex justify-between items-center"
+      >
+        <div class="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            [id]="'profile-' + i"
+            [(ngModel)]="profile.selected"
+          />
+          <label
+            [for]="'profile-' + i"
+            class="leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            {{ profile.name }}
+          </label>
+        </div>
+        <div class="flex space-x-2">
+          <verben-svg
+            icon="edit"
+            [width]="15"
+            [height]="15"
+            stroke="#3479E9"
+            fill="white"
+            (click)="editProfile(profile)"
+          ></verben-svg>
+          <verben-svg
+            icon="delete"
+            [width]="15"
+            [height]="15"
+            stroke="#E20000"
+            (click)="removeProfile(profile)"
+          ></verben-svg>
+        </div>
+      </div>
+      <div
+        *ngIf="profiles.length > 3"
+        (click)="toggleShowAllProfiles()"
+        class="flex items-center text-gray-500 cursor-pointer"
+      >
+        <span>{{ showAllProfiles ? "Show less" : "Show more" }}</span>
+        <verben-svg
+          icon="chevron"
+          [width]="8"
+          [height]="6"
+          fill="black"
+          stroke="black"
+        ></verben-svg>
+      </div>
+    </section>
+    <hr class="text-[#E8EAF1]" />
+    <section class="space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-[13px]">Group</h3>
+        <verben-svg
+          icon="info"
+          [width]="15"
+          [height]="15"
+          fill="grey"
+        ></verben-svg>
+      </div>
+      <form [formGroup]="newGroupForm" (ngSubmit)="addGroup()">
+        <verbena-input
+          placeholder="Group name"
+          border="1px solid #ccc"
+          borderRadius="5px"
+          textColor="black"
+          width="100%"
+          height="20px"
+          pd="4px 6px"
+          [showBorder]="true"
+          [showErrorMessage]="true"
+          [errorPosition]="'bottom'"
+          formControlName="name"
+        ></verbena-input>
+      </form>
+      <div
+        *ngFor="let item of visibleGroups; let i = index"
+        class="flex justify-between items-center"
+      >
+        <div class="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            [id]="'group-' + i"
+            [(ngModel)]="item.selected"
+          />
+          <label
+            [for]="'group-' + i"
+            class="leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            {{ item.name }}
+          </label>
+        </div>
+        <div class="flex space-x-2" *ngIf="item.type === 'operation'">
+          <verben-svg
+            icon="edit"
+            [width]="15"
+            [height]="15"
+            stroke="#3479E9"
+            fill="white"
+            (click)="editOperation(item)"
+          ></verben-svg>
+          <verben-svg
+            icon="delete"
+            [width]="15"
+            [height]="15"
+            stroke="#E20000"
+            (click)="removeOperation(item)"
+          ></verben-svg>
+        </div>
+      </div>
+      <div
+        *ngIf="groupItems.length > 3"
+        (click)="toggleShowAllGroups()"
+        class="flex items-center text-gray-500 cursor-pointer"
+      >
+        <span>{{ showAllGroups ? "Show less" : "Show more" }}</span>
+        <verben-svg
+          icon="chevron"
+          [width]="8"
+          [height]="6"
+          fill="black"
+          stroke="black"
+        ></verben-svg>
+      </div>
+
+      <button
+        [style.margin-top]="'0.5rem'"
+        [style.outline]="'none'"
+        [style.border]="'none'"
+        [style.background-color]="'transparent'"
+        [style.color]="'#3479E9'"
+        [style.font-size]="'12px'"
+        [style.font-weight]="'500'"
+        (click)="addGroup()"
+      >
+        + Add
+      </button>
+    </section>
+    <hr class="text-[#E8EAF1]" />
+    <section class="space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-[13px]">Operation</h3>
+        <verben-svg
+          icon="info"
+          [width]="15"
+          [height]="15"
+          fill="grey"
+        ></verben-svg>
+      </div>
+      <verbena-input
+        placeholder="Operation name"
+        border="1px solid #ccc"
+        borderRadius="5px"
+        textColor="black"
+        width="100%"
+        height="20px"
+        pd="2px 6px"
+        [showBorder]="true"
+        [showErrorMessage]="true"
+        [errorPosition]="'bottom'"
+        [(ngModel)]="newOperation.name"
+      ></verbena-input>
+      <div class="grid grid-cols-3 gap-4">
+        <verben-drop-down
+          width="'8rem'"
+          placeholder="Select field"
+          [options]="numericProperties.concat(stringProperties)"
+          [(ngModel)]="newOperation.field1"
+          (ngModelChange)="onField1Change()"
+        >
+        </verben-drop-down>
+        <verben-drop-down
+          width="'8rem'"
+          placeholder="Select operator"
+          [options]="availableOperators"
+          [(ngModel)]="newOperation.operator"
+        >
+        </verben-drop-down>
+        <verben-drop-down
+          width="'8rem'"
+          placeholder="Select field"
+          [options]="availableFields2"
+          [(ngModel)]="newOperation.field2"
+        >
+        </verben-drop-down>
+      </div>
+
+      <button
+        [style.margin-top]="'0.5rem'"
+        [style.outline]="'none'"
+        [style.border]="'none'"
+        [style.background-color]="'transparent'"
+        [style.color]="'#3479E9'"
+        [style.font-size]="'12px'"
+        [style.font-weight]="'500'"
+        (click)="addOrUpdateOperation()"
+      >
+        {{ isEditingOperation ? "Update" : "+ Add" }}
+      </button>
+    </section>
+  </div>
+  <div card-footer class="flex justify-end bg-transparent">
+    <button
+      class="ml-auto"
+      [style.margin-top]="'0.5rem'"
+      [style.outline]="'none'"
+      [style.border]="'none'"
+      [style.padding]="'0.2rem 1.6rem'"
+      [style.background-color]="'#FFE681'"
+      [style.color]="'#404040'"
+      [style.font-size]="'12px'"
+      [style.font-weight]="'600'"
+      (click)="exportData()"
+    >
+      Export
+    </button>
+  </div>
+</verben-card>

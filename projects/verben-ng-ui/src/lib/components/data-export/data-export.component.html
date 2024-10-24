@@ -1,90 +1,203 @@
-<h2>Export Configuration</h2>
-
-<h3>Create Operation</h3>
-<form [formGroup]="operationForm" (ngSubmit)="onSubmitOperation()">
-  <input formControlName="name" placeholder="Operation Name" />
-  <select formControlName="field1">
-    <option value="">Select Field 1</option>
-    <option *ngFor="let prop of baseProperties" [value]="prop">
-      {{ prop }}
-    </option>
-  </select>
-  <select formControlName="operator">
-    <option value="">Select Operator</option>
-    <option value="add">+</option>
-    <option value="subtract">-</option>
-    <option value="multiply">*</option>
-    <option value="divide">/</option>
-  </select>
-  <select formControlName="field2">
-    <option value="">Select Field 2</option>
-    <option *ngFor="let prop of baseProperties" [value]="prop">
-      {{ prop }}
-    </option>
-  </select>
-  <button type="submit" [disabled]="!operationForm.valid">Add Operation</button>
-</form>
-
-<h3>Operations</h3>
-<div
-  *ngFor="let operation of exportService.getOperations()"
-  class="operation-item"
+<verben-card
+  width="24rem"
+  borderRadius="1rem"
+  [border]="'1px solid #D4A007'"
+  class="export-card"
 >
-  <span
-    >{{ operation.name }}: {{ operation.field1 }} {{ operation.operator }}
-    {{ operation.field2 }}</span
-  >
-  <div>
-    <button (click)="editOperation(operation)">Edit</button>
-    <button (click)="removeOperation(operation.id)">Remove</button>
-  </div>
-</div>
-
-<h3>Create Profile</h3>
-<form [formGroup]="profileForm" (ngSubmit)="onSubmitProfile()">
-  <input formControlName="name" placeholder="Profile Name" />
-  <div formArrayName="items" class="checkbox-group">
-    <label
-      *ngFor="let item of exportService.getAllItems(); let i = index"
-      class="checkbox-label"
+  <div card-header class="card-header">
+    <h4 class="header-title">Export</h4>
+    <button
+      class="reset-button"
+      [style.color]="'#3479E9'"
+      [style.background-color]="'transparent'"
+      [style.border]="'none'"
+      [style.cursor]="'pointer'"
+      [style.font-size]="'12px'"
+      (click)="resetAll()"
     >
-      <input type="checkbox" [formControlName]="i" />
-      {{ item.name }} ({{ item.type }})
-    </label>
+      Reset
+    </button>
   </div>
-  <button type="submit" [disabled]="!profileForm.valid">Save Profile</button>
-</form>
-
-<h3>Profiles</h3>
-<ul>
-  <li *ngFor="let profile of exportService.getProfiles()">
-    <span>{{ profile.name }}</span>
-    <div>
-      <button *ngIf="profile.id !== 'default'" (click)="editProfile(profile)">
-        Edit
-      </button>
-      <button
-        *ngIf="profile.id !== 'default'"
-        (click)="removeProfile(profile.id)"
+  <div card-body class="card-body">
+    <section class="section">
+      <div class="section-header">
+        <h3 class="section-title">Profiles</h3>
+        <verben-svg
+          icon="info"
+          [width]="15"
+          [height]="15"
+          fill="grey"
+        ></verben-svg>
+      </div>
+      <div *ngFor="let profile of visibleProfiles; let i = index" class="item">
+        <div class="item-label">
+          <input
+            type="checkbox"
+            [id]="'profile-' + i"
+            [(ngModel)]="profile.selected"
+          />
+          <label [for]="'profile-' + i" class="checkbox-label">
+            {{ profile.name }}
+          </label>
+        </div>
+        <div class="item-actions">
+          <verben-svg
+            icon="edit"
+            [width]="15"
+            [height]="15"
+            stroke="#3479E9"
+            fill="white"
+            (click)="editProfile(profile)"
+          ></verben-svg>
+          <verben-svg
+            icon="delete"
+            [width]="15"
+            [height]="15"
+            stroke="#E20000"
+            (click)="removeProfile(profile)"
+          ></verben-svg>
+        </div>
+      </div>
+      <div
+        *ngIf="profiles.length > 3"
+        (click)="toggleShowAllProfiles()"
+        class="show-more"
       >
-        Remove
+        <span>{{ showAllProfiles ? "Show less" : "Show more" }}</span>
+        <verben-svg
+          icon="chevron"
+          [width]="8"
+          [height]="6"
+          fill="black"
+          stroke="black"
+        ></verben-svg>
+      </div>
+    </section>
+    <hr class="divider" />
+    <section class="section">
+      <div class="section-header">
+        <h3 class="section-title">Group</h3>
+        <verben-svg
+          icon="info"
+          [width]="15"
+          [height]="15"
+          fill="grey"
+        ></verben-svg>
+      </div>
+      <form [formGroup]="newGroupForm" (ngSubmit)="addGroup()">
+        <verbena-input
+          placeholder="Group name"
+          border="1px solid #ccc"
+          borderRadius="5px"
+          textColor="black"
+          width="100%"
+          height="20px"
+          pd="4px 6px"
+          [showBorder]="true"
+          [showErrorMessage]="true"
+          [errorPosition]="'bottom'"
+          formControlName="name"
+        ></verbena-input>
+      </form>
+      <div *ngFor="let item of visibleGroups; let i = index" class="item">
+        <div class="item-label">
+          <input
+            type="checkbox"
+            [id]="'group-' + i"
+            [(ngModel)]="item.selected"
+          />
+          <label [for]="'group-' + i" class="checkbox-label">
+            {{ item.name }}
+          </label>
+        </div>
+        <div class="item-actions" *ngIf="item.type === 'operation'">
+          <verben-svg
+            icon="edit"
+            [width]="15"
+            [height]="15"
+            stroke="#3479E9"
+            fill="white"
+            (click)="editOperation(item)"
+          ></verben-svg>
+          <verben-svg
+            icon="delete"
+            [width]="15"
+            [height]="15"
+            stroke="#E20000"
+            (click)="removeOperation(item)"
+          ></verben-svg>
+        </div>
+      </div>
+      <div
+        *ngIf="groupItems.length > 3"
+        (click)="toggleShowAllGroups()"
+        class="show-more"
+      >
+        <span>{{ showAllGroups ? "Show less" : "Show more" }}</span>
+        <verben-svg
+          icon="chevron"
+          [width]="8"
+          [height]="6"
+          fill="black"
+          stroke="black"
+        ></verben-svg>
+      </div>
+      <button class="add-button" (click)="addGroup()">+ Add</button>
+    </section>
+    <hr class="divider" />
+    <section class="section">
+      <div class="section-header">
+        <h3 class="section-title">Operation</h3>
+        <verben-svg
+          icon="info"
+          [width]="15"
+          [height]="15"
+          fill="grey"
+        ></verben-svg>
+      </div>
+      <verbena-input
+        placeholder="Operation name"
+        border="1px solid #ccc"
+        borderRadius="5px"
+        textColor="black"
+        width="100%"
+        height="20px"
+        pd="2px 6px"
+        [showBorder]="true"
+        [showErrorMessage]="true"
+        [errorPosition]="'bottom'"
+        [(ngModel)]="newOperation.name"
+      ></verbena-input>
+      <div class="operation-grid">
+        <verben-drop-down
+          width="'8rem'"
+          placeholder="Select field"
+          [options]="numericProperties.concat(stringProperties)"
+          [(ngModel)]="newOperation.field1"
+          (ngModelChange)="onField1Change()"
+        >
+        </verben-drop-down>
+        <verben-drop-down
+          width="'8rem'"
+          placeholder="Select operator"
+          [options]="availableOperators"
+          [(ngModel)]="newOperation.operator"
+        >
+        </verben-drop-down>
+        <verben-drop-down
+          width="'8rem'"
+          placeholder="Select field"
+          [options]="availableFields2"
+          [(ngModel)]="newOperation.field2"
+        >
+        </verben-drop-down>
+      </div>
+      <button class="add-button" (click)="addOrUpdateOperation()">
+        {{ isEditingOperation ? "Update" : "+ Add" }}
       </button>
-    </div>
-  </li>
-</ul>
-
-<button (click)="resetAll()">Reset All</button>
-
-<h3>Export</h3>
-<form [formGroup]="profileSelectionForm">
-  <div formArrayName="selectedProfiles" class="checkbox-group">
-    <label
-      *ngFor="let profile of exportService.getProfiles(); let i = index"
-      class="checkbox-label"
-    >
-      <input type="checkbox" [formControlName]="i" />
-      {{ profile.name }}
-    </label>
+    </section>
   </div>
-</form>
-<button (click)="exportData()">Export Selected Profiles</button>
+  <div card-footer class="card-footer">
+    <button class="export-button" (click)="exportData()">Export</button>
+  </div>
+</verben-card>

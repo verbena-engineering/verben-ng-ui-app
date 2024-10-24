@@ -1,50 +1,64 @@
-<div class="input-container"
-  [ngStyle]="{
+<div class="input-container {{ inputContainerClass }}"
+     [ngStyle]="{
+      'display': 'flex',
+      'flex-direction': 'column',
 
-  }"
+     }"
 >
   <div
-  [ngStyle]="{
-    'display': 'flex' ,
-
-    'justify-content': labelPosition,
-    'color': labelColor,
-    'padding': '0'
-
-  }"
-  class="input-field"
-
+    [ngStyle]="{
+      'display': 'flex',
+      'justify-content': labelPosition,
+      'color': labelColor,
+      'padding': '0'
+    }"
+    class="input-field"
   >
     <label [for]="label">{{ label }}</label>
   </div>
-  <div>
-    <input
-    [id]="label"
-    [attr.type]="type"
-    [attr.placeholder]="placeHolder"
-    [required]="required"
-    [attr.minlength]="minLength?.toString()"
-    [attr.maxlength]="maxLength?.toString()"
-    (input)="onInput($event)"
-    [(ngModel)]="value"
-    [ngStyle]="{
-      'background-color': bgColor,
-      'border': showBorder ? (errorMessage ? '1px solid ' + errorBorderColor : border) : 'none',
-      'border-radius': borderRadius,
-      'color': textColor
-    }"
-    class="input-field"
-  />
 
-  <!-- Conditional error message display based on position -->
-  <span *ngIf="errorMessage && showErrorMessage"
-        [ngStyle]="{ 'color': errorMessageColor }"
-        [ngClass]="{'error-message': true,
-                     'error-top': errorPosition === 'top',
-                     'error-bottom': errorPosition === 'bottom',
-                     'error-left': errorPosition === 'left',
-                     'error-right': errorPosition === 'right'}">
-    {{ errorMessage }}
-  </span>
+  <div class="input-wrapper {{ inputWrapperClass }}">
+    <input
+      [id]="label"
+      [attr.type]="type"
+      [attr.placeholder]="placeHolder"
+      [required]="required"
+      [attr.minlength]="minLength?.toString()"
+      [attr.maxlength]="maxLength?.toString()"
+      (input)="onInput($event)"
+      [(ngModel)]="value"
+      [ngStyle]="{
+        'background-color': bgColor,
+        'border': showBorder ? (errorMessage ? '1px solid ' + errorBorderColor : border) : 'none',
+        'border-radius': borderRadius,
+        'color': textColor
+      }"
+      class="input-field"
+    />
+
+    <!-- Conditional red dot for error when showErrorMessage is false -->
+    <verben-tooltip *ngIf="errorMessage && !showErrorMessage"
+                    [tooltipContent]="tooltipTemplate"
+                    customClass="error-tooltip">
+      <div class="error-dot"
+           [ngStyle]="{ 'background-color': errorBorderColor }">
+      </div>
+    </verben-tooltip>
+
+    <!-- Tooltip template for error message -->
+    <ng-template #tooltipTemplate>
+      {{ errorMessage }}
+    </ng-template>
+
+    <!-- Conditional error message display -->
+    <span *ngIf="errorMessage && showErrorMessage"
+          [ngStyle]="{ 'color': errorMessageColor }"
+          [ngClass]="{'error-message': true,
+                      'error-top': errorPosition === 'top',
+                      'error-bottom': errorPosition === 'bottom',
+                      'error-left': errorPosition === 'left',
+                      'error-right': errorPosition === 'right'}">
+      {{ errorMessage }}
+    </span>
   </div>
 </div>

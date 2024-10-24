@@ -1,0 +1,256 @@
+<div  [ngStyle]="{
+  'margin': '40px'
+}">
+  <!-- Text area for typing longer content -->
+<h2 [ngStyle]="{
+  'font-size': '35px',
+  'font-weight':'700',
+    'padding-bottom':'20px'
+}">Text Area Example</h2>
+<div  [ngStyle]="{
+  'display': 'flex',
+  'gap': '10px',
+  'padding-bottom':'50px'
+
+}">
+  <verbena-textarea
+  label="Text Area"
+  bgColor="#f8f8f8"
+  textColor="#333"
+  border="1px solid #ccc"
+  borderRadius="5px"
+  pd="8px"
+  width="100%"
+  height="100px"
+></verbena-textarea>
+</div>
+
+
+
+<!-- Customizable input field for email with error display at the top -->
+<h2 [ngStyle]="{
+  'font-size': '35px',
+  'font-weight':'700',
+    'padding-bottom':'20px'
+}">Customizable Input Example <br>
+ with Validation</h2>
+ <div
+ [ngStyle]="{
+  'display': 'grid',
+  'grid-template-columns': '1fr 1fr',
+  'gap': '20px',
+  'padding-bottom':'50px'
+
+}"
+ >
+  <verbena-input
+  [label]="'Email'"
+  [placeHolder]="'Enter your email'"
+  [required]="true"
+  [type]="'email'"
+  [(value)]="email"
+  svg="backward"
+  [showBorder]="true"
+  [showErrorMessage]="false"
+  [errorMessageColor]="'orange'"
+  [errorBorderColor]="'orange'"
+  [errorPosition]="'top'"
+></verbena-input>
+
+<!-- Input field for age with a blue error message displayed on the right -->
+<verbena-input
+  [label]="'Age'"
+  [placeHolder]="'Enter your age'"
+  [required]="true"
+  [type]="'integer'"
+  appValidate="number"
+  [(value)]="age"
+  svg="backward"
+  [svgPosition]="'right'"
+  [showBorder]="true"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'blue'"
+  [errorBorderColor]="'blue'"
+  [errorPosition]="'top'"
+></verbena-input>
+<verbena-input
+    [label]="'tel'"
+    [type]="'tel'"
+></verbena-input>
+<verbena-input
+    [label]="'passwordgitgi'"
+    [type]="'password'"
+></verbena-input>
+<verbena-input
+    [label]="'file'"
+    [type]="'file'"
+></verbena-input>
+
+<verbena-input
+    [label]="'color'"
+    [type]="'color'"
+></verbena-input>
+<verbena-input
+    [label]="'date'"
+    [type]="'date'"
+></verbena-input>
+
+
+<!-- Input for entering a decimal value with green error messages shown below -->
+<verbena-input
+  [label]="'Decimal Value'"
+  [labelPosition]="'center'"
+  [labelColor]="'#796fab'"
+  [placeHolder]="'Enter a decimal value'"
+  [required]="true"
+  [type]="'decimal'"
+  [(value)]="decimalValue"
+
+  [showBorder]="false"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'green'"
+  [errorBorderColor]="'green'"
+  [errorPosition]="'bottom'"
+></verbena-input>
+
+<verbena-input
+  [label]="'integer Value'"
+  [placeHolder]="'Enter a integer value'"
+  [required]="true"
+  [type]="'integer'"
+  appValidate="integer"
+  [showBorder]="false"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'green'"
+  [errorBorderColor]="'green'"
+  [errorPosition]="'bottom'"
+></verbena-input>
+
+<verbena-input
+  [label]="'number Value'"
+  [placeHolder]="'Enter a number value'"
+  [required]="true"
+  [type]="'number'"
+  appValidate="number"
+  [showBorder]="false"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'green'"
+  [errorBorderColor]="'green'"
+  [errorPosition]="'right'"
+></verbena-input>
+
+<verbena-input
+  [label]="'email Value'"
+  [placeHolder]="'Enter a email value'"
+  [required]="true"
+  [type]="'email'"
+
+  [showBorder]="false"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'green'"
+  [errorBorderColor]="'green'"
+  [errorPosition]="'bottom'"
+></verbena-input>
+<!-- A submit button to trigger form submission -->
+<button (click)="submit()">Submit</button>
+
+</div>
+
+<h2 [ngStyle]="{
+  'font-size': '35px',
+  'font-weight':'700',
+    'padding-bottom':'20px'
+}">Number Range</h2>
+ <div
+ [ngStyle]="{
+  'display': 'grid',
+  'grid-template-columns': '1fr 1fr',
+  'gap': '20px',
+  'padding-bottom':'50px'
+
+}"
+ >
+  <verbena-input
+  [label]="'Max Number'"
+  [placeHolder]="'100 is the maximum number'"
+  [required]="true"
+  [type]="'number'"
+
+  appNumberRange
+
+  [max]="100"
+
+  [showBorder]="true"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'orange'"
+  [errorBorderColor]="'orange'"
+  [errorPosition]="'top'"
+></verbena-input>
+
+<!-- Input field for age with a blue error message displayed on the right -->
+<verbena-input
+  [label]="'Min Number'"
+  [placeHolder]="'minimum number is 10'"
+  [required]="true"
+  [type]="'integer'"
+  appValidate="number"
+  [min]="10"
+  [showBorder]="true"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'blue'"
+  [errorBorderColor]="'blue'"
+  [errorPosition]="'right'"
+  [customErrorMessages]="{
+    required: 'Please fill this out!',
+    minLength: 'Input is too short!',
+    integer: 'Please enter a number'
+  }"
+></verbena-input>
+
+<!-- Input for entering a decimal value with green error messages shown below -->
+<verbena-input
+  [label]="'Min and Max'"
+
+  [placeHolder]="'max number is 10 and min is 5'"
+  [min]="18"
+  [max]="60"
+  [required]="true"
+  [type]="'number'"
+  appNumberRange
+  [maxNumber]="10"
+  [minNumber]="5"
+
+
+  [showBorder]="false"
+  [showErrorMessage]="true"
+  [errorMessageColor]="'green'"
+  [errorBorderColor]="'green'"
+  [errorPosition]="'bottom'"
+></verbena-input>
+
+
+ </div>
+
+
+ <verbena-input
+  label="Enter your name"
+  placeholder="Name"
+  capitalization="uppercase"
+  [required]="true"
+  [minLength]="3"
+  [maxLength]="20"
+  >
+</verbena-input>
+
+ <verbena-input
+  label="Enter your name"
+  placeholder="Name"
+  capitalization="pascalcase"
+  [required]="true"
+  [minLength]="3"
+  [maxLength]="20"
+  >
+</verbena-input>
+
+
+</div>

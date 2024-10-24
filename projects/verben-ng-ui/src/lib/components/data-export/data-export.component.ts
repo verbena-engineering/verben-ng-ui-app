@@ -7,7 +7,12 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataExportService } from './data-export.service';
-import { ExportProfile, Operation } from './data-export.types';
+import {
+  ExportItem,
+  ExportProfile,
+  Operation,
+  Operators,
+} from './data-export.types';
 
 @Component({
   selector: 'lib-data-export',
@@ -19,132 +24,180 @@ export class DataExportComponent {
   @Input() data!: any[];
   @Output() exportDataEvent = new EventEmitter<Record<string, any>[]>();
 
-  profileForm!: FormGroup;
-  operationForm!: FormGroup;
-  profileSelectionForm!: FormGroup;
-  baseProperties: string[] = [];
-  allProperties: string[] = [];
+  profiles: (ExportProfile & { selected: boolean })[] = [];
+  groupItems: (ExportItem & { selected: boolean })[] = [];
+  newGroupForm: FormGroup;
+  newOperation: Operation = {
+    id: '',
+    name: '',
+    field1: '',
+    operator: Operators.add,
+    field2: '',
+  };
+  numericProperties: string[] = [];
+  stringProperties: string[] = [];
+  isEditingOperation: boolean = false;
+  showAllProfiles: boolean = false;
+  showAllGroups: boolean = false;
+
+  operatorsNumeric: Operators[] = [
+    Operators.add,
+    Operators.subtract,
+    Operators.multiply,
+    Operators.divide,
+  ];
+  operatorsString: Operators[] = [
+    Operators.concatenateSpace,
+    Operators.concatenateCommaSpace,
+    Operators.concatenateComma,
+  ];
 
   constructor(
-    private fb: FormBuilder,
-    public exportService: DataExportService
-  ) {}
+    private exportService: DataExportService,
+    private fb: FormBuilder
+  ) {
+    this.newGroupForm = this.fb.group({
+      name: ['', Validators.required],
+    });
+  }
 
   ngOnInit() {
-    this.initForms();
-    this.updateProperties();
+    this.initializeGroupItems();
+    this.updateProfiles();
   }
 
-  private initForms() {
-    this.initProfileForm();
-    this.initOperationForm();
-    this.initProfileSelectionForm();
+  ngOnChanges() {
+    if (this.data) {
+      this.initializeGroupItems();
+    }
   }
 
-  private initProfileForm() {
-    const itemControls = this.exportService.getAllItems().map(() => false);
-    this.profileForm = this.fb.group({
-      name: ['', Validators.required],
-      items: this.fb.array(itemControls),
-    });
+  get visibleProfiles() {
+    return this.showAllProfiles ? this.profiles : this.profiles.slice(0, 3);
   }
 
-  private initOperationForm() {
-    this.operationForm = this.fb.group({
-      name: ['', Validators.required],
-      field1: ['', Validators.required],
-      operator: ['', Validators.required],
-      field2: ['', Validators.required],
-    });
+  get visibleGroups() {
+    return this.showAllGroups ? this.groupItems : this.groupItems.slice(0, 3);
   }
 
-  private initProfileSelectionForm() {
-    const profileControls = this.exportService.getProfiles().map(() => false);
-    this.profileSelectionForm = this.fb.group({
-      selectedProfiles: this.fb.array(profileControls),
-    });
-  }
-
-  private updateProperties() {
+  initializeGroupItems() {
     if (this.data && this.data.length > 0) {
-      const baseProperties = Object.keys(this.data[0]);
-      this.exportService.setBaseProperties(baseProperties);
-    }
-    this.allProperties = this.exportService
-      .getAllItems()
-      .map((item) => item.id);
-    this.initProfileForm();
-  }
-
-  onSubmitOperation() {
-    if (this.operationForm.valid) {
-      const operation: Operation = {
-        id: Date.now().toString(),
-        ...this.operationForm.value,
-      };
-      this.exportService.addOperation(operation);
-      this.operationForm.reset();
-      this.updateProperties();
+      const properties = Object.keys(this.data[0]);
+      this.exportService.setBaseProperties(properties);
+      this.numericProperties = properties.filter(
+        (prop) => typeof this.data[0][prop] === 'number'
+      );
+      this.stringProperties = properties.filter(
+        (prop) => typeof this.data[0][prop] === 'string'
+      );
+      this.updateGroupItems();
     }
   }
 
-  onSubmitProfile() {
-    if (this.profileForm.valid) {
-      const formValue = this.profileForm.value;
-      const selectedItems = this.exportService
-        .getAllItems()
-        .filter((_, i) => formValue.items[i]);
-      const newProfile: ExportProfile = {
-        id: Date.now().toString(),
-        name: formValue.name,
-        items: selectedItems,
-      };
-      this.exportService.addProfile(newProfile);
-      this.profileForm.reset();
-      this.initProfileSelectionForm();
+  updateProfiles() {
+    this.profiles = this.exportService.getProfiles().map((profile) => ({
+      ...profile,
+      selected: false,
+    }));
+  }
+
+  updateGroupItems() {
+    this.groupItems = this.exportService.getAllItems().map((item) => ({
+      ...item,
+      selected: false,
+    }));
+  }
+
+  addGroup() {
+    console.log('in');
+    if (this.newGroupForm.valid) {
+      const selectedItems = this.groupItems.filter((item) => item.selected);
+      if (selectedItems.length > 0) {
+        const newProfile: ExportProfile = {
+          id: Date.now().toString(),
+          name: this.newGroupForm.get('name')?.value,
+          items: selectedItems,
+        };
+        this.exportService.addProfile(newProfile);
+        this.updateProfiles();
+        this.groupItems.forEach((item) => (item.selected = false));
+        this.newGroupForm.reset();
+        console.log('SELECTED');
+      }
+      console.log('VALID');
     }
   }
 
-  editProfile(profile: ExportProfile) {
-    this.profileForm.patchValue({
-      name: profile.name,
-      items: this.exportService
-        .getAllItems()
-        .map((item) =>
-          profile.items.some((profileItem) => profileItem.id === item.id)
-        ),
+  editProfile(profile: ExportProfile & { selected: boolean }) {
+    this.groupItems.forEach((item) => {
+      item.selected = profile.items.some(
+        (profileItem) => profileItem.id === item.id
+      );
     });
+    this.removeProfile(profile);
   }
 
-  editOperation(operation: Operation) {
-    this.operationForm.patchValue(operation);
+  removeProfile(profile: ExportProfile & { selected: boolean }) {
+    this.exportService.removeProfile(profile.id);
+    this.updateProfiles();
   }
 
-  removeOperation(id: string) {
-    this.exportService.removeOperation(id);
-    this.updateProperties();
+  addOrUpdateOperation() {
+    if (
+      this.newOperation.name &&
+      this.newOperation.field1 &&
+      this.newOperation.field2
+    ) {
+      if (this.isEditingOperation) {
+        this.exportService.updateOperation(
+          this.newOperation.id,
+          this.newOperation
+        );
+      } else {
+        const operation: Operation = {
+          ...this.newOperation,
+          id: Date.now().toString(),
+        };
+        this.exportService.addOperation(operation);
+      }
+      this.updateGroupItems();
+      this.resetOperationForm();
+    }
   }
 
-  removeProfile(id: string) {
-    this.exportService.removeProfile(id);
-    this.initProfileSelectionForm();
+  editOperation(operation: ExportItem & { selected: boolean }) {
+    this.newOperation = { ...(operation as unknown as Operation) };
+    this.isEditingOperation = true;
+  }
+
+  removeOperation(operation: ExportItem & { selected: boolean }) {
+    this.exportService.removeOperation(operation.id);
+    this.updateGroupItems();
+  }
+
+  resetOperationForm() {
+    this.newOperation = {
+      id: '',
+      name: '',
+      field1: '',
+      operator: Operators.add,
+      field2: '',
+    };
+    this.isEditingOperation = false;
   }
 
   resetAll() {
     this.exportService.resetAll();
-    this.initForms();
-    this.updateProperties();
+    this.initializeGroupItems();
+    this.updateProfiles();
+    this.resetOperationForm();
+    this.newGroupForm.reset();
   }
 
   exportData() {
-    const selectedProfiles = this.exportService
-      .getProfiles()
-      .filter(
-        (_, i) =>
-          (this.profileSelectionForm.get('selectedProfiles') as FormArray).at(i)
-            .value
-      );
-
+    const selectedProfiles = this.profiles.filter(
+      (profile) => profile.selected
+    );
     if (selectedProfiles.length > 0) {
       const exportedData = this.exportService.exportData(
         this.data,
@@ -154,5 +207,36 @@ export class DataExportComponent {
     } else {
       console.log('No profiles selected for export');
     }
+  }
+
+  onField1Change() {
+    this.newOperation.field2 = '';
+    this.newOperation.operator = this.isNumericField(this.newOperation.field1)
+      ? Operators.add
+      : Operators.concatenateSpace;
+  }
+
+  isNumericField(field: string): boolean {
+    return this.numericProperties.includes(field);
+  }
+
+  get availableOperators(): Operators[] {
+    return this.isNumericField(this.newOperation.field1)
+      ? this.operatorsNumeric
+      : this.operatorsString;
+  }
+
+  get availableFields2(): string[] {
+    return this.isNumericField(this.newOperation.field1)
+      ? this.numericProperties
+      : this.stringProperties;
+  }
+
+  toggleShowAllProfiles() {
+    this.showAllProfiles = !this.showAllProfiles;
+  }
+
+  toggleShowAllGroups() {
+    this.showAllGroups = !this.showAllGroups;
   }
 }

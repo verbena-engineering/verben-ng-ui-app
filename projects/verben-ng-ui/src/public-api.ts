@@ -115,3 +115,6 @@ export * from './lib/verbena-switch/verbena-switch.module';
 
 export * from './lib/components/verben-mail/verben-mail.module';
 export * from './lib/components/verben-mail/verben-mail.component';
+
+export * from './lib/components/verben-dialogue/verben-dialogue.module';
+export * from './lib/components/verben-dialogue/verben-dialogue.component';

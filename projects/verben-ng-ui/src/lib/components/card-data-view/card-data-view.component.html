@@ -1,5 +1,5 @@
 
-<div class="container flex-col" [style.display]="'flex'" [style.margin]="mg" > 
+<div #main class="container flex-col" [style.display]="'flex'" [style.margin]="mg" > 
      <!-- Header -->
      <ng-container ngProjectAs="verben-card-data-view-header">
         <ng-content select='verben-card-data-view-header'></ng-content>
@@ -21,8 +21,8 @@
       <!-- Detail Section-->
        <div [style.backgroundColor]="rbgColor" *ngIf="hasCurrentItem()" [style.borderRadius]="borderRadius">
          <verben-svg  (click)="clearData()" class="cursor-pointer toRight" icon="close" [width]="20" [height]="20"  color="black"></verben-svg> 
-         <ng-container   ngProjectAs="verben-right-card-data-view">
-           <ng-content select='verben-right-card-data-view'></ng-content>
+         <ng-container #right  ngProjectAs="verben-right-card-data-view">
+           <ng-content #rightContent select='verben-right-card-data-view'></ng-content>
          </ng-container>
        </div>
      </div>

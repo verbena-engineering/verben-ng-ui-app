@@ -13,3 +13,20 @@ box-sizing: border-box;
   justify-content: center;
   padding: 15px;
 }
+.pad15{
+  padding: 5px;
+}
+.center-icon{
+  align-items: center;
+}
+.full-width
+{
+  width: 100%;
+}
+.childrenPadding
+{
+   padding: 10px 10px 10px 20px;
+   display: flex;
+   gap: 10px;
+}
+

@@ -109,6 +109,11 @@ const routes: Routes = [
       loadChildren: () =>
         import('./date-picker/date-picker.module').then((m)=>m.AppDatePickerSample),
     },
+    {
+      path: 'dialogue',
+      loadChildren: () =>
+        import('./dialogue-sample/dialogue-sample.module').then((m)=>m.DialogueSampleModule),
+    },
 ];
 
 @NgModule({

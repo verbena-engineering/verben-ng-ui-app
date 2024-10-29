@@ -1,0 +1,44 @@
+<div *ngIf="isVisible" class="modal-wrapper fixed inset-0 flex justify-center items-center"
+     [ngStyle]="{'background-color': backdropColor}">
+  <div
+    [style.padding]="padding"
+    [style.margin]="margin"
+    [style.background-color]="dialogueBgColor"
+    [style.border-radius]="borderRadius"
+    [style.box-shadow]="boxShadow"
+    class="modal-content relative rounded-lg shadow-lg p-4"
+    [ngClass]="customClass"
+    [ngClass]="{
+      'max-w-sm': size === 'small',
+      'max-w-md': size === 'medium',
+      'max-w-lg': size === 'large'
+    }"
+  >
+    <!-- Close icon -->
+ 
+    <verben-svg   *ngIf="showCloseIcon"
+   [class]="closeIconClass"
+    (click)="onClose()" icon="close" [width]="20" [height]="20" fill="white" stroke="#000"></verben-svg>
+   
+    <!-- Modal Header -->
+    <div class="modal-header text-lg font-semibold mb-4">
+      <ng-container *ngIf="headerTemplate">
+        <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
+      </ng-container>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body mb-4">
+      <ng-container *ngIf="bodyTemplate">
+        <ng-container *ngTemplateOutlet="bodyTemplate"></ng-container>
+      </ng-container>
+    </div>
+
+    <!-- Modal Footer -->
+    <div *ngIf="!disableFooter" class="modal-footer flex justify-end space-x-2">
+      <ng-container *ngIf="footerTemplate">
+        <ng-container *ngTemplateOutlet="footerTemplate"></ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>

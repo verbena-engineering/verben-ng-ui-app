@@ -1,5 +1,5 @@
 <div *ngIf="isVisible" class="modal-wrapper fixed inset-0 flex justify-center items-center"
-     [ngStyle]="{'background-color': backdropColor}">
+     [ngStyle]="{'background-color': backdropColor}" [ngClass]="{ 'fade-in': enableTransition, 'no-animation': !enableTransition }">
   <div
     [style.padding]="padding"
     [style.margin]="margin"

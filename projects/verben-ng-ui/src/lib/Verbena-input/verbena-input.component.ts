@@ -1,17 +1,10 @@
-import { Component, Input, Output, EventEmitter, OnInit, forwardRef, Optional, Self } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, OnInit, Optional, Self, Inject, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 @Component({
   selector: 'verbena-input',
   templateUrl: './verbena-input.component.html',
-  styleUrls: ['./verbena-input.component.css'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => VerbenaInputComponent),
-      multi: true
-    }
-  ]
+  styleUrls: ['./verbena-input.component.css']
 })
 export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() label: string = '';
@@ -31,25 +24,21 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() disable: boolean = false;
   @Input() min?: number;
   @Input() max?: number;
-
   @Input() showBorder: boolean = true;
   @Input() showErrorMessage: boolean = true;
   @Input() errorMessageColor: string = 'red';
-  @Input() errorBorderColor?: string ;
+  @Input() errorBorderColor?: string;
   @Input() errorPosition: 'left' | 'right' | 'top' | 'bottom' = 'bottom';
-
   @Input() svg: string = '';
   @Input() svgWidth: number = 20;
   @Input() svgHeight: number = 20;
   @Input() svgColor: string = '';
-
   @Input() capitalization: 'none' | 'uppercase' | 'lowercase' | 'sentencecase' | 'pascalcase' | 'camelcase' = 'none';
 
-   // New input properties to expose custom classes
-   @Input() inputContainerClass: string = ''; // Expose custom class for input container
-   @Input() inputFieldClass: string = ''; // Expose custom class for input field
-   @Input() inputWrapperClass: string = ''; // Expose custom class for input wrapper
-
+  // New input properties to expose custom classes
+  @Input() inputContainerClass: string = ''; // Expose custom class for input container
+  @Input() inputFieldClass: string = ''; // Expose custom class for input field
+  @Input() inputWrapperClass: string = ''; // Expose custom class for input wrapper
 
   // New property for custom error messages
   @Input() customErrorMessages: {
@@ -74,12 +63,11 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
   onChange: any = () => {};
   onTouch: any = () => {};
-  isInvalid: boolean = false ;
+  isInvalid: boolean = false;
 
-
-  constructor(@Optional() @Self() private ngControl: NgControl) {
+  constructor(@Optional() @Self() @Inject(forwardRef(() => NgControl)) private ngControl: NgControl) {
     if (this.ngControl) {
-      this.ngControl.valueAccessor = this; // Assign this component as the value accessor
+      this.ngControl.valueAccessor = this;
       this.ngControl?.statusChanges?.subscribe((status) => {
         this.isInvalid = this.ngControl.touched
           ? status === 'INVALID' && this.ngControl.touched
@@ -90,8 +78,6 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
   ngOnInit() {
     this.inputId = `verbena-input-${Math.random().toString(36).substr(2, 9)}`;
-    console.log(this.isInvalid);
-
   }
 
   onInput(event: Event) {
@@ -99,8 +85,8 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
     if (this.type === 'file' && target.files) {
       const files = target.files;
-      this.onChange(files); // Emit the selected files
-      this.valueChange.emit(files); // Emit selected files
+      this.onChange(files);
+      this.valueChange.emit(files);
     } else {
       this.value = target.value.trim();
       this.value = this.applyCapitalization(this.value, this.capitalization);
@@ -109,8 +95,6 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
       this.onChange(sanitizedValue);
       this.valueChange.emit(sanitizedValue);
     }
-    console.log(this.isInvalid);
-
   }
 
   applyCapitalization(value: string, format: string): string {
@@ -208,10 +192,9 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
       this.errorMessage = this.customErrorMessages.url || 'Please enter a valid URL.';
       this.isInvalid = true;
       return;
-
     }
 
-    this.isInvalid = false
+    this.isInvalid = false;
   }
 
   writeValue(value: any): void {

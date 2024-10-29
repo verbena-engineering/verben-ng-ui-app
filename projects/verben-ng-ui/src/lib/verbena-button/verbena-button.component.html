@@ -19,7 +19,7 @@ class="verbena-button {{ buttonClass }}"
     <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight" [stroke]="svgColor"></verben-svg>
   </ng-container>
 
-  <span *ngIf="text">{{ text }}</span>
+  <span *ngIf="text" class="{{ buttonTextClass }}" [ngStyle]="{'font-size': fontSize, 'font-weight': fontWeight}">{{ text }}</span>
 
   <ng-container *ngIf="svg && svgPosition === 'right'">
     <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight" [stroke]="svgColor"></verben-svg>

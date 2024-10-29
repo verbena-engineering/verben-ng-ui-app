@@ -25,7 +25,8 @@ box-sizing: border-box;
 }
 .childrenPadding
 {
-   padding: 10px 10px 10px 20px;
+  width: 100%;
+   padding: 10px 10px 10px calc(100% - 85%);
    display: flex;
    gap: 10px;
 }

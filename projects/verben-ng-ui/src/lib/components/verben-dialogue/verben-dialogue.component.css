@@ -1,46 +1,59 @@
 .modal-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1000;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  .closeIconClass{
-    position: absolute;
-    top: 0;
-    right: 0;
-    cursor: pointer;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
+}
+
+.modal-wrapper.fade-in {
+  opacity: 1; /* Fully visible */
+}
+
+.modal-wrapper.fade-out {
+  opacity: 0; /* Hidden */
+}
+
+.no-animation {
+  transition: none;
+}
+
+.closeIconClass {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+.modal-content {
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+}
+
+.max-w-sm {
+  max-width: 400px;
+}
+
+.max-w-md {
+  max-width: 600px;
+}
+
+.max-w-lg {
+  max-width: 800px;
+}
+
+@media (max-width: 768px) {
   .modal-content {
-    position: relative;
-    max-width: 600px; 
-    width: 100%; 
+    width: 100%;
+    max-width: none;
+    margin: 0 1rem;
   }
-  
-  .max-w-sm {
-    max-width: 400px;
-  }
-  
-  .max-w-md {
-    max-width: 600px;
-  }
-  
-  .max-w-lg {
-    max-width: 800px;
-  }
-  .cursor-pointer{
-    cursor: pointer;
-  }
-  @media (max-width: 768px) {
-    .modal-content {
-      width: 100%; 
-      max-width: none;
-      margin: 0 1rem;
-    }
-  }
-  
+}

@@ -17,6 +17,7 @@ export class VerbenaButtonComponent {
   @Input() width: string = '';
   @Input() height: string = '';
   @Input() fontSize: string = '14px';
+  @Input() fontWeight: string = '500';
   @Input() disable: boolean = false;
 
   @Input() styleType: 'primary' | 'secondary' | 'danger' | 'small' | 'outline' | 'grey' | 'ylw-outline' = 'primary';  // Predefined styles
@@ -28,6 +29,7 @@ export class VerbenaButtonComponent {
 
 
   @Input() buttonClass: string = ''; // Custom class for button
+  @Input() buttonTextClass: string = ''; // Custom class for button
 
   get buttonStyles() {
     switch (this.styleType) {

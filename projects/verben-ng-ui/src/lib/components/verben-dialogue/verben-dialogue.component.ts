@@ -21,7 +21,7 @@ export class VerbenDialogueComponent {
   @Input() closeOnEscape: boolean = true;
   @Input() isVisible: boolean = false;
   @Input() size: 'small' | 'medium' | 'large' = 'small';
-  @Input() backdropColor: string = 'rgba(0, 0, 0, 0.5)';
+  @Input() backdropColor: string = '#0000005d';
   @Input() customClass: string = '';
   @Input() disableFooter: boolean = false;
   @Input() margin: string = '';
@@ -31,7 +31,17 @@ export class VerbenDialogueComponent {
   @Input() closeIcon: string = 'close';
   @Input() closeIconClass: string = 'closeIconClass';
   @Input() boxShadow: string = 'box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1)';
-  @Output() closeModal = new EventEmitter<void>();
+  @Input() enableTransition: boolean =true;
+  @Input() modalData: any;  
+
+  @Output() openModal = new EventEmitter<any>();
+  @Output() closeModal = new EventEmitter<any>();
+
+  ngOnChanges() {
+    if (this.isVisible) {
+      this.openModal.emit(this.modalData); 
+    }
+  }
 
   @HostListener('document:keydown.escape', ['$event'])
   onKeydownHandler(event: KeyboardEvent) {
@@ -52,6 +62,6 @@ export class VerbenDialogueComponent {
 
   onClose() {
     this.isVisible = false;
-    this.closeModal.emit();
+    this.closeModal.emit(this.modalData);
   }
 }

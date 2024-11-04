@@ -30,7 +30,7 @@ import {
   VerbenaMailTemplateModule,
   DataTableModule,
   DatePickerModule,
-  VerbenDialogueModule
+  VerbenDialogueModule,
 } from '../../projects/verben-ng-ui/src/public-api';
 import { CDVModule } from './views/card-data-view/cdv.module';
 import { CommonModule } from '@angular/common';

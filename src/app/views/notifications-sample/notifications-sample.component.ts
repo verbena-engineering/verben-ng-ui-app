@@ -1,42 +1,29 @@
+// parent.component.ts
 import { Component } from '@angular/core';
+import { NotificationService } from '../../../../projects/verben-ng-ui/src/lib/services/notification.services';
 
 @Component({
   selector: 'app-notifications-sample',
   templateUrl: './notifications-sample.component.html',
   styleUrls: ['./notifications-sample.component.scss'],
+  providers:[NotificationService]
 })
-
 export class NotificationsSampleComponent {
+  constructor(private notificationService: NotificationService) {}
 
-   showNotification : boolean = false
-   showNotification1 : boolean = false
-   showNotification2 : boolean = false
+  showSuccessNotification() {
+    this.notificationService.success("Operation successful!", { timeout: 2000 });
+  }
 
-  showNotificationComp1(){ 
-    this.showNotification = true;
+  showErrorNotification() {
+    this.notificationService.error("Something went wrong!", { timeout: 3000 });
   }
-  showNotificationComp2(){ 
-    this.showNotification1 = true;
-  }
-  showNotificationComp3(){ 
-    this.showNotification2 = true;
-  }
-  
-  closeNotificationComp1(){ 
-    this.showNotification = false;
-  }
-  closeNotificationComp2(){ 
-    this.showNotification1 = false;
-  }
-  closeNotificationComp3(){ 
-    this.showNotification2 = false;
-  }
-  
 
-  handleButtonClick(button: any) {
-    console.log('Button clicked', button);
-    this.showNotification = false;
-    this.showNotification1 = false;
-    this.showNotification2 = false;
+  showWarningNotification() {
+    this.notificationService.warning("This is a warning.", { timeout: 3000 });
+  }
+
+  showInfoNotification() {
+    this.notificationService.info("Here’s some information.", { timeout: 3000 });
   }
 }

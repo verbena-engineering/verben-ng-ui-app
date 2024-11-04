@@ -1,15 +1,20 @@
-<div [ngStyle]="notificationStyles" [ngClass]="customClass">
+<div 
+*ngIf="showNotification"
+[ngStyle]="notificationStyles"
+>
   <div [ngStyle]="innerWrapperStyles">
     <verben-svg
-      [icon]="iconName"
-      [width]="iconWidth"
-      [height]="iconHeight"
-      [stroke]="stroke"
-      [fill]="fill"
+      [icon]="notificationOptions.iconName"
+      [width]="notificationOptions.iconWidth"
+      [height]="notificationOptions.iconHeight"
+      [stroke]="notificationOptions.stroke"
+      [fill]="notificationOptions.fill"
     ></verben-svg>
-        <p>{{ content }}</p>
+        <p>{{ notificationContent }}</p>
   </div>
-  <div [ngStyle]="btnWrapperStyle">
+  <div 
+  [ngStyle]="btnWrapperStyle">
+    <span   *ngIf="notificationOptions.buttons">
     <verbena-button
     *ngFor="let button of buttons"
     [text]="button.text"
@@ -20,6 +25,7 @@
     [fontSize]="'14px'"
     (click)="onButtonClick(button)"
   ></verbena-button>
+</span>
     <verben-svg
     class="closeSvg"
     [icon]="'close'"
@@ -29,3 +35,26 @@
   ></verben-svg>
   </div>
 </div>
+
+
+<!-- <div
+  *ngIf="showNotification"
+  class="notification"
+  [ngStyle]="{ 'background-color': notificationOptions.backgroundColor }"
+>
+  <span class="icon">{{ notificationOptions.icon }}</span>
+  <span class="message">{{ notificationContent }}</span>
+
+  !-- Optional buttons --
+  <div *ngIf="notificationOptions.buttons" class="buttons">
+    <button
+      *ngFor="let button of notificationOptions.buttons"
+      (click)="handleButtonClick(button)"
+      [ngStyle]="{ 'background-color': button.bgColor, 'color': button.primaryColor }"
+    >
+      {{ button.text }}
+    </button>
+  </div>
+
+  <button class="close-btn" (click)="closeNotification()">✖️</button>
+</div> -->

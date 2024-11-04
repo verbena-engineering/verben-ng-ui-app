@@ -118,3 +118,6 @@ export * from './lib/components/verben-mail/verben-mail.component';
 
 export * from './lib/components/verben-dialogue/verben-dialogue.module';
 export * from './lib/components/verben-dialogue/verben-dialogue.component';
+
+//notification service
+export * from './lib/services/notification.services'

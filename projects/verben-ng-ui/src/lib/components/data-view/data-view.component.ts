@@ -25,11 +25,17 @@ interface ViewState {
 export class DataViewComponent implements OnInit {
   @Input() buttonClass?: string;
   @Input() iconClass?: string;
-  @Input() activeIconClass?: string;
-  @Input() gridIcon: string = 'grid-3';
-  @Input() listIcon: string = 'list-view';
-
-  // Grouped view state input
+  @Input() activeIconClass?: string=""
+  @Input() columnCustomClass?:string=''
+  @Input() filterCustomClass?:string=''
+  @Input() sortCustomClass?:string=''
+  @Input() exportCustomClass?:string=''
+  @Input() selectCustomClass?:string=''
+  @Input() createCustomClass:string=''
+  @Input() tableIcon: string = 'grid-3';
+  @Input() cardIcon: string = 'list-view';
+  @Input() cardClass: string = '';
+  @Input() tableClass: string = '';
   @Input() viewState: ViewState = {
     isSearch: true,
     isColumn: true,
@@ -60,13 +66,13 @@ export class DataViewComponent implements OnInit {
   @Output() viewChange = new EventEmitter<boolean>();
   @Output() stateChange = new EventEmitter<{ key: string; value: boolean }>();
 
-  isGridView: boolean = false;
+  isTableView: boolean = false;
 
   ngOnInit(): void {}
 
   toggleView(): void {
-    this.isGridView = !this.isGridView;
-    this.viewChange.emit(this.isGridView);
+    this.isTableView = !this.isTableView;
+    this.viewChange.emit(this.isTableView);
   }
 
   onSearch(event: any): void {

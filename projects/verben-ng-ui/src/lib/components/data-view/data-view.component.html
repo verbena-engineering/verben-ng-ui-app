@@ -1,23 +1,30 @@
-<div class="toolbar flex gap justify-between items-center" [style.margin]="'0px 35px'">
+<div
+  class="toolbar flex gap justify-between items-center"
+  [style.margin]="'0px 35px'"
+>
   <div class="flex items-center gap">
     <div class="toggle-button-container">
       <button type="button" (click)="toggleView()" [ngClass]="buttonClass">
         <verben-svg
-          [icon]="gridIcon"
-          [class.active]="!isGridView"
-          [ngClass]="!isGridView ? activeIconClass : iconClass"
+          [icon]="tableIcon"
+          [class.active]="!isTableView"
+          [ngClass]="!isTableView ? activeIconClass : iconClass"
         ></verben-svg>
         <verben-svg
-          [icon]="listIcon"
-          [class.active]="isGridView"
-          [ngClass]="isGridView ? activeIconClass : iconClass"
+          [icon]="cardIcon"
+          [class.active]="isTableView"
+          [ngClass]="isTableView ? activeIconClass : iconClass"
           [width]="25"
           [height]="25"
         ></verben-svg>
       </button>
     </div>
     <!-- Search Input -->
-    <div [style.width]="inputWidth" class="search-input" *ngIf="viewState.isSearch">
+    <div
+      [style.width]="inputWidth"
+      class="search-input"
+      *ngIf="viewState.isSearch"
+    >
       <verbena-input
         [type]="'text'"
         [placeHolder]="'Search...'"
@@ -33,20 +40,28 @@
     <ng-container
       [appOutSideClick]="showColumnChild"
       (outSideClick)="showColumnChild = false"
-      *ngIf="viewState.isColumn && isGridView"
+      *ngIf="viewState.isColumn && isTableView"
     >
       <ng-container *ngIf="columnTemplate; else defaultColumn"></ng-container>
       <ng-template #defaultColumn>
         <span
-          class="flex gap text-xs items-center pd rounded cursor-pointer"
+          [ngClass]="[
+            'flex gap text-xs items-center pd rounded cursor-pointer',
+            columnCustomClass ? columnCustomClass : ''
+          ]"
           [style.background-color]="'#D9D9D940'"
           (click)="toggleChildView('column')"
         >
           <verben-svg [width]="15" [icon]="'column'"></verben-svg>
-          <span>Columns <sup>({{ selectedColumnCount }})</sup></span>
+          <span
+            >Columns <sup>({{ selectedColumnCount }})</sup></span
+          >
         </span>
         <div class="data-view-element">
-          <ng-content *ngIf="showColumnChild" select="[column-content]"></ng-content>
+          <ng-content
+            *ngIf="showColumnChild"
+            select="[column-content]"
+          ></ng-content>
         </div>
       </ng-template>
     </ng-container>
@@ -60,15 +75,23 @@
       <ng-container *ngIf="filterTemplate; else defaultFilter"></ng-container>
       <ng-template #defaultFilter>
         <span
-          class="flex gap text-xs items-center pd rounded cursor-pointer"
+        [ngClass]="[
+        'flex gap text-xs items-center pd rounded cursor-pointer',
+        filterCustomClass ? filterCustomClass : ''
+      ]"
           [style.background-color]="'#D9D9D940'"
           (click)="toggleChildView('filter')"
         >
           <verben-svg [width]="15" [icon]="'filter'"></verben-svg>
-          <span>Filter <sup>({{ selectedFilterTableCount }})</sup></span>
+          <span
+            >Filter <sup>({{ selectedFilterTableCount }})</sup></span
+          >
         </span>
         <div class="data-view-element">
-          <ng-content *ngIf="showFilterChild" select="[filter-content]"></ng-content>
+          <ng-content
+            *ngIf="showFilterChild"
+            select="[filter-content]"
+          ></ng-content>
         </div>
       </ng-template>
     </ng-container>
@@ -82,15 +105,23 @@
       <ng-container *ngIf="sortTemplate; else defaultSort"></ng-container>
       <ng-template #defaultSort>
         <span
-          class="flex gap text-xs items-center pd rounded cursor-pointer"
+        [ngClass]="[
+        'flex gap text-xs items-center pd rounded cursor-pointer',
+      sortCustomClass ? sortCustomClass : ''
+      ]"
           [style.background-color]="'#D9D9D940'"
           (click)="toggleChildView('sort')"
         >
           <verben-svg [width]="15" [icon]="'sort'"></verben-svg>
-          <span>Sort <sup>({{ selectedSortCount }})</sup></span>
+          <span
+            >Sort <sup>({{ selectedSortCount }})</sup></span
+          >
         </span>
         <div class="data-view-element">
-          <ng-content *ngIf="showSortChild" select="[sort-content]"></ng-content>
+          <ng-content
+            *ngIf="showSortChild"
+            select="[sort-content]"
+          ></ng-content>
         </div>
       </ng-template>
     </ng-container>
@@ -104,7 +135,10 @@
       <ng-container *ngIf="exportTemplate; else defaultExport"></ng-container>
       <ng-template #defaultExport>
         <span
-          class="flex gap text-xs items-center pd rounded cursor-pointer"
+        [ngClass]="[
+        'flex gap text-xs items-center pd rounded cursor-pointer',
+        exportCustomClass ? exportCustomClass : ''
+      ]"
           [style.background-color]="'#D9D9D940'"
           (click)="toggleChildView('export')"
         >
@@ -112,7 +146,10 @@
           Export
         </span>
         <div class="data-view-element">
-          <ng-content *ngIf="showExportChild" select="[export-content]"></ng-content>
+          <ng-content
+            *ngIf="showExportChild"
+            select="[export-content]"
+          ></ng-content>
         </div>
       </ng-template>
     </ng-container>
@@ -120,7 +157,10 @@
     <!-- Select Section -->
     <div *ngIf="viewState.isSelect">
       <span
-        class="flex gap text-xs items-center pd rounded cursor-pointer"
+      [ngClass]="[
+      'flex gap text-xs items-center pd rounded cursor-pointer',
+      selectCustomClass ? selectCustomClass : ''
+    ]"
         [style.background-color]="'#D9D9D940'"
         (click)="toggleChildView('select')"
       >
@@ -135,6 +175,7 @@
       <verbena-button
         class="text-sm font-semibold"
         [bgColor]="'#FFE681'"
+        [buttonClass]="createCustomClass"
         [pd]="'6px'"
         [borderRadius]="'4px'"
         [textColor]="'#000'"
@@ -143,19 +184,19 @@
         [text]="'Create New'"
         (click)="toggleChildView('create')"
       >
-    </verbena-button>
+      </verbena-button>
     </div>
   </div>
 </div>
 
 <!-- Grid and List View Handling -->
-<div *ngIf="isGridView; else listViewTemplate">
-  <div class="grid-view">
-    <ng-content select="[grid-content]"></ng-content>
+<div *ngIf="isTableView; else listViewTemplate">
+  <div [class]="tableClass">
+    <ng-content select="[table-content]"></ng-content>
   </div>
 </div>
 <ng-template #listViewTemplate>
-  <div class="list-view">
-    <ng-content select="[list-content]"></ng-content>
+  <div [class]="cardClass">
+    <ng-content select="[card-content]"></ng-content>
   </div>
 </ng-template>

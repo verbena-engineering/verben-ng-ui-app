@@ -9,10 +9,15 @@ import { NotificationService } from '../../../../projects/verben-ng-ui/src/lib/s
   providers:[NotificationService]
 })
 export class NotificationsSampleComponent {
+  buttons = [
+    { text: 'Yes', bgColor: 'white', primarycolor : '#2DB76F',fontSize:'14px'  },
+    { text: 'no', bgColor: 'white', primarycolor : '#2DB76F',fontSize:'14px'  },
+    { text: 'about', bgColor: 'white', primarycolor : '#2DB76F',fontSize:'14px'  },
+]
   constructor(private notificationService: NotificationService) {}
 
   showSuccessNotification() {
-    this.notificationService.success("Operation successful!", { timeout: 2000 });
+    this.notificationService.success("Operation successful!", { timeout: 2000});
   }
 
   showErrorNotification() {
@@ -25,5 +30,9 @@ export class NotificationsSampleComponent {
 
   showInfoNotification() {
     this.notificationService.info("Here’s some information.", { timeout: 3000 });
+  }
+
+  handleButtonClick(event:any){ 
+    console.log('events is here',event)
   }
 }

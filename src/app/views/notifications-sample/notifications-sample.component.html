@@ -1,4 +1,8 @@
-aa bb cc dd
-<button (click)="showSuccessNotification()">show notifications</button>
-<verben-notification></verben-notification>
+<button (click)="showWarningNotification()">show notifications</button>
+<verben-notification
+  position="top-right"
+ [buttons]="buttons"
+ width="500px"
+ (buttonClick)="handleButtonClick($event)"
+></verben-notification>
 

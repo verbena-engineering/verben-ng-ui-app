@@ -1,6 +1,7 @@
 import { Component, Input, EventEmitter, Output,OnInit, OnDestroy } from '@angular/core';
 import { NotificationService } from '../../services/notification.services';
 import { Subscription} from 'rxjs';
+
 interface Button {
   text: string;
   bgColor?: string; 
@@ -17,8 +18,7 @@ interface Button {
 })
 
 export class NotificationComponent implements OnInit, OnDestroy {
- 
- width?: string = '650px';  
+ @Input() width?: string = '400px';  
  height?: string = '50px'; 
  borderRadius: string = '15px';
 fontSize: string = '20px';
@@ -27,7 +27,7 @@ fontWeight: string = '700';
   @Input() content?: string;
    top: string = '';
   bottom: string = '';
-  buttons: Button[] = [];
+  @Input() buttons: Button[] = [];
   @Input() timeout: number = 10000; 
   @Input() position: string = 'top-left';
   transition: string = '0.6s ease-in-out';
@@ -35,12 +35,14 @@ fontWeight: string = '700';
   showNotification = false;
   notificationContent = '';
   notificationOptions: any = {};
-  
-  
+  subscription:Subscription
+   
   constructor(
-    private subscription: Subscription,
     private notificationService: NotificationService,
-  ) {}
+  ) {
+    this.subscription = new Subscription();
+    // console.log('show notification is here',this.showNotification)
+  }
 
   ngOnInit() {
     this.subscription = this.notificationService.notification$.subscribe(notification => {
@@ -48,6 +50,7 @@ fontWeight: string = '700';
         this.showNotification = true;
         this.notificationContent = notification.message;
         this.notificationOptions = notification.options;
+        // console.log('show notification value is here',this.showNotification)
 
         setTimeout(() => {
           this.closeNotification();
@@ -67,9 +70,9 @@ fontWeight: string = '700';
     this.notificationService.clearNotification();
   }
 
-  handleButtonClick(button: any) {
-    this.notificationService.clearNotification();
-  }
+  // handleButtonClick(button: any) {
+  //   this.notificationService.clearNotification();
+  // }
   
   @Output() buttonClick = new EventEmitter<Button>();
   @Output() close = new EventEmitter();

@@ -62,7 +62,7 @@ export class DataViewComponent implements OnInit {
   @Input() showExportChild: boolean = false;
   @Input() create: boolean = false;
   @Input() showSelected: boolean = false;
-
+  
   @Output() viewChange = new EventEmitter<boolean>();
   @Output() stateChange = new EventEmitter<{ key: string; value: boolean }>();
 
@@ -79,7 +79,6 @@ export class DataViewComponent implements OnInit {
     this.stateChange.emit({ key: 'search', value: event.target.value });
   }
 
-  // Generalized toggle method for managing UI components
   toggleChildView(viewType: string): void {
     switch (viewType) {
       case 'column':

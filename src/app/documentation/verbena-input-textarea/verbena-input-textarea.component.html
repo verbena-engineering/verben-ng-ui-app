@@ -46,7 +46,7 @@
   <verbena-input
   [label]="'Email'"
   [placeHolder]="'Enter your email'"
-  [required]="true"
+
   [type]="'email'"
   [(value)]="email"
   svg="backward"
@@ -71,11 +71,16 @@
   [showErrorMessage]="true"
   [errorMessageColor]="'blue'"
   [errorBorderColor]="'blue'"
-  [errorPosition]="'top'"
+  [errorPosition]="'left'"
 ></verbena-input>
 <verbena-input
     [label]="'tel'"
     [type]="'tel'"
+    [showBorder]="true"
+    [showErrorMessage]="true"
+    [errorMessageColor]="'orange'"
+    [errorBorderColor]="'green'"
+    [errorPosition]="'left'"
 ></verbena-input>
 <verbena-input
     [label]="'passwordgitgi'"
@@ -216,16 +221,15 @@
   [max]="60"
   [required]="true"
   [type]="'number'"
-  appNumberRange
-  [maxNumber]="10"
-  [minNumber]="5"
+
+
 
 
   [showBorder]="false"
   [showErrorMessage]="true"
   [errorMessageColor]="'green'"
   [errorBorderColor]="'green'"
-  [errorPosition]="'bottom'"
+  [errorPosition]="'right'"
 ></verbena-input>
 
 

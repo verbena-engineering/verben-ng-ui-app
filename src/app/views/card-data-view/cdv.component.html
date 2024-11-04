@@ -1,11 +1,10 @@
-  <verben-card-data-view (loadMoreClick)="loadMore()" #vdcv  dataId="mailAddress"  border="5px" pd="5px 10px" [cardDataList]="cardData" mg="20px">
-    <ng-template #card let-item card-body >
+  <verben-card-data-view  borderRadius="12px" (loadMoreClick)="loadMore()" #vdcv  dataId="mailAddress"  border="5px"  [cardDataList]="cardData" rbgColor="#f5f6f9" mg="20px">
+   <!-- <ng-template #card let-item card-body >
       <div (click)="currentData=vdcv.onItemClick(item);"class="flex cursor-pointer   bg-secondary rounded-xl my-2 ">
         <div class="w-3 rounded-xl rounded-tr-none rounded-br-none" [ngClass]="item.selected? 'bg-primary':'bg-secondary-200'"></div>
         <div class="flex flex-col py-2 px-4 w-full">
         <div class="flex">
           <span class="font-normal text-sm">{{item.title}}</span>
-          <!-- <verben-svg class="ml-auto" icon="close" [width]="20" [height]="20" color="black"></verben-svg>  -->
         </div>
         @for (ciItem of item.body; track ciItem.value) {
           <div class="gap-2">
@@ -28,6 +27,87 @@
            <input name="name" type="text" [(ngModel)]="currentData.data.name"  class="border-secondary-200 rounded-xl border-2 px-2 py-1" /> 
           </div>
         </form>
-    </div>    
-  </verben-card-data-view>
+       </div>  -->  
+
+    
+
+    <!-- <verben-card-data-view-header>
+      <h1>Header</h1>
+    </verben-card-data-view-header> -->
+    
+    <verben-left-card-data-view  class="">
+       <verben-left-card-data #vlcd [parent]="vdcv" dataId="mailAddress" class="bg-secondary-100 rounded-xl border-primary border-[1px]" [cardDataList]="cardData">
+        <ng-template #card let-item >
+        <div (click)="currentData=vdcv.onItemClick(item);"class="flex">
+          <verben-svg [width]="15"  [height]="15" (click)="vlcd.showChildren(item)" [ngClass]="vlcd.showToggle(item)?'visible':'invisible'" class="items-center flex  pr-1 cursor-pointer" [icon]="item.isChildrenExpanded?'minus':'plus'" />
+          <div (click)="currentData=vdcv.onItemClick(item);"class="flex cursor-pointer w-full  bg-secondary rounded-xl">
+            <div class="w-3 rounded-xl rounded-tr-none rounded-br-none" [ngClass]="item.selected? 'bg-primary':'bg-secondary-200'"></div>
+            <div class="flex flex-col py-2 px-4 w-full">
+            <div class="flex">
+              <span class="font-normal text-sm">{{item.title}}</span>
+            </div>
+            @for (ciItem of item.body; track ciItem.value) {
+              <div class="">
+                <span class="text-muted font-light text-xs">{{ciItem.title}}:</span>
+                <span class="text-black">{{ciItem.value}}</span>
+              </div>
+            }
+            </div>
+         
+          </div>
+          </div>
+        </ng-template>
+       
+        <ng-template #cardChild let-item let-index="index" >
+          <div (click)="currentChildData=vdcv.onCardChildClick(index);"class="flex cursor-pointer bg-secondary rounded-xl">
+            <div class="w-3 rounded-xl rounded-tr-none rounded-br-none" [ngClass]="item.selected? 'bg-primary':'bg-secondary-200'"></div>
+            <div class="flex flex-col py-2 px-4 w-full">
+            <div class="flex">
+              <span class="font-normal text-sm">{{item.title}}</span>
+            </div>
+            @for (ciItem of item.body; track ciItem.value) {
+              <div class="">
+                <span class="text-muted font-light text-xs">{{ciItem.title}}:</span>
+                <span class="text-black">{{ciItem.value}}</span>
+              </div>
+            }
+            </div>
+         </div>
+        </ng-template>
+
+       </verben-left-card-data>
+    </verben-left-card-data-view>
+    
+    <verben-right-card-data-view >
+      <ng-template  #parent>
+         <form class="flex flex-col  px-3 pb-3 rounded-xl h-full w-full relative">
+           <verbena-input name="mailAddress" label="Mail Address:" [(ngModel)]="currentData.data.mailAddress"   />
+           <verbena-input label="Name:" name="name" type="text" [(ngModel)]="currentData.data.name"   /> 
+           <!-- buttons -->
+          <div class="flex justify-between bottom-8 left-0 right-0 px-3 pb-2 absolute">
+            <verbena-button text="Delete" class="bg-secondary-200 text-[black]"/>
+            <verbena-button text="Save" class="bg-primary text-[black]"/>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template  #child>
+         <form class="flex flex-col  px-3 pb-3 rounded-xl h-full w-full relative">
+           <verbena-input name="mailAddress" label="Mail Address:" [(ngModel)]="currentChildData.data.mailAddress"   />
+           <verbena-input label="Name:" name="name" type="text" [(ngModel)]="currentChildData.data.name"   /> 
+          <div class="flex justify-between bottom-8 left-0 right-0 px-3 pb-2 absolute">
+            <verbena-button text="Delete" class="bg-secondary-200 text-[black]"/>
+            <verbena-button text="Save" class="bg-primary text-[black]"/>
+          </div>
+        </form>
+      </ng-template>
+    </verben-right-card-data-view> 
+     
+    <verben-card-data-view-footer class="float-right">
+       <div  class="flex gap-2">
+             <span class="paginator-text">{{cardData.length}} records loaded</span>
+             <button (click)="loadMore()" class="load-more">Load more</button>
+      </div>
+    </verben-card-data-view-footer>
+
+  </verben-card-data-view> 
 

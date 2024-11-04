@@ -5,15 +5,17 @@
   [showCloseIcon]="true"
   [dismissOutsideClick]="true"
   [closeOnEscape]="true"
-  [backdropColor]="'rgba(0, 0, 0, 0.7)'"
   [size]="'small'"
   [customClass]="'my-modal-custom-class'"
   [disableFooter]="false"
+  [modalData]="['lloyd']"
+  (openModal)="onModalOpen($event)"
+  (closeModal)="onModalClose($event)"
   [isVisible]="isModalVisible"
   [headerTemplate]="headerTemplate"
   [bodyTemplate]="bodyTemplate"
   [footerTemplate]="footerTemplate"
-  (closeModal)="onModalClose()"
+  (closeModal)="onModalClose($event)"
 >
 </verben-dialogue>
 
@@ -27,6 +29,6 @@
 </ng-template>
 
 <ng-template #footerTemplate>
-  <button class="btn btn-secondary" (click)="onModalClose()">Cancel</button>
+  <button class="btn btn-secondary" (click)="onModalClose($event)">Cancel</button>
   <button class="btn btn-primary" (click)="onConfirm()">Confirm</button>
 </ng-template>

@@ -22,6 +22,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() labelPosition: string = 'start';
   @Input() labelColor: string = 'black';
   @Input() disable: boolean = false;
+  @Input() readOnly: boolean = false; // New input property for read-only
   @Input() min?: number;
   @Input() max?: number;
   @Input() showBorder: boolean = true;
@@ -35,12 +36,9 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() svgColor: string = '';
   @Input() capitalization: 'none' | 'uppercase' | 'lowercase' | 'sentencecase' | 'pascalcase' | 'camelcase' = 'none';
 
-  // New input properties to expose custom classes
-  @Input() inputContainerClass: string = ''; // Expose custom class for input container
-  @Input() inputFieldClass: string = ''; // Expose custom class for input field
-  @Input() inputWrapperClass: string = ''; // Expose custom class for input wrapper
-
-  // New property for custom error messages
+  @Input() inputContainerClass: string = '';
+  @Input() inputFieldClass: string = '';
+  @Input() inputWrapperClass: string = '';
   @Input() customErrorMessages: {
     required?: string;
     minLength?: string;
@@ -60,7 +58,6 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
   errorMessage: string | undefined;
   inputId: string = '';
-
   onChange: any = () => {};
   onTouch: any = () => {};
   isInvalid: boolean = false;

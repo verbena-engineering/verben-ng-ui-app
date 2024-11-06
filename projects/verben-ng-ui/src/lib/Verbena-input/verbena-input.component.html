@@ -24,7 +24,8 @@
       [attr.placeholder]="placeHolder"
       [attr.minlength]="minLength?.toString()"
       [attr.maxlength]="maxLength?.toString()"
-      [attr.readOnly]="readOnly ? '' : null" 
+      [attr.disabled]="disable ? true : null"
+      [attr.readOnly]="readOnly ? true : null" 
       (input)="onInput($event)"
       [(ngModel)]="value"
       [ngStyle]="{

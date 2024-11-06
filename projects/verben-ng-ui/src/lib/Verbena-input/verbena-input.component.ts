@@ -21,8 +21,8 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() value: string = '';
   @Input() labelPosition: string = 'start';
   @Input() labelColor: string = 'black';
-  @Input() disable: boolean = false;
-  @Input() readOnly: boolean = false; // New input property for read-only
+  @Input() disable: boolean = false; // Disable input
+  @Input() readOnly: boolean = false; // Read-only input
   @Input() min?: number;
   @Input() max?: number;
   @Input() showBorder: boolean = true;

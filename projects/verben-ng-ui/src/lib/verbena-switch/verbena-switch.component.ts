@@ -28,7 +28,8 @@ export class VerbenaSwitchComponent implements ControlValueAccessor {
   @Output() change = new EventEmitter<boolean>();
 
   // Function to call when the toggle changes
-  private onChange: (value: boolean) => void = () => {};
+  public onChange: (value: boolean) => void = () => {};
+
   // Function to call when the component is touched
   private onTouched: () => void = () => {};
 
@@ -62,11 +63,13 @@ export class VerbenaSwitchComponent implements ControlValueAccessor {
   }
 
   // Method to handle input change directly from template
-  onChangeEvent(event: Event) {
+  onChangeEvent(event: Event): void {
     if (!this.disabled) {
-      this.checked = (event.target as HTMLInputElement).checked;
-      this.onChange(this.checked);
-      this.change.emit(this.checked);
+      const checked = (event.target as HTMLInputElement).checked;
+      this.checked = checked;
+      this.onChange(checked); // Call the onChange function with a boolean
+      this.change.emit(checked); // Emit the change event
     }
   }
+
 }

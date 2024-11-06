@@ -3,7 +3,7 @@
      [ngStyle]="{ 'width': width, 'height': height }"
      (click)="toggleSwitch()">
 
-  <input type="checkbox" [checked]="checked" class="check" (change)="onChange($event)" [disabled]="disabled" />
+  <input type="checkbox" [checked]="checked" class="check" (change)="onChangeEvent($event)" [disabled]="disabled" />
 
   <span class="slider"
         [ngStyle]="{ 'background-color': checked ? onColor : offColor }">

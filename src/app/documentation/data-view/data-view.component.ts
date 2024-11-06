@@ -57,6 +57,7 @@ export class DataViewComponent {
       checked: false,
     },
   ];
+  currentChildData!:CardData
   cardData: CardData[] = [
     {
       children:[],

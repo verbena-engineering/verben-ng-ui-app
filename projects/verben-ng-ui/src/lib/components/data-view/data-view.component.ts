@@ -31,6 +31,7 @@ export class DataViewComponent implements OnInit {
   @Input() sortCustomClass?:string=''
   @Input() exportCustomClass?:string=''
   @Input() selectCustomClass?:string=''
+  @Input() zIndex?:number=5
   @Input() createCustomClass:string=''
   @Input() tableIcon: string = 'grid-3';
   @Input() cardIcon: string = 'list-view';

@@ -57,7 +57,7 @@
             >Columns <sup>({{ selectedColumnCount }})</sup></span
           >
         </span>
-        <div class="data-view-element">
+        <div [style.z-index]="zIndex" class="data-view-element">
           <ng-content
             *ngIf="showColumnChild"
             select="[column-content]"
@@ -87,7 +87,7 @@
             >Filter <sup>({{ selectedFilterTableCount }})</sup></span
           >
         </span>
-        <div class="data-view-element">
+        <div [style.z-index]="zIndex" class="data-view-element">
           <ng-content
             *ngIf="showFilterChild"
             select="[filter-content]"
@@ -117,7 +117,7 @@
             >Sort <sup>({{ selectedSortCount }})</sup></span
           >
         </span>
-        <div class="data-view-element">
+        <div [style.z-index]="zIndex" class="data-view-element">
           <ng-content
             *ngIf="showSortChild"
             select="[sort-content]"
@@ -145,7 +145,7 @@
           <verben-svg [width]="15" [icon]="'export'"></verben-svg>
           Export
         </span>
-        <div class="data-view-element">
+        <div [style.z-index]="zIndex" class="data-view-element">
           <ng-content
             *ngIf="showExportChild"
             select="[export-content]"

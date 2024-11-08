@@ -3,7 +3,7 @@
   [style.margin]="'0px 35px'"
 >
   <div class="flex items-center gap">
-    <div class="toggle-button-container">
+    <div *ngIf="viewState.isToggle" class="toggle-button-container">
       <button type="button" (click)="toggleView()" [ngClass]="buttonClass">
         <verben-svg
           [icon]="tableIcon"

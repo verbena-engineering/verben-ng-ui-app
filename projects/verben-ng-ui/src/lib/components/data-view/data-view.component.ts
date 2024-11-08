@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -15,6 +14,7 @@ interface ViewState {
   isExport?: boolean;
   isSelect?: boolean;
   isCreate?:boolean
+  isToggle?:boolean
 }
 
 @Component({
@@ -44,7 +44,8 @@ export class DataViewComponent implements OnInit {
     isSort: true,
     isExport: true,
     isSelect: true,
-    isCreate:true
+    isCreate:true,
+    isToggle:true
   };
 
   @Input() searchTemplate?: Node;
@@ -63,12 +64,9 @@ export class DataViewComponent implements OnInit {
   @Input() showExportChild: boolean = false;
   @Input() create: boolean = false;
   @Input() showSelected: boolean = false;
-  
+  @Input() isTableView: boolean = false;
   @Output() viewChange = new EventEmitter<boolean>();
   @Output() stateChange = new EventEmitter<{ key: string; value: boolean }>();
-
-  isTableView: boolean = false;
-
   ngOnInit(): void {}
 
   toggleView(): void {

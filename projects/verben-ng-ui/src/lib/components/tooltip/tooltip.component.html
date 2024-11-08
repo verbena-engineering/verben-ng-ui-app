@@ -4,7 +4,7 @@
 >
   <ng-content></ng-content>
   <div [ngStyle]="tooltipStyles" [ngClass]="customClass" *ngIf="visible">
-    <ng-container *ngIf="tooltipContent">
+    <ng-container *ngIf="tooltipContent" >
       <ng-template [ngTemplateOutlet]="tooltipContent"></ng-template>
     </ng-container>
   </div>

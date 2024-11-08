@@ -18,10 +18,10 @@
   (viewChange)="onViewChange($event)"
   (stateChange)="onStateChange($event)"
 >
-  <div grid-content>
+  <div table-content>
     <!-- import table content -->
   </div>
-  <div list-content>
+  <div card-content>
     <verben-card-data-view
     (loadMoreClick)="loadMore()"
     #vdcv
@@ -147,5 +147,8 @@
   </div>
   <div export-content>
     <!-- import export component here -->
+  </div>
+  <div create-content>
+   hello
   </div>
 </verben-data-view>

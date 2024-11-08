@@ -16,7 +16,7 @@
     <label [for]="label">{{ label }}</label>
   </div>
 
-  <div class="input-wrapper {{ inputWrapperClass }}">
+  <div class="input-wrapper ">
     <input
       [ngClass]="{'ng-invalid': isInvalid}"
       [id]="label"
@@ -25,7 +25,7 @@
       [attr.minlength]="minLength?.toString()"
       [attr.maxlength]="maxLength?.toString()"
       [attr.disabled]="disable ? true : null"
-      [attr.readOnly]="readOnly ? true : null" 
+      [attr.readOnly]="readOnly ? true : null"
       (input)="onInput($event)"
       [(ngModel)]="value"
       [ngStyle]="{
@@ -34,7 +34,7 @@
         'border-radius': borderRadius,
         'color': textColor
       }"
-      class="input-field verben-input"
+      class="input-field verben-input {{ inputWrapperClass }}"
     />
   </div>
 

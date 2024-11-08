@@ -52,7 +52,7 @@ export class DataViewComponent implements OnInit {
   @Input() filterTemplate?: Node;
   @Input() sortTemplate?: Node;
   @Input() exportTemplate?: Node;
-
+  @Input() createTemplate?: Node;
   @Input() selectedColumnCount?: number = 0;
   @Input() selectedSortCount: number = 0;
   @Input() selectedFilterTableCount: number = 0;

@@ -171,7 +171,9 @@
     </div>
 
     <!-- Create Button -->
-    <div *ngIf="viewState.isCreate">
+     
+    <div   [appOutSideClick]="create"
+    (outSideClick)="create = false" *ngIf="viewState.isCreate">
       <verbena-button
         class="text-sm font-semibold"
         [bgColor]="'#FFE681'"
@@ -185,6 +187,16 @@
         (click)="toggleChildView('create')"
       >
       </verbena-button>
+      <ng-container *ngIf="createTemplate; else defaultCreate"></ng-container>
+      <ng-template #defaultCreate>
+      
+        <div [style.z-index]="zIndex" class="data-view-element">
+          <ng-content
+            *ngIf="create"
+            select="[create-content]"
+          ></ng-content>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

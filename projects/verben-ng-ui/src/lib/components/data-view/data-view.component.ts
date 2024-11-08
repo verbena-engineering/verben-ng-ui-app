@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -15,6 +14,7 @@ interface ViewState {
   isExport?: boolean;
   isSelect?: boolean;
   isCreate?:boolean
+  isToggle?:boolean
 }
 
 @Component({
@@ -44,7 +44,8 @@ export class DataViewComponent implements OnInit {
     isSort: true,
     isExport: true,
     isSelect: true,
-    isCreate:true
+    isCreate:true,
+    isToggle:true
   };
 
   @Input() searchTemplate?: Node;

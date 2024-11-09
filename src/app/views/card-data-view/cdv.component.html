@@ -59,7 +59,7 @@
         </ng-template>
        
         <ng-template #cardChild let-item let-index="index" >
-          <div (click)="currentChildData=vdcv.onCardChildClick(index);"class="flex cursor-pointer bg-secondary rounded-xl">
+          <div (click)="currentData=vdcv.onCardChildClick(index);"class="flex cursor-pointer bg-secondary rounded-xl">
             <div class="w-3 rounded-xl rounded-tr-none rounded-br-none" [ngClass]="item.selected? 'bg-primary':'bg-secondary-200'"></div>
             <div class="flex flex-col py-2 px-4 w-full">
             <div class="flex">
@@ -92,8 +92,8 @@
       </ng-template>
       <ng-template  #child>
          <form class="flex flex-col  px-3 pb-3 rounded-xl h-full w-full relative">
-           <verbena-input name="mailAddress" label="Mail Address:" [(ngModel)]="currentChildData.data.mailAddress"   />
-           <verbena-input label="Name:" name="name" type="text" [(ngModel)]="currentChildData.data.name"   /> 
+           <verbena-input name="mailAddress" label="Mail Address:" [(ngModel)]="currentData.data.mailAddress"   />
+           <verbena-input label="Name:" name="name" type="text" [(ngModel)]="currentData.data.name"   /> 
           <div class="flex justify-between bottom-8 left-0 right-0 px-3 pb-2 absolute">
             <verbena-button text="Delete" class="bg-secondary-200 text-[black]"/>
             <verbena-button text="Save" class="bg-primary text-[black]"/>

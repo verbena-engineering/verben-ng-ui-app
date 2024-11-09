@@ -1,13 +1,13 @@
 p{
     margin-bottom: 0px !important;
 }
-.btnWrapper{ 
+.mainwrapper{ 
     position: relative;
 }
 .closeSvg{
     position: absolute;
-    top:-15px;
-    right: -30px;
+    top:3px;
+    right: 8px;
     cursor: pointer;
 }
 

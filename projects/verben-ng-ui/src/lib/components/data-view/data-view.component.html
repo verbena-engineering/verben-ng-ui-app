@@ -15,6 +15,7 @@
           [class.active]="isTableView"
           [ngClass]="isTableView ? activeIconClass : iconClass"
           [width]="25"
+
           [height]="25"
         ></verben-svg>
       </button>
@@ -28,10 +29,19 @@
       <verbena-input
         [type]="'text'"
         [placeHolder]="'Search...'"
-        (input)="onSearch()"
-        [borderRadius]="'10px'"
+        (input)="onSearch($event)"
+         [bgColor]="'transparent'"
         [border]="'0'"
+        [value]="searchValue"
       />
+      <verben-svg
+      *ngIf="searchValue.length>0"
+          [icon]="'close'"
+          [width]="15"
+          (click)="onClearSearch()"
+          class="close-icon-class"
+          [height]="15"
+        ></verben-svg>
     </div>
   </div>
 

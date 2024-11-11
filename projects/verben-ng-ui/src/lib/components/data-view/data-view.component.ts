@@ -67,6 +67,7 @@ export class DataViewComponent implements OnInit {
   @Input() isTableView: boolean = false;
   @Output() viewChange = new EventEmitter<boolean>();
   @Output() stateChange = new EventEmitter<{ key: string; value: boolean }>();
+  @Output() onSearchChange=new EventEmitter()
   ngOnInit(): void {}
 
   toggleView(): void {
@@ -74,8 +75,8 @@ export class DataViewComponent implements OnInit {
     this.viewChange.emit(this.isTableView);
   }
 
-  onSearch(event: any): void {
-    this.stateChange.emit({ key: 'search', value: event.target.value });
+  onSearch(): void {
+    this.onSearchChange.emit();
   }
 
   toggleChildView(viewType: string): void {

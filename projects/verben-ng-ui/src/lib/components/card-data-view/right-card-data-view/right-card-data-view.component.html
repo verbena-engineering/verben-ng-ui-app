@@ -1,0 +1,6 @@
+     <ng-container *ngIf="parentData && !chilData">
+        <ng-content *ngTemplateOutlet="parent"></ng-content>
+     </ng-container>
+     <ng-container *ngIf="chilData">
+        <ng-content *ngTemplateOutlet="child"></ng-content>  
+     </ng-container>

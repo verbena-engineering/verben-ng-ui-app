@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -15,6 +14,7 @@ interface ViewState {
   isExport?: boolean;
   isSelect?: boolean;
   isCreate?:boolean
+  isToggle?:boolean
 }
 
 @Component({
@@ -25,11 +25,20 @@ interface ViewState {
 export class DataViewComponent implements OnInit {
   @Input() buttonClass?: string;
   @Input() iconClass?: string;
-  @Input() activeIconClass?: string;
-  @Input() gridIcon: string = 'grid-3';
-  @Input() listIcon: string = 'list-view';
-
-  // Grouped view state input
+  @Input() activeIconClass?: string=""
+  @Input() columnCustomClass?:string=''
+  @Input() filterCustomClass?:string=''
+  @Input() sortCustomClass?:string=''
+  @Input() exportCustomClass?:string=''
+  @Input() selectCustomClass?:string=''
+  @Input() zIndex?:number=5
+  @Input() createCustomClass:string=''
+  @Input() tableIcon: string = 'grid-3';
+  @Input() cardIcon: string = 'list-view';
+  @Input() cardClass: string = '';
+  @Input() tableClass: string = '';
+  @Input() searchKey:string='search';
+  @Input() searchValue:string='';
   @Input() viewState: ViewState = {
     isSearch: true,
     isColumn: true,
@@ -37,7 +46,8 @@ export class DataViewComponent implements OnInit {
     isSort: true,
     isExport: true,
     isSelect: true,
-    isCreate:true
+    isCreate:true,
+    isToggle:true
   };
 
   @Input() searchTemplate?: Node;
@@ -45,7 +55,7 @@ export class DataViewComponent implements OnInit {
   @Input() filterTemplate?: Node;
   @Input() sortTemplate?: Node;
   @Input() exportTemplate?: Node;
-
+  @Input() createTemplate?: Node;
   @Input() selectedColumnCount?: number = 0;
   @Input() selectedSortCount: number = 0;
   @Input() selectedFilterTableCount: number = 0;
@@ -56,24 +66,26 @@ export class DataViewComponent implements OnInit {
   @Input() showExportChild: boolean = false;
   @Input() create: boolean = false;
   @Input() showSelected: boolean = false;
-
+  @Input() isTableView: boolean = false;
   @Output() viewChange = new EventEmitter<boolean>();
   @Output() stateChange = new EventEmitter<{ key: string; value: boolean }>();
-
-  isGridView: boolean = false;
-
+  @Output() onSearchChange=new EventEmitter<{ key: string; value: string }>()
   ngOnInit(): void {}
 
   toggleView(): void {
-    this.isGridView = !this.isGridView;
-    this.viewChange.emit(this.isGridView);
+    this.isTableView = !this.isTableView;
+    this.viewChange.emit(this.isTableView);
   }
 
-  onSearch(event: any): void {
-    this.stateChange.emit({ key: 'search', value: event.target.value });
+  onSearch(event:any): void {
+    this.searchValue=event.target.value
+    console.log({key:this.searchKey, value:event.target.value});
+    this.onSearchChange.emit({key:this.searchKey, value:this.searchValue});
   }
-
-  // Generalized toggle method for managing UI components
+  
+onClearSearch(){
+ this.searchValue=""
+}
   toggleChildView(viewType: string): void {
     switch (viewType) {
       case 'column':

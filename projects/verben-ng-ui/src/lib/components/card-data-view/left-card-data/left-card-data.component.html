@@ -1,0 +1,15 @@
+            @for (item of cardDataList; track  $index) {
+                <div class="flex">
+                    <div class="flex-col full-width">
+                        <ng-content  *ngTemplateOutlet="card;context: {$implicit: item}"></ng-content>
+                        <!-- children -->
+                        <div class="childrenPadding flex-col flex" *ngIf="item.children.length>0 && item.isChildrenExpanded"> 
+                           @for (child of item.children; track  $index) {
+                            <ng-content  *ngTemplateOutlet="cardChild;context: {index:$index, $implicit: child}"></ng-content>
+                           }
+                        </div>
+                    </div>
+                </div>
+                
+            }
+

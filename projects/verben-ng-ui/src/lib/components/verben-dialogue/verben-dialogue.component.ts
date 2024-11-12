@@ -28,20 +28,24 @@ export class VerbenDialogueComponent {
   @Input() padding: string = '10px';
   @Input() borderRadius: string = '10px';
   @Input() dialogueBgColor: string = '#fff';
-  @Input() closeIcon: string = 'close';
   @Input() closeIconClass: string = 'closeIconClass';
   @Input() boxShadow: string = 'box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1)';
-  @Input() enableTransition: boolean =true;
-  @Input() modalData: any;  
+  @Input() enableTransition: boolean = true;
+  @Input() modalData: any;
 
+  // New inputs for drawer mode
+  @Input() mode: 'dialogue' | 'drawer' = 'dialogue';
+  @Input() position: 'left' | 'right' = 'right';
+  @Input() drawerWidth: string = '500px';
   @Output() openModal = new EventEmitter<any>();
   @Output() closeModal = new EventEmitter<any>();
 
   ngOnChanges() {
     if (this.isVisible) {
-      this.openModal.emit(this.modalData); 
+      this.openModal.emit(this.modalData);
     }
   }
+  
 
   @HostListener('document:keydown.escape', ['$event'])
   onKeydownHandler(event: KeyboardEvent) {

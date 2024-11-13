@@ -1,15 +1,18 @@
-<div [ngStyle]="notificationStyles" [ngClass]="customClass">
+<div 
+[ngStyle]="notificationStyles"
+>
   <div [ngStyle]="innerWrapperStyles">
     <verben-svg
-      [icon]="iconName"
-      [width]="iconWidth"
-      [height]="iconHeight"
-      [stroke]="stroke"
-      [fill]="fill"
+      [icon]="notificationOptions.iconName"
+      [width]="notificationOptions.iconWidth"
+      [height]="notificationOptions.iconHeight"
+      [stroke]="notificationOptions.stroke"
+      [fill]="notificationOptions.fill"
     ></verben-svg>
-        <p>{{ content }}</p>
+        <p>{{ notificationContent }}</p>
   </div>
-  <div [ngStyle]="btnWrapperStyle">
+  <div class="btnWrapper">
+    <div [ngStyle]="btnWrapperStyle" *ngIf="buttons.length">
     <verbena-button
     *ngFor="let button of buttons"
     [text]="button.text"
@@ -20,6 +23,7 @@
     [fontSize]="'14px'"
     (click)="onButtonClick(button)"
   ></verbena-button>
+    </div>
     <verben-svg
     class="closeSvg"
     [icon]="'close'"
@@ -29,3 +33,4 @@
   ></verben-svg>
   </div>
 </div>
+

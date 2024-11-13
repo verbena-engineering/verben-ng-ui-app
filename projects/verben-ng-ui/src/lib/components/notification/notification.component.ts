@@ -1,4 +1,6 @@
-import { Component, Input, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, EventEmitter, Output,OnInit, OnDestroy } from '@angular/core';
+import { NotificationService } from '../../services/notification.services';
+import { Subscription} from 'rxjs';
 
 interface Button {
   text: string;
@@ -12,56 +14,76 @@ interface Button {
 @Component({
   selector: 'verben-notification',
   templateUrl: './notification.component.html',
-  styleUrl: './notification.component.css'
+  styleUrl: './notification.component.css',
 })
 
-export class NotificationComponent implements OnChanges {
-
-  @Input() bgColor: string = '#D6F3E6'; 
-  @Input() textColor: string = '#2DB76F';  
-  @Input() width?: string = '650px';  
-  @Input() height?: string = '50px'; 
-  @Input() border?: string;
-  @Input() borderRadius: string = '15px';
-  @Input() fontSize: string = '20px';
-  @Input() fontWeight: string = '700';
-  @Input() padding: string = '10px 2.5rem 10px 1.5rem';
-  @Input() iconName: string = 'success';
-  @Input() iconWidth: number = 20;
-  @Input() iconHeight: number = 20;
+export class NotificationComponent implements OnInit, OnDestroy {
+ @Input() width?: string = '400px';  
+ height?: string = '50px'; 
+ borderRadius: string = '15px';
+fontSize: string = '20px';
+fontWeight: string = '700';
+ padding: string = '10px 2.5rem 10px 1.5rem';
   @Input() content?: string;
-  @Input() stroke: string = '';
-  @Input() fill: string = '';
-  @Input() top: string = '';
-  @Input() bottom: string = '';
+   top: string = '';
+  bottom: string = '';
   @Input() buttons: Button[] = [];
   @Input() timeout: number = 10000; 
-  @Input() showNotification : boolean = false; 
   @Input() position: string = 'top-left';
-  @Input() transition: string = '0.6s ease-in-out';
-  @Input() customClass?:string
-  
+  transition: string = '0.6s ease-in-out';
 
+  showNotification = false;
+  notificationContent = '';
+  notificationOptions: any = {};
+  subscription:Subscription
+   
+  constructor(
+    private notificationService: NotificationService,
+  ) {
+    this.subscription = new Subscription();
+    // console.log('show notification is here',this.showNotification)
+  }
+
+  ngOnInit() {
+    this.subscription = this.notificationService.notification$.subscribe(notification => {
+      if (notification) {
+        this.showNotification = true;
+        this.notificationContent = notification.message;
+        this.notificationOptions = notification.options;
+        // console.log('show notification value is here',this.showNotification)
+
+        setTimeout(() => {
+          this.closeNotification();
+        }, this.notificationOptions.timeout);
+      } else {
+        this.showNotification = false;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  closeNotification() {
+    this.showNotification = false;
+    this.notificationService.clearNotification();
+  }
+
+  // handleButtonClick(button: any) {
+  //   this.notificationService.clearNotification();
+  // }
+  
   @Output() buttonClick = new EventEmitter<Button>();
   @Output() close = new EventEmitter();
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['showNotification']) {
-      if (this.showNotification) {
-        setTimeout(() => {
-          this.close.emit();
-        }, this.timeout);
-      }
-    }
-  }
-
   get notificationStyles() {
     return {
-      'background-color': this.bgColor,
-      'color': this.textColor,
+      'background-color': this.notificationOptions.backgroundColor,
+      'color': this.notificationOptions.textColor,
       'padding': this.padding,
       'border-radius': this.borderRadius,
-      'border': this.border,
+      'border': '1px solid transparent',
       'width': this.width,
       'font-size':this.fontSize,
       'font-weight':this.fontWeight,
@@ -133,9 +155,7 @@ export class NotificationComponent implements OnChanges {
     this.buttonClick.emit(button);
   }
 
-  closeNotification(){ 
-    this.close.emit();
-  }
 }
+
 
 

@@ -142,5 +142,6 @@ export class DataViewComponent {
 
   onStateChange(event: { key: string; value: boolean }): void {
     console.log(`State changed for ${event.key}:`, event.value);
+   
   }
 }

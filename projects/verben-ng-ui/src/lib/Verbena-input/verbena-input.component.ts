@@ -34,11 +34,13 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() svgWidth: number = 20;
   @Input() svgHeight: number = 20;
   @Input() svgColor: string = '';
+
   @Input() capitalization: 'none' | 'uppercase' | 'lowercase' | 'sentencecase' | 'pascalcase' | 'camelcase' = 'none';
 
   @Input() inputContainerClass: string = '';
   @Input() inputFieldClass: string = '';
   @Input() inputWrapperClass: string = '';
+  @Input() passwordToggle?: boolean = false;
   @Input() customErrorMessages: {
     required?: string;
     minLength?: string;
@@ -61,6 +63,18 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   onChange: any = () => {};
   onTouch: any = () => {};
   isInvalid: boolean = false;
+
+
+  @Input() icon: string = 'eye';
+  @Input() textPass: string = 'Show';
+
+
+  toggleIcon(): void {
+    this.icon = this.icon === 'eye' ? 'eye-closed' : 'eye';
+    this.textPass = this.textPass === 'Show' ? 'Hide' : 'Show';
+    this.type = this.type === 'password' ? 'text' : 'password';
+
+  }
 
   constructor(@Optional() @Self() @Inject(forwardRef(() => NgControl)) private ngControl: NgControl) {
     if (this.ngControl) {

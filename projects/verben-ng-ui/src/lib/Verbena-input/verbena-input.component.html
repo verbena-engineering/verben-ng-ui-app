@@ -20,7 +20,7 @@
 
      }">
       <label [for]="label">{{ label }}</label>
-      <div *ngIf=" passwordToggle === true" [ngStyle]="{
+      <!-- <div *ngIf=" passwordToggle === true" [ngStyle]="{
 
         'display': 'flex',
         'align-item':'center',
@@ -39,12 +39,41 @@
         [height]="20"
         color="black"
       ></verben-svg>
-      <p>{{ textPass }}</p>
-    </div>
+       <p>{{ textPass }}</p>
+    </div> -->
     </div>
   </div>
 
   <div class="input-wrapper ">
+    <div *ngIf=" passwordToggle === true" [ngStyle]="{
+
+      'display': 'grid',
+      'align-item':'center',
+      'justify-content':'center',
+      'gap':'4px',
+      'color':'grey',
+      'cursor':'pointer',
+      'position': 'absolute',
+      'right':'10px',
+      'top':'0',
+      'bottom':'0',
+
+      'margin': 'auto',
+      'padding-top':'9px'
+
+     }"
+    (click)="toggleIcon()"
+     >
+      <verben-svg
+
+
+      [icon]="icon"
+      [width]="20"
+      [height]="20"
+      color="black"
+    ></verben-svg>
+
+  </div>
     <input
       [ngClass]="{'ng-invalid': isInvalid}"
       [id]="label"

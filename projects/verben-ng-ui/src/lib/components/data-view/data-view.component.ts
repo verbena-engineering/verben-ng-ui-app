@@ -37,6 +37,8 @@ export class DataViewComponent implements OnInit {
   @Input() cardIcon: string = 'list-view';
   @Input() cardClass: string = '';
   @Input() tableClass: string = '';
+  @Input() searchKey:string='search';
+  @Input() searchValue:string='';
   @Input() viewState: ViewState = {
     isSearch: true,
     isColumn: true,
@@ -67,6 +69,7 @@ export class DataViewComponent implements OnInit {
   @Input() isTableView: boolean = false;
   @Output() viewChange = new EventEmitter<boolean>();
   @Output() stateChange = new EventEmitter<{ key: string; value: boolean }>();
+  @Output() onSearchChange=new EventEmitter<{ key: string; value: string }>()
   ngOnInit(): void {}
 
   toggleView(): void {
@@ -74,10 +77,14 @@ export class DataViewComponent implements OnInit {
     this.viewChange.emit(this.isTableView);
   }
 
-  onSearch(event: any): void {
-    this.stateChange.emit({ key: 'search', value: event.target.value });
+  onSearch(event:any): void {
+    this.searchValue=event.target.value
+    this.onSearchChange.emit({key:this.searchKey, value:this.searchValue});
   }
-
+  
+onClearSearch(){
+ this.searchValue=""
+}
   toggleChildView(viewType: string): void {
     switch (viewType) {
       case 'column':

@@ -13,7 +13,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() svgPosition: 'left' | 'right' = 'left';
   @Input() minLength?: number;
   @Input() maxLength?: number;
-  @Input() type: 'text' | 'password' | 'integer' | 'number' | 'decimal' | 'email' | 'date' | 'tel' | 'url' | 'file' | 'color' = 'text';
+  @Input() type: 'text' | 'password' | 'integer' | 'number' | 'decimal' | 'email' | 'date' | 'tel' | 'url' | 'file' | 'color' | 'search' = 'text';
   @Input() bgColor: string = '#f9f9f9';
   @Input() border: string = '';
   @Input() borderRadius: string = '5px';

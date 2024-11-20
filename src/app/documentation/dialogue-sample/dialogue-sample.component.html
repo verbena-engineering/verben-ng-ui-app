@@ -6,7 +6,7 @@
   [dismissOutsideClick]="true"
   [closeOnEscape]="true"
   [size]="'small'"
-  [mode]="'drawer'"
+  [mode]="'dialogue'"
   [customClass]="'my-modal-custom-class'"
   [disableFooter]="false"
   [modalData]="[{data:{first_name:'verben-ng', last_name:'verbena'}}]"
@@ -19,7 +19,6 @@
   (closeModal)="onModalClose($event)"
 >
 </verben-dialogue>
-
 
 <!-- Define templates -->
 <ng-template #headerTemplate>

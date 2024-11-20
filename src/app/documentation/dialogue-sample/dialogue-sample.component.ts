@@ -12,8 +12,6 @@ export class DialogueSampleComponent {
     this.isModalVisible = true;
   }
 
-
-
   onConfirm() {
     this.isModalVisible = false;
   }

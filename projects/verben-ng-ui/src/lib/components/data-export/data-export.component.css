@@ -1,5 +1,6 @@
 .export-card {
   font-size: 0.75rem;
+  z-index: 10;
 }
 
 .card-header {

@@ -292,10 +292,15 @@
   </ng-container>
 </lib-data-table>
 
-<app-table-export
-  [data]="tableData()"
-  (exportDataEvent)="handleExport($event)"
-></app-table-export>
+<div class="bg-primary">
+  <app-table-export
+    [data]="tableData()"
+    (exportDataEvent)="handleExport($event)"
+  ></app-table-export>
 
-<lib-data-export [data]="tableData()" (exportDataEvent)="handleExport($event)">
-</lib-data-export>
+  <lib-data-export
+    [data]="tableData()"
+    (exportDataEvent)="handleExport($event)"
+  >
+  </lib-data-export>
+</div>

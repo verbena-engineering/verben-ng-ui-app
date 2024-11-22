@@ -1,0 +1,16 @@
+<div class="relative dropdown-container" [ngStyle]="dropdownStyles">
+    <span (click)="toggleDropdown()">
+      <ng-content select="[dropdown-trigger]"></ng-content>
+    </span>
+  
+    <div
+      appDropdownPosition
+      [ngClass]="{'z-[9999]': true}"
+      *ngIf="dropdownOpen"
+      (mouseleave)="onMouseOut()"
+      class="w-36 boxShadow absolute top-2 right-0 z-auto dropdown"
+    >
+      <ng-content select="[dropdown-content]"></ng-content>
+    </div>
+  </div>
+  

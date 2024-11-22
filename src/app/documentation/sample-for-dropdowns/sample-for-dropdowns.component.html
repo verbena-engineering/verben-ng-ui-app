@@ -1,8 +1,18 @@
-<verben-dropdown>
+<verben-dropdown 
+[(dropdownOpen)]="isOpen" 
+(close)="onClose()"
+>
     <button dropdown-trigger>Toggle Dropdown</button>
   
     <div dropdown-content>
-      <p>This is the content inside the dropdown.</p>
+      <div class="p-4 flex gap-4">
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugiat mollitia commodi, doloribus iure distinctio error eaque aliquid natus, vitae placeat rem perferendis enim dolore quae quia, maxime ipsum. Quasi fuga ipsum temporibus odit distinctio dolor omnis! Id quis distinctio repellat.</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugiat mollitia commodi, doloribus iure distinctio error eaque aliquid natus, vitae placeat rem perferendis enim dolore quae quia, maxime ipsum. Quasi fuga ipsum temporibus odit distinctio dolor omnis! Id quis distinctio repellat.</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugiat mollitia commodi, doloribus iure distinctio error eaque aliquid natus, vitae placeat rem perferendis enim dolore quae quia, maxime ipsum. Quasi fuga ipsum temporibus odit distinctio dolor omnis! Id quis distinctio repellat.</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugiat mollitia commodi, doloribus iure distinctio error eaque aliquid natus, vitae placeat rem perferendis enim dolore quae quia, maxime ipsum. Quasi fuga ipsum temporibus odit distinctio dolor omnis! Id quis distinctio repellat.</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugiat mollitia commodi, doloribus iure distinctio error eaque aliquid natus, vitae placeat rem perferendis enim dolore quae quia, maxime ipsum. Quasi fuga ipsum temporibus odit distinctio dolor omnis! Id quis distinctio repellat.</p>
+        <button (click)="onClose()">close</button>
+      </div>
     </div>
   </verben-dropdown>
   

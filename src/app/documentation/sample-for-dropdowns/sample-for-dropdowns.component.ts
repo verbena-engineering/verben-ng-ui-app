@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrl: './sample-for-dropdowns.component.scss'
 })
 export class SampleForDropdownsComponent {
+ isOpen:boolean = false;
 
+ onClose(){ 
+  console.log('uessss',this.isOpen)
+  this.isOpen = false
+ }
 }

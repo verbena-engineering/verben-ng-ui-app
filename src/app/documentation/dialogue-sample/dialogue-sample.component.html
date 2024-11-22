@@ -5,15 +5,18 @@
   [showCloseIcon]="true"
   [dismissOutsideClick]="true"
   [closeOnEscape]="true"
-  [backdropColor]="'rgba(0, 0, 0, 0.7)'"
   [size]="'small'"
+  [mode]="'drawer'"
   [customClass]="'my-modal-custom-class'"
   [disableFooter]="false"
+  [modalData]="[{data:{first_name:'verben-ng', last_name:'verbena'}}]"
+  (openModal)="onModalOpen($event)"
+  (closeModal)="onModalClose($event)"
   [isVisible]="isModalVisible"
   [headerTemplate]="headerTemplate"
   [bodyTemplate]="bodyTemplate"
   [footerTemplate]="footerTemplate"
-  (closeModal)="onModalClose()"
+  (closeModal)="onModalClose($event)"
 >
 </verben-dialogue>
 
@@ -27,6 +30,7 @@
 </ng-template>
 
 <ng-template #footerTemplate>
-  <button class="btn btn-secondary" (click)="onModalClose()">Cancel</button>
+  <button class="btn btn-secondary" (click)="onModalClose($event)">Cancel</button>
   <button class="btn btn-primary" (click)="onConfirm()">Confirm</button>
 </ng-template>
+<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptate quibusdam porro iusto nam sapiente quasi, quaerat omnis ut modi! Aspernatur quam laudantium atque soluta veritatis blanditiis nesciunt vero itaque cupiditate, necessitatibus illum? Accusantium nihil, quaerat natus accusamus, esse aliquam nesciunt, aut laudantium fuga in officiis sequi nulla totam. Eveniet vero ut dolorum fugiat quam distinctio.</p>

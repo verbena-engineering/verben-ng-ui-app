@@ -12,6 +12,7 @@ export class TooltipComponent {
   @Input() textColor: string = 'white'; 
   @Input() padding: string = '5px 10px'; 
   @Input() borderRadius: string = '4px'; 
+  @Input() zIndex: string = ''; 
   @Input() border: string = '';
   @Input() width: string = '';
   @Input() top?: string; 
@@ -74,7 +75,7 @@ export class TooltipComponent {
       'border-radius': this.borderRadius,
       'border': this.border,
       'position': 'absolute',
-      'z-index': '9999',
+      'z-index': this.zIndex || '9999',
       'top':  this.top || this.tooltipPosition.top,
       'left': this.left || this.tooltipPosition.left,
       'right': this.right,

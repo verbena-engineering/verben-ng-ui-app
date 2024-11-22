@@ -97,8 +97,21 @@ export class SvgComponent implements OnInit, OnChanges {
       });
     });
 
+    const masks = svgElement.querySelectorAll('mask');
+    masks.forEach((mask, index) => {
+      const newMaskId = `mask_${this.icon}_${index}`;
+      mask.setAttribute('id', newMaskId);
+
+      const maskReferences = svgElement.querySelectorAll(`[mask="url(#${mask.id})"]`);
+      maskReferences.forEach(ref => {
+        ref.setAttribute('mask', `url(#${newMaskId})`);
+      });
+    });
+
+
     const svgContainerEl = this.svgContainer.nativeElement;
     svgContainerEl.innerHTML = '';
     svgContainerEl.appendChild(svgElement);
   }
 }
+

@@ -114,6 +114,10 @@ const routes: Routes = [
       loadChildren: () =>
         import('./dialogue-sample/dialogue-sample.module').then((m)=>m.DialogueSampleModule),
     },
+    {
+      path: 'examples',
+      loadChildren: () => import('./examples/examples.module').then((m) => m.ExamplesModule)
+    }
 ];
 
 @NgModule({

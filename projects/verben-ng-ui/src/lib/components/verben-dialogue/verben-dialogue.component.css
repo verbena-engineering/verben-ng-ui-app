@@ -1,46 +1,100 @@
 .modal-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1000;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  .closeIconClass{
-    position: absolute;
-    top: 0;
-    right: 0;
-    cursor: pointer;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: 0.3s ease-in-out;
+}
+.modal-wrapper.visible {
+  visibility: visible;
+}
+
+.modal-wrapper.invisible {
+  visibility: hidden;
+  transition:0.3s ease, visibility 0s 0.3s; /* Delay visibility to keep it until transition ends */
+}
+.pos-left{
+  position:fixed;
+  top:0 ;
+  left: 0;
+  height: 100vh;
+}
+.modal-wrapper.fade-in {
+  opacity: 1; /* Fully visible */
+}
+
+.modal-wrapper.fade-out {
+  opacity: 0; /* Hidden */
+}
+
+.no-animation {
+  transition: none;
+}
+
+.closeIconClass {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+.modal-content {
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+}
+.drawer-left,
+.drawer-right {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  overflow-y: auto;
+  transition:0.4s ease-in-out;
+}
+
+/* Slide out initial position */
+.drawer-left {
+  left:0;
+  transform: translateX(-100%);
+}
+
+.drawer-right {
+  right: 0;
+  transform: translateX(100%);
+}
+
+/* Slide-in position */
+.drawer-show-left {
+  transform: translateX(0);
+}
+
+.drawer-show-right {
+  transform: translateX(0);
+}
+.max-w-sm {
+  max-width: 400px;
+}
+
+.max-w-md {
+  max-width: 600px;
+}
+
+.max-w-lg {
+  max-width: 800px;
+}
+
+@media (max-width: 768px) {
   .modal-content {
-    position: relative;
-    max-width: 600px; 
-    width: 100%; 
+    width: 100%;
+    max-width: none;
+    margin: 0 1rem;
   }
-  
-  .max-w-sm {
-    max-width: 400px;
-  }
-  
-  .max-w-md {
-    max-width: 600px;
-  }
-  
-  .max-w-lg {
-    max-width: 800px;
-  }
-  .cursor-pointer{
-    cursor: pointer;
-  }
-  @media (max-width: 768px) {
-    .modal-content {
-      width: 100%; 
-      max-width: none;
-      margin: 0 1rem;
-    }
-  }
-  
+}

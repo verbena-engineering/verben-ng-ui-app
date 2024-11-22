@@ -12,11 +12,17 @@ export class DialogueSampleComponent {
     this.isModalVisible = true;
   }
 
-  onModalClose() {
-    this.isModalVisible = false;
-  }
+
 
   onConfirm() {
-      this.onModalClose();
+    this.isModalVisible = false;
+  }
+  onModalOpen(eventData: any) {
+    console.log('Modal opened, received data:', eventData);
+  }
+
+  onModalClose(eventData: any) {
+    console.log('Modal closed, received data:', eventData);
+    this.isModalVisible = false;
   }
 }

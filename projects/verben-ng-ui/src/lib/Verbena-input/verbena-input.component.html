@@ -19,21 +19,22 @@
 
   <div class="input-wrapper {{ inputWrapperClass }}">
     <input
+    [ngClass]="{'ng-invalid': isInvalid}"
       [id]="label"
       [attr.type]="type"
       [attr.placeholder]="placeHolder"
-      [required]="required"
+
       [attr.minlength]="minLength?.toString()"
       [attr.maxlength]="maxLength?.toString()"
       (input)="onInput($event)"
       [(ngModel)]="value"
       [ngStyle]="{
         'background-color': bgColor,
-        'border': showBorder ? (errorMessage ? '1px solid ' + errorBorderColor : border) : 'none',
+        'border': isInvalid && errorBorderColor? '1px solid ' + errorBorderColor : border ,
         'border-radius': borderRadius,
         'color': textColor
       }"
-      class="input-field"
+      class="input-field verben-input"
     />
 
     <!-- Conditional red dot for error when showErrorMessage is false -->
@@ -53,12 +54,15 @@
     <!-- Conditional error message display -->
     <span *ngIf="errorMessage && showErrorMessage"
           [ngStyle]="{ 'color': errorMessageColor }"
-          [ngClass]="{'error-message': true,
-                      'error-top': errorPosition === 'top',
-                      'error-bottom': errorPosition === 'bottom',
-                      'error-left': errorPosition === 'left',
-                      'error-right': errorPosition === 'right'}">
+          [ngClass]="{'verben-error-message': true,
+                      'top-error': errorPosition === 'top',
+                      'left-error': errorPosition === 'left',
+                      'right-error': errorPosition === 'right'}"
+                        class="verben-error-message "
+                      >
+
       {{ errorMessage }}
+
     </span>
   </div>
 </div>

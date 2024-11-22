@@ -1,8 +1,15 @@
 <div class="switch"
      [ngClass]="{'disabled': disabled}"
-     
+     [ngStyle]="{ 'width': width, 'height': height }"
      (click)="toggleSwitch()">
+
   <input type="checkbox" [checked]="checked" class="check" (change)="onChange($event)" [disabled]="disabled" />
-  <span class="slider" [ngStyle]="{ 'background-color': checked ? onColor : offColor }"></span>
-  <label *ngIf="label">{{ label }}</label>
+
+  <span class="slider"
+        [ngStyle]="{ 'background-color': checked ? onColor : offColor }">
+
+    <span class="slider-label">{{ checked ? onText : offText }}</span>
+
+    <span class="slider-knob"></span>
+  </span>
 </div>

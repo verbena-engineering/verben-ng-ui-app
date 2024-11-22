@@ -9,6 +9,11 @@
 export * from './lib/components/card-data-view/card-data-view.component';
 export * from './lib/components/card-data-view/card-data-view.module';
 export * from './lib/components/card-data-view/card-data';
+export * from './lib/components/card-data-view/left-card-data/left-card-data.component';
+export * from './lib/components/card-data-view/left-card-data-view/left-card-data-view.component';
+export * from './lib/components/card-data-view/right-card-data-view/right-card-data-view.component';
+export * from './lib/components/card-data-view/card-data-view-header/card-data-view-header.component';
+export * from './lib/components/card-data-view/card-data-view-footer/card-data-view-footer.component';
 
 export * from './lib/components/drop-down/DropdownMenuItem';
 export * from './lib/components/drop-down/DropdownChangeEvent';
@@ -118,3 +123,8 @@ export * from './lib/components/verben-mail/verben-mail.component';
 
 export * from './lib/components/verben-dialogue/verben-dialogue.module';
 export * from './lib/components/verben-dialogue/verben-dialogue.component';
+
+//notification service
+export * from './lib/services/notification.services';
+
+export * from './lib/tokens';

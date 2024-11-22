@@ -57,8 +57,10 @@ export class DataViewComponent {
       checked: false,
     },
   ];
+  currentChildData!:CardData
   cardData: CardData[] = [
     {
+      children:[],
       selected: true,
       title: 'Title1',
       data: { name: 'Ade', mailAddress: 'ademail@yahoo.com' } as Model,
@@ -69,6 +71,7 @@ export class DataViewComponent {
       ],
     },
     {
+      children:[],
       selected: false,
       title: 'Title2',
       data: { name: 'wale', mailAddress: 'walemail@yahoo.com' } as Model,
@@ -79,6 +82,7 @@ export class DataViewComponent {
       ],
     },
     {
+      children:[],
       data: { name: 'kunle', mailAddress: 'kunlemail@yahoo.com' } as Model,
       selected: false,
       title: 'Title3',
@@ -139,5 +143,6 @@ export class DataViewComponent {
 
   onStateChange(event: { key: string; value: boolean }): void {
     console.log(`State changed for ${event.key}:`, event.value);
+   
   }
 }

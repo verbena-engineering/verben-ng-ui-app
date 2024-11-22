@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SampleForDropdownsComponent } from './sample-for-dropdowns.component';
 import { RouterModule, Routes } from '@angular/router';
-import { DropdownModule } from '../../../../projects/verben-ng-ui/src/public-api';
+import { VerbenDropdownModule } from '../../../../projects/verben-ng-ui/src/lib/components/dropdown/dropdown.module';
 
 
 export const appRoutes: Routes = [
@@ -16,6 +16,6 @@ export const appRoutes: Routes = [
   
 @NgModule({
   declarations: [SampleForDropdownsComponent],
-  imports: [CommonModule, RouterModule.forChild(appRoutes),DropdownModule],
+  imports: [CommonModule, RouterModule.forChild(appRoutes),VerbenDropdownModule],
 })
 export class SampleForDropdownsModule {}

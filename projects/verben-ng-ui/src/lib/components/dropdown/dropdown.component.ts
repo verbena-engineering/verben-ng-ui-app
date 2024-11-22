@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 
 
-export class DropdownComponent {
+export class VerbenDropdownComponent {
   @Input() dropdownOpen: boolean = false;
   @Output() dropdownOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() dropdownWidth: string = '';

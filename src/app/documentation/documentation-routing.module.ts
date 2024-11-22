@@ -117,6 +117,10 @@ const routes: Routes = [
     {
       path: 'examples',
       loadChildren: () => import('./examples/examples.module').then((m) => m.ExamplesModule)
+    },
+    {
+      path: 'dropdown-sample',
+      loadChildren: () => import('./sample-for-dropdowns/sample-for-dropdowns.module').then((m) => m.SampleForDropdownsModule)
     }
 ];
 

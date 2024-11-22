@@ -9,7 +9,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 export class DropdownComponent {
   @Input() dropdownOpen: boolean = false;
-  @Input() dropdownWidth: string = '300px';
+  @Output() dropdownOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() dropdownWidth: string = '';
   @Input() color: string = 'black';
   @Input() border: string = '';
   @Input() borderRadius: string = '';
@@ -17,21 +18,23 @@ export class DropdownComponent {
 
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
+    this.dropdownOpenChange.emit(this.dropdownOpen);
   }
 
   onMouseOut() {
-    this.onClose();
+    this.dropdownOpen = false;
+    this.dropdownOpenChange.emit(this.dropdownOpen);
   }
 
   onClose() {
     this.close.emit();
   }
 
-  get dropdownStyles(){ 
-    return{ 
-      width:this.dropdownWidth,
-      border:this.border,
-      borderRadius:this.borderRadius,
-    }
+  get dropdownStyles() { 
+    return { 
+      width: this.dropdownWidth,
+      border: this.border,
+      borderRadius: this.borderRadius,
+    };
   }
 }

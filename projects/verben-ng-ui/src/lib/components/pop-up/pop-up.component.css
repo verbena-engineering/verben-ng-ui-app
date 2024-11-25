@@ -1,7 +1,11 @@
 
+
 .dropdown{
     background-color: white;
   }
   .boxShadow{ 
     box-shadow: 4px 4px 4px 0px #00000040;
+   }
+   .dropdown-container{ 
+    position: relative;
    }

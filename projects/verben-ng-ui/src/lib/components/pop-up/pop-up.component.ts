@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'verben-dropdown',
-  templateUrl: './dropdown.component.html',
-  styleUrls: ['./dropdown.component.css']
+  selector: 'verben-pop-Up',
+  templateUrl: './pop-up.component.html',
+  styleUrls: ['./pop-up.component.css']
 })
 
 
-export class VerbenDropdownComponent {
+export class VerbenPopUpComponent {
   @Input() dropdownOpen: boolean = false;
   @Output() dropdownOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() dropdownWidth: string = '';
@@ -22,8 +22,9 @@ export class VerbenDropdownComponent {
   }
 
   onMouseOut() {
-    this.dropdownOpen = false;
-    this.dropdownOpenChange.emit(this.dropdownOpen);
+    this.close.emit();
+    // this.dropdownOpen = false;
+    // this.dropdownOpenChange.emit(this.dropdownOpen);
   }
 
   onClose() {

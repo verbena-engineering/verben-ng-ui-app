@@ -1,18 +1,23 @@
-<verben-dropdown 
-[(dropdownOpen)]="isOpen" 
-(close)="onClose()"
->
-    <button dropdown-trigger>Toggle Dropdown</button>
-  
-    <div dropdown-content>
-      <div class="p-4 flex gap-4">
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugiat mollitia commodi, doloribus iure distinctio error eaque aliquid natus, vitae placeat rem perferendis enim dolore quae quia, maxime ipsum. Quasi fuga ipsum temporibus odit distinctio dolor omnis! Id quis distinctio repellat.</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugiat mollitia commodi, doloribus iure distinctio error eaque aliquid natus, vitae placeat rem perferendis enim dolore quae quia, maxime ipsum. Quasi fuga ipsum temporibus odit distinctio dolor omnis! Id quis distinctio repellat.</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugiat mollitia commodi, doloribus iure distinctio error eaque aliquid natus, vitae placeat rem perferendis enim dolore quae quia, maxime ipsum. Quasi fuga ipsum temporibus odit distinctio dolor omnis! Id quis distinctio repellat.</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugiat mollitia commodi, doloribus iure distinctio error eaque aliquid natus, vitae placeat rem perferendis enim dolore quae quia, maxime ipsum. Quasi fuga ipsum temporibus odit distinctio dolor omnis! Id quis distinctio repellat.</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugiat mollitia commodi, doloribus iure distinctio error eaque aliquid natus, vitae placeat rem perferendis enim dolore quae quia, maxime ipsum. Quasi fuga ipsum temporibus odit distinctio dolor omnis! Id quis distinctio repellat.</p>
-        <button (click)="onClose()">close</button>
+<section> 
+  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim, placeat.</p>
+  <verben-pop-Up
+  [(dropdownOpen)]="isOpen" 
+  [enableMouseLeave]="false"
+  (close)="onClose()"
+  [customStyles]="{ 'background-color': 'blue', 'padding': '10px','border-radius':'20px' }"
+  >
+      <button dropdown-trigger>Toggle Dropdown</button>
+    
+      <div dropdown-content>
+        <div class="p-4 flex gap-4 rounded-lg">
+          <p>Lorem, ipsum dolor sit amet consectetur  repellat.</p>
+          <button (click)="onClose()">close</button>
+        </div>
       </div>
-    </div>
-  </verben-dropdown>
-  
+    </verben-pop-Up>
+    
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim, placeat.</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim, placeat.</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim, placeat.</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim, placeat.</p>
+</section>

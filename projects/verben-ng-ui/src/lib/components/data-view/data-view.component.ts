@@ -54,6 +54,7 @@ export class DataViewComponent implements OnInit {
   @Input() columnTemplate?: Node;
   @Input() filterTemplate?: Node;
   @Input() sortTemplate?: Node;
+  @Input() children?: Node;
   @Input() exportTemplate?: Node;
   @Input() createTemplate?: Node;
   @Input() selectedColumnCount?: number = 0;

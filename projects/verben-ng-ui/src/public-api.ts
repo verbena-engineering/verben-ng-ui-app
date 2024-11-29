@@ -127,4 +127,7 @@ export * from './lib/components/verben-dialogue/verben-dialogue.component';
 //notification service
 export * from './lib/services/notification.services';
 
+export * from './lib/components/pop-up/pop-up.module'
+export * from './lib/components/pop-up/pop-up.component'
+
 export * from './lib/tokens';

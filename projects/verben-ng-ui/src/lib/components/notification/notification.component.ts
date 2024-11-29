@@ -138,8 +138,7 @@ fontWeight: string = '700';
     return { 
       'display':'flex',
       'align-items':'center',
-      'gap':'0.8rem',
-      'position':'relative'
+      'gap':'0.2rem',
     }
   }
 

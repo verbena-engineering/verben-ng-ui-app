@@ -4,14 +4,13 @@ import { FormsModule } from '@angular/forms';
 
 import { DataViewComponentRoutingModule } from './data-view-routing.module';
 import { DataViewComponent  } from './data-view.component';
-import {CardDataViewModule,DataViewModule, SortTableModule, SvgModule, TableFilterModule, VisibleColumnModule } from 'verben-ng-ui/src/public-api';
-import { DataTableModule } from 'verben-ng-ui/src/public-api';
+import {CardDataViewModule,DataViewModule, SortTableModule, SvgModule, TableFilterModule, VerbenaButtonModule, VisibleColumnModule, DataTableModule } from 'verben-ng-ui/src/public-api';
 
 
 
 @NgModule({
   declarations:[DataViewComponent],
-  imports: [CommonModule, DataViewComponentRoutingModule, DataViewModule, FormsModule,DataTableModule,CardDataViewModule,SvgModule,SortTableModule,VisibleColumnModule,TableFilterModule],
+  imports: [CommonModule, DataViewComponentRoutingModule, DataViewModule, FormsModule,DataTableModule,CardDataViewModule,SvgModule,SortTableModule,VisibleColumnModule,TableFilterModule, VerbenaButtonModule],
   exports:[DataViewComponent]
 })
 export class AppDataViewModule {}

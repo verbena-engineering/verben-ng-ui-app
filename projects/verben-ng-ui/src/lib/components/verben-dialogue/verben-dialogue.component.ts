@@ -40,11 +40,11 @@ export class VerbenDialogueComponent {
   @Output() openModal = new EventEmitter<any>();
   @Output() closeModal = new EventEmitter<any>();
 
-  // ngOnChanges() {
-  //   if (this.isVisible) {
-  //     this.openModal.emit(this.modalData);
-  //   }
-  // }
+  ngOnChanges() {
+    if (this.isVisible) {
+      this.openModal.emit(this.modalData);
+    }
+  }
   
 
   @HostListener('document:keydown.escape', ['$event'])

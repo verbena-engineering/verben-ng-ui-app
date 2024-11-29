@@ -207,6 +207,17 @@
         </div>
       </ng-template>
     </div>
+    <div>
+      <ng-container *ngIf="children; else defaultChildren"></ng-container>
+      <ng-template #defaultChildren>
+      
+        <div>
+          <ng-content
+            select="[children]"
+          ></ng-content>
+        </div>
+      </ng-template>
+    </div>
   </div>
 </div>
 

@@ -35,15 +35,6 @@
         [placeholder]="placeholderState" [(ngModel)]="chipInput" (focus)="onInputFocus()" (blur)="onInputBlur()"
         class="chip-input" />
     </div>
-    <!-- <span *ngIf="this.chips.length > 0" (click)="this.clearSelection($event); $event.stopPropagation()"
-      class="chip-icon-item chip-clear-button">
-      <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0.84375 0.84375L8.15625 8.15625" stroke="currentColor" stroke-linecap="round"
-          stroke-linejoin="round" />
-        <path d="M0.84375 8.15625L8.15625 0.84375" stroke="currentColor" stroke-linecap="round"
-          stroke-linejoin="round" />
-      </svg>
-    </span> -->
   </div>
   <div *ngIf="this.isInvalid && this.invalidMessage" class="verben-error-message error-message">{{invalidMessage}}
   </div>

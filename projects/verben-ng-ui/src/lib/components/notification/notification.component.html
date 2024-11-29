@@ -1,5 +1,6 @@
 <div 
 [ngStyle]="notificationStyles"
+class="mainwrapper"
 >
   <div [ngStyle]="innerWrapperStyles">
     <verben-svg
@@ -11,7 +12,7 @@
     ></verben-svg>
         <p>{{ notificationContent }}</p>
   </div>
-  <div class="btnWrapper">
+  <div>
     <div [ngStyle]="btnWrapperStyle" *ngIf="buttons.length">
     <verbena-button
     *ngFor="let button of buttons"

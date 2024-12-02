@@ -143,7 +143,6 @@ export class DataViewComponent {
   }
 
   onStateChange(event: { key: string; value: boolean }): void {
-    console.log(`State changed for ${event.key}:`, event.value);
     if(event.key==='column'&& event.value===true){
       this.showColumn=event.value
     }

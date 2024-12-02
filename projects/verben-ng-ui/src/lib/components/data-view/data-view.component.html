@@ -1,6 +1,4 @@
-<div
-  class="toolbar flex gap justify-between items-center"
->
+<div class="toolbar flex gap justify-between items-center">
   <div class="flex items-center gap">
     <div *ngIf="viewState.isToggle" class="toggle-button-container">
       <button type="button" (click)="toggleView()" [ngClass]="buttonClass">
@@ -14,7 +12,6 @@
           [class.active]="isTableView"
           [ngClass]="isTableView ? activeIconClass : iconClass"
           [width]="25"
-
           [height]="25"
         ></verben-svg>
       </button>
@@ -29,18 +26,18 @@
         [type]="'text'"
         [placeHolder]="'Search...'"
         (input)="onSearch($event)"
-         [bgColor]="'transparent'"
+        [bgColor]="'transparent'"
         [border]="'0'"
         [value]="searchValue"
       />
       <verben-svg
-      *ngIf="searchValue.length>0"
-          [icon]="'close'"
-          [width]="15"
-          (click)="onClearSearch()"
-          class="close-icon-class"
-          [height]="15"
-        ></verben-svg>
+        *ngIf="searchValue.length > 0"
+        [icon]="'close'"
+        [width]="15"
+        (click)="onClearSearch()"
+        class="close-icon-class"
+        [height]="15"
+      ></verben-svg>
     </div>
   </div>
 
@@ -48,7 +45,7 @@
     <!-- Column Section -->
     <ng-container
       [appOutSideClick]="showColumnChild"
-      (outSideClick)="toggleChildView('column')"
+      (outSideClick)="resetChildViewsExcept('column')"
       *ngIf="viewState.isColumn && isTableView"
     >
       <ng-container *ngIf="columnTemplate; else defaultColumn"></ng-container>
@@ -67,11 +64,8 @@
           >
         </span>
         <div [style.z-index]="zIndex" class="data-view-element">
-          <ng-content
-            *ngIf="showColumnChild"
-            select="[column-content]"
-          >
-        </ng-content>
+          <ng-content *ngIf="showColumnChild" select="[column-content]">
+          </ng-content>
         </div>
       </ng-template>
     </ng-container>
@@ -79,16 +73,16 @@
     <!-- Filter Section -->
     <ng-container
       [appOutSideClick]="showFilterChild"
-      (outSideClick)="showFilterChild = false"
+      (outSideClick)="resetChildViewsExcept('filter')"
       *ngIf="viewState.isFilter"
     >
       <ng-container *ngIf="filterTemplate; else defaultFilter"></ng-container>
       <ng-template #defaultFilter>
         <span
-        [ngClass]="[
-        'flex gap text-xs items-center pd rounded cursor-pointer',
-        filterCustomClass ? filterCustomClass : ''
-      ]"
+          [ngClass]="[
+            'flex gap text-xs items-center pd rounded cursor-pointer',
+            filterCustomClass ? filterCustomClass : ''
+          ]"
           [style.background-color]="'#D9D9D940'"
           (click)="toggleChildView('filter')"
         >
@@ -109,16 +103,16 @@
     <!-- Sort Section -->
     <ng-container
       [appOutSideClick]="showSortChild"
-      (outSideClick)="showSortChild = false"
+      (outSideClick)="resetChildViewsExcept('sort')"
       *ngIf="viewState.isSort"
     >
       <ng-container *ngIf="sortTemplate; else defaultSort"></ng-container>
       <ng-template #defaultSort>
         <span
-        [ngClass]="[
-        'flex gap text-xs items-center pd rounded cursor-pointer',
-      sortCustomClass ? sortCustomClass : ''
-      ]"
+          [ngClass]="[
+            'flex gap text-xs items-center pd rounded cursor-pointer',
+            sortCustomClass ? sortCustomClass : ''
+          ]"
           [style.background-color]="'#D9D9D940'"
           (click)="toggleChildView('sort')"
         >
@@ -139,16 +133,16 @@
     <!-- Export Section -->
     <ng-container
       [appOutSideClick]="showExportChild"
-      (outSideClick)="showExportChild = false"
+      (outSideClick)="resetChildViewsExcept('export')"
       *ngIf="viewState.isExport"
     >
       <ng-container *ngIf="exportTemplate; else defaultExport"></ng-container>
       <ng-template #defaultExport>
         <span
-        [ngClass]="[
-        'flex gap text-xs items-center pd rounded cursor-pointer',
-        exportCustomClass ? exportCustomClass : ''
-      ]"
+          [ngClass]="[
+            'flex gap text-xs items-center pd rounded cursor-pointer',
+            exportCustomClass ? exportCustomClass : ''
+          ]"
           [style.background-color]="'#D9D9D940'"
           (click)="toggleChildView('export')"
         >
@@ -167,10 +161,10 @@
     <!-- Select Section -->
     <div *ngIf="viewState.isSelect">
       <span
-      [ngClass]="[
-      'flex gap text-xs items-center pd rounded cursor-pointer',
-      selectCustomClass ? selectCustomClass : ''
-    ]"
+        [ngClass]="[
+          'flex gap text-xs items-center pd rounded cursor-pointer',
+          selectCustomClass ? selectCustomClass : ''
+        ]"
         [style.background-color]="'#D9D9D940'"
         (click)="toggleChildView('select')"
       >
@@ -181,9 +175,12 @@
     </div>
 
     <!-- Create Button -->
-     
-    <div   [appOutSideClick]="create"
-    (outSideClick)="create = false" *ngIf="viewState.isCreate">
+
+    <div
+      [appOutSideClick]="create"
+      (outSideClick)="resetChildViewsExcept('create')"
+      *ngIf="viewState.isCreate"
+    >
       <verbena-button
         class="text-sm font-semibold"
         [bgColor]="'#FFE681'"
@@ -199,23 +196,16 @@
       </verbena-button>
       <ng-container *ngIf="createTemplate; else defaultCreate"></ng-container>
       <ng-template #defaultCreate>
-      
         <div [style.z-index]="zIndex" class="data-view-element">
-          <ng-content
-            *ngIf="create"
-            select="[create-content]"
-          ></ng-content>
+          <ng-content *ngIf="create" select="[create-content]"></ng-content>
         </div>
       </ng-template>
     </div>
     <div>
       <ng-container *ngIf="children; else defaultChildren"></ng-container>
       <ng-template #defaultChildren>
-      
         <div>
-          <ng-content
-            select="[children]"
-          ></ng-content>
+          <ng-content select="[children]"></ng-content>
         </div>
       </ng-template>
     </div>

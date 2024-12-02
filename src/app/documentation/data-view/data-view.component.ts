@@ -119,8 +119,9 @@ export class DataViewComponent {
   loadMore() {
     this.cardData = this.cardData.concat(this.cardData);
   }
-  onColumnChange(event: boolean) {
-    this.showColumn=event
+  onColumnChange(event:any) {
+  console.log(event);
+  
   }
   onSortChange(event: boolean) {
     this.showSort = event;
@@ -128,7 +129,7 @@ export class DataViewComponent {
     
   }
   onColumnsUpdated(updatedColumns: IDataFilter[]) {
-    this.onColumnChange(false);
+      this.showColumn=false
     this.selectedColumnCount = updatedColumns.length;
   }
   onSortUpdated(updatedSorts: IDataFilter[]) {
@@ -143,6 +144,9 @@ export class DataViewComponent {
 
   onStateChange(event: { key: string; value: boolean }): void {
     console.log(`State changed for ${event.key}:`, event.value);
-   
+    if(event.key==='column'&& event.value===true){
+      this.showColumn=event.value
+    }
+    
   }
 }

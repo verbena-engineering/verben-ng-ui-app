@@ -48,7 +48,7 @@
     <!-- Column Section -->
     <ng-container
       [appOutSideClick]="showColumnChild"
-      (outSideClick)="showColumnChild = false"
+      (outSideClick)="toggleChildView('column')"
       *ngIf="viewState.isColumn && isTableView"
     >
       <ng-container *ngIf="columnTemplate; else defaultColumn"></ng-container>
@@ -70,7 +70,8 @@
           <ng-content
             *ngIf="showColumnChild"
             select="[column-content]"
-          ></ng-content>
+          >
+        </ng-content>
         </div>
       </ng-template>
     </ng-container>

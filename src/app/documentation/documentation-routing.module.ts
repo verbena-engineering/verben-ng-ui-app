@@ -118,6 +118,7 @@ const routes: Routes = [
       path: 'dropdown-sample',
       loadChildren: () => import('./sample-for-dropdowns/sample-for-dropdowns.module').then((m) => m.SampleForDropdownsModule)
     }
+
 ];
 
 @NgModule({

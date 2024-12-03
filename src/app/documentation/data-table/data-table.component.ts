@@ -98,6 +98,8 @@ export class DataTableComponent {
     },
   ];
 
+  controlledCols = signal<ColumnDefinition<YourDataType>[]>(this.tableColumns2);
+
   tableColumns3: ColumnDefinition<YourDataType>[] = [
     {
       id: 'names',
@@ -136,6 +138,12 @@ export class DataTableComponent {
       }),
       // Add other form controls as needed
     });
+  }
+
+  changeCols() {
+    this.controlledCols.set(pickRandomSubset(this.tableColumns2));
+    this.tableData.update((d) => d.slice(1));
+    console.log(this.controlledCols);
   }
 
   onRowEdit(editedRow: YourDataType) {
@@ -368,3 +376,17 @@ const stickyTableStyles: TableStyles = {
     background: 'lightyellow',
   },
 };
+
+function pickRandomSubset<T>(arr: T[], count?: number): T[] {
+  // If count is not specified or exceeds array length, pick a random number of items
+  const pickCount = count ?? Math.floor(Math.random() * arr.length) + 1;
+
+  // Ensure pickCount doesn't exceed array length
+  const safePickCount = Math.min(pickCount, arr.length);
+
+  // Create a copy of the original array to shuffle
+  const shuffled = [...arr].sort(() => 0.5 - Math.random());
+
+  // Return the first 'safePickCount' items
+  return shuffled.slice(0, safePickCount);
+}

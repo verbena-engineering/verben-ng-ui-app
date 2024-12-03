@@ -2,9 +2,11 @@ import {
   AfterContentInit,
   ChangeDetectionStrategy,
   Component,
+  computed,
   ContentChildren,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   QueryList,
   Signal,
@@ -22,10 +24,14 @@ import { BaseStyles, TableStyles } from './style.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataTableComponent<T extends { id: string | number }>
-  implements AfterContentInit
+  implements OnInit, AfterContentInit
 {
   @Input({ required: true }) data!: T[];
-  @Input({ required: true }) columns!: ColumnDefinition<T>[];
+  // Modify columns input to use a signal
+  @Input({ required: true })
+  set columns(value: ColumnDefinition<T>[]) {
+    this.columnsSignal.set(value);
+  }
 
   @Input() styleConfig: TableStyles = defaultTableStyles;
 
@@ -45,28 +51,42 @@ export class DataTableComponent<T extends { id: string | number }>
 
   columnsSignal: WritableSignal<ColumnDefinition<T>[]> = signal([]);
 
+  hasFooter = computed(() =>
+    this.columnsSignal().some((col) => col.footerTemplate !== undefined)
+  );
+
+  ngOnInit() {
+    // Set initial columns if not already set
+    if (this.columnsSignal().length === 0) {
+      this.columnsSignal.set(this.columns);
+    }
+  }
+
   ngAfterContentInit() {
     this.columnTemplates.changes.subscribe(() => this.mergeColumnTemplates());
     this.mergeColumnTemplates();
   }
 
   private mergeColumnTemplates() {
-    const updatedColumns = this.columns.map((column) => {
-      const matchingTemplate = this.columnTemplates.find(
-        (t) => t.columnId === column.id
-      );
-      if (matchingTemplate) {
-        return {
-          ...column,
-          cellTemplate: matchingTemplate.cellTemplate,
-          cellEditTemplate: matchingTemplate.cellEditTemplate,
-          headerTemplate: matchingTemplate.headerTemplate,
-          footerTemplate: matchingTemplate.footerTemplate,
-        };
-      }
-      return column;
-    });
-    this.columnsSignal.set(updatedColumns);
+    // Only merge if we have both columns and templates
+    if (this.columnsSignal().length > 0) {
+      const updatedColumns = this.columnsSignal().map((column) => {
+        const matchingTemplate = this.columnTemplates.find(
+          (t) => t.columnId === column.id
+        );
+        if (matchingTemplate) {
+          return {
+            ...column,
+            cellTemplate: matchingTemplate.cellTemplate,
+            cellEditTemplate: matchingTemplate.cellEditTemplate,
+            headerTemplate: matchingTemplate.headerTemplate,
+            footerTemplate: matchingTemplate.footerTemplate,
+          };
+        }
+        return column;
+      });
+      this.columnsSignal.set(updatedColumns);
+    }
   }
 
   getCellValue = (row: T, column: ColumnDefinition<T>): any => {

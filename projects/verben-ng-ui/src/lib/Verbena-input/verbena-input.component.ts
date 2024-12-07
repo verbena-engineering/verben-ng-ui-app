@@ -13,7 +13,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() svgPosition: 'left' | 'right' = 'left';
   @Input() minLength?: number;
   @Input() maxLength?: number;
-  @Input() type: 'text' | 'password' | 'integer' | 'number' | 'decimal' | 'email' | 'date' | 'tel' | 'url' | 'file' | 'color' = 'text';
+  @Input() type: 'text' | 'password' | 'integer' | 'number' | 'decimal' | 'email' | 'date' | 'tel' | 'url' | 'file' | 'color' | 'search' = 'text';
   @Input() bgColor: string = '#f9f9f9';
   @Input() border: string = '';
   @Input() borderRadius: string = '5px';
@@ -21,7 +21,8 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() value: string = '';
   @Input() labelPosition: string = 'start';
   @Input() labelColor: string = 'black';
-  @Input() disable: boolean = false;
+  @Input() disable: boolean = false; // Disable input
+  @Input() readOnly: boolean = false; // Read-only input
   @Input() min?: number;
   @Input() max?: number;
   @Input() showBorder: boolean = true;
@@ -33,14 +34,13 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() svgWidth: number = 20;
   @Input() svgHeight: number = 20;
   @Input() svgColor: string = '';
+
   @Input() capitalization: 'none' | 'uppercase' | 'lowercase' | 'sentencecase' | 'pascalcase' | 'camelcase' = 'none';
 
-  // New input properties to expose custom classes
-  @Input() inputContainerClass: string = ''; // Expose custom class for input container
-  @Input() inputFieldClass: string = ''; // Expose custom class for input field
-  @Input() inputWrapperClass: string = ''; // Expose custom class for input wrapper
-
-  // New property for custom error messages
+  @Input() inputContainerClass: string = '';
+  @Input() inputFieldClass: string = '';
+  @Input() inputWrapperClass: string = '';
+  @Input() passwordToggle?: boolean = false;
   @Input() customErrorMessages: {
     required?: string;
     minLength?: string;
@@ -60,10 +60,21 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
   errorMessage: string | undefined;
   inputId: string = '';
-
   onChange: any = () => {};
   onTouch: any = () => {};
   isInvalid: boolean = false;
+
+
+  @Input() icon: string = 'eye';
+  @Input() textPass: string = 'Show';
+
+
+  toggleIcon(): void {
+    this.icon = this.icon === 'eye' ? 'eye-closed' : 'eye';
+    this.textPass = this.textPass === 'Show' ? 'Hide' : 'Show';
+    this.type = this.type === 'password' ? 'text' : 'password';
+
+  }
 
   constructor(@Optional() @Self() @Inject(forwardRef(() => NgControl)) private ngControl: NgControl) {
     if (this.ngControl) {

@@ -1,8 +1,7 @@
 <div class="input-container {{ inputContainerClass }}"
      [ngStyle]="{
       'display': 'flex',
-      'flex-direction': 'column',
-
+      'flex-direction': 'column'
      }"
 >
   <div
@@ -14,55 +13,93 @@
     }"
     class="input-field"
   >
-    <label [for]="label">{{ label }}</label>
+    <div [ngStyle]="{
+      'width': '100%',
+      'display': 'flex',
+      'justify-content':'space-between'
+
+     }">
+      <label [for]="label">{{ label }}</label>
+      <!-- incase i need it back  -->
+      <!-- <div *ngIf=" passwordToggle === true" [ngStyle]="{
+
+        'display': 'flex',
+        'align-item':'center',
+        'gap':'4px',
+        'color':'grey',
+        'cursor':'pointer'
+
+       }"
+      (click)="toggleIcon()"
+       >
+        <verben-svg
+
+
+        [icon]="icon"
+        [width]="20"
+        [height]="20"
+        color="black"
+      ></verben-svg>
+       <p>{{ textPass }}</p>
+    </div> -->
+    </div>
   </div>
 
-  <div class="input-wrapper {{ inputWrapperClass }}">
+  <div class="input-wrapper ">
+    <div *ngIf=" passwordToggle === true" [ngStyle]="{
+
+      'display': 'grid',
+      'align-items':'center',
+      'justify-content':'center',
+      'gap':'4px',
+      'color':'grey',
+      'cursor':'pointer',
+      'position': 'absolute',
+      'right':'8px',
+      'top':'0',
+      'bottom':'0',
+
+      'margin': 'auto',
+
+
+     }"
+    (click)="toggleIcon()"
+     >
+      <verben-svg
+
+
+      [icon]="icon"
+      [width]="20"
+      [height]="20"
+      color="black"
+    ></verben-svg>
+
+  </div>
     <input
-    [ngClass]="{'ng-invalid': isInvalid}"
+      [ngClass]="{'ng-invalid': isInvalid}"
       [id]="label"
       [attr.type]="type"
       [attr.placeholder]="placeHolder"
-
       [attr.minlength]="minLength?.toString()"
       [attr.maxlength]="maxLength?.toString()"
+      [attr.disabled]="disable ? true : null"
+      [attr.readOnly]="readOnly ? true : null"
       (input)="onInput($event)"
       [(ngModel)]="value"
       [ngStyle]="{
         'background-color': bgColor,
-        'border': isInvalid && errorBorderColor? '1px solid ' + errorBorderColor : border ,
+        'border': isInvalid && errorBorderColor ? '1px solid ' + errorBorderColor : border,
         'border-radius': borderRadius,
         'color': textColor
       }"
-      class="input-field verben-input"
+      class="input-field verben-input {{ inputWrapperClass }}"
     />
+  </div>
 
-    <!-- Conditional red dot for error when showErrorMessage is false -->
-    <verben-tooltip *ngIf="errorMessage && !showErrorMessage"
-                    [tooltipContent]="tooltipTemplate"
-                    customClass="error-tooltip">
-      <div class="error-dot"
-           [ngStyle]="{ 'background-color': errorBorderColor }">
-      </div>
-    </verben-tooltip>
-
-    <!-- Tooltip template for error message -->
-    <ng-template #tooltipTemplate>
-      {{ errorMessage }}
-    </ng-template>
-
-    <!-- Conditional error message display -->
-    <span *ngIf="errorMessage && showErrorMessage"
-          [ngStyle]="{ 'color': errorMessageColor }"
-          [ngClass]="{'verben-error-message': true,
-                      'top-error': errorPosition === 'top',
-                      'left-error': errorPosition === 'left',
-                      'right-error': errorPosition === 'right'}"
-                        class="verben-error-message "
-                      >
-
-      {{ errorMessage }}
-
-    </span>
+  <div *ngIf="isInvalid && showErrorMessage" class="error-message" [ngStyle]="{
+    'color': errorMessageColor,
+    'position': errorPosition
+  }">
+    {{ errorMessage }}
   </div>
 </div>

@@ -30,6 +30,9 @@ export class VerbenaButtonComponent {
 
   @Input() buttonClass: string = ''; // Custom class for button
   @Input() buttonTextClass: string = ''; // Custom class for button
+  @Input() isLoading: any;
+  @Input() spinnerSize: any;
+  @Input() spinnerColor: any;
 
   get buttonStyles() {
     switch (this.styleType) {

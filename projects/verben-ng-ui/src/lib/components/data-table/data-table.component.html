@@ -38,6 +38,7 @@
     </tr>
     }
   </tbody>
+  @if (hasFooter()) {
   <tfoot>
     <tr [ngStyle]="getFooterStyle()">
       @for (column of columnsSignal(); track column.id) {
@@ -52,4 +53,5 @@
       }
     </tr>
   </tfoot>
+  }
 </table>

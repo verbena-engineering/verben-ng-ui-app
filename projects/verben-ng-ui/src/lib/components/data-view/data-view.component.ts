@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -21,6 +22,7 @@ interface ViewState {
   selector: 'verben-data-view',
   templateUrl: './data-view.component.html',
   styleUrls: ['./data-view.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataViewComponent implements OnInit {
   @Input() buttonClass?: string;
@@ -67,6 +69,7 @@ export class DataViewComponent implements OnInit {
   @Input() showExportChild: boolean = false;
   @Input() create: boolean = false;
   @Input() showSelected: boolean = false;
+  
   @Input() isTableView: boolean = false;
   @Output() viewChange = new EventEmitter<boolean>();
   @Output() stateChange = new EventEmitter<{ key: string; value: boolean }>();
@@ -115,8 +118,6 @@ onClearSearch(){
     }
     this.stateChange.emit({ key: viewType, value: this.getChildViewState(viewType) });
   }
-
-  // Reset other child views when one is toggled
   resetChildViewsExcept(viewType: string): void {
     if (viewType !== 'column') this.showColumnChild = false;
     if (viewType !== 'filter') this.showFilterChild = false;

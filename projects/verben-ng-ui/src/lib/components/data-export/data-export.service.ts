@@ -47,7 +47,7 @@ export class DataExportService {
   }
 
   addOperation(operation: Operation): void {
-    this.operations.push(operation);
+    this.operations.unshift(operation);
     this.updateDefaultProfile();
   }
 
@@ -80,15 +80,15 @@ export class DataExportService {
 
   getAllItems(): ExportItem[] {
     return [
-      ...this.baseProperties.map((prop) => ({
-        id: prop,
-        name: prop,
-        type: 'property' as ExportItemType,
-      })),
       ...this.operations.map((op) => ({
         id: op.id,
         name: op.name,
         type: 'operation' as ExportItemType,
+      })),
+      ...this.baseProperties.map((prop) => ({
+        id: prop,
+        name: prop,
+        type: 'property' as ExportItemType,
       })),
     ];
   }

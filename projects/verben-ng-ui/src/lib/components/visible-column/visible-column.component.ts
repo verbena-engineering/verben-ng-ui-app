@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { IDataFilter } from '../../models/data-filter';
 
 interface Item {
@@ -9,6 +9,7 @@ interface Item {
   selector: 'verben-visible-column',
   templateUrl: './visible-column.component.html',
   styleUrls: ['./visible-column.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VisibleColumnComponent {
   @Input() columns: IDataFilter[] = [];
@@ -29,6 +30,7 @@ export class VisibleColumnComponent {
   @Input() border?: string;
   @Input() borderRadius?: string;
   @Input() selectWidth?: string;
+  @Input() closeColumn?: boolean;
   @Output() columnsUpdated = new EventEmitter<IDataFilter[]>();
 
   originalColumnOrder: IDataFilter[] = [];
@@ -59,13 +61,13 @@ export class VisibleColumnComponent {
   }
 
   saveColumnVisibility() {
+    
     this.columns.forEach((column, index) => {
       column.checked = this.visibleColumns[index];
     });
 
     const selectedColumns = this.columns.filter(column => column.checked);
     this.columnsUpdated.emit(selectedColumns);
-    console.log(selectedColumns);
   }
 
   toggleShowMore() {

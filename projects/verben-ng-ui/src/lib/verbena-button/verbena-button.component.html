@@ -8,20 +8,31 @@
   'height': height,
   'font-size': fontSize,
   'display': 'flex',
-
-  'cursor':'pointer',
-  'gap':'6px'
+  'align-items': 'center',
+  'justify-content': 'center',
+  'cursor': isLoading ? 'not-allowed' : 'pointer',
+  'gap': '6px'
 }"
-[disabled]="disable"
+[disabled]="disable || isLoading"
 class="verbena-button {{ buttonClass }}"
 >
-  <ng-container *ngIf="svg && svgPosition === 'left'">
-    <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight" [stroke]="svgColor"></verben-svg>
+  <!-- Loading Spinner -->
+  <ng-container *ngIf="isLoading">
+    <div class="loading-spinner" [ngStyle]="{'width': spinnerSize, 'height': spinnerSize, 'border-color': spinnerColor, 'border-top-color': 'transparent'}"></div>
+    <span *ngIf="text" class="{{ buttonTextClass }}" [ngStyle]="{'font-size': fontSize, 'font-weight': fontWeight}">{{ text }}</span>
+
   </ng-container>
 
-  <span *ngIf="text" class="{{ buttonTextClass }}" [ngStyle]="{'font-size': fontSize, 'font-weight': fontWeight}">{{ text }}</span>
+  <!-- Button Content -->
+  <ng-container *ngIf="!isLoading">
+    <ng-container *ngIf="svg && svgPosition === 'left'">
+      <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight" [stroke]="svgColor"></verben-svg>
+    </ng-container>
 
-  <ng-container *ngIf="svg && svgPosition === 'right'">
-    <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight" [stroke]="svgColor"></verben-svg>
+    <span *ngIf="text" class="{{ buttonTextClass }}" [ngStyle]="{'font-size': fontSize, 'font-weight': fontWeight}">{{ text }}</span>
+
+    <ng-container *ngIf="svg && svgPosition === 'right'">
+      <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight" [stroke]="svgColor"></verben-svg>
+    </ng-container>
   </ng-container>
 </button>

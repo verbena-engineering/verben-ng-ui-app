@@ -82,7 +82,7 @@ export class DataExportComponent {
 
   initializeGroupItems() {
     if (this.data && this.data.length > 0) {
-      const properties = Object.keys(this.data[0]);
+      const properties = Object.keys(this.data[0]).filter((k) => k !== 'id');
       this.exportService.setBaseProperties(properties);
       this.numericProperties = properties.filter(
         (prop) => typeof this.data[0][prop] === 'number'

@@ -39,6 +39,8 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
   @Input() inputContainerClass: string = '';
   @Input() inputFieldClass: string = '';
+
+  @Input() passLength: number = 8;
   @Input() inputWrapperClass: string = '';
   @Input() passwordToggle?: boolean = false;
   @Input() customErrorMessages: {
@@ -187,12 +189,12 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
       return;
     }
 
-    if (this.type === 'password' && this.value.length < 8) {
-      this.errorMessage = this.customErrorMessages.password || 'Password must be at least 8 characters long.';
+    if (this.type === 'password' && this.value.length < this.passLength) {
+      this.errorMessage = this.customErrorMessages.password || `Password must be at least ${this.passLength} characters long.`;
       this.isInvalid = true;
       return;
     }
-
+    
     if (this.type === 'tel' && !/^\+?[1-9]\d{1,14}$/.test(this.value)) {
       this.errorMessage = this.customErrorMessages.tel || 'Please enter a valid telephone number.';
       this.isInvalid = true;

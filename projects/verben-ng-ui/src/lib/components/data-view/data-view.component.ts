@@ -117,6 +117,7 @@ onClearSearch(){
           break;
     }
     this.stateChange.emit({ key: viewType, value: this.getChildViewState(viewType) });
+    
   }
   resetChildViewsExcept(viewType: string): void {
     if (viewType !== 'column') this.showColumnChild = false;

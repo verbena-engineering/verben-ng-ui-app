@@ -8,6 +8,7 @@ import { NotificationService } from '../../../../projects/verben-ng-ui/src/lib/s
   styleUrls: ['./notifications-sample.component.scss'],
   providers:[NotificationService]
 })
+
 export class NotificationsSampleComponent {
   buttons = [
     { text: 'Yes', bgColor: 'white', primarycolor : '#2DB76F',fontSize:'14px'  },

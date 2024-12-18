@@ -41,7 +41,6 @@ fontWeight: string = '700';
     private notificationService: NotificationService,
   ) {
     this.subscription = new Subscription();
-    // console.log('show notification is here',this.showNotification)
   }
 
   ngOnInit() {
@@ -50,7 +49,6 @@ fontWeight: string = '700';
         this.showNotification = true;
         this.notificationContent = notification.message;
         this.notificationOptions = notification.options;
-        // console.log('show notification value is here',this.showNotification)
 
         setTimeout(() => {
           this.closeNotification();
@@ -69,10 +67,6 @@ fontWeight: string = '700';
     this.showNotification = false;
     this.notificationService.clearNotification();
   }
-
-  // handleButtonClick(button: any) {
-  //   this.notificationService.clearNotification();
-  // }
   
   @Output() buttonClick = new EventEmitter<Button>();
   @Output() close = new EventEmitter();

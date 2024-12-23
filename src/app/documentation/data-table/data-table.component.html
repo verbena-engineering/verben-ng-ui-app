@@ -3,6 +3,7 @@
   [columns]="tableColumns3"
   (selectionChange)="onSelectionChange($event)"
   [styleConfig]="testTableStyles"
+  groupBy="role"
 >
   <!-- Template for each column that needs custom rendering -->
   <ng-container *ngFor="let column of tableColumns" [libColumn]="column.id">
@@ -120,9 +121,11 @@
 
 <hr style="margin-block: 4rem" />
 
+<button (click)="changeCols()">Shuffle cols</button>
+
 <lib-data-table
   [data]="tableData()"
-  [columns]="tableColumns2"
+  [columns]="controlledCols()"
   (rowEdit)="onRowEdit($event)"
   (rowSave)="onRowSave($event)"
   (rowDelete)="onRowDelete($event)"

@@ -21,6 +21,7 @@ export class DataViewComponent {
   selectedSortCount: number = 0;
   showColumn: boolean = false;
   showSort: boolean = false;
+  showExport: boolean = false;
   selectedAll:boolean=false
   columns: IDataFilter[] = [
     { checked: false, name: 'Column 1', type: DataFilterType.Bool },
@@ -119,8 +120,9 @@ export class DataViewComponent {
   loadMore() {
     this.cardData = this.cardData.concat(this.cardData);
   }
-  onColumnChange(event: boolean) {
-    this.showColumn=event
+  onColumnChange(event:any) {
+  console.log(event);
+  
   }
   onSortChange(event: boolean) {
     this.showSort = event;
@@ -128,11 +130,11 @@ export class DataViewComponent {
     
   }
   onColumnsUpdated(updatedColumns: IDataFilter[]) {
-    this.onColumnChange(false);
+    this.showColumn=false
     this.selectedColumnCount = updatedColumns.length;
   }
   onSortUpdated(updatedSorts: IDataFilter[]) {
-    this.onSortChange(false);
+    this.showSort=false
     this.selectedSortCount = updatedSorts.length;
     console.log(updatedSorts);
   }
@@ -142,7 +144,19 @@ export class DataViewComponent {
   }
 
   onStateChange(event: { key: string; value: boolean }): void {
-    console.log(`State changed for ${event.key}:`, event.value);
-   
+      switch (event.key) {
+        case 'column':
+          this.showColumn=event.value
+          break;
+          case 'sort':
+            this.showSort=event.value
+            break;
+            case 'export':
+              this.showExport=event.value
+              break;
+        default:
+          break;
+      }
+
   }
 }

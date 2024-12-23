@@ -1,11 +1,19 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'verbena-switch',
   templateUrl: './verbena-switch.component.html',
-  styleUrls: ['./verbena-switch.component.css']
+  styleUrls: ['./verbena-switch.component.css'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VerbenaSwitchComponent),
+      multi: true
+    }
+  ]
 })
-export class VerbenaSwitchComponent {
+export class VerbenaSwitchComponent implements ControlValueAccessor {
   @Input() label: string = '';
   @Input() checked: boolean = false;
   @Input() disabled: boolean = false;
@@ -19,17 +27,49 @@ export class VerbenaSwitchComponent {
 
   @Output() change = new EventEmitter<boolean>();
 
+  // Function to call when the toggle changes
+  public onChange: (value: boolean) => void = () => {};
+
+  // Function to call when the component is touched
+  private onTouched: () => void = () => {};
+
+  // Toggle function to handle switch changes
   toggleSwitch() {
     if (!this.disabled) {
       this.checked = !this.checked;
+      this.onChange(this.checked);
       this.change.emit(this.checked);
     }
   }
 
-  onChange(event: Event) {
+  // ControlValueAccessor: Write a new value to the element
+  writeValue(value: boolean): void {
+    this.checked = value;
+  }
+
+  // ControlValueAccessor: Set the function to be called when the control value changes
+  registerOnChange(fn: (value: boolean) => void): void {
+    this.onChange = fn;
+  }
+
+  // ControlValueAccessor: Set the function to be called when the control is touched
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  // ControlValueAccessor: Set the disabled state
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  // Method to handle input change directly from template
+  onChangeEvent(event: Event): void {
     if (!this.disabled) {
-      this.checked = (event.target as HTMLInputElement).checked;
-      this.change.emit(this.checked);
+      const checked = (event.target as HTMLInputElement).checked;
+      this.checked = checked;
+      this.onChange(checked); // Call the onChange function with a boolean
+      this.change.emit(checked); // Emit the change event
     }
   }
+
 }

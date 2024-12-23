@@ -13,7 +13,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() svgPosition: 'left' | 'right' = 'left';
   @Input() minLength?: number;
   @Input() maxLength?: number;
-  @Input() type: 'text' | 'password' | 'integer' | 'number' | 'decimal' | 'email' | 'date' | 'tel' | 'url' | 'file' | 'color' = 'text';
+  @Input() type: 'text' | 'password' | 'integer' | 'number' | 'decimal' | 'email' | 'date' | 'tel' | 'url' | 'file' | 'color' | 'search' = 'text';
   @Input() bgColor: string = '#f9f9f9';
   @Input() border: string = '';
   @Input() borderRadius: string = '5px';
@@ -21,7 +21,8 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() value: string = '';
   @Input() labelPosition: string = 'start';
   @Input() labelColor: string = 'black';
-  @Input() disable: boolean = false;
+  @Input() disable: boolean = false; // Disable input
+  @Input() readOnly: boolean = false; // Read-only input
   @Input() min?: number;
   @Input() max?: number;
   @Input() showBorder: boolean = true;
@@ -33,14 +34,15 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() svgWidth: number = 20;
   @Input() svgHeight: number = 20;
   @Input() svgColor: string = '';
+
   @Input() capitalization: 'none' | 'uppercase' | 'lowercase' | 'sentencecase' | 'pascalcase' | 'camelcase' = 'none';
 
-  // New input properties to expose custom classes
-  @Input() inputContainerClass: string = ''; // Expose custom class for input container
-  @Input() inputFieldClass: string = ''; // Expose custom class for input field
-  @Input() inputWrapperClass: string = ''; // Expose custom class for input wrapper
+  @Input() inputContainerClass: string = '';
+  @Input() inputFieldClass: string = '';
 
-  // New property for custom error messages
+  @Input() passLength: number = 8;
+  @Input() inputWrapperClass: string = '';
+  @Input() passwordToggle?: boolean = false;
   @Input() customErrorMessages: {
     required?: string;
     minLength?: string;
@@ -60,10 +62,21 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
   errorMessage: string | undefined;
   inputId: string = '';
-
   onChange: any = () => {};
   onTouch: any = () => {};
   isInvalid: boolean = false;
+
+
+  @Input() icon: string = 'eye';
+  @Input() textPass: string = 'Show';
+
+
+  toggleIcon(): void {
+    this.icon = this.icon === 'eye' ? 'eye-closed' : 'eye';
+    this.textPass = this.textPass === 'Show' ? 'Hide' : 'Show';
+    this.type = this.type === 'password' ? 'text' : 'password';
+
+  }
 
   constructor(@Optional() @Self() @Inject(forwardRef(() => NgControl)) private ngControl: NgControl) {
     if (this.ngControl) {
@@ -176,12 +189,12 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
       return;
     }
 
-    if (this.type === 'password' && this.value.length < 8) {
-      this.errorMessage = this.customErrorMessages.password || 'Password must be at least 8 characters long.';
+    if (this.type === 'password' && this.value.length < this.passLength) {
+      this.errorMessage = this.customErrorMessages.password || `Password must be at least ${this.passLength} characters long.`;
       this.isInvalid = true;
       return;
     }
-
+    
     if (this.type === 'tel' && !/^\+?[1-9]\d{1,14}$/.test(this.value)) {
       this.errorMessage = this.customErrorMessages.tel || 'Please enter a valid telephone number.';
       this.isInvalid = true;

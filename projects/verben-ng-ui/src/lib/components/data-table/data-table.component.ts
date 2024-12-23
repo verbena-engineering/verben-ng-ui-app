@@ -2,9 +2,11 @@ import {
   AfterContentInit,
   ChangeDetectionStrategy,
   Component,
+  computed,
   ContentChildren,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   QueryList,
   Signal,
@@ -22,10 +24,24 @@ import { BaseStyles, TableStyles } from './style.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataTableComponent<T extends { id: string | number }>
-  implements AfterContentInit
+  implements OnInit, AfterContentInit
 {
-  @Input({ required: true }) data!: T[];
-  @Input({ required: true }) columns!: ColumnDefinition<T>[];
+  // Modify data input to use grouped data
+  @Input({ required: true })
+  set data(value: T[]) {
+    this._data = value;
+  }
+  get data(): T[] {
+    return this.groupedData();
+  }
+  private _data: T[] = [];
+  // Modify columns input to use a signal
+  @Input({ required: true })
+  set columns(value: ColumnDefinition<T>[]) {
+    this.columnsSignal.set(value);
+  }
+  // New inputs for grouping
+  @Input() groupBy?: keyof T | ((row: T) => any);
 
   @Input() styleConfig: TableStyles = defaultTableStyles;
 
@@ -45,31 +61,95 @@ export class DataTableComponent<T extends { id: string | number }>
 
   columnsSignal: WritableSignal<ColumnDefinition<T>[]> = signal([]);
 
+  hasFooter = computed(() =>
+    this.columnsSignal().some((col) => col.footerTemplate !== undefined)
+  );
+
+  // Type guard method to check for group rows
+  isGroupRow(row: T): row is T & { isGroupRow: true; groupTitle: any } {
+    return !!(row as any).isGroupRow;
+  }
+
+  // Computed property for grouped data
+  groupedData = computed(() => {
+    // If no grouping is specified, return original data
+    if (!this.groupBy) return this._data;
+
+    // Determine group function based on input type
+    const getGroupValue =
+      typeof this.groupBy === 'function'
+        ? this.groupBy
+        : (row: T) => row[this.groupBy as keyof T];
+
+    // Group the data
+    const groups = new Map<any, T[]>();
+
+    this._data.forEach((row) => {
+      const groupValue = getGroupValue(row);
+      const existingGroup = groups.get(groupValue) || [];
+      groups.set(groupValue, [...existingGroup, row]);
+    });
+
+    // Construct final grouped data array with group rows
+    const groupedDataArray: (T & { isGroupRow?: boolean })[] = [];
+
+    groups.forEach((groupRows, groupValue) => {
+      // Create a group row
+      const groupRow = {
+        id: `group-${groupValue}`,
+        isGroupRow: true,
+        groupValue,
+        groupTitle: groupValue,
+      } as unknown as T & { isGroupRow: boolean };
+
+      groupedDataArray.push(groupRow);
+      groupedDataArray.push(...groupRows);
+    });
+
+    return groupedDataArray;
+  });
+
+  ngOnInit() {
+    // Set initial columns if not already set
+    if (this.columnsSignal().length === 0) {
+      this.columnsSignal.set(this.columns);
+    }
+  }
+
   ngAfterContentInit() {
     this.columnTemplates.changes.subscribe(() => this.mergeColumnTemplates());
     this.mergeColumnTemplates();
   }
 
   private mergeColumnTemplates() {
-    const updatedColumns = this.columns.map((column) => {
-      const matchingTemplate = this.columnTemplates.find(
-        (t) => t.columnId === column.id
-      );
-      if (matchingTemplate) {
-        return {
-          ...column,
-          cellTemplate: matchingTemplate.cellTemplate,
-          cellEditTemplate: matchingTemplate.cellEditTemplate,
-          headerTemplate: matchingTemplate.headerTemplate,
-          footerTemplate: matchingTemplate.footerTemplate,
-        };
-      }
-      return column;
-    });
-    this.columnsSignal.set(updatedColumns);
+    // Only merge if we have both columns and templates
+    if (this.columnsSignal().length > 0) {
+      const updatedColumns = this.columnsSignal().map((column) => {
+        const matchingTemplate = this.columnTemplates.find(
+          (t) => t.columnId === column.id
+        );
+        if (matchingTemplate) {
+          return {
+            ...column,
+            cellTemplate: matchingTemplate.cellTemplate,
+            cellEditTemplate: matchingTemplate.cellEditTemplate,
+            headerTemplate: matchingTemplate.headerTemplate,
+            footerTemplate: matchingTemplate.footerTemplate,
+          };
+        }
+        return column;
+      });
+      this.columnsSignal.set(updatedColumns);
+    }
   }
 
   getCellValue = (row: T, column: ColumnDefinition<T>): any => {
+    // For group rows, return the group title if it exists
+    if (this.isGroupRow(row)) {
+      return (row as any).groupTitle;
+    }
+
+    // Existing logic for normal rows
     if (column.accessorKey) {
       return (row as any)[column.accessorKey];
     }

@@ -16,7 +16,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (row of data; track row.id; let rowIndex = $index) { @if
+    @for (row of data(); track row.id; let rowIndex = $index) { @if
     (isGroupRow(row)) {
     <tr class="group-row" [ngStyle]="getRowStyle(rowIndex)">
       <td

@@ -13,22 +13,7 @@ import { DataExportService } from 'verben-ng-ui/src/public-api';
 export class DataTableComponent {
   dropdownOptions: string[] = ['Tester', 'Admin', 'Staff'];
 
-  tableData = signal<YourDataType[]>(
-    Array.from({ length: 10 }, (_, index) => ({
-      id: `ACTIVITY-${index + 1}`,
-      activityDetails: Array.from(
-        { length: Math.floor(Math.random() * 5) + 1 },
-        () => generateRandomName()
-      ),
-      numberOfParticipants: Math.floor(Math.random() * 20) + 1,
-      role: 'Tester',
-      names: generateRandomName(),
-      age: Math.floor(Math.random() * 50) + 1,
-      money: Math.floor(Math.random() * 500) + 1,
-      message:
-        'Dark seas and dark towers. Night sky and wry smile. Loneliness, nonetheless.',
-    }))
-  );
+  tableData = signal<YourDataType[]>([]);
 
   tableColumns: ColumnDefinition<YourDataType>[] = [
     {
@@ -130,7 +115,7 @@ export class DataTableComponent {
     private exportService: DataExportService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.form = this.fb.group({
       customer: this.fb.group({
         names: ['', Validators.required],
@@ -138,6 +123,25 @@ export class DataTableComponent {
       }),
       // Add other form controls as needed
     });
+
+    setTimeout(() => {
+      this.tableData.set(
+        Array.from({ length: 10 }, (_, index) => ({
+          id: `ACTIVITY-${index + 1}`,
+          activityDetails: Array.from(
+            { length: Math.floor(Math.random() * 5) + 1 },
+            () => generateRandomName()
+          ),
+          numberOfParticipants: Math.floor(Math.random() * 20) + 1,
+          role: 'Tester',
+          names: generateRandomName(),
+          age: Math.floor(Math.random() * 50) + 1,
+          money: Math.floor(Math.random() * 500) + 1,
+          message:
+            'Dark seas and dark towers. Night sky and wry smile. Loneliness, nonetheless.',
+        }))
+      );
+    }, 500);
   }
 
   changeCols() {

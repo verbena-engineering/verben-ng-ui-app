@@ -1,5 +1,5 @@
-<div class="toolbar flex gap justify-between items-center">
-  <div class="flex items-center gap">
+<div class="toolbar flex gap justify-between items-center ">
+  <div class="flex items-center gap flex-1 justify-end">
     <div *ngIf="viewState.isToggle" class="toggle-button-container">
       <button type="button" (click)="toggleView()" [ngClass]="buttonClass">
         <verben-svg
@@ -41,7 +41,7 @@
     </div>
   </div>
 
-  <div class="flex items-center relative gap" [style.margin-left]="'10px'">
+  <div class="flex items-center relative gap flex-1 justify-end ">
     <!-- Column Section -->
     <ng-container
       [appOutSideClick]="showColumnChild"

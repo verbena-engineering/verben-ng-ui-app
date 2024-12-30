@@ -1,39 +1,46 @@
-.container
-{
+.container {
   gap: 10px;
-  min-height: 100vh;
 }
-:host{
-    border-radius: 12px;
+
+:host {
+  border-radius: 12px;
 }
-.master-detail-container
-{
+
+.master-detail-container {
   display: grid;
   grid-template-columns: 30% 70%;
-  gap:15px;
+  gap: 15px;
   justify-content: center;
-  margin-top: 20px;
 }
-.master-only-container
-{
+
+.master-only-container {
   display: grid;
   grid-template-columns: 100%;
   justify-content: center;
-  margin-top: 20px;
 
 }
 
-.paginator-text
-{
+.paginator-text {
   margin-left: auto;
   margin-right: auto;
 }
-.cursor-pointer 
-{
+
+.cursor-pointer {
   cursor: pointer;
 }
-.toRight
-{
- float:right;
- margin: 5px 10px 0px 0px;
+
+.toRight {
+  align-self: flex-end;
+}
+
+.card-detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 15px 20px 20px 20px;
+}
+
+::ng-deep .master-detail-container>div>verben-left-card-data-view>verben-left-card-data {
+  display: flex !important;
+  flex-direction: column;
 }

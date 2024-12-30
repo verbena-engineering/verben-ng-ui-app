@@ -1,29 +1,30 @@
+<div #main class="container flex-col" [style.display]="'flex'">
+  <!-- Header -->
+  <ng-container ngProjectAs="verben-card-data-view-header">
+    <ng-content select='verben-card-data-view-header'></ng-content>
+  </ng-container>
 
-<div #main class="container flex-col" [style.display]="'flex'" [style.margin]="mg" > 
-     <!-- Header -->
-     <ng-container ngProjectAs="verben-card-data-view-header">
-        <ng-content select='verben-card-data-view-header'></ng-content>
-     </ng-container>
+  <div [ngClass]="!hasCurrentItem()?'master-only-container':'master-detail-container'">
+    <!-- Card and Footer -->
+    <div [style.borderRadius]="borderRadius" [style.backgroundColor]="lbgColor" class="flex-col ">
+      <!-- Card section -->
+      <ng-container ngProjectAs="verben-left-card-data-view">
+        <ng-content select='verben-left-card-data-view'></ng-content>
+      </ng-container>
 
-     <div [style.padding]="pd"  [ngClass]="!hasCurrentItem()?'master-only-container':'master-detail-container'"  >
-      <!-- Card and Footer -->
-        <div [style.borderRadius]="borderRadius" [style.backgroundColor]="lbgColor" class="flex-col ">
-          <!-- Card section -->
-          <ng-container ngProjectAs="verben-left-card-data-view">
-            <ng-content select='verben-left-card-data-view'></ng-content>
-          </ng-container>
-
-          <!-- Footer-->
-          <ng-container ngProjectAs="verben-card-data-view-footer">
-            <ng-content select='verben-card-data-view-footer'></ng-content>
-          </ng-container>
-        </div>
-      <!-- Detail Section-->
-       <div [style.backgroundColor]="rbgColor" *ngIf="hasCurrentItem()" [style.borderRadius]="borderRadius">
-         <verben-svg  (click)="clearData()" class="cursor-pointer toRight" icon="close" [width]="20" [height]="20"  color="black"></verben-svg> 
-         <ng-container #right  ngProjectAs="verben-right-card-data-view">
-           <ng-content #rightContent select='verben-right-card-data-view'></ng-content>
-         </ng-container>
-       </div>
-     </div>
+      <!-- Footer-->
+      <ng-container ngProjectAs="verben-card-data-view-footer">
+        <ng-content select='verben-card-data-view-footer'></ng-content>
+      </ng-container>
+    </div>
+    <!-- Detail Section-->
+    <div class="card-detail-section" [style.backgroundColor]="rbgColor" *ngIf="hasCurrentItem()"
+      [style.borderRadius]="borderRadius">
+      <verben-svg (click)="clearData()" class="cursor-pointer toRight" icon="close" [width]="20" [height]="20"
+        color="black"></verben-svg>
+      <ng-container #right ngProjectAs="verben-right-card-data-view">
+        <ng-content #rightContent select='verben-right-card-data-view'></ng-content>
+      </ng-container>
+    </div>
+  </div>
 </div>

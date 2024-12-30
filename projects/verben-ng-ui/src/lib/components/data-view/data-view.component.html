@@ -214,7 +214,8 @@
 
 <!-- Grid and List View Handling -->
 <div *ngIf="isTableView; else listViewTemplate">
-  <div [class]="tableClass">
+  
+  <div [style.overflow]="'auto'" [class]="tableClass">
     <ng-content select="[table-content]"></ng-content>
   </div>
 </div>

@@ -88,6 +88,8 @@ export class DataViewComponent implements OnInit {
   
 onClearSearch(){
  this.searchValue=""
+ this.onSearchChange.emit({ key: this.searchKey, value: this.searchValue });
+
 }
   toggleChildView(viewType: string): void {
     switch (viewType) {

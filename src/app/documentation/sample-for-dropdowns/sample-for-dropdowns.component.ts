@@ -7,9 +7,12 @@ import { Component } from '@angular/core';
 })
 export class SampleForDropdownsComponent {
  isOpen:boolean = false;
+ isOpen2:boolean = false;
 
  onClose(){ 
-  console.log('uessss',this.isOpen)
   this.isOpen = false
+ }
+ onClose2(){ 
+  this.isOpen2 = false
  }
 }

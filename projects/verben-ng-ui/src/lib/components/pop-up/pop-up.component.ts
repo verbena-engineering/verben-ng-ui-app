@@ -135,29 +135,27 @@ export class VerbenPopUpComponent implements AfterViewChecked {
       console.log('not enough space below')
       const topPosition = parentRect.top - dropdownRect.height;
       console.log('top pos:', topPosition);
-      this.renderer.setStyle(dropdown, 'top', `-${100}px`);
-      this.renderer.setStyle(dropdown, 'bottom', 'auto');
+      this.renderer.setStyle(dropdown, 'top', `auto`);
+      this.renderer.setStyle(dropdown, 'bottom', '15px');
     } else {
       // Enough space below, position below
       console.log('Enough space below')
       const topPosition = parentRect.bottom;
-      this.renderer.setStyle(dropdown, 'top', `${topPosition}px`);
+      this.renderer.setStyle(dropdown, 'top', `20px`);
       this.renderer.setStyle(dropdown, 'bottom', 'auto');
     }
   
     // Horizontal Positioning
     if (parentRect.left + dropdownRect.width > viewportWidth) {
-      // Not enough space on the right, align to the left
       console.log('not Enough space right')
-      const leftPosition = viewportWidth - dropdownRect.width - 10; // Add some padding
-      this.renderer.setStyle(dropdown, 'left', `-10px`);
+      const leftPosition = viewportWidth - dropdownRect.width - 10;
+      this.renderer.setStyle(dropdown, 'left', `auto`);
       // this.renderer.setStyle(dropdown, 'left', `${Math.max(leftPosition, 0)}px`);
-      this.renderer.setStyle(dropdown, 'right', 'auto');
+      this.renderer.setStyle(dropdown, 'right', '10px');
     } else {
-      // Enough space on the right
       console.log('Enough space right')
       const leftPosition = parentRect.left;
-      this.renderer.setStyle(dropdown, 'left', `${leftPosition}px`);
+      this.renderer.setStyle(dropdown, 'left', `${10}px`);
       this.renderer.setStyle(dropdown, 'right', 'auto');
     }
   }

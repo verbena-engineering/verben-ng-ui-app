@@ -1,82 +1,112 @@
+.toggle-button-container button {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  border: 1px solid gray;
+  padding: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  height: 35px;
+}
+.input-class{
+  border: none;
+ min-width:100%;
+ display: block;
 
-  .toggle-button-container button {
-    display: flex;
-    justify-content: space-between;
-    align-content: center;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    border:1px solid gray;
-    padding: 0;
-    border-radius: 6px;
-    overflow: hidden;
-    height: 35px;
-  }
-  
-  .toggle-button-container verben-svg {
-    transition: background-color 0.5s ease;
-    padding: 6px;
-    position: relative;
-  }
-  .toggle-button-container verben-svg.active {
-    background-color: #d3d3d3;
-  }
-  .flex{
-    display: flex;
-  }
-  .justify-between{
-    justify-content: space-between;
-  }
-  .items-center{
-    align-items: center;
-  }
-  .font-semibold{
-    font-weight: 600;
-  }
-  .font-normal{
-    font-weight: 400;
-  }
-  .text-sm{
-    font-size: 14px;
-  }
-  .text-xs{
-    font-size: 12px;
-  }
-  .gap{
-    gap: 7px;
-  }
-  .pd{
-    padding: 5px 8px;
-  }
-.rounded-sm{
+}
+.toggle-button-container verben-svg {
+  transition: background-color 0.5s ease;
+  padding: 6px;
+  position: relative;
+}
+
+.toggle-button-container verben-svg.active {
+  background-color: #d3d3d3;
+}
+.justify-end{
+  justify-self: end;
+}
+.flex {
+  display: flex;
+}
+.flex-1{
+  flex: 1;
+}
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.text-sm {
+  font-size: 14px;
+}
+
+.text-xs {
+  font-size: 12px;
+}
+
+.gap {
+  gap: 7px;
+}
+
+.pd {
+  padding: 5px 8px;
+}
+
+.rounded-sm {
   border-radius: 10px;
 }
-.cursor-pointer{
+
+.cursor-pointer {
   cursor: pointer;
 }
-.search-input{
-  position:relative;
+
+.search-input {
+  position: relative;
   background-color: rgba(128, 128, 128, 0.096);
   border-radius: 10px;
 }
-sup{
+
+sup {
   color: #3479E9;
   font-weight: 500;
 }
-.data-view-element{
+
+.data-view-element {
   position: absolute;
-  top:40px;
+  top: 40px;
   left: 0;
 }
-.relative{
+
+.relative {
   position: relative;
 }
-.z-10{
+
+.z-10 {
   z-index: 100000000000;
 }
-.close-icon-class{
+
+.close-icon-class {
   position: absolute;
   right: 10px;
   cursor: pointer;
   top: 13px;
+}
+
+.toolbar {
+  margin-bottom: 15px;
 }

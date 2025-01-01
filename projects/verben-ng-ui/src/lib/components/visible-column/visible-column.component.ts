@@ -65,7 +65,7 @@ export class VisibleColumnComponent {
     this.columns.forEach((column, index) => {
       column.checked = this.visibleColumns[index];
     });
-
+ 
     const selectedColumns = this.columns.filter(column => column.checked);
     this.columnsUpdated.emit(selectedColumns);
   }

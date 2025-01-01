@@ -117,6 +117,10 @@ const routes: Routes = [
     {
       path: 'dropdown-sample',
       loadChildren: () => import('./sample-for-dropdowns/sample-for-dropdowns.module').then((m) => m.SampleForDropdownsModule)
+    },
+    { 
+      path:'test-run-pops',
+      loadChildren:() => import('../views/test-run-pops/test-run-pops.module').then(m => m.TestRunPopsModule)
     }
 
 ];

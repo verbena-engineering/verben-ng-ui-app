@@ -1,0 +1,670 @@
+<div class="space-y-8">
+    <div
+      class="bg-[#D4A00773] boxShadow py-2 px-6 rounded-lg flex justify-between items-center mx-10 mt-10 mb-4"
+    >
+      <p class="my-0 text-[#404040] font-bold leading-[19.5px]">E-
+        mail</p>
+      <verben-svg 
+      icon="close" 
+      size="sm" 
+      class="cursor-pointer"
+      (click)="goBack()"
+      ></verben-svg>
+    </div>
+    <verben-data-view
+      #vdv
+      [viewState]="{
+        isSearch: true,
+        isColumn: true,
+        isFilter: true,
+        isSort: true,
+        isExport: true,
+        isSelect: true,
+        isCreate: true,
+        isToggle: true,
+      }"
+      [buttonClass]="'my-custom-button-class'"
+      [iconClass]="'my-icon-class'"
+      [tableIcon]="'table-view'"
+      [cardIcon]="'list-view'"
+      [activeIconClass]="'my-active-icon-class'"
+      [selectedColumnCount]="0"
+      [selectedSortCount]="0"
+      [isTableView]="changetoCardView"
+      [selectedFilterTableCount]="0"
+      (viewChange)="onViewChange($event)"
+      (stateChange)="onStateChange($event)"
+    >
+      <div table-content>
+        <lib-data-table
+          [data]="data"
+          [columns]="columns"
+          [styleConfig]="styles"
+          (selectionChange)="onSelectionChange($event)"
+          (rowEdit)="onRowEdit($event)"
+        >
+          <ng-container libColumn="select">
+            <ng-template
+              #cell
+              let-isSelected="isSelected"
+              let-toggleRowSelection="toggleRowSelection"
+            >
+              <input
+                type="checkbox"
+                [checked]="isSelected"
+                (change)="toggleRowSelection()"
+              />
+            </ng-template>
+            <ng-template
+              #header
+              let-allRowsSelected="allRowsSelected"
+              let-someRowsSelected="someRowsSelected"
+              let-toggleAllRows="toggleAllRows"
+            >
+              <input
+                type="checkbox"
+                [checked]="allRowsSelected()"
+                [indeterminate]="someRowsSelected()"
+                (change)="toggleAllRows()"
+              />
+            </ng-template>
+          </ng-container>
+  
+          <ng-container libColumn="mailHost">
+            <ng-template #cell let-value="value">
+              <div>
+                <p>{{ value }}</p>
+              </div>
+            </ng-template>
+            <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+              <verbena-input
+              [label]="''"
+              [labelColor]="inputLabelColor"
+              [bgColor]="inputBgColor"
+              [placeHolder]="'Enter MailHost'"
+              [required]="true"
+              [type]="'text'"
+              [(value)]="value.MailHost"
+              [showBorder]="true"
+              [showErrorMessage]="false"
+              [errorMessageColor]="'red'"
+              [errorBorderColor]="'red'"
+              [errorPosition]="'bottom'"
+              (ngModelChange)="updateValue('MailHost', $event)"
+            ></verbena-input>
+            </ng-template>
+          </ng-container>
+  
+          <ng-container libColumn="user">
+            <ng-template #cell let-value="value">
+              <div>
+                <p>{{ value }}</p>
+              </div>
+            </ng-template>
+            <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+              <verbena-input
+              [label]="''"
+              [labelColor]="inputLabelColor"
+              [bgColor]="inputBgColor"
+              [placeHolder]="'Enter user'"
+              [required]="true"
+              [type]="'text'"
+              [(value)]="value.User"
+              [showBorder]="true"
+              [showErrorMessage]="false"
+              [errorMessageColor]="'red'"
+              [errorBorderColor]="'red'"
+              [errorPosition]="'bottom'"
+              (ngModelChange)="updateValue('User', $event)"
+            ></verbena-input>
+            </ng-template>
+          </ng-container>
+  
+          <ng-container libColumn="inboundHost">
+            <ng-template #cell let-value="value">
+              <div>
+                <p>{{ value }}</p>
+              </div>
+            </ng-template>
+            <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+              <verbena-input
+              [label]="''"
+              [labelColor]="inputLabelColor"
+              [bgColor]="inputBgColor"
+              [placeHolder]="'Enter InboundHost'"
+              [required]="true"
+              [type]="'number'"
+              [(value)]="value.User"
+              [showBorder]="true"
+              [showErrorMessage]="false"
+              [errorMessageColor]="'red'"
+              [errorBorderColor]="'red'"
+              [errorPosition]="'bottom'"
+              (ngModelChange)="updateValue('InboundHost', $event)"
+            ></verbena-input>
+            </ng-template>
+          </ng-container>
+          
+          <ng-container libColumn="outboundHost">
+            <ng-template #cell let-value="value">
+              <div>
+                <p>{{ value }}</p>
+              </div>
+            </ng-template>
+            <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+              <verbena-input
+              [label]="''"
+              [labelColor]="inputLabelColor"
+              [bgColor]="inputBgColor"
+              [placeHolder]="'Enter OutboundHost'"
+              [required]="true"
+              [type]="'number'"
+              [(value)]="value.User"
+              [showBorder]="true"
+              [showErrorMessage]="false"
+              [errorMessageColor]="'red'"
+              [errorBorderColor]="'red'"
+              [errorPosition]="'bottom'"
+              (ngModelChange)="updateValue('OutboundHost', $event)"
+            ></verbena-input>
+            </ng-template>
+          </ng-container>
+  
+          <ng-container libColumn="mail">
+            <ng-template #cell let-value let-row="row">
+              <div class="w-[200px]">
+              <div class="flex flex-wrap gap-2">
+                <div *ngFor="let email of row.Mail | slice : 0 : 4">
+                  <p class="my-0 bg-[#3479E9] px-1 rounded-xl">
+                    {{ addEllipses(email) }}
+                  </p>
+                </div>
+  
+                <div *ngIf="row.Mail.length > 4">
+                  <div 
+                  (click)="seeMore(row.Mail)"
+                  class="flex gap-[2px] items-center justify-end mt-1 cursor-pointer w-full">
+                    <span class="text-[#3479E9] text-[10px] font-medium">See more</span>
+                    <span class="pt-[2px]"> 
+                      <verben-svg
+                        icon="chevron-down"
+                        [width]="10"
+                        [height]="6"
+                        fill="#3479E9"
+                        class="cursor-pointer"
+                      ></verben-svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </ng-template>
+            <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+              <verbena-input
+              [label]="''"
+              [labelColor]="inputLabelColor"
+              [bgColor]="inputBgColor"
+              [placeHolder]="'Enter Mail'"
+              [required]="true"
+              [type]="'text'"
+              [(value)]="value.Mail"
+              [showBorder]="true"
+              [showErrorMessage]="false"
+              [errorMessageColor]="'red'"
+              [errorBorderColor]="'red'"
+              [errorPosition]="'bottom'"
+              (ngModelChange)="updateValue('Mail', $event)"
+            ></verbena-input>
+            </ng-template>
+          </ng-container>
+  
+          <ng-container libColumn="password">
+            <ng-template #cell let-value>
+              <div class="flex gap-6">
+                <p class="my-0">{{hashPwd(value)}}</p>
+              </div>
+            </ng-template>
+            <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+              <verbena-input
+              [label]="''"
+              [labelColor]="inputLabelColor"
+              [bgColor]="inputBgColor"
+              [placeHolder]="'Enter password'"
+              [required]="true"
+              [type]="'password'"
+              [(value)]="value.Password"
+              [showBorder]="true"
+              [showErrorMessage]="false"
+              [errorMessageColor]="'red'"
+              [errorBorderColor]="'red'"
+              [errorPosition]="'bottom'"
+              (ngModelChange)="updateValue('Password', $event)"
+            ></verbena-input>
+            </ng-template> 
+          </ng-container>
+  
+          <ng-container libColumn="enabled">
+            <ng-template #cell let-value>
+              <div>
+                <verben-svg 
+                icon="checked" 
+                [height]="13.4"
+                [width]="17.6"
+                *ngIf="value === true"></verben-svg>
+                <verben-svg 
+                icon="not-allowed" 
+                [height]="20"
+                [width]="20"
+                *ngIf="value === false"></verben-svg>
+              </div>
+            </ng-template>
+            <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+              <verbena-switch
+              [offColor]="'#ccc'"
+              [onColor]="'#1A237E'"
+              customStyles="my-custom-class"
+              onText="ON"
+              offText="OFF"
+              [checked]="value.Enabled"
+            ></verbena-switch>
+            </ng-template>
+          </ng-container>
+  
+          <ng-container libColumn="secured">
+            <ng-template #cell let-value>
+              <div>
+                <verben-svg 
+                icon="checked" 
+                [height]="13.4"
+                [width]="17.6"
+                *ngIf="value === true"></verben-svg>
+                <verben-svg 
+                icon="not-allowed" 
+                [height]="20"
+                [width]="20"
+                *ngIf="value === false"></verben-svg>
+              </div>
+            </ng-template>
+            <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+              <verbena-switch
+              [offColor]="'#ccc'"
+              [onColor]="'#1A237E'"
+              customStyles="my-custom-class"
+              onText="ON"
+              offText="OFF"
+              [checked]="value.Secured"
+            ></verbena-switch>
+            </ng-template>
+          </ng-container>
+  
+          <ng-container libColumn="action">
+            <ng-template #cell 
+            let-value 
+            let-row="row"
+            let-toggleRowEdit="toggleRowEdit"
+            >
+            <verben-pop-Up 
+            [dropdownOpen]="isDropdownOpen(row)" 
+            (close)="onClose()"
+            >
+                <span [ngStyle]="{'z-index':'3'}"  dropdown-trigger> 
+                  <verben-svg 
+                  icon="menu" 
+                  ></verben-svg>
+                </span>
+              
+                <div dropdown-content>
+                  <div 
+                  class="w-36" [ngStyle]="{'z-index':'10','background':'white','box-shadow':'2px 2px 2px 2px red'}"> 
+                    <div class="border-b-2 border-[#FFE681] px-3 py-3">
+                      <p class="my-0 text-[#3E3E3E] text-[15px] leading-[18.9px] cursor-pointer font-medium">View Details</p>
+                    </div> 
+                    <div class=" px-3 py-3 cursor-pointer space-y-4">
+                      <p class="my-0 text-[#3E3E3E] text-[15px] leading-[18.9px] font-medium" 
+                      (click)="toggleRowEdit()"
+                      >Edit</p>
+                      <p class="my-0 text-[#3E3E3E] text-[15px] leading-[18.9px] font-medium">Delete</p>
+                    </div>
+                  </div>
+                </div>
+              </verben-pop-Up>
+            </ng-template>
+            <ng-template 
+              #cellEdit 
+              let-value="value" 
+              let-updateValue="updateValue"  
+              >
+                <div class="flex items-center gap-4"> 
+                  <span class="cursor-pointer">
+                      <verben-svg
+                    icon="checked"
+                    [width]="15"
+                    [height]="15"
+                  ></verben-svg>
+                  </span>
+                  <span class="cursor-pointer">
+                    <verben-svg
+                    icon="delete"
+                    [width]="15"
+                    [height]="15"
+                  ></verben-svg>
+                  </span>
+                  <span class="cursor-pointer">
+                      <verben-svg
+                    icon="table-view"
+                    [width]="15"
+                    [height]="15"
+                    (click)="goToCardView()"
+                  ></verben-svg>
+                  </span>
+              </div>
+              </ng-template>
+            <ng-template #header>
+              <strong>Actions</strong>
+            </ng-template>
+          </ng-container>
+  
+        </lib-data-table>
+      </div>
+      <div card-content>
+        <verben-card-data-view
+          borderRadius="12px"
+          (loadMoreClick)="loadMore()"
+          #vdcv
+          dataId="Operation"
+          border="5px"
+          [cardDataList]="cardData"
+          rbgColor="#f5f6f9"
+          mg="20px"
+        >
+          <verben-left-card-data-view class="">
+            <verben-left-card-data
+              #vlcd
+              [parent]="vdcv"
+              dataId="Operation"
+              class="bg-secondary-100 rounded-xl border-primary border-[1px]"
+              [cardDataList]="cardData"
+            >
+              <ng-template #card let-item>
+                <div (click)="currentData = vdcv.onItemClick(item)" class="flex">
+                  <div
+                    (click)="currentData = vdcv.onItemClick(item)"
+                    class="flex cursor-pointer w-full bg-secondary rounded-xl"
+                  >
+                    <div
+                      class="w-3 rounded-xl rounded-tr-none rounded-br-none"
+                      [ngClass]="
+                        item.selected ? 'bg-primary' : 'bg-secondary-200'
+                      "
+                    ></div>
+                    <div class="flex flex-col py-2 px-4 w-full h-[100%]">
+                      <div class="flex items-center justify-between h-[100%]">
+                        <div class="flex flex-col space-y-4">
+                          <h3
+                            class="my-0 font-semibold text-[#404040] leading-[19.5px]"
+                          >
+                            {{ item.title }}
+                          </h3>
+                          <p class="flex items-center">
+                            <label
+                              class="!text-[10px] font-light text-[#404040] leading-[12.1px]"
+                              >Enabled:</label
+                            >
+                            <span
+                              class="text-[13px] leading-[15.85px] font-medium ml-1 text-black"
+                            >
+                              Yes
+                            </span>
+                          </p>
+                        </div>
+  
+                        <div class="flex flex-col justify-between space-y-4">
+                          <p class="grid">
+                            <label
+                              class="text-[10px] font-light leading-[12.1px] text-[#404040]"
+                              >User</label
+                            >
+                            <span
+                              id="phone"
+                              class="text-xs font-medium leading-[14.63px] text-[#404040]"
+                              >John doe</span
+                            >
+                          </p>
+                          <div>
+                            <p
+                              (click)="
+                                goToDetails(item); $event.stopPropagation()
+                              "
+                              class="my-0 underline text-[#3479E9] text-[11px] leading-[16.6px] cursor-pointer font-medium"
+                            >
+                              View details
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </verben-left-card-data>
+          </verben-left-card-data-view>
+  
+          <verben-right-card-data-view>
+            <ng-template #parent>
+              <div class="py-6 flex flex-col justify-between h-[100%]"> 
+                <div class="px-10 flex flex-col gap-5"> 
+                 <verbena-input
+                 [label]="'MailHost'"
+                 [labelColor]="inputLabelColor"
+                 [bgColor]="inputBgColor"
+                 [placeHolder]="'Enter Name'"
+                 [required]="true"
+                 [type]="'text'"
+                 [(value)]="formData.MailHost"
+                 [showBorder]="true"
+                 [showErrorMessage]="true"
+                 [errorMessageColor]="'red'"
+                 [errorBorderColor]="'red'"
+                 [errorPosition]="'bottom'"
+               ></verbena-input>
+                 <verbena-input
+                 [label]="'Inbound Host'"
+                 [labelColor]="inputLabelColor"
+                 [bgColor]="inputBgColor"
+                 [placeHolder]="'Enter Host'"
+                 [required]="true"
+                 [type]="'text'"
+                 [(value)]="formData.InboundHost"
+                 [showBorder]="true"
+                 [showErrorMessage]="true"
+                 [errorMessageColor]="'red'"
+                 [errorBorderColor]="'red'"
+                 [errorPosition]="'bottom'"
+               ></verbena-input>
+                 <verbena-input
+                 [label]="'Outbound Host'"
+                 [placeHolder]="'Enter Host'"
+                 [labelColor]="inputLabelColor"
+                 [bgColor]="inputBgColor"
+                 [required]="true"
+                 [type]="'text'"
+                 [(value)]="formData.OutboundHost"
+                 [showBorder]="true"
+                 [showErrorMessage]="true"
+                 [errorMessageColor]="'red'"
+                 [errorBorderColor]="'red'"
+                 [errorPosition]="'bottom'"
+               ></verbena-input>
+                 <verbena-input
+                 [label]="'Mail'"
+                 [placeHolder]="'Enter Mail'"
+                 [labelColor]="inputLabelColor"
+                 [bgColor]="inputBgColor"
+                 [required]="true"
+                 [type]="'text'"
+                 [(value)]="formData.Mail"
+                 [showBorder]="true"
+                 [showErrorMessage]="true"
+                 [errorMessageColor]="'red'"
+                 [errorBorderColor]="'red'"
+                 [errorPosition]="'bottom'"
+               ></verbena-input>
+                 <verbena-input
+                 [label]="'User'"
+                 [placeHolder]="'Enter User'"
+                 [labelColor]="inputLabelColor"
+                 [bgColor]="inputBgColor"
+                 [required]="true"
+                 [type]="'text'"
+                 [(value)]="formData.User"
+                 [showBorder]="true"
+                 [showErrorMessage]="true"
+                 [errorMessageColor]="'red'"
+                 [errorBorderColor]="'red'"
+                 [errorPosition]="'bottom'"
+               ></verbena-input>
+                 <verbena-input
+                 [label]="'Password'"
+                 [placeHolder]="'Enter Password'"
+                 [labelColor]="inputLabelColor"
+                 [bgColor]="inputBgColor"
+                 [required]="true"
+                 [type]="'text'"
+                 [(value)]="formData.Password"
+                 [showBorder]="true"
+                 [showErrorMessage]="true"
+                 [errorMessageColor]="'red'"
+                 [errorBorderColor]="'red'"
+                 [errorPosition]="'bottom'"
+               ></verbena-input>
+               <div class="flex flex-col gap-2"> 
+                 <label class="text-[#000000] font-medium text-[15px] leading-[18.29px]">Enabled</label>
+                 <verbena-switch
+                 [offColor]="'#ccc'"
+                 [onColor]="'#1A237E'"
+                 customStyles="my-custom-class"
+                 onText="ON"
+                 offText="OFF"
+               ></verbena-switch>
+               </div>
+               <div class="flex flex-col gap-2"> 
+                 <label class="text-[#000000] font-medium text-[15px] leading-[18.29px]">Secured</label>
+                 <verbena-switch
+                 [offColor]="'#ccc'"
+                 [onColor]="'#1A237E '"
+                 customStyles="my-custom-class"
+                 onText="ON"
+                 offText="OFF"
+               ></verbena-switch>
+               </div>
+                </div>  
+                <div class="px-10 flex justify-between items-center"> 
+                  <button class="bg-[#999999] rounded-[4px] p-[10px] w-[110px] cursor-pointer items-center h-[32px] outline-none border-none flex justify-center font-semibold text-sm leading-[17.07px] text-[#404040]">Delete</button>
+                  <div class=" flex justify-between items-center gap-4"> 
+                    <button class="bg-[#FFFBEB]  border border-[#FFE681] rounded-[4px] p-[10px] w-[110px] cursor-pointer items-center h-[32px] flex justify-center font-semibold text-sm leading-[17.07px] text-[#404040]">Switch</button>
+                    <button class="bg-[#FFE681]  border border-[#FFE681] rounded-[4px] p-[10px] w-[110px] cursor-pointer items-center h-[32px] flex justify-center font-semibold text-sm leading-[17.07px] text-[#404040]">Save</button>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </verben-right-card-data-view>
+  
+          <verben-card-data-view-footer class="float-right">
+            <div class="flex gap-2">
+              <span class="paginator-text"
+                >{{ cardData.length }} records loaded</span
+              >
+              <button (click)="loadMore()" class="load-more">Load more</button>
+            </div>
+          </verben-card-data-view-footer>
+        </verben-card-data-view>
+      </div>
+      <div column-content>
+        <verben-visible-column
+          (columnsUpdated)="onColumnsUpdated($event)"
+          [border]="'1px solid rgba(212, 160, 7, 1)'"
+          borderRadius="10px"
+          boxShadow="2px 2px 2px 0px silver"
+          bgColor="white"
+          width="400px"
+          textColor="black"
+          pd="1rem"
+          primaryColor="#FFE681"
+          secondaryColor="#3479E9"
+          [columns]="visibleColumns"
+          [displayedColumns]="5"
+        ></verben-visible-column>
+      </div>
+      <div filter-content>
+        <verben-table-filter
+          [border]="'1px solid rgba(212, 160, 7, 1)'"
+          borderRadius="10px"
+          boxShadow="2px 2px 2px 0px silver"
+          bgColor="white"
+          width="420px"
+          textColor="black"
+          pd="1rem"
+          primaryColor="#FFE681"
+          secondaryColor="#3479E9"
+          tertiaryColor="#404040"
+          [filterOptions]="filterArray"
+          [maxFilterLength]="3"
+        ></verben-table-filter>
+      </div>
+      <div sort-content>
+        <verben-sort-table
+          (selectedOptions)="onSortUpdated($event)"
+          [border]="'1px solid rgba(212, 160, 7, 1)'"
+          borderRadius="10px"
+          boxShadow="2px 2px 2px 0px silver"
+          bgColor="white"
+          width="400px"
+          textColor="black"
+          pd="1rem"
+          primaryColor="#FFE681"
+          secondaryColor="#3479E9"
+          tertiaryColor="#404040"
+          [enableDragAndDrop]="true"
+          [sortOptions]="sortOptions"
+        ></verben-sort-table>
+      </div>
+      <div export-content>
+        <lib-data-export [data]="data" (exportDataEvent)="handleExport($event)">
+        </lib-data-export>
+      </div>
+    </verben-data-view>
+  
+    <verben-dialogue
+    [showCloseIcon]="false"
+    [dismissOutsideClick]="true"
+    [closeOnEscape]="true"
+    [size]="'medium'"
+    [mode]="'dialogue'"
+    [customClass]="'message-log-modal'"
+    [disableFooter]="true"
+    [isVisible]="isModalVisible"
+    [bodyTemplate]="bodyTemplate"
+    (closeModal)="onModalClose($event)"
+  >
+    <ng-template #bodyTemplate>
+      <div class="dialog-body flex flex-col gap-4">
+          <div *ngFor="let item of dialogContent"> 
+            <p class="my-0">{{item}}</p>
+          </div>
+        <div>
+          <verbena-button
+            width="100%"
+            [fontWeight]="'bold'"
+            [bgColor]="'#FFE681'"
+            [borderRadius]="'4px'"
+            [textColor]="'#000'"
+            [text]="'Close'"
+            (click)="onModalClose($event)"
+          >
+          </verbena-button>
+        </div>
+      </div>
+    </ng-template>
+  </verben-dialogue>
+  </div>
+  

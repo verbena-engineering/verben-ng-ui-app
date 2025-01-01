@@ -15,7 +15,6 @@ export * from './lib/components/card-data-view/right-card-data-view/right-card-d
 export * from './lib/components/card-data-view/card-data-view-header/card-data-view-header.component';
 export * from './lib/components/card-data-view/card-data-view-footer/card-data-view-footer.component';
 
-
 export * from './lib/components/drop-down/DropdownMenuItem';
 export * from './lib/components/drop-down/DropdownChangeEvent';
 export * from './lib/components/drop-down/DropdownLoadEvent';
@@ -126,4 +125,9 @@ export * from './lib/components/verben-dialogue/verben-dialogue.module';
 export * from './lib/components/verben-dialogue/verben-dialogue.component';
 
 //notification service
-export * from './lib/services/notification.services'
+export * from './lib/services/notification.services';
+
+export * from './lib/components/pop-up/pop-up.module'
+export * from './lib/components/pop-up/pop-up.component'
+
+export * from './lib/tokens';

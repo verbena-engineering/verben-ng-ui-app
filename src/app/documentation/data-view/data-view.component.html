@@ -7,21 +7,29 @@
     isSort: true,
     isExport: true,
     isSelect: true,
-    isCreate:true
+    isCreate:true,
+    isToggle:true
   }"
   [buttonClass]="'my-custom-button-class'"
   [iconClass]="'my-icon-class'"
   [activeIconClass]="'my-active-icon-class'"
   [selectedColumnCount]="0"
   [selectedSortCount]="0"
+  [showColumnChild]="showColumn"
+  [showSortChild]="showSort"
+  [showExportChild]="showExport"
+  [isTableView]="true"
+  [selectedColumnCount]="selectedColumnCount"
+  [selectedSortCount]="selectedSortCount"
   [selectedFilterTableCount]="0"
   (viewChange)="onViewChange($event)"
   (stateChange)="onStateChange($event)"
 >
-  <div grid-content>
+  <div table-content>
+    hello
     <!-- import table content -->
   </div>
-  <div list-content>
+  <div card-content>
     <verben-card-data-view
     (loadMoreClick)="loadMore()"
     #vdcv
@@ -148,4 +156,10 @@
   <div export-content>
     <!-- import export component here -->
   </div>
+  <div create-content>
+<!--pass create component-->
+  </div>
+  <div children>
+    
+      </div>
 </verben-data-view>

@@ -8,19 +8,19 @@ export class Config {
     },
     {
       type: DataFilterType.Integer,
-      options: [ConditionalOptions.On, ConditionalOptions.Before,ConditionalOptions.LessThanAndEqual, ConditionalOptions.After,ConditionalOptions.GreaterThanAndEqual] 
+      options: [ConditionalOptions.On, ConditionalOptions.Before,ConditionalOptions.LessThanAndEqual, ConditionalOptions.After,ConditionalOptions.GreaterThanAndEqual]
     },
     {
       type: DataFilterType.Decimal,
-      options: [ConditionalOptions.On, ConditionalOptions.Before,ConditionalOptions.LessThanAndEqual, ConditionalOptions.After,ConditionalOptions.GreaterThanAndEqual] 
+      options: [ConditionalOptions.On, ConditionalOptions.Before,ConditionalOptions.LessThanAndEqual, ConditionalOptions.After,ConditionalOptions.GreaterThanAndEqual]
     },
     {
       type: DataFilterType.Credit,
-      options:[ConditionalOptions.On, ConditionalOptions.Before,ConditionalOptions.LessThanAndEqual, ConditionalOptions.After,ConditionalOptions.GreaterThanAndEqual] 
+      options:[ConditionalOptions.On, ConditionalOptions.Before,ConditionalOptions.LessThanAndEqual, ConditionalOptions.After,ConditionalOptions.GreaterThanAndEqual]
     },
     {
       type: DataFilterType.Date,
-      options: [ConditionalOptions.On,ConditionalOptions.Before,ConditionalOptions.After] 
+      options: [ConditionalOptions.On,ConditionalOptions.Before,ConditionalOptions.After]
     },
     {
       type: DataFilterType.Bool,

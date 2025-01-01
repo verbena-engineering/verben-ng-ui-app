@@ -120,9 +120,11 @@
 
 <hr style="margin-block: 4rem" />
 
+<button (click)="changeCols()">Shuffle cols</button>
+
 <lib-data-table
   [data]="tableData()"
-  [columns]="tableColumns2"
+  [columns]="controlledCols()"
   (rowEdit)="onRowEdit($event)"
   (rowSave)="onRowSave($event)"
   (rowDelete)="onRowDelete($event)"
@@ -292,10 +294,15 @@
   </ng-container>
 </lib-data-table>
 
-<app-table-export
-  [data]="tableData()"
-  (exportDataEvent)="handleExport($event)"
-></app-table-export>
+<div class="bg-primary">
+  <app-table-export
+    [data]="tableData()"
+    (exportDataEvent)="handleExport($event)"
+  ></app-table-export>
 
-<lib-data-export [data]="tableData()" (exportDataEvent)="handleExport($event)">
-</lib-data-export>
+  <lib-data-export
+    [data]="tableData()"
+    (exportDataEvent)="handleExport($event)"
+  >
+  </lib-data-export>
+</div>

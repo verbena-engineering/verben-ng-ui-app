@@ -1,0 +1,16 @@
+<span class="relative dropdown-container" [ngStyle]="dropdownStyles">
+  <span (click)="toggleDropdown()" class="dropdown-menu">
+    <ng-content select="[dropdown-trigger]"></ng-content>
+  </span>
+
+  <div
+    [ngClass]="{'z-[9999]': true}"
+    *ngIf="dropdownOpen"
+    (mouseleave)="onMouseOut()"
+    [attr.aria-hidden]="!dropdownOpen"
+    class="absolute bottom-2 right-0 {{popUpClass}}"
+    [ngStyle]="yourStyles"
+  >
+    <ng-content select="[dropdown-content]"></ng-content>
+  </div>
+</span>

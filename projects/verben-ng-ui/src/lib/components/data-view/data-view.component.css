@@ -79,13 +79,18 @@
   position: relative;
   border-radius: 10px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 8px 30px 8px 10px;
+  background-color: rgba(128, 128, 128, 0.096);
+  gap: 10px;
 }
 .search-input input{
   outline: 0;
   width: 100%;
    display: block;
-   padding: 8px 10px;
-   background-color: rgba(128, 128, 128, 0.096);
+
+  background-color: transparent;
 }
 .search-input input::placeholder{
   color: #424242;

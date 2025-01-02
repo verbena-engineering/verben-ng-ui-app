@@ -22,9 +22,14 @@
       class="search-input"
       *ngIf="viewState.isSearch"
     >
+    <verben-svg
+    [icon]="'search2'"
+    [width]="20"
+    [height]="20"
+  ></verben-svg>
       <input
         [type]="'text'"
-        [placeholder]="'Search...'"
+        [placeholder]="'Search'"
         (input)="onSearch($event)"
         [style.border]="'0'"
         [value]="searchValue"
@@ -39,167 +44,169 @@
       ></verben-svg>
     </div>
   </div>
+<div class="relative flex items-center gap-2">
+     <!-- Column Section -->
+     <ng-container
+     [appOutSideClick]="showColumnChild"
+     (outSideClick)="resetChildViewsExcept('column')"
+     *ngIf="viewState.isColumn && isTableView"
+   >
+     <ng-container *ngIf="columnTemplate; else defaultColumn"></ng-container>
+     <ng-template #defaultColumn>
+       <span
+         [ngClass]="[
+           'flex gap text-xs items-center pd rounded cursor-pointer',
+           columnCustomClass ? columnCustomClass : ''
+         ]"
+         [style.background-color]="'#D9D9D940'"
+         (click)="toggleChildView('column')"
+       >
+         <verben-svg [width]="15" [icon]="'column'"></verben-svg>
+         <span
+           >Columns <sup>({{ selectedColumnCount }})</sup></span
+         >
+       </span>
+       <div [style.z-index]="zIndex" class="data-view-element">
+         <ng-content *ngIf="showColumnChild" select="[column-content]">
+         </ng-content>
+       </div>
+     </ng-template>
+   </ng-container>
 
+   <!-- Filter Section -->
+   <ng-container
+     [appOutSideClick]="showFilterChild"
+     (outSideClick)="resetChildViewsExcept('filter')"
+     *ngIf="viewState.isFilter"
+   >
+     <ng-container *ngIf="filterTemplate; else defaultFilter"></ng-container>
+     <ng-template #defaultFilter>
+       <span
+         [ngClass]="[
+           'flex gap text-xs items-center pd rounded cursor-pointer',
+           filterCustomClass ? filterCustomClass : ''
+         ]"
+         [style.background-color]="'#D9D9D940'"
+         (click)="toggleChildView('filter')"
+       >
+         <verben-svg [width]="15" [icon]="'filter'"></verben-svg>
+         <span
+           >Filter <sup>({{ selectedFilterTableCount }})</sup></span
+         >
+       </span>
+       <div [style.z-index]="zIndex" class="data-view-element">
+         <ng-content
+           *ngIf="showFilterChild"
+           select="[filter-content]"
+         ></ng-content>
+       </div>
+     </ng-template>
+   </ng-container>
+
+   <!-- Sort Section -->
+   <ng-container
+     [appOutSideClick]="showSortChild"
+     (outSideClick)="resetChildViewsExcept('sort')"
+     *ngIf="viewState.isSort"
+   >
+     <ng-container *ngIf="sortTemplate; else defaultSort"></ng-container>
+     <ng-template #defaultSort>
+       <span
+         [ngClass]="[
+           'flex gap text-xs items-center pd rounded cursor-pointer',
+           sortCustomClass ? sortCustomClass : ''
+         ]"
+         [style.background-color]="'#D9D9D940'"
+         (click)="toggleChildView('sort')"
+       >
+         <verben-svg [width]="15" [icon]="'sort'"></verben-svg>
+         <span
+           >Sort <sup>({{ selectedSortCount }})</sup></span
+         >
+       </span>
+       <div [style.z-index]="zIndex" class="data-view-element">
+         <ng-content
+           *ngIf="showSortChild"
+           select="[sort-content]"
+         ></ng-content>
+       </div>
+     </ng-template>
+   </ng-container>
+
+   <!-- Export Section -->
+   <ng-container
+     [appOutSideClick]="showExportChild"
+     (outSideClick)="resetChildViewsExcept('export')"
+     *ngIf="viewState.isExport"
+   >
+     <ng-container *ngIf="exportTemplate; else defaultExport"></ng-container>
+     <ng-template #defaultExport>
+       <span
+         [ngClass]="[
+           'flex gap text-xs items-center pd rounded cursor-pointer',
+           exportCustomClass ? exportCustomClass : ''
+         ]"
+         [style.background-color]="'#D9D9D940'"
+         (click)="toggleChildView('export')"
+       >
+         <verben-svg [width]="15" [icon]="'export'"></verben-svg>
+         Export
+       </span>
+       <div [style.z-index]="zIndex" class="data-view-element">
+         <ng-content
+           *ngIf="showExportChild"
+           select="[export-content]"
+         ></ng-content>
+       </div>
+     </ng-template>
+   </ng-container>
+
+   <!-- Select Section -->
+   <div *ngIf="viewState.isSelect">
+     <span
+       [ngClass]="[
+         'flex gap text-xs items-center pd rounded cursor-pointer',
+         selectCustomClass ? selectCustomClass : ''
+       ]"
+       [style.background-color]="'#D9D9D940'"
+       (click)="toggleChildView('select')"
+     >
+       <verben-svg [width]="15" [icon]="'select'"></verben-svg>
+       <span>Select</span>
+       <verben-svg [width]="6" [icon]="'chevron-down'"></verben-svg>
+     </span>
+   </div>
+
+   <!-- Create Button -->
+
+   <div
+     [appOutSideClick]="create"
+     (outSideClick)="resetChildViewsExcept('create')"
+     *ngIf="viewState.isCreate"
+   >
+     <verbena-button
+       class="text-sm font-semibold"
+       [bgColor]="'#FFE681'"
+       [buttonClass]="createCustomClass"
+       [pd]="'6px'"
+       [borderRadius]="'4px'"
+       [textColor]="'#000'"
+       [svg]="'add'"
+       [svgPosition]="'right'"
+       [text]="'Create New'"
+       (click)="toggleChildView('create')"
+     >
+     </verbena-button>
+     <ng-container *ngIf="createTemplate; else defaultCreate"></ng-container>
+     <ng-template #defaultCreate>
+       <div [style.z-index]="zIndex" class="data-view-element">
+         <ng-content *ngIf="create" select="[create-content]"></ng-content>
+       </div>
+     </ng-template>
+   </div>
+</div>
   
-    <!-- Column Section -->
-    <ng-container
-      [appOutSideClick]="showColumnChild"
-      (outSideClick)="resetChildViewsExcept('column')"
-      *ngIf="viewState.isColumn && isTableView"
-    >
-      <ng-container *ngIf="columnTemplate; else defaultColumn"></ng-container>
-      <ng-template #defaultColumn>
-        <span
-          [ngClass]="[
-            'flex gap text-xs items-center pd rounded cursor-pointer',
-            columnCustomClass ? columnCustomClass : ''
-          ]"
-          [style.background-color]="'#D9D9D940'"
-          (click)="toggleChildView('column')"
-        >
-          <verben-svg [width]="15" [icon]="'column'"></verben-svg>
-          <span
-            >Columns <sup>({{ selectedColumnCount }})</sup></span
-          >
-        </span>
-        <div [style.z-index]="zIndex" class="data-view-element">
-          <ng-content *ngIf="showColumnChild" select="[column-content]">
-          </ng-content>
-        </div>
-      </ng-template>
-    </ng-container>
-
-    <!-- Filter Section -->
-    <ng-container
-      [appOutSideClick]="showFilterChild"
-      (outSideClick)="resetChildViewsExcept('filter')"
-      *ngIf="viewState.isFilter"
-    >
-      <ng-container *ngIf="filterTemplate; else defaultFilter"></ng-container>
-      <ng-template #defaultFilter>
-        <span
-          [ngClass]="[
-            'flex gap text-xs items-center pd rounded cursor-pointer',
-            filterCustomClass ? filterCustomClass : ''
-          ]"
-          [style.background-color]="'#D9D9D940'"
-          (click)="toggleChildView('filter')"
-        >
-          <verben-svg [width]="15" [icon]="'filter'"></verben-svg>
-          <span
-            >Filter <sup>({{ selectedFilterTableCount }})</sup></span
-          >
-        </span>
-        <div [style.z-index]="zIndex" class="data-view-element">
-          <ng-content
-            *ngIf="showFilterChild"
-            select="[filter-content]"
-          ></ng-content>
-        </div>
-      </ng-template>
-    </ng-container>
-
-    <!-- Sort Section -->
-    <ng-container
-      [appOutSideClick]="showSortChild"
-      (outSideClick)="resetChildViewsExcept('sort')"
-      *ngIf="viewState.isSort"
-    >
-      <ng-container *ngIf="sortTemplate; else defaultSort"></ng-container>
-      <ng-template #defaultSort>
-        <span
-          [ngClass]="[
-            'flex gap text-xs items-center pd rounded cursor-pointer',
-            sortCustomClass ? sortCustomClass : ''
-          ]"
-          [style.background-color]="'#D9D9D940'"
-          (click)="toggleChildView('sort')"
-        >
-          <verben-svg [width]="15" [icon]="'sort'"></verben-svg>
-          <span
-            >Sort <sup>({{ selectedSortCount }})</sup></span
-          >
-        </span>
-        <div [style.z-index]="zIndex" class="data-view-element">
-          <ng-content
-            *ngIf="showSortChild"
-            select="[sort-content]"
-          ></ng-content>
-        </div>
-      </ng-template>
-    </ng-container>
-
-    <!-- Export Section -->
-    <ng-container
-      [appOutSideClick]="showExportChild"
-      (outSideClick)="resetChildViewsExcept('export')"
-      *ngIf="viewState.isExport"
-    >
-      <ng-container *ngIf="exportTemplate; else defaultExport"></ng-container>
-      <ng-template #defaultExport>
-        <span
-          [ngClass]="[
-            'flex gap text-xs items-center pd rounded cursor-pointer',
-            exportCustomClass ? exportCustomClass : ''
-          ]"
-          [style.background-color]="'#D9D9D940'"
-          (click)="toggleChildView('export')"
-        >
-          <verben-svg [width]="15" [icon]="'export'"></verben-svg>
-          Export
-        </span>
-        <div [style.z-index]="zIndex" class="data-view-element">
-          <ng-content
-            *ngIf="showExportChild"
-            select="[export-content]"
-          ></ng-content>
-        </div>
-      </ng-template>
-    </ng-container>
-
-    <!-- Select Section -->
-    <div *ngIf="viewState.isSelect">
-      <span
-        [ngClass]="[
-          'flex gap text-xs items-center pd rounded cursor-pointer',
-          selectCustomClass ? selectCustomClass : ''
-        ]"
-        [style.background-color]="'#D9D9D940'"
-        (click)="toggleChildView('select')"
-      >
-        <verben-svg [width]="15" [icon]="'select'"></verben-svg>
-        <span>Select</span>
-        <verben-svg [width]="6" [icon]="'chevron-down'"></verben-svg>
-      </span>
-    </div>
-
-    <!-- Create Button -->
-
-    <div
-      [appOutSideClick]="create"
-      (outSideClick)="resetChildViewsExcept('create')"
-      *ngIf="viewState.isCreate"
-    >
-      <verbena-button
-        class="text-sm font-semibold"
-        [bgColor]="'#FFE681'"
-        [buttonClass]="createCustomClass"
-        [pd]="'6px'"
-        [borderRadius]="'4px'"
-        [textColor]="'#000'"
-        [svg]="'add'"
-        [svgPosition]="'right'"
-        [text]="'Create New'"
-        (click)="toggleChildView('create')"
-      >
-      </verbena-button>
-      <ng-container *ngIf="createTemplate; else defaultCreate"></ng-container>
-      <ng-template #defaultCreate>
-        <div [style.z-index]="zIndex" class="data-view-element">
-          <ng-content *ngIf="create" select="[create-content]"></ng-content>
-        </div>
-      </ng-template>
-    </div>
+ 
     <div>
       <ng-container *ngIf="children; else defaultChildren"></ng-container>
       <ng-template #defaultChildren>

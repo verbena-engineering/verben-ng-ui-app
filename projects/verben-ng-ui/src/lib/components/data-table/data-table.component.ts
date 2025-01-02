@@ -225,13 +225,18 @@ export class DataTableComponent<T extends { id: string | number }>
   };
 
   allRowsSelected = (): boolean => {
-    return this.selectedRowsSignal().size === this.data.length;
+    const nonGroupRows = this.data().filter((row) => !this.isGroupRow(row));
+    return (
+      nonGroupRows.length > 0 &&
+      this.selectedRowsSignal().size === nonGroupRows.length
+    );
   };
 
   someRowsSelected = (): boolean => {
+    const nonGroupRows = this.data().filter((row) => !this.isGroupRow(row));
     return (
       this.selectedRowsSignal().size > 0 &&
-      this.selectedRowsSignal().size < this.data.length
+      this.selectedRowsSignal().size < nonGroupRows.length
     );
   };
 
@@ -239,7 +244,8 @@ export class DataTableComponent<T extends { id: string | number }>
     if (this.allRowsSelected()) {
       this.selectedRowsSignal.set(new Set());
     } else {
-      this.selectedRowsSignal.set(new Set(this.data().map((row) => row.id)));
+      const nonGroupRows = this.data().filter((row) => !this.isGroupRow(row));
+      this.selectedRowsSignal.set(new Set(nonGroupRows.map((row) => row.id)));
     }
     this.emitSelectionChange();
   };

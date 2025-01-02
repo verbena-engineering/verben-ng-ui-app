@@ -77,11 +77,20 @@
 
 .search-input {
   position: relative;
-  background-color: rgba(128, 128, 128, 0.096);
   border-radius: 10px;
+  overflow: hidden;
 }
-
-
+.search-input input{
+  outline: 0;
+  width: 100%;
+   display: block;
+   padding: 8px 10px;
+   background-color: rgba(128, 128, 128, 0.096);
+}
+.search-input input::placeholder{
+  color: #424242;
+  font-size: 14px;
+}
 sup {
   color: #3479E9;
   font-weight: 500;

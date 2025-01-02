@@ -22,12 +22,11 @@
       class="search-input"
       *ngIf="viewState.isSearch"
     >
-      <verbena-input
+      <input
         [type]="'text'"
-        [placeHolder]="'Search...'"
+        [placeholder]="'Search...'"
         (input)="onSearch($event)"
-        [bgColor]="'transparent'"
-        [border]="'0'"
+        [style.border]="'0'"
         [value]="searchValue"
       />
       <verben-svg

@@ -62,7 +62,7 @@ export class DataViewComponent implements OnInit {
   @Input() selectedColumnCount?: number = 0;
   @Input() selectedSortCount: number = 0;
   @Input() selectedFilterTableCount: number = 0;
-  @Input() inputWidth: string="350px";
+  @Input() inputWidth: string="100%";
   @Input()showColumnChild: boolean = false;
   @Input() showSortChild: boolean = false;
   @Input() showFilterChild: boolean = false;
@@ -83,11 +83,15 @@ export class DataViewComponent implements OnInit {
 
   onSearch(event:any): void {
     this.searchValue=event.target.value
+    console.log(this.searchValue);
+    
     this.onSearchChange.emit({key:this.searchKey, value:this.searchValue});
+    
   }
   
 onClearSearch(){
  this.searchValue=""
+ this.onSearchChange.emit({ key: this.searchKey, value: this.searchValue });
 }
   toggleChildView(viewType: string): void {
     switch (viewType) {
@@ -117,6 +121,7 @@ onClearSearch(){
           break;
     }
     this.stateChange.emit({ key: viewType, value: this.getChildViewState(viewType) });
+    
   }
   resetChildViewsExcept(viewType: string): void {
     if (viewType !== 'column') this.showColumnChild = false;

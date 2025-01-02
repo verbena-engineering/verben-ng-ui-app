@@ -1,14 +1,14 @@
 .boxShadow{ 
-    box-shadow: 4px 4px 4px 0px #00000040;
-   }
+   box-shadow: 4px 4px 4px 0px #00000040;
+  }
 
-   .dropdown-content {
-    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
-    transform: scale(0.95);
-    opacity: 0;
- }
- 
- .dropdown-content.open {
-    transform: scale(1);
-    opacity: 1;
- }
+  .dropdown-content {
+   transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+   transform: scale(0.95);
+   opacity: 0;
+}
+
+.dropdown-content.open {
+   transform: scale(1);
+   opacity: 1;
+}

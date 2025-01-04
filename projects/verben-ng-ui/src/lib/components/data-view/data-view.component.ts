@@ -83,6 +83,8 @@ export class DataViewComponent implements OnInit {
 
   onSearch(event:any): void {
     this.searchValue=event.target.value
+    console.log(this.searchValue);
+    
     this.onSearchChange.emit({key:this.searchKey, value:this.searchValue});
     
   }

@@ -65,6 +65,7 @@ export class DataViewComponent implements OnInit {
   @Input() selectedSortCount: number = 0;
   @Input() selectedFilterTableCount: number = 0;
   @Input() inputWidth: string="100%";
+  @Input() milliseconds: number=400;
   @Input()showColumnChild: boolean = false;
   @Input() showSortChild: boolean = false;
   @Input() showFilterChild: boolean = false;
@@ -78,7 +79,7 @@ export class DataViewComponent implements OnInit {
   @Output() onSearchChange=new EventEmitter<{ key: string; value: string }>()
   ngOnInit(): void {}
   constructor() {
-    this.searchSubject.pipe(debounceTime(400)).subscribe((value) => {
+    this.searchSubject.pipe(debounceTime(this.milliseconds)).subscribe((value) => {
       this.onSearchChange.emit({ key: this.searchKey, value });
     });
   }

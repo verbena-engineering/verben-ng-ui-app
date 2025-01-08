@@ -19,6 +19,7 @@
   [showSortChild]="showSort"
   [showExportChild]="showExport"
   [isTableView]="true"
+  (onSearchChange)="onSearch($event)"
   [selectedColumnCount]="selectedColumnCount"
   [selectedSortCount]="selectedSortCount"
   [selectedFilterTableCount]="0"
@@ -154,7 +155,7 @@
   ></verben-sort-table>
   </div>
   <div export-content>
-    <!-- import export component here -->llllll
+    <!-- import export component here -->
   </div>
   <div create-content>
 <!--pass create component-->
@@ -163,3 +164,6 @@
     
       </div>
 </verben-data-view>
+<div>
+  searchValue:{{searchValue}}
+</div>

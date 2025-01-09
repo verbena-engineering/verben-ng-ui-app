@@ -6,7 +6,8 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 interface ViewState {
   isSearch?: boolean;
   isColumn?: boolean;
@@ -41,6 +42,7 @@ export class DataViewComponent implements OnInit {
   @Input() tableClass: string = '';
   @Input() searchKey:string='search';
   @Input() searchValue:string='';
+  private searchSubject = new Subject<string>();
   @Input() viewState: ViewState = {
     isSearch: true,
     isColumn: true,
@@ -75,19 +77,21 @@ export class DataViewComponent implements OnInit {
   @Output() stateChange = new EventEmitter<{ key: string; value: boolean }>();
   @Output() onSearchChange=new EventEmitter<{ key: string; value: string }>()
   ngOnInit(): void {}
-
+  constructor() {
+    this.searchSubject.pipe(debounceTime(400)).subscribe((value) => {
+      this.onSearchChange.emit({ key: this.searchKey, value });
+    });
+  }
   toggleView(): void {
     this.isTableView = !this.isTableView;
     this.viewChange.emit(this.isTableView);
   }
 
-  onSearch(event:any): void {
-    this.searchValue=event.target.value
-    console.log(this.searchValue);
-    
-    this.onSearchChange.emit({key:this.searchKey, value:this.searchValue});
-    
+  onSearch(event: any): void {
+    this.searchValue = event.target.value;
+    this.searchSubject.next(this.searchValue); 
   }
+
   
 onClearSearch(){
  this.searchValue=""

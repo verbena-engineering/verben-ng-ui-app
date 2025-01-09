@@ -5,20 +5,33 @@
 
   <ng-template cdkConnectedOverlay [cdkConnectedOverlayLockPosition]="false" [cdkConnectedOverlayOrigin]="trigger"
     [cdkConnectedOverlayPositions]="[
-    {
-      originX: 'start',
-      originY: 'bottom',
-      overlayX: 'start',
-      overlayY: 'top'
-    },
-    {
-      originX: 'start',
-      originY: 'top',
-      overlayX: 'start',
-      overlayY: 'bottom'
-    }
-  ]" [cdkConnectedOverlayOpen]="dropdownOpen" (detach)="dropdownOpen = false">
-    <div (mouseleave)="onMouseOut()" [attr.aria-hidden]="!dropdownOpen" class="{{popUpClass}}" [ngStyle]="yourStyles">
+  {
+    originX: 'start',
+    originY: 'bottom',
+    overlayX: 'start',
+    overlayY: 'top'
+  },
+  {
+    originX: 'end',
+    originY: 'bottom',
+    overlayX: 'end',
+    overlayY: 'top'
+  },
+  {
+    originX: 'start',
+    originY: 'top',
+    overlayX: 'start',
+    overlayY: 'bottom'
+  },
+  {
+    originX: 'end',
+    originY: 'top',
+    overlayX: 'end',
+    overlayY: 'bottom'
+  }
+]" [cdkConnectedOverlayOpen]="dropdownOpen" (detach)="dropdownOpen = false">
+    <div #expansion (mouseleave)="onMouseOut()" [attr.aria-hidden]="!dropdownOpen" class="{{popUpClass}}"
+      [ngStyle]="yourStyles">
       <ng-content select="[dropdown-content]"></ng-content>
     </div>
   </ng-template>

@@ -78,6 +78,7 @@
      [appOutSideClick]="showFilterChild"
      (outSideClick)="resetChildViewsExcept('filter')"
      *ngIf="viewState.isFilter"
+     (click)="stopPropagation($event)"
    >
      <ng-container *ngIf="filterTemplate; else defaultFilter"></ng-container>
      <ng-template #defaultFilter>
@@ -94,11 +95,11 @@
            >Filter <sup>({{ selectedFilterTableCount }})</sup></span
          >
        </span>
-       <div [style.z-index]="zIndex" class="data-view-element">
-         <ng-content
-           *ngIf="showFilterChild"
-           select="[filter-content]"
-         ></ng-content>
+       <div (click)="stopPropagation($event)" [style.z-index]="zIndex" class="data-view-element">
+
+          <ng-content *ngIf="showFilterChild" select="[filter-content]"></ng-content>
+      
+      
        </div>
      </ng-template>
    </ng-container>

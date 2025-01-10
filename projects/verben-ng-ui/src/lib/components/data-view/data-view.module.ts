@@ -9,9 +9,10 @@ import { OutSideClickDirective } from './data-view-click-outside.directive';
 import {VerbenaInputModule} from "../../Verbena-input/verbena-input.module"
 import {VerbenaButtonModule} from "../../verbena-button/verbena-button.module"
 import {VisibleColumnModule} from "../../components/visible-column/visible-column.module"
+import { VerbenPopUpModule } from '../pop-up/pop-up.module';
 @NgModule({
   declarations:[DataViewComponent],
-  imports: [CommonModule,CardDataViewModule,DataTableModule,SvgModule,VerbenaInputModule,VerbenaButtonModule,OutSideClickDirective,VisibleColumnModule],
+  imports: [CommonModule,CardDataViewModule,DataTableModule,SvgModule,VerbenaInputModule,VerbenaButtonModule,OutSideClickDirective,VisibleColumnModule, VerbenPopUpModule],
   exports: [DataViewComponent]
 })
 export class DataViewModule {}

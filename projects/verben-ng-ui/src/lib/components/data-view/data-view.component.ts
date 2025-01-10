@@ -1,10 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnInit,
   Output,
+  Renderer2,
+  ViewChild,
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -77,12 +80,19 @@ export class DataViewComponent implements OnInit {
   @Output() viewChange = new EventEmitter<boolean>();
   @Output() stateChange = new EventEmitter<{ key: string; value: boolean }>();
   @Output() onSearchChange=new EventEmitter<{ key: string; value: string }>()
+  @ViewChild('filterContentWrapper') filterContentWrapper!: ElementRef;
+
+ 
+
+ 
   ngOnInit(): void {}
-  constructor() {
+  constructor(private renderer: Renderer2) {
     this.searchSubject.pipe(debounceTime(this.milliseconds)).subscribe((value) => {
       this.onSearchChange.emit({ key: this.searchKey, value });
     });
+    
   }
+ 
   toggleView(): void {
     this.isTableView = !this.isTableView;
     this.viewChange.emit(this.isTableView);
@@ -92,6 +102,21 @@ export class DataViewComponent implements OnInit {
     this.searchValue = event.target.value;
     this.searchSubject.next(this.searchValue); 
   }
+stopPropagation(event:Event) {
+  const target = event.target as HTMLElement;
+
+ 
+  if (target.classList.contains('drop-down-menu-item')) {
+    console.log(true);
+    
+    
+    event.stopPropagation(); 
+  }
+  else{
+    this.showFilterChild=true
+    
+  }
+}
 
   
 onClearSearch(){

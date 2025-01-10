@@ -72,8 +72,9 @@ export class VerbenPopUpComponent implements AfterViewChecked {
     const clickedInside = this.elementRef.nativeElement.contains(targetElement);
     if (
       !clickedInside &&
-      !this.expansion.nativeElement.contains(targetElement) &&
-      this.dropdownOpen
+      this.dropdownOpen &&
+      this.expansion &&
+      !this.expansion.nativeElement.contains(targetElement)
     ) {
       this.dropdownOpen = false;
       this.dropdownOpenChange.emit(this.dropdownOpen);

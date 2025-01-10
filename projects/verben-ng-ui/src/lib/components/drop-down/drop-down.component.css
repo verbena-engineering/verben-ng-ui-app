@@ -36,11 +36,11 @@
 
 .drop-down-menu-item-wrapper {
   min-width: calc(100% - 4px);
-  position: absolute;
+  /* position: absolute; */
   margin-top: 3px;
-  left: 0;
+  /* left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 1; */
   background: #ffffff;
   color: #334155;
   border: 1px solid #e2e8f0;

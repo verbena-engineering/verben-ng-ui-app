@@ -751,8 +751,9 @@ export class DropDownComponent
     }
     if (
       !this.dropdownContainer.nativeElement.contains(event.target) &&
-      !this.dropdownExpansion.nativeElement.contains(event.target) &&
-      this.isExpanded
+      this.isExpanded &&
+      this.dropdownExpansion &&
+      !this.dropdownExpansion.nativeElement.contains(event.target)
     ) {
       this.isExpanded = false;
     }

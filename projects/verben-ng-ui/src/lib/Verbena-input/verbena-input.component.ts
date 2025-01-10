@@ -195,10 +195,13 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
       return;
     }
     
-    if (this.type === 'tel' && !/^\+?[1-9]\d{1,14}$/.test(this.value)) {
-      this.errorMessage = this.customErrorMessages.tel || 'Please enter a valid telephone number.';
-      this.isInvalid = true;
-      return;
+    if (this.type === 'tel') {
+      const phoneNumberRegex = /^\+?[0-9\s\-().]{7,}$/;
+      if (!phoneNumberRegex.test(this.value)) {
+        this.errorMessage = this.customErrorMessages.tel || 'Please enter a valid telephone number.';
+        this.isInvalid = true;
+        return;
+      }
     }
 
     if (this.type === 'url' && !/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/.test(this.value)) {

@@ -34,12 +34,9 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() svgWidth: number = 20;
   @Input() svgHeight: number = 20;
   @Input() svgColor: string = '';
-
   @Input() capitalization: 'none' | 'uppercase' | 'lowercase' | 'sentencecase' | 'pascalcase' | 'camelcase' = 'none';
-
   @Input() inputContainerClass: string = '';
   @Input() inputFieldClass: string = '';
-
   @Input() passLength: number = 8;
   @Input() inputWrapperClass: string = '';
   @Input() passwordToggle?: boolean = false;

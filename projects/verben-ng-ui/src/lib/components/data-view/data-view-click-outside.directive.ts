@@ -23,7 +23,9 @@ import {
     private listener: (() => void) | undefined;
   
     onDocumentClick = (event: Event) => {
-      if (!this.element.nativeElement.parentElement.contains(event.target)) {
+      const target=event.target as HTMLElement
+      const isInsidePane = target.closest('.cdk-overlay-pane') !== null;
+      if (!this.element.nativeElement.parentElement.contains(event.target)&& !isInsidePane) {
         this.outSideClick.emit();
       }
     };

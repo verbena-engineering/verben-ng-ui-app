@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VerbenPopUpComponent } from './pop-up.component';
 
-describe('DropdownComponent', () => {
+describe('popupComponent', () => {
   let component: VerbenPopUpComponent;
   let fixture: ComponentFixture<VerbenPopUpComponent>;
 

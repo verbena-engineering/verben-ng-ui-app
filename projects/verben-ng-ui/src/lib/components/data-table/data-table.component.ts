@@ -5,6 +5,7 @@ import {
   computed,
   ContentChildren,
   EventEmitter,
+  input,
   Input,
   OnInit,
   Output,
@@ -26,12 +27,24 @@ import { BaseStyles, TableStyles } from './style.types';
 export class DataTableComponent<T extends { id: string | number }>
   implements OnInit, AfterContentInit
 {
-  @Input({ required: true }) data!: T[];
+  // Modify data input to use grouped data
+  data = input.required<T[]>();
+  columns = input.required<ColumnDefinition<T>[]>();
+  // @Input({ required: true })
+  // set data(value: T[]) {
+  //   this._data = value;
+  // }
+  // get data(): T[] {
+  //   return this.groupedData();
+  // }
+  // private _data: T[] = [];
   // Modify columns input to use a signal
-  @Input({ required: true })
-  set columns(value: ColumnDefinition<T>[]) {
-    this.columnsSignal.set(value);
-  }
+  // @Input({ required: true })
+  // set columns(value: ColumnDefinition<T>[]) {
+  //   this.columnsSignal.set(value);
+  // }
+  // New inputs for grouping
+  groupBy = input<keyof T | ((row: T) => any)>();
 
   @Input() styleConfig: TableStyles = defaultTableStyles;
 
@@ -55,10 +68,56 @@ export class DataTableComponent<T extends { id: string | number }>
     this.columnsSignal().some((col) => col.footerTemplate !== undefined)
   );
 
+  // Type guard method to check for group rows
+  isGroupRow(row: T): row is T & { isGroupRow: true; groupTitle: any } {
+    return !!(row as any).isGroupRow;
+  }
+
+  // Computed property for grouped data
+  groupedData = computed(() => {
+    // If no grouping is specified, return original data
+    if (!this.groupBy()) return this.data();
+
+    // Determine group function based on input type
+    const getGroupValue =
+      typeof this.groupBy() === 'function'
+        ? (this.groupBy() as (row: T) => any)
+        : (row: T) => row[this.groupBy() as keyof T];
+
+    // Group the data
+    const groups = new Map<any, T[]>();
+
+    this.data().forEach((row) => {
+      if (getGroupValue !== undefined) {
+        const groupValue = getGroupValue(row);
+        const existingGroup = groups.get(groupValue) || [];
+        groups.set(groupValue, [...existingGroup, row]);
+      }
+    });
+
+    // Construct final grouped data array with group rows
+    const groupedDataArray: (T & { isGroupRow?: boolean })[] = [];
+
+    groups.forEach((groupRows, groupValue) => {
+      // Create a group row
+      const groupRow = {
+        id: `group-${groupValue}`,
+        isGroupRow: true,
+        groupValue,
+        groupTitle: groupValue,
+      } as unknown as T & { isGroupRow: boolean };
+
+      groupedDataArray.push(groupRow);
+      groupedDataArray.push(...groupRows);
+    });
+
+    return groupedDataArray;
+  });
+
   ngOnInit() {
     // Set initial columns if not already set
     if (this.columnsSignal().length === 0) {
-      this.columnsSignal.set(this.columns);
+      this.columnsSignal.set(this.columns());
     }
   }
 
@@ -90,6 +149,12 @@ export class DataTableComponent<T extends { id: string | number }>
   }
 
   getCellValue = (row: T, column: ColumnDefinition<T>): any => {
+    // For group rows, return the group title if it exists
+    if (this.isGroupRow(row)) {
+      return (row as any).groupTitle;
+    }
+
+    // Existing logic for normal rows
     if (column.accessorKey) {
       return (row as any)[column.accessorKey];
     }
@@ -115,7 +180,7 @@ export class DataTableComponent<T extends { id: string | number }>
   };
 
   private initializeEditedData(rowId: string | number) {
-    const row = this.data.find((r) => r.id === rowId);
+    const row = this.data().find((r) => r.id === rowId);
     if (row) {
       this.editedDataSignal.update((map) => {
         const newMap = new Map(map);
@@ -128,10 +193,10 @@ export class DataTableComponent<T extends { id: string | number }>
   private saveRow(rowId: string | number) {
     const editedData = this.editedDataSignal().get(rowId);
     if (editedData) {
-      const originalRowIndex = this.data.findIndex((r) => r.id === rowId);
+      const originalRowIndex = this.data().findIndex((r) => r.id === rowId);
       if (originalRowIndex !== -1) {
-        const updatedRow = { ...this.data[originalRowIndex], ...editedData };
-        this.data[originalRowIndex] = updatedRow;
+        const updatedRow = { ...this.data()[originalRowIndex], ...editedData };
+        this.data()[originalRowIndex] = updatedRow;
         this.rowSave.emit(updatedRow);
         this.editedDataSignal.update((map) => {
           const newMap = new Map(map);
@@ -160,13 +225,18 @@ export class DataTableComponent<T extends { id: string | number }>
   };
 
   allRowsSelected = (): boolean => {
-    return this.selectedRowsSignal().size === this.data.length;
+    const nonGroupRows = this.data().filter((row) => !this.isGroupRow(row));
+    return (
+      nonGroupRows.length > 0 &&
+      this.selectedRowsSignal().size === nonGroupRows.length
+    );
   };
 
   someRowsSelected = (): boolean => {
+    const nonGroupRows = this.data().filter((row) => !this.isGroupRow(row));
     return (
       this.selectedRowsSignal().size > 0 &&
-      this.selectedRowsSignal().size < this.data.length
+      this.selectedRowsSignal().size < nonGroupRows.length
     );
   };
 
@@ -174,13 +244,14 @@ export class DataTableComponent<T extends { id: string | number }>
     if (this.allRowsSelected()) {
       this.selectedRowsSignal.set(new Set());
     } else {
-      this.selectedRowsSignal.set(new Set(this.data.map((row) => row.id)));
+      const nonGroupRows = this.data().filter((row) => !this.isGroupRow(row));
+      this.selectedRowsSignal.set(new Set(nonGroupRows.map((row) => row.id)));
     }
     this.emitSelectionChange();
   };
 
   private emitSelectionChange() {
-    const selectedRows = this.data.filter((row) =>
+    const selectedRows = this.data().filter((row) =>
       this.selectedRowsSignal().has(row.id)
     );
     this.selectionChange.emit(selectedRows);
@@ -262,7 +333,7 @@ export class DataTableComponent<T extends { id: string | number }>
   }
 
   deleteRow = (rowId: string | number) => {
-    const rowToDelete = this.data.find((row) => row.id === rowId);
+    const rowToDelete = this.data().find((row) => row.id === rowId);
     if (rowToDelete) {
       this.rowDelete.emit(rowToDelete);
     }

@@ -1,12 +1,16 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnInit,
   Output,
+  Renderer2,
+  ViewChild,
 } from '@angular/core';
-
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 interface ViewState {
   isSearch?: boolean;
   isColumn?: boolean;
@@ -41,6 +45,7 @@ export class DataViewComponent implements OnInit {
   @Input() tableClass: string = '';
   @Input() searchKey:string='search';
   @Input() searchValue:string='';
+  private searchSubject = new Subject<string>();
   @Input() viewState: ViewState = {
     isSearch: true,
     isColumn: true,
@@ -62,7 +67,8 @@ export class DataViewComponent implements OnInit {
   @Input() selectedColumnCount?: number = 0;
   @Input() selectedSortCount: number = 0;
   @Input() selectedFilterTableCount: number = 0;
-  @Input() inputWidth: string="350px";
+  @Input() inputWidth: string="100%";
+  @Input() milliseconds: number=400;
   @Input()showColumnChild: boolean = false;
   @Input() showSortChild: boolean = false;
   @Input() showFilterChild: boolean = false;
@@ -74,20 +80,48 @@ export class DataViewComponent implements OnInit {
   @Output() viewChange = new EventEmitter<boolean>();
   @Output() stateChange = new EventEmitter<{ key: string; value: boolean }>();
   @Output() onSearchChange=new EventEmitter<{ key: string; value: string }>()
-  ngOnInit(): void {}
+  @ViewChild('filterContentWrapper') filterContentWrapper!: ElementRef;
 
+ 
+
+ 
+  ngOnInit(): void {}
+  constructor(private renderer: Renderer2) {
+    this.searchSubject.pipe(debounceTime(this.milliseconds)).subscribe((value) => {
+      this.onSearchChange.emit({ key: this.searchKey, value });
+    });
+    
+  }
+ 
   toggleView(): void {
     this.isTableView = !this.isTableView;
     this.viewChange.emit(this.isTableView);
   }
 
-  onSearch(event:any): void {
-    this.searchValue=event.target.value
-    this.onSearchChange.emit({key:this.searchKey, value:this.searchValue});
+  onSearch(event: any): void {
+    this.searchValue = event.target.value;
+    this.searchSubject.next(this.searchValue); 
   }
+stopPropagation(event:Event) {
+  const target = event.target as HTMLElement;
+
+ 
+  if (target.classList.contains('drop-down-menu-item')) {
+    console.log(true);
+    
+    
+    event.stopPropagation(); 
+  }
+  else{
+    this.showFilterChild=true
+    
+  }
+}
+
   
 onClearSearch(){
  this.searchValue=""
+ this.onSearchChange.emit({ key: this.searchKey, value: this.searchValue });
 }
   toggleChildView(viewType: string): void {
     switch (viewType) {
@@ -117,6 +151,7 @@ onClearSearch(){
           break;
     }
     this.stateChange.emit({ key: viewType, value: this.getChildViewState(viewType) });
+    
   }
   resetChildViewsExcept(viewType: string): void {
     if (viewType !== 'column') this.showColumnChild = false;

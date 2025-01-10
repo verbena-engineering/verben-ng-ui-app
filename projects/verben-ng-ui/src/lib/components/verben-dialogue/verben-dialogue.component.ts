@@ -58,7 +58,8 @@ export class VerbenDialogueComponent {
   onOutsideClick(event: MouseEvent) {
     if (this.dismissOutsideClick && this.isVisible) {
       const target = event.target as HTMLElement;
-      if (target.classList.contains('modal-wrapper')) {
+      const isInsidePane = target.closest('.cdk-overlay-pane') !== null;
+      if (target.classList.contains('modal-wrapper')&& !isInsidePane) {
         this.onClose();
       }
     }

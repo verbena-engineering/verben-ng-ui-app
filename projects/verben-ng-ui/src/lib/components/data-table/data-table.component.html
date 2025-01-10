@@ -16,7 +16,17 @@
     </tr>
   </thead>
   <tbody>
-    @for (row of data; track row.id; let rowIndex = $index) {
+    @for (row of data(); track row.id; let rowIndex = $index) { @if
+    (isGroupRow(row)) {
+    <tr class="group-row" [ngStyle]="getRowStyle(rowIndex)">
+      <td
+        [attr.colspan]="columnsSignal().length"
+        [ngStyle]="getCellStyle(rowIndex, 0)"
+      >
+        {{ getCellValue(row, columnsSignal()[0]) }}
+      </td>
+    </tr>
+    } @else {
     <tr [ngStyle]="getRowStyle(rowIndex)">
       @for (column of columnsSignal(); track column.id; let colIndex = $index) {
       <td [ngStyle]="getCellStyle(rowIndex, colIndex)">
@@ -36,7 +46,7 @@
       </td>
       }
     </tr>
-    }
+    } }
   </tbody>
   @if (hasFooter()) {
   <tfoot>

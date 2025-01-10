@@ -2,16 +2,16 @@
 
 <!-- <p [ngStyle]="{'margin-top':'20px','padding-left':'100px'}"></p>
 
-<div [ngStyle]="{'position':'relative','width':'300px',}"> 
+<div [ngStyle]="{'position':'relative','width':'300px',}">
     <span  (mouseenter)="showTooltip(0)" (mouseleave)="hideTooltip(0)">hover to show table</span>
     <verben-tooltip
-    [backgroundColor]="'blue'" 
+    [backgroundColor]="'blue'"
     [textColor]="'white'"
     [padding]="'10px'"
     [width]="''"
     [borderRadius]="'8px'"
-    [top]="'0'"                 
-    [right]="'0'"   
+    [top]="'0'"
+    [right]="'0'"
     #tooltip
     *ngIf="tooltips[0]"
      >
@@ -35,17 +35,17 @@
 </div>
 
 <p [ngStyle]="{'margin-top':'20px'}"></p>
-<div [ngStyle]="{'position':'relative'}"> 
-    <span  
+<div [ngStyle]="{'position':'relative'}">
+    <span
     (mouseenter)="showTooltip(1)" (mouseleave)="hideTooltip(1)">hover to show message</span>
     <verben-tooltip
-    backgroundColor="black" 
+    backgroundColor="black"
     textColor="white"
     padding="10px"
     borderRadius="8px"
     width="150px"
-    top="-40px"                 
-    left="0px"   
+    top="-40px"
+    left="0px"
     #tooltip
     *ngIf="tooltips[1]"
     >
@@ -55,15 +55,15 @@
 
 
 
-  <!-- <verben-tooltip 
+<!-- <verben-tooltip
   [tooltipContent]="tooltipTemplate"
   customClass="customClass"
   >
-  <button> 
+  <button>
     Hover me for dynamic tooltip!
   </button>
   </verben-tooltip> -->
-<!-- 
+<!--
 <ng-template #tooltipTemplate>
   <div>
     <h4>Dynamic Tooltip</h4>
@@ -74,12 +74,3 @@
 <p>yesd</p>
 <p>yesd</p>
 <p>yesd</p> -->
-
-
-
-
-
-
-
-
-

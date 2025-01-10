@@ -23,6 +23,7 @@ export class DataViewComponent {
   showSort: boolean = false;
   showExport: boolean = false;
   selectedAll:boolean=false
+  searchValue:string=''
   columns: IDataFilter[] = [
     { checked: false, name: 'Column 1', type: DataFilterType.Bool },
     { checked: false, name: 'Column 2', type: DataFilterType.Bool },
@@ -142,7 +143,10 @@ export class DataViewComponent {
   onViewChange(isGridView: boolean): void {
     console.log('View changed to:', isGridView ? 'Grid View' : 'List View');
   }
-
+onSearch(event:{key:string; value:string}){
+this.searchValue=event.value
+ 
+}
   onStateChange(event: { key: string; value: boolean }): void {
       switch (event.key) {
         case 'column':

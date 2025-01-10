@@ -17,15 +17,14 @@ export interface IDataFilter {
 }
 
 export enum ConditionalOptions {
-  LessThan = 'Less than',
-  GreaterThan = 'Greater than',
-  Equal = 'Equal',
-  NotEqual = 'Not equal',
+  GreaterThanAndEqual = 'GTE',
+  LessThanAndEqual = 'LTE',
+  NotEqual = 'NEQ',
   On = 'On',
   Before = 'Before',
   After = 'After',
   Yes = 'Yes',
-  No = 'No'
+  No = 'No',
  }
 
 export interface ITypeOption {

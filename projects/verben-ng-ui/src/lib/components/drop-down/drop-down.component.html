@@ -2,7 +2,7 @@
   <div
     [ngClass]="{'right-error': errorPosition == 'right', 'left-error': errorPosition == 'left', 'top-error': errorPosition == 'top'}"
     class="drop-down-input-wrapper">
-    <div (click)="onDropdownClick($event)" [class.focused]="isFocused"
+    <div (click)="onDropdownClick($event)" cdkOverlayOrigin #trigger="cdkOverlayOrigin" [class.focused]="isFocused"
       [ngClass]="{'ng-invalid': isInvalid, 'disabled': disabled}" (focus)="onFocus()" (blur)="onBlur()" tabindex="0"
       class="drop-down-input verben-input flex">
       <div class="drop-down-main-content">
@@ -110,68 +110,84 @@
     <div *ngIf="this.isInvalid && this.invalidMessage" class="verben-error-message error-message">{{invalidMessage}}
     </div>
   </div>
-  <div class="drop-down-menu-item-wrapper" *ngIf="isExpanded">
-    <div *ngIf="multiselect && this.selectedOptions.length > 0">
-      <div *ngIf="display == 'chip'" class="multiselect-items-container chip flex">
-        <span *ngFor="let item of selectedOptionLabels; index as i" class="multiselect-item-chip flex">
-          <span>{{item}}</span>
-          <verben-svg (click)="onMultiselectItemClosed(i, $event)" icon="close-circle-full" [width]="15"
-            [height]="15"></verben-svg>
-          <!-- <svg (click)="onMultiselectItemClosed(i, $event)" width="10" height="10" viewBox="0 0 10 10" fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M5.00065 9.33333C7.30184 9.33333 9.16732 7.46785 9.16732 5.16667C9.16732 2.86548 7.30184 1 5.00065 1C2.69946 1 0.833984 2.86548 0.833984 5.16667C0.833984 7.46785 2.69946 9.33333 5.00065 9.33333Z"
-              stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M6.25 3.91797L3.75 6.41797" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M3.75 3.91797L6.25 6.41797" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-          </svg> -->
-        </span>
+  <ng-template cdkConnectedOverlay [cdkConnectedOverlayWidth]="dropdownContainer.offsetWidth"
+    [cdkConnectedOverlayLockPosition]="false" [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayPositions]="[
+    {
+      originX: 'start',
+      originY: 'bottom',
+      overlayX: 'start',
+      overlayY: 'top'
+    },
+    {
+      originX: 'start',
+      originY: 'top',
+      overlayX: 'start',
+      overlayY: 'bottom'
+    }
+  ]" [cdkConnectedOverlayOpen]="isExpanded" (detach)="isExpanded = false">
+    <div #dropdownExpansion class="drop-down-menu-item-wrapper">
+      <div *ngIf="multiselect && this.selectedOptions.length > 0">
+        <div *ngIf="display == 'chip'" class="multiselect-items-container chip flex">
+          <span *ngFor="let item of selectedOptionLabels; index as i" class="multiselect-item-chip flex">
+            <span>{{item}}</span>
+            <verben-svg (click)="onMultiselectItemClosed(i, $event)" icon="close-circle-full" [width]="15"
+              [height]="15"></verben-svg>
+            <!-- <svg (click)="onMultiselectItemClosed(i, $event)" width="10" height="10" viewBox="0 0 10 10" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M5.00065 9.33333C7.30184 9.33333 9.16732 7.46785 9.16732 5.16667C9.16732 2.86548 7.30184 1 5.00065 1C2.69946 1 0.833984 2.86548 0.833984 5.16667C0.833984 7.46785 2.69946 9.33333 5.00065 9.33333Z"
+                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M6.25 3.91797L3.75 6.41797" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M3.75 3.91797L6.25 6.41797" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+            </svg> -->
+          </span>
+        </div>
+        <div *ngIf="display != 'chip'" class="multiselect-items-container normal">
+          <span *ngFor="let item of selectedOptionLabels; index as i" class="multiselect-item">
+            {{i !== selectedOptionLabels.length - 1? item + ', ':item}}
+          </span>
+        </div>
       </div>
-      <div *ngIf="display != 'chip'" class="multiselect-items-container normal">
-        <span *ngFor="let item of selectedOptionLabels; index as i" class="multiselect-item">
-          {{i !== selectedOptionLabels.length - 1? item + ', ':item}}
-        </span>
+      <div *ngIf="allowSelectAll || filter" class="actions-section flex">
+        <input *ngIf="allowSelectAll" (click)="onSelectAll($event)" type="checkbox" [(ngModel)]="selectedAll"
+          class="custom-checkbox" />
+        <span class="select-all-caption" *ngIf="allowSelectAll && !filter">Select All</span>
+        <div *ngIf="filter" [ngClass]="{'focused': isInputFocused}" tabindex="0" (focus)="onSearchFocus()"
+          (blur)="onSearchBlur()" class="search-section flex">
+          <span class="search-icon flex">
+            <verben-svg icon="search" stroke="#64748b" [width]="15" [height]="15"></verben-svg>
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="2" fill="none"></circle>
+              <line x1="14" y1="14" x2="19" y2="19" stroke="currentColor" stroke-width="2"></line>
+            </svg> -->
+          </span>
+          <span *ngIf="this.selectedContexts[this.selectedContexts.length - 1]" class="search-context">
+            {{this.getOptionLabel(this.selectedContexts[this.selectedContexts.length - 1])}}
+          </span>
+          <div class="search-input-container">
+            <input (input)="onSearch($event)" [(ngModel)]="searchContext" (focus)="onInputFocus()"
+              (blur)="onInputBlur()" placeholder="Search..." class="search-input" />
+          </div>
+        </div>
       </div>
-    </div>
-    <div *ngIf="allowSelectAll || filter" class="actions-section flex">
-      <input *ngIf="allowSelectAll" (click)="onSelectAll($event)" type="checkbox" [(ngModel)]="selectedAll"
-        class="custom-checkbox" />
-      <span class="select-all-caption" *ngIf="allowSelectAll && !filter">Select All</span>
-      <div *ngIf="filter" [ngClass]="{'focused': isInputFocused}" tabindex="0" (focus)="onSearchFocus()"
-        (blur)="onSearchBlur()" class="search-section flex">
-        <span class="search-icon flex">
-          <verben-svg icon="search" stroke="#64748b" [width]="15" [height]="15"></verben-svg>
-          <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="2" fill="none"></circle>
-            <line x1="14" y1="14" x2="19" y2="19" stroke="currentColor" stroke-width="2"></line>
-          </svg> -->
-        </span>
-        <span *ngIf="this.selectedContexts[this.selectedContexts.length - 1]" class="search-context">
-          {{this.getOptionLabel(this.selectedContexts[this.selectedContexts.length - 1])}}
-        </span>
-        <div class="search-input-container">
-          <input (input)="onSearch($event)" [(ngModel)]="searchContext" (focus)="onInputFocus()" (blur)="onInputBlur()"
-            placeholder="Search..." class="search-input" />
+      <div *ngIf="showHorizontalLine" class="colored-underline-section">
+        <hr [style.background-color]="horizontalLineColor" class="colored-underline" />
+      </div>
+      <div class="drop-down-menu-item">
+        <drop-down-item [itemTemplate]="itemTemplate" [groupTemplate]="groupTemplate" [activeItem]="selectedOption"
+          [activeItems]="selectedOptions" [multiselect]="multiselect" [optionValue]="optionValue"
+          [optionLabel]="optionLabel" [optionSubLabel]="optionSubLabel" [loadMoreCaption]="loadMoreCaption"
+          [options]="options" [group]="group" [onExpand]="expandMenu.bind(this)"
+          [onLoadMore]="loadMoreMenuItems.bind(this)" [onSelect]="onSelect.bind(this)"></drop-down-item>
+        <div *ngIf="lazyLoad">
+          <div class="see-more-container flex justify-end">
+            <span class="see-more-caption" (click)="loadMore()">{{loadMoreCaption}}</span>
+          </div>
+        </div>
+        <div *ngIf="isLoading" class="loading-overlay">
+          <div class="loader"></div>
         </div>
       </div>
     </div>
-    <div *ngIf="showHorizontalLine" class="colored-underline-section">
-      <hr [style.background-color]="horizontalLineColor" class="colored-underline" />
-    </div>
-    <div class="drop-down-menu-item">
-      <drop-down-item [itemTemplate]="itemTemplate" [groupTemplate]="groupTemplate" [activeItem]="selectedOption"
-        [activeItems]="selectedOptions" [multiselect]="multiselect" [optionValue]="optionValue"
-        [optionLabel]="optionLabel" [optionSubLabel]="optionSubLabel" [loadMoreCaption]="loadMoreCaption"
-        [options]="options" [group]="group" [onExpand]="expandMenu.bind(this)"
-        [onLoadMore]="loadMoreMenuItems.bind(this)" [onSelect]="onSelect.bind(this)"></drop-down-item>
-      <div *ngIf="lazyLoad">
-        <div class="see-more-container flex justify-end">
-          <span class="see-more-caption" (click)="loadMore()">{{loadMoreCaption}}</span>
-        </div>
-      </div>
-      <div *ngIf="isLoading" class="loading-overlay">
-        <div class="loader"></div>
-      </div>
-    </div>
-  </div>
+  </ng-template>
 </div>

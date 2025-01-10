@@ -5,8 +5,8 @@
   [showCloseIcon]="true"
   [dismissOutsideClick]="true"
   [closeOnEscape]="true"
-  [size]="'small'"
-  [mode]="'dialogue'"
+  [size]="'large'"
+  [mode]="'drawer'"
   [customClass]="'my-modal-custom-class'"
   [disableFooter]="false"
   [modalData]="[{data:{first_name:'verben-ng', last_name:'verbena'}}]"
@@ -27,6 +27,20 @@
 
 <ng-template #bodyTemplate>
   <p>Are you sure you want to delete this item?</p>
+  <verben-table-filter
+  [border]="'1px solid rgba(212, 160, 7, 1)'"
+  borderRadius="10px"
+  boxShadow="2px 2px 2px 0px silver"
+  bgColor="white"
+  width="420px"
+  textColor="black"
+  pd="1rem"
+  primaryColor="#FFE681"
+  secondaryColor="#3479E9"
+  tertiaryColor="#404040"
+  [filterOptions]="filterArray"
+  [maxFilterLength]="3"
+></verben-table-filter>
 </ng-template>
 
 <ng-template #footerTemplate>

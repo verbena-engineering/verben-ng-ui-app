@@ -19,6 +19,7 @@
   [showSortChild]="showSort"
   [showExportChild]="showExport"
   [isTableView]="true"
+  (onSearchChange)="onSearch($event)"
   [selectedColumnCount]="selectedColumnCount"
   [selectedSortCount]="selectedSortCount"
   [selectedFilterTableCount]="0"
@@ -163,3 +164,6 @@
     
       </div>
 </verben-data-view>
+<div>
+  searchValue:{{searchValue}}
+</div>

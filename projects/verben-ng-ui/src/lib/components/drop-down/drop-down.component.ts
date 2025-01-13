@@ -115,6 +115,8 @@ export class DropDownComponent
   //TEMPLATING
   @ViewChild('dropdownContainer', { static: true })
   dropdownContainer!: ElementRef;
+  @ViewChild('dropdownExpansion', { static: false })
+  dropdownExpansion!: ElementRef;
   @ContentChildren(TemplateDirective) templates!: QueryList<TemplateDirective>;
 
   @HostBinding('class.focused') isFocused = false;
@@ -749,7 +751,9 @@ export class DropDownComponent
     }
     if (
       !this.dropdownContainer.nativeElement.contains(event.target) &&
-      this.isExpanded
+      this.isExpanded &&
+      this.dropdownExpansion &&
+      !this.dropdownExpansion.nativeElement.contains(event.target)
     ) {
       this.isExpanded = false;
     }

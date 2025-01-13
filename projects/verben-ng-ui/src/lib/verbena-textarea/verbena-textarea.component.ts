@@ -92,6 +92,8 @@ export class VerbenaTextareaComponent implements ControlValueAccessor, OnInit {
       textarea.disabled = isDisabled;
     }
   }
+
+  //newly added
   onValueChange(newValue: string) {
     this.value = newValue;
     this.valueChange.emit(this.value);  // Emit the value when it changes

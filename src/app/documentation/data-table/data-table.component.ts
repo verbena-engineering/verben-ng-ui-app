@@ -211,6 +211,53 @@ export class DataTableComponent {
       document.body.removeChild(link);
     }
   }
+
+  reverseNameTransform(namesString: string) {
+    // Handle empty or undefined input
+    if (!namesString) {
+      return { activityDetails: [], numberOfParticipants: 0 };
+    }
+
+    // Split the comma-separated string and clean up whitespace
+    const names = namesString.split(',').map((name) => name.trim());
+
+    // Transform each name into an activity detail object
+    const activityDetails = names.map((fullName) => {
+      const [firstName, ...lastNameParts] = fullName.split(' ');
+      const lastName = lastNameParts.join(' ');
+
+      return {
+        firstName,
+        lastName,
+      };
+    });
+
+    return {
+      activityDetails,
+      numberOfParticipants: activityDetails.length,
+    };
+  }
+
+  reverseNameTransform2(namesString: string, count: number) {
+    // Split the comma-separated string and clean up whitespace
+    const names = namesString.split(',').map((name) => name.trim());
+
+    // Transform each name into an activity detail object
+    const activityDetails = names.map((fullName) => {
+      const [firstName, ...lastNameParts] = fullName.split(' ');
+      const lastName = lastNameParts.join(' ');
+
+      return {
+        firstName,
+        lastName,
+      };
+    });
+
+    return {
+      activityDetails: activityDetails.slice(0, count),
+      numberOfParticipants: count,
+    };
+  }
 }
 
 // Function to generate random first and last names

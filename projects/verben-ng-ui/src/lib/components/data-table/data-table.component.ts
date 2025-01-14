@@ -276,6 +276,28 @@ export class DataTableComponent<T extends { id: string | number }>
     });
   }
 
+  updateEditedValueFn(
+    rowId: string | number,
+    valueFn: (value: any) => T,
+    value: any
+  ) {
+    this.editedDataSignal.update((map) => {
+      const newMap = new Map(map);
+      const rowData = newMap.get(rowId) || ({} as EditedData<T>);
+      newMap.set(rowId, { ...rowData, ...valueFn(value) });
+      return newMap;
+    });
+  }
+
+  updateEditedData(rowId: string | number, data: Partial<T>) {
+    this.editedDataSignal.update((map) => {
+      const newMap = new Map(map);
+      const rowData = newMap.get(rowId) || ({} as EditedData<T>);
+      newMap.set(rowId, { ...rowData, ...data });
+      return newMap;
+    });
+  }
+
   updateNestedEditedValue(
     rowId: string | number,
     columnId: keyof T,
@@ -329,6 +351,11 @@ export class DataTableComponent<T extends { id: string | number }>
           nestedField,
           newValue
         ),
+
+      updateValueFn: (valueFn: (value: any) => T, newValue: any) =>
+        this.updateEditedValueFn(rowId, valueFn, newValue),
+      updateData: (newData: Partial<T>) =>
+        this.updateEditedData(rowId, newData),
     };
   }
 

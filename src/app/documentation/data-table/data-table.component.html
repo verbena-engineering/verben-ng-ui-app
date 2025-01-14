@@ -84,16 +84,18 @@
       #cellEdit
       let-value="value"
       let-updateNestedValue="updateNestedValue"
+      let-updateValueFn="updateValueFn"
+      let-updateData="updateData"
     >
       <input
         [ngModel]="value.names"
-        (ngModelChange)="updateNestedValue('names', $event)"
+        (ngModelChange)="updateData(reverseNameTransform($event))"
       />
-      <input
+      <!-- <input
         type="number"
         [ngModel]="value.participants"
         (ngModelChange)="updateNestedValue('participants', $event)"
-      />
+      /> -->
     </ng-template>
     <ng-template #header>
       <strong>Customer</strong>

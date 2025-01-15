@@ -170,7 +170,7 @@ export class DataTableComponent<T extends { id: string | number }>
       const newSet = new Set(set);
       if (newSet.has(rowId)) {
         newSet.delete(rowId);
-        this.saveRow(rowId);
+        // this.saveRow(rowId);
       } else {
         newSet.add(rowId);
         this.initializeEditedData(rowId);

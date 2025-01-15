@@ -189,16 +189,8 @@
       let-value="value"
       let-updateNestedValue="updateNestedValue"
     >
-      <input
-        [ngModel]="value?.firstName"
-        (ngModelChange)="updateNestedValue('firstName', $event)"
-        placeholder="First Name"
-      />
-      <input
-        [ngModel]="value?.lastName"
-        (ngModelChange)="updateNestedValue('lastName', $event)"
-        placeholder="Last Name"
-      />
+      <input [(ngModel)]="value.firstName" placeholder="First Name" />
+      <input [(ngModel)]="value.lastName" placeholder="Last Name" />
     </ng-template>
     <ng-template #header>
       <strong>Full Name</strong>

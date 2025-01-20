@@ -192,6 +192,8 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
       return;
     }
     
+
+    //phone number
     if (this.type === 'tel') {
       const phoneNumberRegex = /^\+?[0-9\s\-().]{7,}$/;
       if (!phoneNumberRegex.test(this.value)) {

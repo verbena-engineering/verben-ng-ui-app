@@ -1,5 +1,6 @@
 import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FilterCondition } from 'verben-ng-ui';
 import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table/data-table.types';
 import { TableStyles } from 'verben-ng-ui/src/lib/components/data-table/style.types';
 import { DataExportService } from 'verben-ng-ui/src/public-api';
@@ -192,11 +193,21 @@ export class DataTableComponent {
     this.downloadCSV(exportedData);
   }
 
+  onFiltersApplied(filters: FilterCondition[]) {
+    // Apply filters to your data
+    console.log('Applying filters:', filters);
+  }
+
   private downloadCSV(data: Partial<any>[]) {
     const headers = Object.keys(data[0]);
     const csvContent = [
       headers.join(','),
-      ...data.map((row) => headers.map((header) => row[header]).join(',')),
+      ...data.map((row) =>
+        headers
+          .map((header) => row[header])
+          .map((datum) => `"${datum}"`)
+          .join(',')
+      ),
     ].join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });

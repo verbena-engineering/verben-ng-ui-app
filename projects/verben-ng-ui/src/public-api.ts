@@ -92,6 +92,16 @@ export * from './lib/components/data-export/data-export.service';
 export * from './lib/components/data-export/data-export.component';
 export * from './lib/components/data-export/data-export.types';
 
+export * from './lib/components/data-xport/data-xport.module';
+export * from './lib/components/data-xport/data-xport.service';
+export * from './lib/components/data-xport/data-xport.component';
+// export * from './lib/components/data-xport/data-xport.types';
+
+export * from './lib/components/data-filter/data-filter.module';
+export * from './lib/components/data-filter/data-filter.service';
+export * from './lib/components/data-filter/data-filter.component';
+export * from './lib/components/data-filter/data-filter.types';
+
 // Exporting ControlOptionModule and ControlOptionDirective
 export * from './lib/control-options/control-options.module';
 export * from './lib/control-options/control-options.directive';

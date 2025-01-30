@@ -8,9 +8,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class VerbenTimePickerComponent {
   @Input() model: Date = new Date();
   @Input() format24: boolean = false; // Toggle between 12h and 24h format
-  @Output() timeChange = new EventEmitter<Date>();
+  @Output() timeChange = new EventEmitter<{ hours: number; minutes: number; meridiem: string }>();
   
-
   hours!: number;
   minutes!: number;
   meridiem: string = 'AM';
@@ -31,25 +30,16 @@ export class VerbenTimePickerComponent {
     return hours % 12 || 12;
   }
 
-  
-@Output() modelChange = new EventEmitter<Date>(); // This is required for [(model)] binding
-
   onTimeChange() {
-    let newDate = new Date(this.model);
-    newDate.setHours(this.format24 ? this.hours : this.convertTo24Hour());
-    newDate.setMinutes(this.minutes);
-    this.timeChange.emit(newDate);
+    this.timeChange.emit({
+      hours: this.hours,
+      minutes: this.minutes,
+      meridiem: this.format24 ? '' : this.meridiem
+    });
   }
-
 
   setMeridiem(value: string) {
     this.meridiem = value;
     this.onTimeChange();
-  }
-
-  convertTo24Hour(): number {
-    if (this.meridiem === 'PM' && this.hours < 12) return this.hours + 12;
-    if (this.meridiem === 'AM' && this.hours === 12) return 0;
-    return this.hours;
   }
 }

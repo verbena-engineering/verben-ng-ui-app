@@ -1,0 +1,34 @@
+<div class=" max">
+  <div class="time-picker">
+    <div>
+     <input type="text" [(ngModel)]="hours" (change)="onTimeChange()" [min]="format24 ? 0 : 1" [max]="format24 ? 23 : 12">
+     <p>
+       Hour
+     </p>
+    </div>
+     <span>:</span>
+     <div>
+       <input type="text" [(ngModel)]="minutes" (change)="onTimeChange()" min="0" max="59">
+       <p>
+         Minute
+       </p>
+     </div>
+   
+     <div *ngIf="!format24" class="meridiem-toggle flex flex-col gap-0">
+       <button [class.active]="meridiem === 'AM'" (click)="setMeridiem('AM')">AM</button>
+       <button [class.active]="meridiem === 'PM'" (click)="setMeridiem('PM')">PM</button>
+     </div>
+   </div>
+
+   <div>
+
+    <!-- <div class="flex gap-4 justify-end">
+      <button>
+        cancel
+      </button>
+      <button>
+        ok
+      </button>
+    </div> -->
+   </div>
+</div>

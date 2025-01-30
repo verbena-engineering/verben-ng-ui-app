@@ -1,0 +1,62 @@
+.max{
+  max-width: 390px;
+}
+
+.time-picker {
+  display: flex;
+   gap: 15px;
+   justify-content: space-between;
+  
+   p{
+    color: grey;
+   }
+
+  input {
+    width: 120px;
+    height: 106px;
+    background: #ecebeb;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 5rem;
+  }
+  span{
+    font-size: 4rem;
+  }
+  input:focus {
+    border: yellow !important;
+    background: white;
+    outline:3px solid rgb(83, 3, 180);
+
+  }
+  
+  select {
+    margin-left: 5px;
+  }
+}
+
+.meridiem-toggle {
+  display: grid;
+  height: 100% !important;
+  border-radius: 4px;
+ overflow: hidden;
+ border: 2px solid #ecebeb;
+ gap: 2px;
+ background: #ecebeb;
+  
+  
+  button {
+    padding: 5px 10px;
+    border: none;
+    background: #fff;
+    cursor: pointer;
+    height: 50px;
+    font-size: 1.3rem;
+    width: 70px;
+   
+  }
+
+  .active {
+    background: #d7c8ee;
+    color: #4b049c;
+  }
+}

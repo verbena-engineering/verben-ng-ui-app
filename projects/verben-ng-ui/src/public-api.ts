@@ -102,6 +102,11 @@ export * from './lib/components/data-filter/data-filter.service';
 export * from './lib/components/data-filter/data-filter.component';
 export * from './lib/components/data-filter/data-filter.types';
 
+export * from './lib/components/data-sort/data-sort.module';
+export * from './lib/components/data-sort/data-sort.service';
+export * from './lib/components/data-sort/data-sort.component';
+export * from './lib/components/data-sort/data-sort.types';
+
 // Exporting ControlOptionModule and ControlOptionDirective
 export * from './lib/control-options/control-options.module';
 export * from './lib/control-options/control-options.directive';

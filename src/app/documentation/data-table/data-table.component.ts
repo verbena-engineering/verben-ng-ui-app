@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FilterCondition } from 'verben-ng-ui';
 import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table/data-table.types';
 import { TableStyles } from 'verben-ng-ui/src/lib/components/data-table/style.types';
-import { DataExportService } from 'verben-ng-ui/src/public-api';
+import { DataExportService, SortCondition } from 'verben-ng-ui/src/public-api';
 
 @Component({
   selector: 'app-data-table',
@@ -196,6 +196,11 @@ export class DataTableComponent {
   onFiltersApplied(filters: FilterCondition[]) {
     // Apply filters to your data
     console.log('Applying filters:', filters);
+  }
+
+  onSortApplied(sorts: SortCondition[]) {
+    console.log('Applying sorts:', sorts);
+    // Apply sorts to your data
   }
 
   private downloadCSV(data: Partial<any>[]) {

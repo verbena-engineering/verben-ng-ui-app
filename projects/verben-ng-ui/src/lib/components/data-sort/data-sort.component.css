@@ -1,0 +1,136 @@
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  padding: 4px !important;
+}
+
+.header-title {
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+
+.header-title sup {
+  color: #3479e9;
+}
+
+.reset-button {
+  color: #3479e9;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-title {
+  font-size: 0.8125rem;
+}
+
+.select-all {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 0.3rem;
+  font-size: 12px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.show-more {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #e8eaf1;
+  margin: 0.8rem 0;
+}
+
+.sort-option {
+  margin: 0 -1.5rem;
+  /* padding-left: 0.5rem; */
+  color: #404040;
+}
+
+.sort-option-header {
+  font-weight: 500;
+  /* margin-bottom: 0.25rem; */
+  display: flex;
+  gap: 0.5rem;
+  font-size: 12px;
+}
+
+.sort-operators {
+  display: flex;
+  gap: 1rem;
+  margin-left: 3rem;
+}
+
+.sort-operator {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: #4b5563;
+  cursor: pointer;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  background-color: transparent;
+}
+
+.apply-button {
+  margin-top: 0.5rem;
+  outline: none;
+  border: none;
+  padding: 0.2rem 1.6rem;
+  background-color: #ffe681;
+  color: #404040;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.show-more {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 12px;
+}

@@ -4,6 +4,7 @@
   (selectionChange)="onSelectionChange($event)"
   [styleConfig]="testTableStyles"
   groupBy="role"
+  dataKey="id"
 >
   <!-- Template for each column that needs custom rendering -->
   <ng-container *ngFor="let column of tableColumns" [libColumn]="column.id">
@@ -34,6 +35,7 @@
   (rowDelete)="onRowDelete($event)"
   (selectionChange)="onSelectionChange($event)"
   [styleConfig]="stickyStyles"
+  dataKey="id"
 >
   <ng-container libColumn="select">
     <ng-template
@@ -133,6 +135,7 @@
   (rowDelete)="onRowDelete($event)"
   (selectionChange)="onSelectionChange($event)"
   [styleConfig]="table2Styles"
+  dataKey="id"
 >
   <ng-container libColumn="select">
     <ng-template
@@ -322,6 +325,12 @@
     [data]="tableData()"
     (filterApplied)="onFiltersApplied($event)"
   ></lib-data-filter>
+
+  <lib-data-sort
+    [columns]="controlledCols()"
+    [data]="tableData()"
+    (sortApplied)="onSortApplied($event)"
+  ></lib-data-sort>
 
   <!-- <app-table-export
     [data]="tableData()"

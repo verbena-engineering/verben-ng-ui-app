@@ -3,7 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'verben-time-picker',
   templateUrl: './verben-time-picker.component.html',
-  styleUrls: ['./verben-time-picker.component.scss']
+  styleUrls: ['./verben-time-picker.component.css']
 })
 export class VerbenTimePickerComponent {
   @Input() model: Date = new Date();

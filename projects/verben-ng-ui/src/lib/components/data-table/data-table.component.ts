@@ -14,7 +14,7 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { ColumnDefinition } from './data-table.types';
+import { ColumnDefinition, GroupedDataRow } from './data-table.types';
 import { ColumnDirective } from './column.directive';
 import { BaseStyles, TableStyles } from './style.types';
 
@@ -24,12 +24,11 @@ import { BaseStyles, TableStyles } from './style.types';
   styleUrl: './data-table.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DataTableComponent<T extends { id: string | number }>
-  implements OnInit, AfterContentInit
-{
+export class DataTableComponent<T> implements OnInit, AfterContentInit {
   // Modify data input to use grouped data
   data = input.required<T[]>();
   columns = input.required<ColumnDefinition<T>[]>();
+  dataKey = input.required<keyof T>(); // New required input for unique identifier
   // @Input({ required: true })
   // set data(value: T[]) {
   //   this._data = value;
@@ -68,23 +67,33 @@ export class DataTableComponent<T extends { id: string | number }>
     this.columnsSignal().some((col) => col.footerTemplate !== undefined)
   );
 
+  // Helper method to get unique identifier for a row
+  getRowId(row: T): string | number {
+    const key = this.dataKey();
+    const value = row[key];
+
+    // Convert to string or number if possible, otherwise stringify
+    if (typeof value === 'string' || typeof value === 'number') {
+      return value;
+    }
+    return JSON.stringify(value);
+  }
+
   // Type guard method to check for group rows
   isGroupRow(row: T): row is T & { isGroupRow: true; groupTitle: any } {
     return !!(row as any).isGroupRow;
   }
 
   // Computed property for grouped data
-  groupedData = computed(() => {
-    // If no grouping is specified, return original data
-    if (!this.groupBy()) return this.data();
 
-    // Determine group function based on input type
+  groupedData = computed(() => {
+    if (!this.groupBy()) return this.data() as GroupedDataRow<T>[];
+
     const getGroupValue =
       typeof this.groupBy() === 'function'
         ? (this.groupBy() as (row: T) => any)
         : (row: T) => row[this.groupBy() as keyof T];
 
-    // Group the data
     const groups = new Map<any, T[]>();
 
     this.data().forEach((row) => {
@@ -95,20 +104,21 @@ export class DataTableComponent<T extends { id: string | number }>
       }
     });
 
-    // Construct final grouped data array with group rows
-    const groupedDataArray: (T & { isGroupRow?: boolean })[] = [];
+    const groupedDataArray: GroupedDataRow<T>[] = [];
 
     groups.forEach((groupRows, groupValue) => {
-      // Create a group row
-      const groupRow = {
-        id: `group-${groupValue}`,
+      // Create group header row
+      const groupRow: GroupedDataRow<T> = {
+        ...({} as T), // Create empty object of type T as base
+        [this.dataKey()]: `group-${groupValue}`,
         isGroupRow: true,
         groupValue,
         groupTitle: groupValue,
-      } as unknown as T & { isGroupRow: boolean };
+      };
 
       groupedDataArray.push(groupRow);
-      groupedDataArray.push(...groupRows);
+      // Add regular rows with the optional isGroupRow property (undefined by default)
+      groupedDataArray.push(...(groupRows as GroupedDataRow<T>[]));
     });
 
     return groupedDataArray;
@@ -161,51 +171,49 @@ export class DataTableComponent<T extends { id: string | number }>
     return column.accessorFn ? column.accessorFn(row) : undefined;
   };
 
-  isRowEditing = (rowId: string | number): boolean => {
-    return this.editingRowsSignal().has(rowId);
+  isRowEditing = (row: T): boolean => {
+    return this.editingRowsSignal().has(this.getRowId(row));
   };
 
-  toggleRowEdit = (rowId: string | number) => {
+  toggleRowEdit = (row: T) => {
     this.editingRowsSignal.update((set) => {
       const newSet = new Set(set);
-      if (newSet.has(rowId)) {
-        newSet.delete(rowId);
-        // this.saveRow(rowId);
+      if (newSet.has(this.getRowId(row))) {
+        newSet.delete(this.getRowId(row));
+        // this.saveRow(this.getRowId(row));
       } else {
-        newSet.add(rowId);
-        this.initializeEditedData(rowId);
+        newSet.add(this.getRowId(row));
+        this.initializeEditedData(row);
       }
       return newSet;
     });
   };
 
-  private initializeEditedData(rowId: string | number) {
-    const row = this.data().find((r) => r.id === rowId);
-    if (row) {
-      this.editedDataSignal.update((map) => {
-        const newMap = new Map(map);
-        newMap.set(rowId, { ...row });
-        return newMap;
-      });
-    }
+  private initializeEditedData(row: T) {
+    const rowId = this.getRowId(row);
+    this.editedDataSignal.update((map) => {
+      const newMap = new Map(map);
+      newMap.set(rowId, { ...row });
+      return newMap;
+    });
   }
 
-  private saveRow(rowId: string | number) {
-    const editedData = this.editedDataSignal().get(rowId);
-    if (editedData) {
-      const originalRowIndex = this.data().findIndex((r) => r.id === rowId);
-      if (originalRowIndex !== -1) {
-        const updatedRow = { ...this.data()[originalRowIndex], ...editedData };
-        this.data()[originalRowIndex] = updatedRow;
-        this.rowSave.emit(updatedRow);
-        this.editedDataSignal.update((map) => {
-          const newMap = new Map(map);
-          newMap.delete(rowId);
-          return newMap;
-        });
-      }
-    }
-  }
+  // private saveRow(rowId: string | number) {
+  //   const editedData = this.editedDataSignal().get(rowId);
+  //   if (editedData) {
+  //     const originalRowIndex = this.data().findIndex((r) => r.id === rowId);
+  //     if (originalRowIndex !== -1) {
+  //       const updatedRow = { ...this.data()[originalRowIndex], ...editedData };
+  //       this.data()[originalRowIndex] = updatedRow;
+  //       this.rowSave.emit(updatedRow);
+  //       this.editedDataSignal.update((map) => {
+  //         const newMap = new Map(map);
+  //         newMap.delete(rowId);
+  //         return newMap;
+  //       });
+  //     }
+  //   }
+  // }
 
   isRowSelected = (rowId: string | number): boolean => {
     return this.selectedRowsSignal().has(rowId);
@@ -245,14 +253,16 @@ export class DataTableComponent<T extends { id: string | number }>
       this.selectedRowsSignal.set(new Set());
     } else {
       const nonGroupRows = this.data().filter((row) => !this.isGroupRow(row));
-      this.selectedRowsSignal.set(new Set(nonGroupRows.map((row) => row.id)));
+      this.selectedRowsSignal.set(
+        new Set(nonGroupRows.map((row) => this.getRowId(row)))
+      );
     }
     this.emitSelectionChange();
   };
 
   private emitSelectionChange() {
     const selectedRows = this.data().filter((row) =>
-      this.selectedRowsSignal().has(row.id)
+      this.selectedRowsSignal().has(this.getRowId(row))
     );
     this.selectionChange.emit(selectedRows);
   }
@@ -320,8 +330,8 @@ export class DataTableComponent<T extends { id: string | number }>
   }
 
   getCellContext(row: T, column: ColumnDefinition<T>, rowIndex: number) {
-    const rowId = row.id;
-    const isEditing = this.isRowEditing(rowId);
+    const rowId = this.getRowId(row);
+    const isEditing = this.isRowEditing(row);
     const editedData = this.editedDataSignal().get(rowId);
 
     let value: any;
@@ -340,7 +350,7 @@ export class DataTableComponent<T extends { id: string | number }>
       isEditing,
       isSelected: this.isRowSelected(rowId),
       toggleRowSelection: () => this.toggleRowSelection(rowId),
-      toggleRowEdit: () => this.toggleRowEdit(rowId),
+      toggleRowEdit: () => this.toggleRowEdit(row),
       deleteRow: () => this.deleteRow(rowId),
       updateValue: (newValue: any) =>
         this.updateEditedValue(rowId, column.id as keyof T, newValue),
@@ -360,7 +370,7 @@ export class DataTableComponent<T extends { id: string | number }>
   }
 
   deleteRow = (rowId: string | number) => {
-    const rowToDelete = this.data().find((row) => row.id === rowId);
+    const rowToDelete = this.data().find((row) => this.getRowId(row) === rowId);
     if (rowToDelete) {
       this.rowDelete.emit(rowToDelete);
     }

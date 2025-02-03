@@ -4,7 +4,6 @@
   (selectionChange)="onSelectionChange($event)"
   [styleConfig]="testTableStyles"
   groupBy="role"
-  dataKey="id"
 >
   <!-- Template for each column that needs custom rendering -->
   <ng-container *ngFor="let column of tableColumns" [libColumn]="column.id">

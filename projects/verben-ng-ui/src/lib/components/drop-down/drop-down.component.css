@@ -252,7 +252,7 @@
 
 .multiselect-item-chip.multi-select {
   margin-right: 5px;
-  display: inline-flex;
+  display: inline-flex !important;
 }
 
 .multiselect-item-chip>span {

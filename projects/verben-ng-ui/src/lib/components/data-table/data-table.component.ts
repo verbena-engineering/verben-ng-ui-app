@@ -24,11 +24,13 @@ import { BaseStyles, TableStyles } from './style.types';
   styleUrl: './data-table.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DataTableComponent<T> implements OnInit, AfterContentInit {
+export class DataTableComponent<T extends { Id: string | number }>
+  implements OnInit, AfterContentInit
+{
   // Modify data input to use grouped data
   data = input.required<T[]>();
   columns = input.required<ColumnDefinition<T>[]>();
-  dataKey = input.required<keyof T>(); // New required input for unique identifier
+  dataKey = input<keyof T>('Id'); // New required input for unique identifier
   // @Input({ required: true })
   // set data(value: T[]) {
   //   this._data = value;

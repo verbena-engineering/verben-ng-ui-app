@@ -128,6 +128,7 @@ export class DataTableComponent {
     setTimeout(() => {
       this.tableData.set(
         Array.from({ length: 10 }, (_, index) => ({
+          Id: `ACTIVITY-${index + 1}`,
           id: `ACTIVITY-${index + 1}`,
           activityDetails: Array.from(
             { length: Math.floor(Math.random() * 5) + 1 },
@@ -309,6 +310,7 @@ function generateRandomName(): { firstName: string; lastName: string } {
   };
 }
 interface YourDataType {
+  Id: string;
   id: string;
   activityDetails: { firstName: string; lastName: string }[];
   numberOfParticipants: number;

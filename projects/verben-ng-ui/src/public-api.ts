@@ -139,6 +139,9 @@ export * from './lib/components/verben-mail/verben-mail.component';
 export * from './lib/components/verben-dialogue/verben-dialogue.module';
 export * from './lib/components/verben-dialogue/verben-dialogue.component';
 
+export * from './lib/components/verben-time-picker/verben-time-picker.module'
+export * from './lib/components/verben-time-picker/verben-time-picker.component'
+
 //notification service
 export * from './lib/services/notification.services';
 

@@ -80,6 +80,7 @@ const routes: Routes = [
         (m) => m.NotificationsSampleModule
       ),
   },
+ 
   {
     path: 'table-filter',
     loadChildren: () =>
@@ -117,7 +118,11 @@ const routes: Routes = [
     {
       path: 'dropdown-sample',
       loadChildren: () => import('./sample-for-dropdowns/sample-for-dropdowns.module').then((m) => m.SampleForDropdownsModule)
-    }
+    },{
+      path: 'time-picker',
+      loadChildren: () =>
+        import('./time-picker/time-picker.module').then((m) => m.TimePickerModule),
+    },
 
 ];
 

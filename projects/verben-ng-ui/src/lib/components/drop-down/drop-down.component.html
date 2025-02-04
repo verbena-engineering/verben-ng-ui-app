@@ -176,8 +176,8 @@
       <div class="drop-down-menu-item">
         <drop-down-item [itemTemplate]="itemTemplate" [groupTemplate]="groupTemplate" [activeItem]="selectedOption"
           [activeItems]="selectedOptions" [multiselect]="multiselect" [optionValue]="optionValue"
-          [optionLabel]="optionLabel" [optionSubLabel]="optionSubLabel" [loadMoreCaption]="loadMoreCaption"
-          [options]="options" [group]="group" [onExpand]="expandMenu.bind(this)"
+          [optionLabel]="optionLabel" [optionSubLabel]="optionSubLabel" [selectKey]="selectKey"
+          [loadMoreCaption]="loadMoreCaption" [options]="options" [group]="group" [onExpand]="expandMenu.bind(this)"
           [onLoadMore]="loadMoreMenuItems.bind(this)" [onSelect]="onSelect.bind(this)"></drop-down-item>
         <div *ngIf="lazyLoad">
           <div class="see-more-container flex justify-end">

@@ -34,6 +34,7 @@
   (rowDelete)="onRowDelete($event)"
   (selectionChange)="onSelectionChange($event)"
   [styleConfig]="stickyStyles"
+  dataKey="id"
 >
   <ng-container libColumn="select">
     <ng-template
@@ -133,6 +134,7 @@
   (rowDelete)="onRowDelete($event)"
   (selectionChange)="onSelectionChange($event)"
   [styleConfig]="table2Styles"
+  dataKey="id"
 >
   <ng-container libColumn="select">
     <ng-template
@@ -289,15 +291,48 @@
   </ng-container>
 </lib-data-table>
 
-<div class="bg-primary">
-  <app-table-export
-    [data]="tableData()"
-    (exportDataEvent)="handleExport($event)"
-  ></app-table-export>
-
-  <lib-data-export
+<div class="">
+  <!-- <lib-data-export
     [data]="tableData()"
     (exportDataEvent)="handleExport($event)"
   >
   </lib-data-export>
+
+  <lib-data-xport
+    [columns]="tableColumns"
+    [data]="tableData()"
+    (exportDataEvent)="handleExport($event)"
+  >
+  </lib-data-xport>
+
+  <lib-data-xport
+    [columns]="tableColumns3"
+    [data]="tableData()"
+    (exportDataEvent)="handleExport($event)"
+  >
+  </lib-data-xport> -->
+
+  <lib-data-xport
+    [columns]="controlledCols()"
+    [data]="tableData()"
+    (exportDataEvent)="handleExport($event)"
+  >
+  </lib-data-xport>
+
+  <lib-data-filter
+    [columns]="controlledCols()"
+    [data]="tableData()"
+    (filterApplied)="onFiltersApplied($event)"
+  ></lib-data-filter>
+
+  <lib-data-sort
+    [columns]="controlledCols()"
+    [data]="tableData()"
+    (sortApplied)="onSortApplied($event)"
+  ></lib-data-sort>
+
+  <!-- <app-table-export
+    [data]="tableData()"
+    (exportDataEvent)="handleExport($event)"
+  ></app-table-export> -->
 </div>

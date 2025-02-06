@@ -11,3 +11,9 @@ export interface ColumnDefinition<T> {
   footerTemplate?: TemplateRef<any>;
   sortAction?: 'ASC' | 'DESC';
 }
+
+export type GroupedDataRow<T> = T & {
+  isGroupRow?: boolean;
+  groupValue?: any;
+  groupTitle?: any;
+};

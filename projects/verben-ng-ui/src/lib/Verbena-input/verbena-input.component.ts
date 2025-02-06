@@ -54,6 +54,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
     tel?: string;
     url?: string;
   } = {};
+  @Input() fontSize: string = "14px";
 
   @Output() valueChange = new EventEmitter<string | FileList>();
 

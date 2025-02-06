@@ -1,0 +1,103 @@
+<verben-card
+  width="24rem"
+  borderRadius="1rem"
+  [border]="'1px solid #D4A007'"
+  bgColor="#FFFFFF"
+>
+  <div card-header class="card-header">
+    <h4 class="header-title">
+      Sort <sup>({{ activeSortCount }})</sup>
+    </h4>
+    <button class="reset-button" (click)="resetAll()">Reset</button>
+  </div>
+
+  <div card-body class="card-body">
+    <!-- Column Sort Options -->
+    <section class="section">
+      <div class="section-header">
+        <h3 class="section-title">Properties</h3>
+        <verben-svg
+          icon="info"
+          [width]="15"
+          [height]="15"
+          fill="grey"
+        ></verben-svg>
+      </div>
+
+      <!-- Select All -->
+      <div class="select-all-wrapper">
+        <label class="select-all">
+          <input
+            type="checkbox"
+            [checked]="checkAll"
+            (change)="toggleSelectAll()"
+          />
+          <span>Select All</span>
+        </label>
+      </div>
+
+      @for (column of visibleColumns; track column.id) {
+      <div
+        class="sort-option"
+        [attr.draggable]="enableDragAndDrop"
+        (dragstart)="onDragStart($index, $event)"
+        (dragover)="onDragOver($event)"
+        (drop)="onDrop($index, $event)"
+      >
+        <div class="sort-option-header">
+          @if (enableDragAndDrop) {
+          <verben-svg
+            icon="square-dot"
+            [width]="21"
+            [height]="21"
+            fill="black"
+            class="drag-handle"
+          ></verben-svg>
+          }
+          <input
+            type="checkbox"
+            [checked]="isColumnSelected(column.id)"
+            (change)="toggleColumnSelection(column.id)"
+            width="16px"
+            height="16px"
+          />
+          <span>{{ getColumnHeader(column) }}</span>
+        </div>
+
+        <div class="sort-operators">
+          @for (operator of getSortOperators(column); track operator.value) {
+          <label class="sort-operator">
+            <input
+              type="radio"
+              [name]="'sort_' + column.id"
+              [value]="operator.value"
+              (change)="updateSort(column.id, operator.value)"
+              [checked]="isColumnSorted(column.id, operator.value)"
+            />
+            {{ operator.label }}
+          </label>
+          }
+        </div>
+      </div>
+      } @if (sortableColumns.length > maxVisibleItems) {
+      <button
+        (click)="showAllProperties = !showAllProperties"
+        class="show-more"
+      >
+        <span>{{ showAllProperties ? "Show Less" : "Show More" }}</span>
+        <verben-svg
+          icon="chevron"
+          [width]="8"
+          [height]="6"
+          fill="black"
+          stroke="black"
+        ></verben-svg>
+      </button>
+      }
+    </section>
+  </div>
+
+  <div card-footer class="card-footer">
+    <button class="apply-button" (click)="applySorts()">Sort</button>
+  </div>
+</verben-card>

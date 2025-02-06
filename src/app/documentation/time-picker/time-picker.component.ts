@@ -8,20 +8,11 @@ import { Component } from '@angular/core';
 export class TimePickerComponent {
   selectedTime: Date = new Date(); // Default time
 
-  onTimeSelected(time: { hours: number; minutes: number; meridiem: string }) {
-    const hours24 =
-      time.meridiem === 'PM'
-        ? time.hours !== 12
-          ? time.hours + 12
-          : time.hours
-        : time.hours === 12
-        ? 0
-        : time.hours;
-  
+  onTimeSelected(newTime: { hours: number; minutes: number; meridiem: string }) {
     const date = new Date();
-    date.setHours(hours24, time.minutes, 0, 0);
-  
-    console.log('Selected Time:', date);
+    date.setHours(newTime.meridiem === 'PM' ? newTime.hours + 12 : newTime.hours);
+    date.setMinutes(newTime.minutes);
+    this.selectedTime = date; // Update the model when the time changes
+    console.log('Selected Time:', this.selectedTime);
   }
-  
 }

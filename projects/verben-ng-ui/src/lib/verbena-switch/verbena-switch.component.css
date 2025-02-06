@@ -25,6 +25,17 @@
   font-size: 12px;
   z-index: 1; /* Ensure label stays above the knob */
   pointer-events: none; /* Prevent the label from interfering with click */
+  transition: transform 0.2s ease; /* Smooth transition for text movement */
+}
+
+/* Default position for the label when unchecked */
+input + .slider .slider-label {
+  transform: translateX(70%); /* Text starts on the left side */
+}
+
+/* Position for the label when checked */
+input:checked + .slider .slider-label {
+  transform: translateX(-100%); /* Text moves to the left */
 }
 
 .slider-knob {
@@ -40,7 +51,7 @@
 }
 
 input:checked + .slider .slider-knob {
-  transform: translateX(30px); /* Moves the knob to the right when checked */
+  transform: translateX(30px); /* Knob moves to the right when checked */
 }
 
 input:checked + .slider {

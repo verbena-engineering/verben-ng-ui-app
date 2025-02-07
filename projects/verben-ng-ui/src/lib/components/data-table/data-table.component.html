@@ -16,7 +16,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (row of data(); track row.id; let rowIndex = $index) { @if
+    @for (row of data(); track dataKey(); let rowIndex = $index) { @if
     (isGroupRow(row)) {
     <tr class="group-row" [ngStyle]="getRowStyle(rowIndex)">
       <td
@@ -30,7 +30,7 @@
     <tr [ngStyle]="getRowStyle(rowIndex)">
       @for (column of columnsSignal(); track column.id; let colIndex = $index) {
       <td [ngStyle]="getCellStyle(rowIndex, colIndex)">
-        @if (isRowEditing(row.id) && column.cellEditTemplate) {
+        @if (isRowEditing(row) && column.cellEditTemplate) {
         <ng-container
           [ngTemplateOutlet]="column.cellEditTemplate"
           [ngTemplateOutletContext]="getCellContext(row, column, rowIndex)"

@@ -17,6 +17,7 @@ import {
   VerbenaTextareaModule,
 } from 'verben-ng-ui/src/public-api';
 import { TableExportComponent } from './table-export/table-export.component';
+import { DataFilterModule, DataXportModule, DataSortModule } from 'verben-ng-ui';
 
 @NgModule({
   declarations: [DataTableComponent, TableExportComponent],
@@ -27,6 +28,9 @@ import { TableExportComponent } from './table-export/table-export.component';
     FormsModule,
     ReactiveFormsModule,
     DataExportModule,
+    DataXportModule,
+    DataFilterModule,
+    DataSortModule,
     DropDownModule,
     VerbenaInputModule,
     CardModule,

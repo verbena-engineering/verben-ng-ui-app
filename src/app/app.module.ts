@@ -29,6 +29,7 @@ import {
   DataViewModule,
   VerbenaMailTemplateModule,
   DataTableModule,
+  VerbenTimePickerModule,
   DatePickerModule,
   VerbenDialogueModule,
 } from '../../projects/verben-ng-ui/src/public-api';
@@ -46,6 +47,7 @@ import { CardViewModule } from './views/card-view/card-view.module';
     AppRoutingModule,
     NumberRangeModule,
     RequiredInputModule,
+    VerbenTimePickerModule,
     EmailValidatorModule,
     ConvertToNumberModule,
     ConvertToIntegerModule,

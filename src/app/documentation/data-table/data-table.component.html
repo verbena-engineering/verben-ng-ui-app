@@ -34,6 +34,7 @@
   (rowDelete)="onRowDelete($event)"
   (selectionChange)="onSelectionChange($event)"
   [styleConfig]="stickyStyles"
+  dataKey="id"
 >
   <ng-container libColumn="select">
     <ng-template
@@ -84,16 +85,18 @@
       #cellEdit
       let-value="value"
       let-updateNestedValue="updateNestedValue"
+      let-updateValueFn="updateValueFn"
+      let-updateData="updateData"
     >
       <input
         [ngModel]="value.names"
-        (ngModelChange)="updateNestedValue('names', $event)"
+        (ngModelChange)="updateData(reverseNameTransform($event))"
       />
-      <input
+      <!-- <input
         type="number"
         [ngModel]="value.participants"
         (ngModelChange)="updateNestedValue('participants', $event)"
-      />
+      /> -->
     </ng-template>
     <ng-template #header>
       <strong>Customer</strong>
@@ -131,6 +134,7 @@
   (rowDelete)="onRowDelete($event)"
   (selectionChange)="onSelectionChange($event)"
   [styleConfig]="table2Styles"
+  dataKey="id"
 >
   <ng-container libColumn="select">
     <ng-template
@@ -187,16 +191,8 @@
       let-value="value"
       let-updateNestedValue="updateNestedValue"
     >
-      <input
-        [ngModel]="value?.firstName"
-        (ngModelChange)="updateNestedValue('firstName', $event)"
-        placeholder="First Name"
-      />
-      <input
-        [ngModel]="value?.lastName"
-        (ngModelChange)="updateNestedValue('lastName', $event)"
-        placeholder="Last Name"
-      />
+      <input [(ngModel)]="value.firstName" placeholder="First Name" />
+      <input [(ngModel)]="value.lastName" placeholder="Last Name" />
     </ng-template>
     <ng-template #header>
       <strong>Full Name</strong>
@@ -295,15 +291,48 @@
   </ng-container>
 </lib-data-table>
 
-<div class="bg-primary">
-  <app-table-export
-    [data]="tableData()"
-    (exportDataEvent)="handleExport($event)"
-  ></app-table-export>
-
-  <lib-data-export
+<div class="">
+  <!-- <lib-data-export
     [data]="tableData()"
     (exportDataEvent)="handleExport($event)"
   >
   </lib-data-export>
+
+  <lib-data-xport
+    [columns]="tableColumns"
+    [data]="tableData()"
+    (exportDataEvent)="handleExport($event)"
+  >
+  </lib-data-xport>
+
+  <lib-data-xport
+    [columns]="tableColumns3"
+    [data]="tableData()"
+    (exportDataEvent)="handleExport($event)"
+  >
+  </lib-data-xport> -->
+
+  <lib-data-xport
+    [columns]="controlledCols()"
+    [data]="tableData()"
+    (exportDataEvent)="handleExport($event)"
+  >
+  </lib-data-xport>
+
+  <lib-data-filter
+    [columns]="controlledCols()"
+    [data]="tableData()"
+    (filterApplied)="onFiltersApplied($event)"
+  ></lib-data-filter>
+
+  <lib-data-sort
+    [columns]="controlledCols()"
+    [data]="tableData()"
+    (sortApplied)="onSortApplied($event)"
+  ></lib-data-sort>
+
+  <!-- <app-table-export
+    [data]="tableData()"
+    (exportDataEvent)="handleExport($event)"
+  ></app-table-export> -->
 </div>

@@ -92,6 +92,21 @@ export * from './lib/components/data-export/data-export.service';
 export * from './lib/components/data-export/data-export.component';
 export * from './lib/components/data-export/data-export.types';
 
+export * from './lib/components/data-xport/data-xport.module';
+export * from './lib/components/data-xport/data-xport.service';
+export * from './lib/components/data-xport/data-xport.component';
+// export * from './lib/components/data-xport/data-xport.types';
+
+export * from './lib/components/data-filter/data-filter.module';
+export * from './lib/components/data-filter/data-filter.service';
+export * from './lib/components/data-filter/data-filter.component';
+export * from './lib/components/data-filter/data-filter.types';
+
+export * from './lib/components/data-sort/data-sort.module';
+export * from './lib/components/data-sort/data-sort.service';
+export * from './lib/components/data-sort/data-sort.component';
+export * from './lib/components/data-sort/data-sort.types';
+
 // Exporting ControlOptionModule and ControlOptionDirective
 export * from './lib/control-options/control-options.module';
 export * from './lib/control-options/control-options.directive';
@@ -123,6 +138,9 @@ export * from './lib/components/verben-mail/verben-mail.component';
 
 export * from './lib/components/verben-dialogue/verben-dialogue.module';
 export * from './lib/components/verben-dialogue/verben-dialogue.component';
+
+export * from './lib/components/verben-time-picker/verben-time-picker.module'
+export * from './lib/components/verben-time-picker/verben-time-picker.component'
 
 //notification service
 export * from './lib/services/notification.services';

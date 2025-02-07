@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 import { isEqual } from 'lodash';
 import { FormsModule } from '@angular/forms';
 // import { SvgModule } from 'verben-ng-ui/src/public-api';
-import {SvgModule} from '../../../components/svg/svg.module'
+import { SvgModule } from '../../../components/svg/svg.module';
 
 @Component({
   selector: 'drop-down-item',
@@ -29,6 +29,7 @@ export class DropDownItemComponent implements OnInit {
 
   @Input() activeItem?: any;
   @Input() activeItems?: any;
+  @Input() selectKey: string | null = null;
   @Input() optionValue?: string;
   @Input() optionLabel?: string;
   @Input() optionSubLabel?: string;
@@ -47,12 +48,17 @@ export class DropDownItemComponent implements OnInit {
   ngOnInit(): void {}
 
   isEqual(value: any, other: any): boolean {
-    return isEqual(value, other);
+    return this.selectKey
+      ? isEqual(value[this.selectKey], other[this.selectKey])
+      : isEqual(value, other);
   }
 
   isSelected(value: any[], other: any): boolean {
     for (let val of value) {
-      if (isEqual(val, other)) {
+      const equalityCheck = this.selectKey
+        ? isEqual(val[this.selectKey], other[this.selectKey])
+        : isEqual(val, other);
+      if (equalityCheck) {
         return true;
       }
     }

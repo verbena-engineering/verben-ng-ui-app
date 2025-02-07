@@ -66,8 +66,16 @@ export class SvgComponent implements OnInit, OnChanges {
 
   loadSvgIcon(iconName: string): void {
     this.http.get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
-      .subscribe((svgContent: string) => {
-        this.updateSvg(svgContent);
+      .subscribe((svgContent: string | null) => {
+        console.log({SvgContent: svgContent});
+        if(svgContent){
+          try {
+            this.updateSvg(svgContent);
+          } catch(err: any){
+            console.log({Error: err});
+          }
+          
+        }
       }, (error) => {
         console.error(`Error loading SVG icon: ${error}`);
       });

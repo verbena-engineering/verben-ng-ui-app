@@ -22,6 +22,7 @@ interface TestChildObject {
   Name: string;
 }
 
+
 @Component({
   selector: 'app-dropdown-sample',
   templateUrl: './dropdown-sample.component.html',

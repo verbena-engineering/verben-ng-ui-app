@@ -13,6 +13,7 @@ import {
   Operation,
   Operators,
 } from './data-export.types';
+import { ColumnDefinition } from '../data-table/data-table.types';
 
 @Component({
   selector: 'lib-data-export',
@@ -20,7 +21,8 @@ import {
   styleUrl: './data-export.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DataExportComponent {
+export class DataExportComponent<T extends { id: string | number }> {
+  @Input() columns!: ColumnDefinition<T>;
   @Input() data!: any[];
   @Output() exportDataEvent = new EventEmitter<Record<string, any>[]>();
 

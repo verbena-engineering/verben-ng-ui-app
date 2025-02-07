@@ -36,9 +36,9 @@ export class VerbenPopUpComponent implements AfterViewChecked {
     this.dropdownOpen = !this.dropdownOpen;
     this.dropdownOpenChange.emit(this.dropdownOpen);
 
-    if (this.dropdownOpen) {
-      this.setDropdownPosition();
-    }
+    // if (this.dropdownOpen) {
+    //   this.setDropdownPosition();
+    // }
   }
 
   onMouseOut() {
@@ -72,8 +72,9 @@ export class VerbenPopUpComponent implements AfterViewChecked {
     const clickedInside = this.elementRef.nativeElement.contains(targetElement);
     if (
       !clickedInside &&
-      !this.expansion.nativeElement.contains(targetElement) &&
-      this.dropdownOpen
+      this.dropdownOpen &&
+      this.expansion &&
+      !this.expansion.nativeElement.contains(targetElement)
     ) {
       this.dropdownOpen = false;
       this.dropdownOpenChange.emit(this.dropdownOpen);
@@ -119,9 +120,9 @@ export class VerbenPopUpComponent implements AfterViewChecked {
   // }
 
   ngAfterViewChecked() {
-    if (this.dropdownOpen) {
-      this.setDropdownPosition();
-    }
+    // if (this.dropdownOpen) {
+    //   this.setDropdownPosition();
+    // }
   }
 
   private setDropdownPosition(): void {

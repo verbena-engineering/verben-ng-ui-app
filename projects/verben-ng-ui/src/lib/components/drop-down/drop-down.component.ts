@@ -88,6 +88,7 @@ export class DropDownComponent
   @Input() display: string = 'default';
   @Input() showClear: boolean = false;
   @Input() lazyLoad: boolean = false;
+  @Input() selectKey: string | null = null;
   @Input() styleClass: string = '';
   @Input() group: boolean = false;
   @Input() multiselect: boolean = false;
@@ -637,7 +638,13 @@ export class DropDownComponent
       this.selectedOptionLabel = null;
       if (!this.group && !this.lazyLoad) {
         for (let option of this.options) {
-          if (isEqual(this.getValue(option), obj)) {
+          const equalityCheck = this.selectKey
+            ? isEqual(
+                this.getValue(option)[this.selectKey],
+                obj[this.selectKey]
+              )
+            : isEqual(this.getValue(option), obj);
+          if (equalityCheck) {
             this.selectedOption = this.getValue(option);
             this.selectedOptionLabel = this.getOptionLabel(option);
             break;
@@ -664,7 +671,13 @@ export class DropDownComponent
       if (!this.group && !this.lazyLoad) {
         for (let option of this.options) {
           for (let object of obj) {
-            if (isEqual(this.getValue(option), object)) {
+            const equalityCheck = this.selectKey
+              ? isEqual(
+                  this.getValue(option)[this.selectKey],
+                  object[this.selectKey]
+                )
+              : isEqual(this.getValue(option), object);
+            if (equalityCheck) {
               this.selectedOptions.push(this.getValue(option));
               this.selectedOptionLabels.push(this.getOptionLabel(option));
               break;
@@ -751,8 +764,9 @@ export class DropDownComponent
     }
     if (
       !this.dropdownContainer.nativeElement.contains(event.target) &&
-      !this.dropdownExpansion.nativeElement.contains(event.target) &&
-      this.isExpanded
+      this.isExpanded &&
+      this.dropdownExpansion &&
+      !this.dropdownExpansion.nativeElement.contains(event.target)
     ) {
       this.isExpanded = false;
     }

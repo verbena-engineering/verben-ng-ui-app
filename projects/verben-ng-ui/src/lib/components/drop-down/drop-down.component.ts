@@ -641,7 +641,7 @@ export class DropDownComponent
           const equalityCheck = this.selectKey
             ? isEqual(
                 this.getValue(option)[this.selectKey],
-                obj[this.selectKey]
+                (obj && obj[this.selectKey]) || null
               )
             : isEqual(this.getValue(option), obj);
           if (equalityCheck) {

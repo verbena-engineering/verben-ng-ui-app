@@ -530,7 +530,7 @@ export class DropDownComponent
           const index = this.checkMultiselectValue(item);
           if (index == null) {
             this.selectedOptions.push(this.getValue(item));
-            this.selectedOptionLabels.push(this.getOptionLabel(option));
+            this.selectedOptionLabels.push(this.getOptionLabel(item));
           }
         }
       }

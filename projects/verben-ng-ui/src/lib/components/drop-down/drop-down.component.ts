@@ -530,7 +530,7 @@ export class DropDownComponent
           const index = this.checkMultiselectValue(item);
           if (index == null) {
             this.selectedOptions.push(this.getValue(item));
-            this.selectedOptionLabels.push(this.getOptionLabel(option));
+            this.selectedOptionLabels.push(this.getOptionLabel(item));
           }
         }
       }
@@ -641,7 +641,7 @@ export class DropDownComponent
           const equalityCheck = this.selectKey
             ? isEqual(
                 this.getValue(option)[this.selectKey],
-                obj[this.selectKey]
+                (obj && obj[this.selectKey]) || null
               )
             : isEqual(this.getValue(option), obj);
           if (equalityCheck) {

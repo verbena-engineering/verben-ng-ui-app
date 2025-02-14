@@ -21,7 +21,6 @@ import {
   DataColumnsModule
 } from 'verben-ng-ui/src/public-api';
 import { TableExportComponent } from './table-export/table-export.component';
-// import { DataFilterModule, DataXportModule, DataSortModule, DataColumnsModule } from 'verben-ng-ui';
 
 @NgModule({
   declarations: [DataTableComponent, TableExportComponent],

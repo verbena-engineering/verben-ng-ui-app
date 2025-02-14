@@ -1,9 +1,8 @@
 import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FilterCondition } from 'verben-ng-ui';
 import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table/data-table.types';
 import { TableStyles } from 'verben-ng-ui/src/lib/components/data-table/style.types';
-import { DataExportService, SortCondition } from 'verben-ng-ui/src/public-api';
+import { DataExportService, SortCondition, FilterCondition } from 'verben-ng-ui/src/public-api';
 
 @Component({
   selector: 'app-data-table',

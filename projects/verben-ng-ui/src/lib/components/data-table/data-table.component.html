@@ -1,7 +1,7 @@
 <table [ngStyle]="getTableStyle()">
   <thead>
     <tr [ngStyle]="getHeaderStyle()">
-      @for (column of columnsSignal(); track column.id) {
+      @for (column of displayColumns(); track column.id) {
       <th [ngStyle]="getCellStyle(-1, $index)">
         @if (column.headerTemplate) {
         <ng-container
@@ -16,19 +16,19 @@
     </tr>
   </thead>
   <tbody>
-    @for (row of data(); track dataKey(); let rowIndex = $index) { @if
+    @for (row of data(); track getRowId(row); let rowIndex = $index) { @if
     (isGroupRow(row)) {
     <tr class="group-row" [ngStyle]="getRowStyle(rowIndex)">
       <td
-        [attr.colspan]="columnsSignal().length"
+        [attr.colspan]="displayColumns().length"
         [ngStyle]="getCellStyle(rowIndex, 0)"
       >
-        {{ getCellValue(row, columnsSignal()[0]) }}
+        {{ getCellValue(row, displayColumns()[0]) }}
       </td>
     </tr>
     } @else {
     <tr [ngStyle]="getRowStyle(rowIndex)">
-      @for (column of columnsSignal(); track column.id; let colIndex = $index) {
+      @for (column of displayColumns(); track column.id; let colIndex = $index) {
       <td [ngStyle]="getCellStyle(rowIndex, colIndex)">
         @if (isRowEditing(row) && column.cellEditTemplate) {
         <ng-container
@@ -51,7 +51,7 @@
   @if (hasFooter()) {
   <tfoot>
     <tr [ngStyle]="getFooterStyle()">
-      @for (column of columnsSignal(); track column.id) {
+      @for (column of displayColumns(); track column.id) {
       <td [ngStyle]="getCellStyle(-1, $index)">
         @if (column.footerTemplate) {
         <ng-container

@@ -204,6 +204,13 @@ export class DataTableComponent {
     // Apply sorts to your data
   }
 
+  onColumnsUpdated(columns: ColumnDefinition<YourDataType>[]) {
+    console.log('Applying columns:', columns);
+    this.controlledCols.set(columns);
+    // Apply columns to your data
+    console.log(this.controlledCols())
+  }
+
   private downloadCSV(data: Partial<any>[]) {
     const headers = Object.keys(data[0]);
     const csvContent = [

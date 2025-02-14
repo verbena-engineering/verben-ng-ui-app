@@ -107,6 +107,10 @@ export * from './lib/components/data-sort/data-sort.service';
 export * from './lib/components/data-sort/data-sort.component';
 export * from './lib/components/data-sort/data-sort.types';
 
+export * from './lib/components/data-columns/data-columns.module';
+export * from './lib/components/data-columns/data-columns.service';
+export * from './lib/components/data-columns/data-columns.component';
+
 // Exporting ControlOptionModule and ControlOptionDirective
 export * from './lib/control-options/control-options.module';
 export * from './lib/control-options/control-options.directive';

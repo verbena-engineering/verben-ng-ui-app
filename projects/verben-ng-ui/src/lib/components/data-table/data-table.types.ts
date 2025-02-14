@@ -17,3 +17,7 @@ export type GroupedDataRow<T> = T & {
   groupValue?: any;
   groupTitle?: any;
 };
+
+export type EditedData<T> = {
+  [K in keyof T]?: T[K] extends object ? Partial<T[K]> : T[K];
+};

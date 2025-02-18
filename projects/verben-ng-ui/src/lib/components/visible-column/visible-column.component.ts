@@ -32,7 +32,7 @@ export class VisibleColumnComponent {
   @Input() selectWidth?: string;
   @Input() closeColumn?: boolean;
   @Output() columnsUpdated = new EventEmitter<IDataFilter[]>();
-
+  @Output() resetFilter = new EventEmitter();
   originalColumnOrder: IDataFilter[] = [];
   visibleColumns: boolean[] = [];
   draggedIndex: number | null = null;
@@ -49,6 +49,7 @@ export class VisibleColumnComponent {
   }
 
   resetColumns() {
+    this.resetFilter.emit()
     // Reset columns to the original order
     this.columns = JSON.parse(JSON.stringify(this.originalColumnOrder)); // Ensure it's a deep copy
     this.initializeColumnVisibility();

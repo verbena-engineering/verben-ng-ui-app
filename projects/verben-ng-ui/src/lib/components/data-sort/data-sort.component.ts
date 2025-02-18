@@ -18,7 +18,7 @@ export class DataSortComponent<T> implements OnInit {
   @Input() data!: T[];
   @Input() enableDragAndDrop: boolean = true;
   @Output() sortApplied = new EventEmitter<SortCondition[]>();
-
+  @Output() resetFilter = new EventEmitter();
   sortableColumns: ColumnDefinition<T>[] = [];
   selectedSorts: Map<string, 'asc' | 'desc'> = new Map();
   showAllProperties = false;
@@ -147,6 +147,7 @@ export class DataSortComponent<T> implements OnInit {
   }
 
   resetAll() {
+    this.resetFilter.emit()
     this.selectedSorts.clear();
     this.selectedColumns.clear();
     this.checkAll = false;

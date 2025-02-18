@@ -1,9 +1,8 @@
 import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FilterCondition } from 'verben-ng-ui';
 import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table/data-table.types';
 import { TableStyles } from 'verben-ng-ui/src/lib/components/data-table/style.types';
-import { DataExportService, SortCondition } from 'verben-ng-ui/src/public-api';
+import { DataExportService, SortCondition, FilterCondition } from 'verben-ng-ui/src/public-api';
 
 @Component({
   selector: 'app-data-table',
@@ -202,6 +201,13 @@ export class DataTableComponent {
   onSortApplied(sorts: SortCondition[]) {
     console.log('Applying sorts:', sorts);
     // Apply sorts to your data
+  }
+
+  onColumnsUpdated(columns: ColumnDefinition<YourDataType>[]) {
+    console.log('Applying columns:', columns);
+    this.controlledCols.set(columns);
+    // Apply columns to your data
+    console.log(this.controlledCols())
   }
 
   private downloadCSV(data: Partial<any>[]) {

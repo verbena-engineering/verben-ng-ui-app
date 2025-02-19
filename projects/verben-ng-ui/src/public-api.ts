@@ -153,3 +153,9 @@ export * from './lib/components/pop-up/pop-up.module'
 export * from './lib/components/pop-up/pop-up.component'
 
 export * from './lib/tokens';
+
+
+export * from './lib/components/icons/icons.module'; // Export IconModule
+export * from './lib/components/icons/icons.component'; // Export IconComponent
+export * from './lib/services/icon.service'; // Export IconService
+

@@ -124,6 +124,14 @@ const routes: Routes = [
         import('./time-picker/time-picker.module').then((m) => m.TimePickerModule),
     },
 
+
+    {
+      path: 'svg',
+      loadChildren: () =>
+        import('./verbena-svg/verbena-svg.module').then(
+          (m) => m.VerbenaSvgModule
+        ),
+    },
 ];
 
 @NgModule({

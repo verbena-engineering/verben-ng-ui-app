@@ -135,9 +135,10 @@ export class DataFilterComponent<T> implements OnInit {
   }
 
   resetAll() {
-    this.resetFilter.emit()
+  
     this.savedFilters = [];
     this.resetCurrentFilter();
+    this.resetFilter.emit()
   }
 
   applyFilters() {

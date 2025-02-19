@@ -36,6 +36,7 @@ export class SortTableComponent {
   @Input() selectWidth?: string;
   @Input() containerHeight?:string="400px"
   @Output() selectedOptions = new EventEmitter<IDataFilter[]>();
+  @Output() resetSortData = new EventEmitter();
   draggedIndex: number | null = null;
   visibleSortOptions: IDataFilter[]= [];
   hiddenSortOptions: IDataFilter[] = [];
@@ -146,6 +147,7 @@ export class SortTableComponent {
     this.updateVisibleOptions();
     this.updateSortButtonState();
     this.checkAll=false
+    this.resetSortData.emit()
   }
 
   updateSortButtonState() {

@@ -40,7 +40,7 @@ export class CardDataViewComponent  {
 
   hasCurrentItem()
   {
-    return !!Object.keys(this.currentItem).length || !!Object.keys(this.currentChildItem).length
+    return !!Object.keys(this.currentItem ?? {}).length || !!Object.keys(this.currentChildItem ?? {}).length
   }
   clearData()
    {

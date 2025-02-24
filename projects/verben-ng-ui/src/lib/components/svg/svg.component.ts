@@ -1,20 +1,28 @@
-import { Component, Input, OnInit, ElementRef, ViewChild, OnChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ElementRef,
+  ViewChild,
+  OnChanges,
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'verben-svg',
   template: '<span #svgContainer></span>',
-  styleUrls: ['./svg.component.css']
+  styleUrls: ['./svg.component.css'],
 })
 export class SvgComponent implements OnInit, OnChanges {
   @Input() icon: string = '';
-  @Input() width: number = 24;  
-  @Input() height: number = 24; 
+  @Input() width: number = 24;
+  @Input() height: number = 24;
   @Input() fill: string = '';
   @Input() stroke: string = '';
+  @Input() type: 'default' | 'outline' | 'solid' = 'default';
 
-  @Input() size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'; 
+  @Input() size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
 
   @ViewChild('svgContainer', { static: true }) svgContainer!: ElementRef;
 
@@ -55,9 +63,9 @@ export class SvgComponent implements OnInit, OnChanges {
         case '4xl':
           width = height = 80;
           break;
-        default: 
-        width = height = 16;
-        break;
+        default:
+          width = height = 16;
+          break;
       }
     }
 
@@ -65,20 +73,41 @@ export class SvgComponent implements OnInit, OnChanges {
   }
 
   loadSvgIcon(iconName: string): void {
-    this.http.get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
-      .subscribe((svgContent: string | null) => {
-        console.log({SvgContent: svgContent});
-        if(svgContent){
-          try {
-            this.updateSvg(svgContent);
-          } catch(err: any){
-            console.log({Error: err});
+    this.http
+      .get(`assets/lib-icons/${this.type}/${iconName}.svg`, {
+        responseType: 'text',
+      })
+      .subscribe(
+        (svgContent: string | null) => {
+          //console.log({SvgContent: svgContent});
+          if (svgContent) {
+            try {
+              this.updateSvg(svgContent);
+            } catch (err: any) {
+              console.log({ Error: err });
+            }
           }
-          
+        },
+        (error) => {
+          this.http
+            .get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
+            .subscribe(
+              (svgContent: string | null) => {
+                //console.log({SvgContent: svgContent});
+                if (svgContent) {
+                  try {
+                    this.updateSvg(svgContent);
+                  } catch (err: any) {
+                    console.log({ Error: err });
+                  }
+                }
+              },
+              (error) => {
+                console.error(`Error loading SVG icon: ${error}`);
+              }
+            );
         }
-      }, (error) => {
-        console.error(`Error loading SVG icon: ${error}`);
-      });
+      );
   }
 
   private updateSvg(svgContent: string): void {
@@ -91,11 +120,19 @@ export class SvgComponent implements OnInit, OnChanges {
     svgElement.setAttribute('width', width.toString());
     svgElement.setAttribute('height', height.toString());
 
-    const elementsToUpdate = ['path', 'circle', 'line', 'rect', 'polygon', 'polyline', 'ellipse'];
+    const elementsToUpdate = [
+      'path',
+      'circle',
+      'line',
+      'rect',
+      'polygon',
+      'polyline',
+      'ellipse',
+    ];
 
-    elementsToUpdate.forEach(tag => {
+    elementsToUpdate.forEach((tag) => {
       const elements = svgElement.querySelectorAll(tag);
-      elements.forEach(element => {
+      elements.forEach((element) => {
         if (this.fill) {
           element.setAttribute('fill', this.fill);
         }
@@ -110,16 +147,16 @@ export class SvgComponent implements OnInit, OnChanges {
       const newMaskId = `mask_${this.icon}_${index}`;
       mask.setAttribute('id', newMaskId);
 
-      const maskReferences = svgElement.querySelectorAll(`[mask="url(#${mask.id})"]`);
-      maskReferences.forEach(ref => {
+      const maskReferences = svgElement.querySelectorAll(
+        `[mask="url(#${mask.id})"]`
+      );
+      maskReferences.forEach((ref) => {
         ref.setAttribute('mask', `url(#${newMaskId})`);
       });
     });
-
 
     const svgContainerEl = this.svgContainer.nativeElement;
     svgContainerEl.innerHTML = '';
     svgContainerEl.appendChild(svgElement);
   }
 }
-

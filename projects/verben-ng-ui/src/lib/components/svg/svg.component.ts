@@ -79,36 +79,81 @@ export class SvgComponent implements OnInit, OnChanges {
       })
       .subscribe(
         (svgContent: string | null) => {
-          //console.log({SvgContent: svgContent});
-          if (svgContent) {
+          if (svgContent && svgContent.startsWith('<svg')) {
             try {
               this.updateSvg(svgContent);
             } catch (err: any) {
               console.log({ Error: err });
             }
+          } else {
+            // If response is not a valid SVG, try loading from project assets
+            this.fallbackLoad(iconName);
           }
         },
         (error) => {
-          this.http
-            .get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
-            .subscribe(
-              (svgContent: string | null) => {
-                //console.log({SvgContent: svgContent});
-                if (svgContent) {
-                  try {
-                    this.updateSvg(svgContent);
-                  } catch (err: any) {
-                    console.log({ Error: err });
-                  }
-                }
-              },
-              (error) => {
-                console.error(`Error loading SVG icon: ${error}`);
-              }
-            );
+          this.fallbackLoad(iconName);
         }
       );
   }
+
+  private fallbackLoad(iconName: string): void {
+    this.http
+      .get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
+      .subscribe(
+        (svgContent: string | null) => {
+          if (svgContent && svgContent.startsWith('<svg')) {
+            try {
+              this.updateSvg(svgContent);
+            } catch (err: any) {
+              console.log({ Error: err });
+            }
+          } else {
+            console.error(`Invalid SVG response for ${iconName}`);
+          }
+        },
+        (error) => {
+          console.error(`Error loading SVG icon: ${error}`);
+        }
+      );
+  }
+
+  // loadSvgIcon(iconName: string): void {
+  //   this.http
+  //     .get(`assets/lib-icons/${this.type}/${iconName}.svg`, {
+  //       responseType: 'text',
+  //     })
+  //     .subscribe(
+  //       (svgContent: string | null) => {
+  //         //console.log({SvgContent: svgContent});
+  //         if (svgContent) {
+  //           try {
+  //             this.updateSvg(svgContent);
+  //           } catch (err: any) {
+  //             console.log({ Error: err });
+  //           }
+  //         }
+  //       },
+  //       (error) => {
+  //         this.http
+  //           .get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
+  //           .subscribe(
+  //             (svgContent: string | null) => {
+  //               //console.log({SvgContent: svgContent});
+  //               if (svgContent) {
+  //                 try {
+  //                   this.updateSvg(svgContent);
+  //                 } catch (err: any) {
+  //                   console.log({ Error: err });
+  //                 }
+  //               }
+  //             },
+  //             (error) => {
+  //               console.error(`Error loading SVG icon: ${error}`);
+  //             }
+  //           );
+  //       }
+  //     );
+  // }
 
   private updateSvg(svgContent: string): void {
     const parser = new DOMParser();

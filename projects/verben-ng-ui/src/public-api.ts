@@ -107,6 +107,10 @@ export * from './lib/components/data-sort/data-sort.service';
 export * from './lib/components/data-sort/data-sort.component';
 export * from './lib/components/data-sort/data-sort.types';
 
+export * from './lib/components/data-columns/data-columns.module';
+export * from './lib/components/data-columns/data-columns.service';
+export * from './lib/components/data-columns/data-columns.component';
+
 // Exporting ControlOptionModule and ControlOptionDirective
 export * from './lib/control-options/control-options.module';
 export * from './lib/control-options/control-options.directive';
@@ -149,3 +153,11 @@ export * from './lib/components/pop-up/pop-up.module'
 export * from './lib/components/pop-up/pop-up.component'
 
 export * from './lib/tokens';
+
+
+export * from './lib/components/icons/icons.module'; // Export IconModule
+export * from './lib/components/icons/icons.component'; // Export IconComponent
+export * from './lib/services/icon.service'; // Export IconService
+
+export * from './lib/components/verbena-icon/verbena-icon.component'; // Export IconComponent
+export * from './lib/components/verbena-icon/verbena-icon.module'; // Export IconService

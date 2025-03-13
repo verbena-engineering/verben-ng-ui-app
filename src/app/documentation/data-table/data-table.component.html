@@ -126,6 +126,11 @@
 
 <button (click)="changeCols()">Shuffle cols</button>
 
+<lib-data-columns
+  [columns]="controlledCols()"
+  (columnsUpdated)="onColumnsUpdated($event)"
+></lib-data-columns>
+
 <lib-data-table
   [data]="tableData()"
   [columns]="controlledCols()"
@@ -330,6 +335,11 @@
     [data]="tableData()"
     (sortApplied)="onSortApplied($event)"
   ></lib-data-sort>
+
+  <lib-data-columns
+    [columns]="controlledCols()"
+    (columnsUpdated)="onColumnsUpdated($event)"
+  ></lib-data-columns>
 
   <!-- <app-table-export
     [data]="tableData()"

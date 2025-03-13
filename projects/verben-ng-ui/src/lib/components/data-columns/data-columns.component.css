@@ -1,0 +1,104 @@
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    padding: 4px !important;
+  }
+  
+  .header-title {
+    font-weight: 600;
+    font-size: 0.8125rem;
+  }
+  
+  .header-title sup {
+    color: #3479E9;
+  }
+  
+  .reset-button {
+    color: #3479E9;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .section-title {
+    font-size: 0.8125rem;
+  }
+  
+  .select-all-wrapper {
+    display: flex;
+    align-items: center;
+    /* padding: 4px 10px; */
+  }
+  
+  .select-all {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .column-option {
+    margin: 0 -1.5rem;
+    cursor: move;
+  }
+  
+  .column-option-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 12px;
+  }
+  
+  .drag-handle {
+    cursor: grab;
+  }
+  
+  .show-more {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+    color: #6b7280;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  
+  .card-footer {
+    display: flex;
+    justify-content: flex-end;
+    background-color: transparent;
+  }
+  
+  .save-button {
+    margin-top: 0.5rem;
+    outline: none;
+    border: none;
+    padding: 0.2rem 1.6rem;
+    background-color: #ffe681;
+    color: #404040;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+  }

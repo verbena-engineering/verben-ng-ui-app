@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  contentChildren,
   ContentChildren,
   EventEmitter,
   input,
@@ -14,7 +15,7 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { ColumnDefinition, GroupedDataRow } from './data-table.types';
+import { ColumnDefinition, EditedData, GroupedDataRow } from './data-table.types';
 import { ColumnDirective } from './column.directive';
 import { BaseStyles, TableStyles } from './style.types';
 
@@ -49,8 +50,7 @@ export class DataTableComponent<T extends { Id: string | number }>
 
   @Input() styleConfig: TableStyles = defaultTableStyles;
 
-  @ContentChildren(ColumnDirective)
-  columnTemplates!: QueryList<ColumnDirective>;
+  columnTemplates = contentChildren(ColumnDirective);
 
   @Output() rowEdit = new EventEmitter<T>();
   @Output() rowSave = new EventEmitter<T>();
@@ -63,10 +63,32 @@ export class DataTableComponent<T extends { Id: string | number }>
     new Map()
   );
 
-  columnsSignal: WritableSignal<ColumnDefinition<T>[]> = signal([]);
+  columnsSignal = computed(() => this.columns());
+
+  displayColumns: Signal<ColumnDefinition<T>[]>;
+
+  constructor() {
+    this.displayColumns = computed(() => {
+      return this.columnsSignal().map((column) => {
+        const matchingTemplate = this.columnTemplates().find(
+          (t) => t.columnId === column.id
+        );
+        if (matchingTemplate) {
+          return {
+            ...column,
+            cellTemplate: matchingTemplate.cellTemplate,
+            cellEditTemplate: matchingTemplate.cellEditTemplate,
+            headerTemplate: matchingTemplate.headerTemplate,
+            footerTemplate: matchingTemplate.footerTemplate,
+          };
+        }
+        return column;
+      });
+    });
+  }
 
   hasFooter = computed(() =>
-    this.columnsSignal().some((col) => col.footerTemplate !== undefined)
+    this.displayColumns().some((col) => col.footerTemplate !== undefined)
   );
 
   // Helper method to get unique identifier for a row
@@ -127,22 +149,18 @@ export class DataTableComponent<T extends { Id: string | number }>
   });
 
   ngOnInit() {
-    // Set initial columns if not already set
-    if (this.columnsSignal().length === 0) {
-      this.columnsSignal.set(this.columns());
-    }
   }
 
   ngAfterContentInit() {
-    this.columnTemplates.changes.subscribe(() => this.mergeColumnTemplates());
-    this.mergeColumnTemplates();
+    // this.columnTemplates.changes.subscribe(() => this.mergeColumnTemplates());
+    // this.mergeColumnTemplates();
   }
 
   private mergeColumnTemplates() {
     // Only merge if we have both columns and templates
     if (this.columnsSignal().length > 0) {
       const updatedColumns = this.columnsSignal().map((column) => {
-        const matchingTemplate = this.columnTemplates.find(
+        const matchingTemplate = this.columnTemplates().find(
           (t) => t.columnId === column.id
         );
         if (matchingTemplate) {
@@ -156,7 +174,7 @@ export class DataTableComponent<T extends { Id: string | number }>
         }
         return column;
       });
-      this.columnsSignal.set(updatedColumns);
+      // this.columnsSignal.set(updatedColumns);
     }
   }
 
@@ -182,7 +200,7 @@ export class DataTableComponent<T extends { Id: string | number }>
       const newSet = new Set(set);
       if (newSet.has(this.getRowId(row))) {
         newSet.delete(this.getRowId(row));
-        // this.saveRow(this.getRowId(row));
+        this.saveRow(this.getRowId(row));
       } else {
         newSet.add(this.getRowId(row));
         this.initializeEditedData(row);
@@ -200,22 +218,21 @@ export class DataTableComponent<T extends { Id: string | number }>
     });
   }
 
-  // private saveRow(rowId: string | number) {
-  //   const editedData = this.editedDataSignal().get(rowId);
-  //   if (editedData) {
-  //     const originalRowIndex = this.data().findIndex((r) => r.id === rowId);
-  //     if (originalRowIndex !== -1) {
-  //       const updatedRow = { ...this.data()[originalRowIndex], ...editedData };
-  //       this.data()[originalRowIndex] = updatedRow;
-  //       this.rowSave.emit(updatedRow);
-  //       this.editedDataSignal.update((map) => {
-  //         const newMap = new Map(map);
-  //         newMap.delete(rowId);
-  //         return newMap;
-  //       });
-  //     }
-  //   }
-  // }
+  private saveRow(rowId: string | number) {
+    const editedData = this.editedDataSignal().get(rowId);
+    if (editedData) {
+      const originalRow = this.data().find(row => this.getRowId(row) === rowId);
+      if (originalRow) {
+        const updatedRow = { ...originalRow, ...editedData };
+        this.rowSave.emit(updatedRow);
+        this.editedDataSignal.update((map) => {
+          const newMap = new Map(map);
+          newMap.delete(rowId);
+          return newMap;
+        });
+      }
+    }
+  }
 
   isRowSelected = (rowId: string | number): boolean => {
     return this.selectedRowsSignal().has(rowId);
@@ -279,14 +296,21 @@ export class DataTableComponent<T extends { Id: string | number }>
     };
   }
 
-  updateEditedValue(rowId: string | number, columnId: keyof T, value: any) {
+  updateEditedValue(rowId: string | number, column: ColumnDefinition<T>, value: any) {
     this.editedDataSignal.update((map) => {
       const newMap = new Map(map);
       const rowData = newMap.get(rowId) || ({} as EditedData<T>);
-      newMap.set(rowId, { ...rowData, [columnId]: value });
+      
+      if (column.accessorKey) {
+        newMap.set(rowId, { ...rowData, [column.accessorKey]: value });
+      } else {
+        console.warn('Cannot update value for column without accessorKey:', column.id);
+      }
+      
       return newMap;
     });
   }
+  
 
   updateEditedValueFn(
     rowId: string | number,
@@ -312,21 +336,27 @@ export class DataTableComponent<T extends { Id: string | number }>
 
   updateNestedEditedValue(
     rowId: string | number,
-    columnId: keyof T,
+    column: ColumnDefinition<T>,
     nestedField: string,
     value: any
   ) {
     this.editedDataSignal.update((map) => {
       const newMap = new Map(map);
       const rowData = newMap.get(rowId) || ({} as EditedData<T>);
-      const columnData = (rowData[columnId] as any) || {};
-      newMap.set(rowId, {
-        ...rowData,
-        [columnId]: {
-          ...columnData,
-          [nestedField]: value,
-        },
-      });
+      
+      if (column.accessorKey) {
+        const columnData = (rowData[column.accessorKey] as any) || {};
+        newMap.set(rowId, {
+          ...rowData,
+          [column.accessorKey]: {
+            ...columnData,
+            [nestedField]: value,
+          },
+        });
+      } else {
+        console.warn('Cannot update nested value for column without accessorKey:', column.id);
+      }
+      
       return newMap;
     });
   }
@@ -335,14 +365,23 @@ export class DataTableComponent<T extends { Id: string | number }>
     const rowId = this.getRowId(row);
     const isEditing = this.isRowEditing(row);
     const editedData = this.editedDataSignal().get(rowId);
-
+  
     let value: any;
-    if (isEditing && editedData && column.id in editedData) {
-      value = editedData[column.id as keyof T];
+    if (isEditing && editedData) {
+      if (column.accessorKey && column.accessorKey in editedData) {
+        // If column has an accessorKey and it exists in edited data, use that
+        value = editedData[column.accessorKey];
+      } else if (column.accessorFn) {
+        // If column has an accessorFn, apply it to the edited data
+        value = column.accessorFn({ ...row, ...editedData });
+      } else {
+        // Fallback to getting the value from the original row
+        value = this.getCellValue(row, column);
+      }
     } else {
       value = this.getCellValue(row, column);
     }
-
+  
     return {
       $implicit: value,
       value,
@@ -354,20 +393,12 @@ export class DataTableComponent<T extends { Id: string | number }>
       toggleRowSelection: () => this.toggleRowSelection(rowId),
       toggleRowEdit: () => this.toggleRowEdit(row),
       deleteRow: () => this.deleteRow(rowId),
-      updateValue: (newValue: any) =>
-        this.updateEditedValue(rowId, column.id as keyof T, newValue),
+      updateValue: (newValue: any) => this.updateEditedValue(rowId, column, newValue),
       updateNestedValue: (nestedField: string, newValue: any) =>
-        this.updateNestedEditedValue(
-          rowId,
-          column.id as keyof T,
-          nestedField,
-          newValue
-        ),
-
+        this.updateNestedEditedValue(rowId, column, nestedField, newValue),
       updateValueFn: (valueFn: (value: any) => T, newValue: any) =>
         this.updateEditedValueFn(rowId, valueFn, newValue),
-      updateData: (newData: Partial<T>) =>
-        this.updateEditedData(rowId, newData),
+      updateData: (newData: Partial<T>) => this.updateEditedData(rowId, newData),
     };
   }
 
@@ -433,7 +464,7 @@ export class DataTableComponent<T extends { Id: string | number }>
 
   getCellStyle(rowIndex: number, colIndex: number): any {
     const isFirstColumn = colIndex === 0;
-    const isLastColumn = colIndex === this.columnsSignal().length - 1;
+    const isLastColumn = colIndex === this.displayColumns().length - 1;
 
     let cellStyle = { ...this.styleConfig.cells };
 
@@ -469,10 +500,6 @@ export class DataTableComponent<T extends { Id: string | number }>
     return cellStyle;
   }
 }
-
-type EditedData<T> = {
-  [K in keyof T]?: T[K] extends object ? Partial<T[K]> : T[K];
-};
 
 // Default styles
 const defaultTableStyles: TableStyles = {

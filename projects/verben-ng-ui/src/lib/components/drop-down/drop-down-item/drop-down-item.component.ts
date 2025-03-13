@@ -49,7 +49,7 @@ export class DropDownItemComponent implements OnInit {
 
   isEqual(value: any, other: any): boolean {
     return this.selectKey
-      ? isEqual(value[this.selectKey], other[this.selectKey])
+      ? isEqual((value && value[this.selectKey]) || null, other[this.selectKey])
       : isEqual(value, other);
   }
 

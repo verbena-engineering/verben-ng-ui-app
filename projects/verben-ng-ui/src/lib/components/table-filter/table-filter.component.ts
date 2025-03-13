@@ -26,7 +26,7 @@ export class TableFilterComponent implements OnInit {
   @Input() maxFilterLength:number = 3
   @Input() tooltip:boolean = false
   @Output() filtersApplied = new EventEmitter<any>();
-  
+  @Output() resetSortData = new EventEmitter<any>();
   filterArray:string[] = [];
   selectedFilterValue: string = '';
   selectedFilterType?:any;
@@ -77,6 +77,7 @@ export class TableFilterComponent implements OnInit {
     this.duplicateMessage = ''
     localStorage.removeItem(this.storageKey);
     this.filterCount = this.savedFilters.filter(item => item.checked === true).length;
+    this.resetSortData.emit()
   }
 
   addFilter() {

@@ -8,6 +8,8 @@ import { Component, Input } from '@angular/core';
 export class VerbenaButtonComponent {
   @Input() text: string = '';
   @Input() icon: string = '';
+  @Input() useIcon: boolean = false;
+
   @Input() svgPosition: 'left' | 'right' = 'left';
   @Input() iconPosition: 'left' | 'right' = 'left';
   @Input() bgColor?: string = '';

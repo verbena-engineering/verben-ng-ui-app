@@ -25,14 +25,17 @@ class="verbena-button {{ buttonClass }}"
 
   <!-- Button Content -->
   <ng-container *ngIf="!isLoading">
-    <ng-container *ngIf="svg && svgPosition === 'left'">
-      <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight" [stroke]="svgColor"></verben-svg>
+    <ng-container *ngIf="icon && iconPosition === 'left'">
+      <!-- <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight" [stroke]="svgColor"></verben-svg> -->
+      <verbena-icon [icon]="icon" [variant]="variant" [size]="size" [weight]="weight" [color]="iconColor"></verbena-icon>
     </ng-container>
 
     <span *ngIf="text" class="{{ buttonTextClass }}" [ngStyle]="{'font-size': fontSize, 'font-weight': fontWeight}">{{ text }}</span>
 
-    <ng-container *ngIf="svg && svgPosition === 'right'">
-      <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight" [stroke]="svgColor"></verben-svg>
+    <ng-container *ngIf="icon && iconPosition === 'right'">
+      <!-- <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight" [stroke]="svgColor"></verben-svg> -->
+      <verbena-icon [icon]="icon" [variant]="variant" [size]="size" [weight]="weight" [color]="iconColor"></verbena-icon>
+
     </ng-container>
   </ng-container>
 </button>

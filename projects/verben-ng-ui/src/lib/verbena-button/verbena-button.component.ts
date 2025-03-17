@@ -8,6 +8,8 @@ import { Component, Input } from '@angular/core';
 export class VerbenaButtonComponent {
   @Input() text: string = '';
   @Input() icon: string = '';
+  @Input() useIcon: boolean = false;
+
   @Input() svgPosition: 'left' | 'right' = 'left';
   @Input() iconPosition: 'left' | 'right' = 'left';
   @Input() bgColor?: string = '';
@@ -20,7 +22,7 @@ export class VerbenaButtonComponent {
   @Input() fontSize: string = '14px';
   @Input() fontWeight: string = '500';
   @Input() disable: boolean = false;
-  @Input() size: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | number = 'md';
+  @Input() svgSize: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'  = 'md';
   @Input() weight: number = 400;
   @Input() variant: 'outlined' | 'rounded' | 'sharp' = 'outlined';
   @Input() styleType: 'primary' | 'secondary' | 'danger' | 'small' | 'outline' | 'grey' | 'ylw-outline' = 'primary';  // Predefined styles

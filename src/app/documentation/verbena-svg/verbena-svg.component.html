@@ -2,10 +2,21 @@
   <p>verbena-svg works!</p>
 
 
-  <verbena-button text="Danger Button" styleType="danger" [icon]="'home'" [iconColor]="'yellow'"></verbena-button>
+  <verbena-button text="Danger Button" styleType="danger" [icon]="'home'" [svgColor]="'yellow'" [weight]="100" [useIcon]="true"></verbena-button>
+  <verbena-button text="Danger Button" styleType="danger" [icon]="'home'" [svgColor]="'yellow'" [weight]="500" [useIcon]="true" [iconPosition]="'right'"></verbena-button>
+  <verbena-button text="Danger Button" styleType="primary" [icon]="'home'" [svgColor]="'yellow'" [svgSize]="'lg'" [weight]="900" [useIcon]="true"></verbena-button>
+
+  <verbena-button text="Danger Button" styleType="primary" [svg]="'home'" [svgColor]="'yellow'" [weight]="900" ></verbena-button>
+  <verbena-button text="Danger Button" styleType="primary" [svg]="'academic-cap'" [svgColor]="'yellow'" [svgSize]="'lg'" [svgPosition]="'right'" ></verbena-button>
+  <verbena-button text="Danger Button" styleType="primary" [svg]="'home'" [svgColor]="'yellow'" [svgPosition]="'right'" [svgSize]="'2xl'"></verbena-button>
 
 
-  <verben-svg [icon]="'academic-cap'" [stroke]="'red'" [width]="10" [height]="10"></verben-svg>
+
+
+
+
+  <verben-svg [icon]="'academic-cap'" [stroke]="'red'" [width]="10" [height]="10" [size]="'lg'"></verben-svg>
+  <verben-svg [icon]="'academic-cap'" [stroke]="'red'" [width]="10" [height]="10" [size]="'lg'"></verben-svg>
   <verben-svg [icon]="'academic-cap'" [stroke]="'blue'" [width]="20" [height]="20"></verben-svg>
   <verben-svg [icon]="'academic-cap'" [stroke]="'green'" [width]="30" [height]="30"></verben-svg>
 

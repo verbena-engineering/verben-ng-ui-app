@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GoogleIconComponent } from './verbena-icon.component';
+import { VerbenaIconComponent } from './verbena-icon.component';
 
 describe('GoogleIconComponent', () => {
-  let component: GoogleIconComponent;
-  let fixture: ComponentFixture<GoogleIconComponent>;
+  let component: VerbenaIconComponent;
+  let fixture: ComponentFixture<VerbenaIconComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GoogleIconComponent]
+      imports: [VerbenaIconComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GoogleIconComponent);
+    fixture = TestBed.createComponent(VerbenaIconComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

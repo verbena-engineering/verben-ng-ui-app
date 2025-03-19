@@ -9,12 +9,13 @@ import { DropdownChangeEvent } from '../drop-down/DropdownChangeEvent';
 export class DatePickerComponent {
   @Input() placeholder = 'Select date';
   @Input() format = 'MM/DD/YYYY';
-  @Input() minDate: Date | undefined;
-  @Input() maxDate: Date | undefined;
+  @Input() minDate?: Date;
+  @Input() maxDate?: Date;
   @Input() useDropdowns: boolean = true;
-  @Input() yearPlaceholder:string="Select a year"
-  @Input() monthPlaceholder:string="Select a year"
-  @Output() dateChange = new EventEmitter<Date>();
+  @Input() yearPlaceholder: string = 'Select a year';
+  @Input() monthPlaceholder: string = 'Select a month';
+  @Input() date: Date | null = null; // Two-way binding support
+  @Output() dateChange = new EventEmitter<Date>(); // Emit date changes
 
   selectedDate: Date = new Date();
   tempSelectedDate: Date = new Date();
@@ -22,37 +23,31 @@ export class DatePickerComponent {
 
   weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
-  yearRange: number[] = Array.from(
-    { length: new Date().getFullYear() - 1960 + 1 },
-    (_, i) => 1960 + i
-  );
+  yearRange: number[] = Array.from({ length: new Date().getFullYear() - 1960 + 1 }, (_, i) => 1960 + i);
+  
+  selectedMonth: number = 1;
+  selectedYear: number = new Date().getFullYear();
 
-  selectedMonth: number =1|| this.selectedDate.getMonth();
-  selectedYear: number = this.selectedDate.getFullYear();
+  ngOnChanges() {
+    if (this.date) {
+      this.selectedDate = new Date(this.date);
+      this.tempSelectedDate = new Date(this.date);
+      this.selectedMonth = this.selectedDate.getMonth();
+      this.selectedYear = this.selectedDate.getFullYear();
+    }
+  }
 
   get displayDate(): string {
-    return this.selectedDate
-      ? this.formatDate(this.selectedDate, this.format)
-      : '';
+    return this.date ? this.formatDate(this.date, this.format) : '';
   }
 
   toggleCalendar() {
     this.showCalendar = !this.showCalendar;
-    this.tempSelectedDate = new Date(this.selectedDate);
+    this.tempSelectedDate = new Date(this.date || new Date());
     this.selectedMonth = this.tempSelectedDate.getMonth();
     this.selectedYear = this.tempSelectedDate.getFullYear();
   }
@@ -104,7 +99,7 @@ export class DatePickerComponent {
   }
 
   selectTemporaryDate(day: Date) {
-    this.tempSelectedDate = day; // Set the temporary date when user clicks on a day
+    this.tempSelectedDate = day;
   }
 
   isSelected(day: Date): boolean {
@@ -130,14 +125,12 @@ export class DatePickerComponent {
   }
 
   confirm() {
-    // When OK is clicked, confirm the selected date
     this.selectedDate = new Date(this.tempSelectedDate);
+    this.dateChange.emit(this.selectedDate); // Emit change
     this.showCalendar = false;
-    this.dateChange.emit(this.selectedDate);
   }
 
   cancel() {
-    // When Cancel is clicked, close the calendar without changing the date
     this.showCalendar = false;
   }
 }

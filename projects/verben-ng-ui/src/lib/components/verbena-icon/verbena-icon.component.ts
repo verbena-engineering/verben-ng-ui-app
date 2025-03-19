@@ -10,7 +10,7 @@ import {
 @Component({
   selector: 'verbena-icon',
   templateUrl: './verbena-icon.component.html',
-  styleUrls: ['./verbena-icon.component.scss']
+  styleUrls: ['./verbena-icon.component.css']
 })
 export class VerbenaIconComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() icon: string = '';

@@ -3,13 +3,13 @@
     type="text"
     [placeholder]="placeholder"
     [value]="displayDate"
-    (focus)="toggleCalendar()"
+    (click)="toggleCalendar()"
     readonly
   />
 
-  <div *ngIf="showCalendar" class="calendar">
+  <div *ngIf="showCalendar" [appOutSideClick]="showCalendar" (outSideClick)="showCalendar=false" class="calendar">
     <div class="calendar-header">
-      <ng-container *ngIf="!useDropdowns; else dropdowns">
+      <ng-container  *ngIf="!useDropdowns; else dropdowns">
         <button (click)="previousMonth()">
           <verben-svg [width]="20" [icon]="'chevron-left'"></verben-svg>
         </button>
@@ -31,7 +31,7 @@
           [placeholder]="monthPlaceholder"
           (onChange)="onDropdownMonthChange($event)"
           [options]="months"
-          [(ngModel)]="selectedMonth"
+          [(ngModel)]="selectedMonthString"
         ></verben-drop-down>
       </ng-template>
     </div>

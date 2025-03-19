@@ -30,6 +30,7 @@ export class DatePickerComponent {
   yearRange: number[] = Array.from({ length: new Date().getFullYear() - 1960 + 1 }, (_, i) => 1960 + i);
   
   selectedMonth: number = 1;
+  selectedMonthString:string=''
   selectedYear: number = new Date().getFullYear();
 
   ngOnChanges() {
@@ -49,6 +50,7 @@ export class DatePickerComponent {
     this.showCalendar = !this.showCalendar;
     this.tempSelectedDate = new Date(this.date || new Date());
     this.selectedMonth = this.tempSelectedDate.getMonth();
+    this.selectedMonthString=this.months[this.selectedMonth]
     this.selectedYear = this.tempSelectedDate.getFullYear();
   }
 
@@ -76,7 +78,8 @@ export class DatePickerComponent {
   }
 
   onDropdownMonthChange(event: DropdownChangeEvent): void {
-    this.selectedMonth = event.value;
+   
+    this.selectedMonth = this.months.indexOf(event.value)
     this.updateTempSelectedDate();
   }
 
@@ -86,17 +89,19 @@ export class DatePickerComponent {
   }
 
   getDaysInMonth(): Date[] {
-    const days = [];
-    const year = this.tempSelectedDate.getFullYear();
-    const month = this.tempSelectedDate.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-
-    for (let i = firstDay.getDate(); i <= lastDay.getDate(); i++) {
+    const days: Date[] = [];
+    const year = this.selectedYear;
+    const month = this.selectedMonth;
+  
+    const totalDays = new Date(year, month + 1, 0).getDate(); // Get last day of the month
+  
+    for (let i = 1; i <= totalDays; i++) {
       days.push(new Date(year, month, i));
     }
+  
     return days;
   }
+  
 
   selectTemporaryDate(day: Date) {
     this.tempSelectedDate = day;

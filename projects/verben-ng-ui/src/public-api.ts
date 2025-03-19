@@ -159,3 +159,5 @@ export * from './lib/components/icons/icons.module'; // Export IconModule
 export * from './lib/components/icons/icons.component'; // Export IconComponent
 export * from './lib/services/icon.service'; // Export IconService
 
+export * from './lib/components/verbena-icon/verbena-icon.component'; // Export IconComponent
+export * from './lib/components/verbena-icon/verbena-icon.module'; // Export IconService

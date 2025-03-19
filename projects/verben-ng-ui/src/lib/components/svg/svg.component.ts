@@ -18,6 +18,7 @@ export class SvgComponent implements OnInit, OnChanges {
   @Input() icon: string = '';
   @Input() width: number = 24;
   @Input() height: number = 24;
+  color: string = '';
   @Input() fill: string = '';
   @Input() stroke: string = '';
   @Input() type: 'default' | 'outline' | 'solid' = 'default';
@@ -29,6 +30,7 @@ export class SvgComponent implements OnInit, OnChanges {
   constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
+    this.color = this.fill.length > 0 ? this.fill : this.stroke;
     this.loadSvgIcon(this.icon);
   }
 
@@ -79,36 +81,81 @@ export class SvgComponent implements OnInit, OnChanges {
       })
       .subscribe(
         (svgContent: string | null) => {
-          //console.log({SvgContent: svgContent});
-          if (svgContent) {
+          if (svgContent && svgContent.startsWith('<svg')) {
             try {
               this.updateSvg(svgContent);
             } catch (err: any) {
               console.log({ Error: err });
             }
+          } else {
+            // If response is not a valid SVG, try loading from project assets
+            this.fallbackLoad(iconName);
           }
         },
         (error) => {
-          this.http
-            .get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
-            .subscribe(
-              (svgContent: string | null) => {
-                //console.log({SvgContent: svgContent});
-                if (svgContent) {
-                  try {
-                    this.updateSvg(svgContent);
-                  } catch (err: any) {
-                    console.log({ Error: err });
-                  }
-                }
-              },
-              (error) => {
-                console.error(`Error loading SVG icon: ${error}`);
-              }
-            );
+          this.fallbackLoad(iconName);
         }
       );
   }
+
+  private fallbackLoad(iconName: string): void {
+    this.http
+      .get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
+      .subscribe(
+        (svgContent: string | null) => {
+          if (svgContent && svgContent.startsWith('<svg')) {
+            try {
+              this.updateSvg(svgContent);
+            } catch (err: any) {
+              console.log({ Error: err });
+            }
+          } else {
+            console.error(`Invalid SVG response for ${iconName}`);
+          }
+        },
+        (error) => {
+          console.error(`Error loading SVG icon: ${error}`);
+        }
+      );
+  }
+
+  // loadSvgIcon(iconName: string): void {
+  //   this.http
+  //     .get(`assets/lib-icons/${this.type}/${iconName}.svg`, {
+  //       responseType: 'text',
+  //     })
+  //     .subscribe(
+  //       (svgContent: string | null) => {
+  //         //console.log({SvgContent: svgContent});
+  //         if (svgContent) {
+  //           try {
+  //             this.updateSvg(svgContent);
+  //           } catch (err: any) {
+  //             console.log({ Error: err });
+  //           }
+  //         }
+  //       },
+  //       (error) => {
+  //         this.http
+  //           .get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
+  //           .subscribe(
+  //             (svgContent: string | null) => {
+  //               //console.log({SvgContent: svgContent});
+  //               if (svgContent) {
+  //                 try {
+  //                   this.updateSvg(svgContent);
+  //                 } catch (err: any) {
+  //                   console.log({ Error: err });
+  //                 }
+  //               }
+  //             },
+  //             (error) => {
+  //               console.error(`Error loading SVG icon: ${error}`);
+  //             }
+  //           );
+  //       }
+  //     );
+  // }
 
   private updateSvg(svgContent: string): void {
     const parser = new DOMParser();
@@ -133,11 +180,27 @@ export class SvgComponent implements OnInit, OnChanges {
     elementsToUpdate.forEach((tag) => {
       const elements = svgElement.querySelectorAll(tag);
       elements.forEach((element) => {
-        if (this.fill) {
-          element.setAttribute('fill', this.fill);
+        const hasStroke =
+          element.hasAttribute('stroke') &&
+          element.getAttribute('stroke') !== 'none';
+        const hasFill =
+          element.hasAttribute('fill') &&
+          element.getAttribute('fill') !== 'none';
+
+        if (this.icon == 'add') {
+          console.log({
+            Element: element,
+            hasStroke: hasStroke,
+            hasFill: hasFill,
+            Stroke: element.getAttribute('stroke'),
+            Fill: element.getAttribute('fill'),
+          });
         }
-        if (this.stroke) {
-          element.setAttribute('stroke', this.stroke);
+        if (this.color && hasFill) {
+          element.setAttribute('fill', this.color);
+        }
+        if (this.color && hasStroke) {
+          element.setAttribute('stroke', this.color);
         }
       });
     });

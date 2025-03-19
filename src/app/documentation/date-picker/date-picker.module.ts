@@ -8,7 +8,7 @@ import { DatePickerModule } from 'verben-ng-ui/src/public-api';
 
 @NgModule({
   declarations:[SampleDatePickerComponent],
-  imports: [CommonModule,SampleDatePickerComponentRoutingModule,DatePickerModule,],
+  imports: [CommonModule,SampleDatePickerComponentRoutingModule,DatePickerModule],
   exports:[SampleDatePickerComponent]
 })
 export class AppDatePickerSample {}

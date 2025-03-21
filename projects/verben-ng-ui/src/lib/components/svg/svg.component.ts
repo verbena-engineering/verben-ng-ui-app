@@ -81,7 +81,7 @@ export class SvgComponent implements OnInit, OnChanges {
       })
       .subscribe(
         (svgContent: string | null) => {
-          if (svgContent && svgContent.startsWith('<svg')) {
+          if (svgContent && svgContent.includes('<svg')) {
             try {
               this.updateSvg(svgContent);
             } catch (err: any) {
@@ -103,7 +103,7 @@ export class SvgComponent implements OnInit, OnChanges {
       .get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
       .subscribe(
         (svgContent: string | null) => {
-          if (svgContent && svgContent.startsWith('<svg')) {
+          if (svgContent && svgContent.includes('<svg')) {
             try {
               this.updateSvg(svgContent);
             } catch (err: any) {

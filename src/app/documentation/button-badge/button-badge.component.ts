@@ -1,5 +1,7 @@
+import { TabItemComponent } from 'verben-ng-ui/src/public-api';
 import { ButtonBadgeModule } from './button-badge.module';
-import { Component } from '@angular/core';
+import { VerbenaTabComponent } from 'verben-ng-ui/src/public-api';
+import { Component, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'button-badge-component',
@@ -7,9 +9,27 @@ import { Component } from '@angular/core';
   styleUrl: './button-badge.scss'
 })
 export class ButtonBadgeComponent {
+  @ViewChild(VerbenaTabComponent) verbenaTabComponent!: VerbenaTabComponent;
   email: string = '';
   age: string = '';
   decimalValue: string = '';
+
+
+
+   // Example of programmatically changing tabs
+   goToSettings() {
+    this.verbenaTabComponent.selectTabById('settings');
+  }
+  
+  goToNextTab() {
+    const currentIndex = this.verbenaTabComponent.getActiveTabIndex();
+    const nextIndex = (currentIndex + 1) % this.verbenaTabComponent.tabs.length;
+    this.verbenaTabComponent.selectTabByIndex(nextIndex);
+  }
+  
+  onTabChange(tab: TabItemComponent) {
+    console.log('Active tab changed:', tab.title, 'with ID:', tab.id);
+  }
 
   submit() {
     console.log('Submitted Values:', {

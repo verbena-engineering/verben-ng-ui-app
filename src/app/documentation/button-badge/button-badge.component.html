@@ -21,6 +21,114 @@
 
   }"
 >
+
+
+
+
+<verbena-tab 
+  [activeTabId]="'profile'"
+  (tabChange)="onTabChange($event)">
+  
+  <lib-tab-item title="Home" id="home">
+    <h2>Home Content</h2>
+    <p>This is the content for the home tab.</p>
+  </lib-tab-item>
+  
+  <lib-tab-item title="Profile" id="profile">
+    <h2>Profile Content</h2>
+    <p>This is the content for the profile tab.</p>
+  </lib-tab-item>
+  
+  <lib-tab-item 
+    title="Notifications" 
+    id="notifications" 
+    [badgeCount]="5" 
+    badgeColor="#e53935"
+    tabColor="#fff3cd"
+    activeTabBgColor="#fff9e6"
+    textColor="#856404">
+    <h2>Notifications</h2>
+    <p>You have 5 unread notifications.</p>
+  </lib-tab-item>
+  
+  <lib-tab-item title="Settings" id="settings">
+    <h2>Settings Content</h2>
+    <p>This is the content for the settings tab.</p>
+  </lib-tab-item>
+</verbena-tab>
+
+<verbena-tab (tabChange)="onTabChange($event)">
+  <lib-tab-item title="Home" id="home">
+    <h2>Home Content</h2>
+    <p>This is the content for the home tab.</p>
+  </lib-tab-item>
+  
+  <lib-tab-item title="Profile" id="profile">
+    <h2>Profile Content</h2>
+    <p>This is the content for the profile tab.</p>
+  </lib-tab-item>
+  
+  <lib-tab-item title="Settings" id="settings">
+    <h2>Settings Content</h2>
+    <p>This is the content for the settings tab.</p>
+  </lib-tab-item>
+  <lib-tab-item title="class" id="settings">
+    <h2>class Content</h2>
+    <p>This is the content for the settings tab.</p>
+  </lib-tab-item>
+
+  <lib-tab-item title="Home" id="settings">
+    <h2>Home Content</h2>
+    <p>This is the content for the settings tab.</p>
+
+    <verbena-button
+  text="Submit"
+  bgColor="#28a745"
+  textColor="white"
+  border="1px solid #28a745"
+  borderRadius="5px"
+  pd="10px 20px"
+  width="150px"
+  height="40px"
+  ></verbena-button>
+
+  </lib-tab-item>
+  
+  <lib-tab-item title="Disabled Tab" id="disabled" [disabled]="true">
+    <p>This tab is disabled and cannot be selected.</p>
+  </lib-tab-item>
+</verbena-tab>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <!-- Submit button with green background and rounded corners -->
 <verbena-button
 text="Submit"

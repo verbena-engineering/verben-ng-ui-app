@@ -16,16 +16,7 @@ export class ButtonBadgeComponent {
 
 
 
-   // Example of programmatically changing tabs
-   goToSettings() {
-    this.verbenaTabComponent.selectTabById('settings');
-  }
-  
-  goToNextTab() {
-    const currentIndex = this.verbenaTabComponent.getActiveTabIndex();
-    const nextIndex = (currentIndex + 1) % this.verbenaTabComponent.tabs.length;
-    this.verbenaTabComponent.selectTabByIndex(nextIndex);
-  }
+   
   
   onTabChange(tab: TabItemComponent) {
     console.log('Active tab changed:', tab.title, 'with ID:', tab.id);

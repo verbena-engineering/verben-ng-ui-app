@@ -21,17 +21,18 @@ export class TabItemComponent {
   get active(): boolean {
     return this._active;
   }
-  
+
   @Output() activeChange = new EventEmitter<boolean>();
-  
+
   @Input() disabled: boolean = false;
-  @Input() tabColor: string = ''; // Individual tab color override
-  @Input() activeTabBgColor: string = ''; // Individual active tab background color
-  @Input() textColor: string = ''; // Individual tab text color override
-  @Input() badgeCount: number | null = null; // Optional badge number
+  @Input() tabColor: string = ''; // Tab background color
+  @Input() activeTabBgColor: string = ''; // Active tab background color
+  @Input() textColor: string = ''; // Tab text color
+  @Input() hoverColor: string = ''; // Hover color
+  @Input() badgeCount: number | null = null;
   @Input() badgeColor: string = '#ff4081'; // Badge background color
-  
+
   @ViewChild('content', { static: true }) content!: TemplateRef<any>;
-  
+
   private _active: boolean = false;
 }

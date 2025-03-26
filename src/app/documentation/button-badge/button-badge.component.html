@@ -25,11 +25,23 @@
 
 
 
+
+
 <verbena-tab 
-  [activeTabId]="'profile'"
-  (tabChange)="onTabChange($event)">
+ 
+  (tabChange)="onTabChange($event)"
+  [activeTabBgColor]="'green'"
+  textColor="white"
+  >
   
-  <lib-tab-item title="Home" id="home">
+  
+  <lib-tab-item title="Home"
+ 
+  [tabColor]="'red'" 
+  activeTabBgColor="red"
+
+  [textColor]="'#000'"
+  id="home">
     <h2>Home Content</h2>
     <p>This is the content for the home tab.</p>
   </lib-tab-item>

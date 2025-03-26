@@ -10,8 +10,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px; /* Default width */
-  height: 30px; /* Default height */
+  width: 100%; /* Default width */
+  height: 100%; /* Default height */
   background-color: #ccc; /* Default off state color */
   border-radius: 34px;
   position: relative;
@@ -30,12 +30,14 @@
 
 /* Default position for the label when unchecked */
 input + .slider .slider-label {
-  transform: translateX(70%); /* Text starts on the left side */
+   position: absolute;
+   right: 2%;
 }
 
 /* Position for the label when checked */
 input:checked + .slider .slider-label {
-  transform: translateX(-100%); /* Text moves to the left */
+  position: absolute;
+  left: 2%;/* Text moves to the left */
 }
 
 .slider-knob {
@@ -44,15 +46,23 @@ input:checked + .slider .slider-label {
   width: 24px;
   background-color: white;
   border-radius: 50%;
-  bottom: 3px;
-  left: 3px;
+
   transition: transform 0.2s ease;
   z-index: 2; /* Ensure the knob moves but stays below the label */
 }
 
 input:checked + .slider .slider-knob {
-  transform: translateX(30px); /* Knob moves to the right when checked */
+
+   right: 0%;
+   left: 91%;
 }
+input + .slider .slider-knob {
+  right: 90%;
+   left: 1%;
+}
+/* input:checked + .slider .slider-knob {
+  transform: translateX(100%); 
+} */
 
 input:checked + .slider {
   background-color: #4caf50; /* On state color */

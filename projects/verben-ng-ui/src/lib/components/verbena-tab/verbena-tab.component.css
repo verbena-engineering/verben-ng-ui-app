@@ -24,9 +24,9 @@
   }
   
   .tab-item.active {
-    border-bottom: 2px solid #0078d4;
+    border-bottom: 2px solid #FFE681;
     background-color: #fff;
-    color: #0078d4;
+    color: #FFE681;
     font-weight: 500;
   }
   
@@ -49,3 +49,40 @@
     from { opacity: 0; }
     to { opacity: 1; }
   }
+
+  .tab-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .tab-header {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .tab-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .tab-item:hover {
+    filter: brightness(90%);
+  }
+  
+  .tab-item.active {
+    font-weight: bold;
+  }
+  
+  .tab-item.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  
+  .tab-content {
+    padding: 15px;
+  }
+  

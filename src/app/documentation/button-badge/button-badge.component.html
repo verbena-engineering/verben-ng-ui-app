@@ -30,15 +30,17 @@
 <verbena-tab 
  
   (tabChange)="onTabChange($event)"
-  [activeTabBgColor]="'green'"
-  textColor="white"
+  [activeTabBgColor]="'yellow'"
+
+  backgroundColor="blue"
+
   >
   
   
   <lib-tab-item title="Home"
  
-  [tabColor]="'red'" 
-  activeTabBgColor="red"
+  
+ 
 
   [textColor]="'#000'"
   id="home">
@@ -56,7 +58,7 @@
     id="notifications" 
     [badgeCount]="5" 
     badgeColor="#e53935"
-    tabColor="#fff3cd"
+    tabColor="grey"
     activeTabBgColor="#fff9e6"
     textColor="#856404">
     <h2>Notifications</h2>

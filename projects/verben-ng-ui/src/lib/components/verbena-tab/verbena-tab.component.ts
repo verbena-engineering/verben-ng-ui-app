@@ -2,7 +2,7 @@ import { Component, ContentChildren, QueryList, AfterContentInit, Output, EventE
 import { TabItemComponent } from './tab-item.component';
 
 @Component({
-  selector: 'verbena-tab',
+  selector: 'verben-tab',
   templateUrl: './verbena-tab.component.html',
   styleUrls: ['./verbena-tab.component.css']
 })

@@ -36,8 +36,7 @@
 
 <verben-number-input
   [(value)]="number"
-  [min]="1"
-  [max]="200"
+
   [step]="4"
   (valueChange)="onValueChange($event)"
 ></verben-number-input>
@@ -58,7 +57,7 @@
 </form>
 
 
-<p>Selected Quantity: {{ quantity }}</p>
+<p>Selected Quantity: {{ number }}</p>
 
 
 

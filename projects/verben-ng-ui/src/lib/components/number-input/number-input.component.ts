@@ -1,10 +1,4 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  forwardRef,
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -20,33 +14,34 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class NumberInputComponent implements ControlValueAccessor {
-  @Input() min: number = 0;
-  @Input() max: number = 100;
+  @Input() min?: number; // Optional min value
+  @Input() max?: number; // Optional max value
   @Input() step: number = 1;
   @Input() value: number = 0;
   @Input() controlButton: boolean = false;
+
   @Output() valueChange = new EventEmitter<number>();
 
-  private onChange: (value: number) => void = () => {};
-  private onTouched: () => void = () => {};
+  private onChange = (value: number) => {};
+  private onTouched = () => {};
 
   errorMessage: string = '';
-  inputContainerClass: any;
-  inputWrapperClass: any;
+inputContainerClass: any;
+inputWrapperClass: any;
 
   increase() {
-    if (this.value < this.max) {
+    if (this.max === undefined || this.value + this.step <= this.max) {
       this.value += this.step;
       this.validateValue();
-      this.notifyValueChange();
+      this.valueChange.emit(this.value);
     }
   }
 
   decrease() {
-    if (this.value > this.min) {
+    if (this.min === undefined || this.value - this.step >= this.min) {
       this.value -= this.step;
       this.validateValue();
-      this.notifyValueChange();
+      this.valueChange.emit(this.value);
     }
   }
 
@@ -55,25 +50,24 @@ export class NumberInputComponent implements ControlValueAccessor {
     let newValue = Number(inputValue);
     this.value = newValue;
     this.validateValue();
-    this.notifyValueChange();
   }
 
   validateValue() {
-    if (this.value < this.min) {
+    if (this.min !== undefined && this.value < this.min) {
       this.value = this.min;
       this.errorMessage = `Value must be at least ${this.min}`;
-    } else if (this.value > this.max) {
+    } else if (this.max !== undefined && this.value > this.max) {
       this.value = this.max;
       this.errorMessage = `Value cannot exceed ${this.max}`;
     } else {
       this.errorMessage = '';
     }
+    this.valueChange.emit(this.value);
   }
 
   notifyValueChange() {
     this.onChange(this.value);
     this.onTouched();
-    this.valueChange.emit(this.value);
   }
 
   // Control Value Accessor Methods

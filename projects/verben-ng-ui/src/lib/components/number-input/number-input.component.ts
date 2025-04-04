@@ -1,21 +1,31 @@
-import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  forwardRef
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR
+} from '@angular/forms';
+
+// ✅ FIX: Define provider constant outside the component
+const NUMBER_INPUT_VALUE_ACCESSOR = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => NumberInputComponent),
+  multi: true,
+};
 
 @Component({
   selector: 'verben-number-input',
   templateUrl: './number-input.component.html',
   styleUrls: ['./number-input.component.css'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => NumberInputComponent),
-      multi: true,
-    },
-  ],
+  providers: [NUMBER_INPUT_VALUE_ACCESSOR],
 })
 export class NumberInputComponent implements ControlValueAccessor {
-  @Input() min?: number; // Optional min value
-  @Input() max?: number; // Optional max value
+  @Input() min?: number;
+  @Input() max?: number;
   @Input() step: number = 1;
   @Input() value: number = 0;
   @Input() controlButton: boolean = false;
@@ -26,14 +36,15 @@ export class NumberInputComponent implements ControlValueAccessor {
   private onTouched = () => {};
 
   errorMessage: string = '';
-inputContainerClass: any;
-inputWrapperClass: any;
+  inputContainerClass: any;
+  inputWrapperClass: any;
 
   increase() {
     if (this.max === undefined || this.value + this.step <= this.max) {
       this.value += this.step;
       this.validateValue();
       this.valueChange.emit(this.value);
+      this.notifyValueChange();
     }
   }
 
@@ -42,6 +53,7 @@ inputWrapperClass: any;
       this.value -= this.step;
       this.validateValue();
       this.valueChange.emit(this.value);
+      this.notifyValueChange();
     }
   }
 
@@ -50,6 +62,7 @@ inputWrapperClass: any;
     let newValue = Number(inputValue);
     this.value = newValue;
     this.validateValue();
+    this.notifyValueChange();
   }
 
   validateValue() {
@@ -62,6 +75,7 @@ inputWrapperClass: any;
     } else {
       this.errorMessage = '';
     }
+
     this.valueChange.emit(this.value);
   }
 
@@ -70,7 +84,7 @@ inputWrapperClass: any;
     this.onTouched();
   }
 
-  // Control Value Accessor Methods
+  // Control Value Accessor methods
   writeValue(value: number): void {
     this.value = value ?? 0;
     this.validateValue();

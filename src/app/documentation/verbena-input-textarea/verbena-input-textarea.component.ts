@@ -15,6 +15,7 @@ export class VerbenaInputTextareaComponent {
   form = new FormGroup({
     quantity: new FormControl(5), // Initial value
   });
+value: any;
 
   onSubmit() {
     console.log('Form Value:', this.form.value);

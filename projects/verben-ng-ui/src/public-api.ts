@@ -168,3 +168,7 @@ export * from './lib/components/verbena-icon/verbena-icon.module'; // Export Ico
 export * from './lib/components/verbena-tab/verbena-tab.module'; 
 export * from './lib/components/verbena-tab/verbena-tab.component'; 
 export * from './lib/components/verbena-tab/tab-item.component'; 
+
+
+export * from './lib/components/number-input/number-input.component'
+export * from './lib/components/number-input/number-input.module'

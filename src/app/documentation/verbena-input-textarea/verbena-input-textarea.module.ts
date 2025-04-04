@@ -15,10 +15,11 @@ import { VerbenaSwitchModule } from '../../../../projects/verben-ng-ui/src/lib/v
 import { VerbenaTextareaModule } from '../../../../projects/verben-ng-ui/src/lib/verbena-textarea/verbena-textarea.module';
 import { ValidationModule } from '../../../../projects/verben-ng-ui/src/lib/validate/validate.module';
 import { NumberRangeModule } from '../../../../projects/verben-ng-ui/src/lib/number-range/number-range.module';
+import { NumberInputModule } from '../../../../projects/verben-ng-ui/src/public-api';
 
 
 @NgModule({
   declarations: [VerbenaInputTextareaComponent],
-  imports: [CommonModule, FormsModule, VerbenaBadgeModule, VerbenaButtonModule, VerbenaSwitchModule, VerbenaTextareaModule, buttonBadgeRoutingModule, VerbenaInputModule,  ValidationModule, NumberRangeModule],
+  imports: [CommonModule, FormsModule, VerbenaBadgeModule, VerbenaButtonModule, VerbenaSwitchModule, VerbenaTextareaModule, buttonBadgeRoutingModule, VerbenaInputModule,  ValidationModule, NumberRangeModule,NumberInputModule],
 })
 export class VerbenaInputTextareaModule {}

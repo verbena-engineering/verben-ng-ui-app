@@ -21,6 +21,7 @@ export class VerbenaInputTextareaComponent {
   }
 
   quantity: number = 1;
+  number: number = 3;
 
   onValueChange(newValue: number) {
     console.log('Updated Value:', newValue, this.quantity);

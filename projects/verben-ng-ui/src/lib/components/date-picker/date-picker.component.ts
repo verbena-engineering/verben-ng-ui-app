@@ -11,10 +11,12 @@ export class DatePickerComponent {
   @Input() format = 'MM/DD/YYYY';
   @Input() minDate?: Date;
   @Input() maxDate?: Date;
+  @Input() bgColor?: string='#fff'
+    @Input() border?: string=''
   @Input() useDropdowns: boolean = true;
   @Input() yearPlaceholder: string = 'Select a year';
   @Input() monthPlaceholder: string = 'Select a month';
-  @Input() date: Date | null = null; // Two-way binding support
+  @Input() date: Date | null|string = null; // Two-way binding support
   @Output() dateChange = new EventEmitter<Date>(); // Emit date changes
 
   selectedDate: Date = new Date();
@@ -35,16 +37,19 @@ export class DatePickerComponent {
 
   ngOnChanges() {
     if (this.date) {
-      this.selectedDate = new Date(this.date);
-      this.tempSelectedDate = new Date(this.date);
+      const parsedDate = typeof this.date === 'string' ? new Date(this.date) : this.date;
+      this.selectedDate = new Date(parsedDate);
+      this.tempSelectedDate = new Date(parsedDate);
       this.selectedMonth = this.selectedDate.getMonth();
       this.selectedYear = this.selectedDate.getFullYear();
     }
   }
-
+  
   get displayDate(): string {
-    return this.date ? this.formatDate(this.date, this.format) : '';
+    const parsedDate = typeof this.date === 'string' ? new Date(this.date) : this.date;
+    return parsedDate ? this.formatDate(parsedDate, this.format) : '';
   }
+  
 
   toggleCalendar() {
     this.showCalendar = !this.showCalendar;

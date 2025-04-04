@@ -16,10 +16,10 @@ import { VerbenaTextareaModule } from '../../../../projects/verben-ng-ui/src/lib
 import { ValidationModule } from '../../../../projects/verben-ng-ui/src/lib/validate/validate.module';
 import { NumberRangeModule } from '../../../../projects/verben-ng-ui/src/lib/number-range/number-range.module';
 import { SvgModule } from 'verben-ng-ui/src/public-api';
-
+import { VerbenaTabModule } from 'verben-ng-ui/src/public-api';
 
 @NgModule({
   declarations: [ButtonBadgeComponent],
-  imports: [CommonModule, FormsModule, VerbenaBadgeModule, VerbenaButtonModule, VerbenaSwitchModule, VerbenaTextareaModule, buttonBadgeRoutingModule, VerbenaInputModule, ValidationModule, NumberRangeModule, SvgModule],
+  imports: [CommonModule, FormsModule, VerbenaBadgeModule, VerbenaButtonModule, VerbenaSwitchModule, VerbenaTextareaModule, buttonBadgeRoutingModule, VerbenaInputModule, ValidationModule, NumberRangeModule, SvgModule, VerbenaTabModule],
 })
 export class ButtonBadgeModule {}

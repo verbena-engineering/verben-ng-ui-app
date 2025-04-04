@@ -35,6 +35,7 @@ export class SvgComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
+    this.color = this.fill.length > 0 ? this.fill : this.stroke;
     this.loadSvgIcon(this.icon);
   }
 
@@ -81,11 +82,11 @@ export class SvgComponent implements OnInit, OnChanges {
       })
       .subscribe(
         (svgContent: string | null) => {
-          if (svgContent && svgContent.startsWith('<svg')) {
+          if (svgContent && svgContent.includes('<svg')) {
             try {
               this.updateSvg(svgContent);
             } catch (err: any) {
-              console.log({ Error: err });
+              // console.log({ Error: err });
             }
           } else {
             // If response is not a valid SVG, try loading from project assets
@@ -103,18 +104,18 @@ export class SvgComponent implements OnInit, OnChanges {
       .get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
       .subscribe(
         (svgContent: string | null) => {
-          if (svgContent && svgContent.startsWith('<svg')) {
+          if (svgContent && svgContent.includes('<svg')) {
             try {
               this.updateSvg(svgContent);
             } catch (err: any) {
-              console.log({ Error: err });
+              // console.log({ Error: err });
             }
           } else {
-            console.error(`Invalid SVG response for ${iconName}`);
+            //console.error(`Invalid SVG response for ${iconName}`);
           }
         },
         (error) => {
-          console.error(`Error loading SVG icon: ${error}`);
+          // console.error(`Error loading SVG icon: ${error}`);
         }
       );
   }
@@ -187,15 +188,15 @@ export class SvgComponent implements OnInit, OnChanges {
           element.hasAttribute('fill') &&
           element.getAttribute('fill') !== 'none';
 
-        if (this.icon == 'add') {
-          console.log({
-            Element: element,
-            hasStroke: hasStroke,
-            hasFill: hasFill,
-            Stroke: element.getAttribute('stroke'),
-            Fill: element.getAttribute('fill'),
-          });
-        }
+        //  if (this.icon == 'academic-cap') {
+        //     console.log({
+        //       Element: element,
+        //       hasStroke: hasStroke,
+        //       hasFill: hasFill,
+        //       Stroke: element.getAttribute('stroke'),
+        //       Fill: element.getAttribute('fill'),
+        //     });
+        //   }
         if (this.color && hasFill) {
           element.setAttribute('fill', this.color);
         }

@@ -27,6 +27,43 @@
 
 
 
+
+
+
+
+
+
+
+<verben-number-input
+  [(value)]="quantity"
+  [min]="1"
+  [max]="200"
+  [step]="4"
+  (valueChange)="onValueChange($event)"
+></verben-number-input>
+
+<!-- <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label>Quantity:</label>
+  <verben-number-input formControlName="quantity" [min]="1" [max]="20" [step]="1" [controlButton]="true"></verben-number-input>
+
+  <button type="submit">Submit</button>
+</form> -->
+
+
+<form (ngSubmit)="submit()">
+  <label>Quantity:</label>
+  <verben-number-input [(ngModel)]="quantity" name="quantity" [min]="1" [max]="20" [step]="1" ></verben-number-input>
+
+  <button type="submit">Submit</button>
+</form>
+
+
+<p>Selected Quantity: {{ quantity }}</p>
+
+
+
+
+
 <!-- Customizable input field for email with error display at the top -->
 <h2 [ngStyle]="{
   'font-size': '35px',

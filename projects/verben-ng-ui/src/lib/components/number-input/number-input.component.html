@@ -1,0 +1,22 @@
+<div class="input-container {{ inputContainerClass }}">
+    <ng-container *ngIf="controlButton">
+      <button (click)="decrease()" [disabled]="value <= min">&#8722;</button>
+    </ng-container>
+  
+    <input
+      type="number"
+      [value]="value"
+      (input)="onInput($event)"
+      [min]="min"
+      [max]="max"
+      [step]="step"
+      (blur)="validateValue()"
+      class="input-field verben-input {{ inputWrapperClass }}"
+    />
+  
+    <ng-container *ngIf="controlButton">
+      <button (click)="increase()" [disabled]="value >= max">&#43;</button>
+    </ng-container>
+  </div>
+  <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+  

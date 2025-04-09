@@ -78,15 +78,20 @@
 
 }"
  >
+ <verbena-input [(ngModel)]="testMail"  [ngModelOptions]="{ updateOn: 'change' }" label="test mail" [type]="'email'"></verbena-input>
+ <verbena-input label="test mail" type="email">
+
+ </verbena-input>
   <verbena-input
   [label]="'Email'"
   [placeHolder]="'Enter your email'"
+
 
   [type]="'email'"
   [(value)]="email"
   svg="backward"
   [showBorder]="true"
-  [showErrorMessage]="false"
+
   [errorMessageColor]="'orange'"
   [errorBorderColor]="'orange'"
   [errorPosition]="'top'"

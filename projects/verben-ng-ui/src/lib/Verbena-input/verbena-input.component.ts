@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, Optional, Self, Inject, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
+
 @Component({
   selector: 'verbena-input',
   templateUrl: './verbena-input.component.html',
@@ -106,6 +107,9 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
       this.onChange(sanitizedValue);
       this.valueChange.emit(sanitizedValue);
     }
+
+    this.validate();
+    
   }
 
   applyCapitalization(value: string, format: string): string {
@@ -227,5 +231,10 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
   setDisabledState(isDisabled: boolean): void {
     this.disable = isDisabled;
+  }
+
+  onBlur() {
+    this.onTouch();  // for ControlValueAccessor
+    this.validate(); // for manual validation
   }
 }

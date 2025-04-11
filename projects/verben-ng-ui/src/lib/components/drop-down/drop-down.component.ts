@@ -387,7 +387,9 @@ export class DropDownComponent
           item.isLoading = true;
           var result = await item.loadMore(item.loadTimes);
           item.isLoading = false;
-          item.loadTimes.increaseLoadTime();
+          if(result.length > 0){
+            item.loadTimes.increaseLoadTime();
+          }
           item.items = this.convertToExpandable(result);
           if (this.filter) {
             item.copy = cloneDeep(item.items);
@@ -431,7 +433,9 @@ export class DropDownComponent
           ? await item.search(searchContext, item.loadTimes)
           : await item.loadMore(item.loadTimes);
       item.isLoading = false;
-      item.loadTimes.increaseLoadTime();
+      if(result.length > 0){
+        item.loadTimes.increaseLoadTime();
+      }
       const converted = this.convertToExpandable(result);
       for (let res of converted) {
         item.items.push(res);
@@ -467,7 +471,9 @@ export class DropDownComponent
       if (this.group) {
         result = this.convertToExpandable(result);
       }
-      this.loadTimes.increaseLoadTime();
+      if(result.length > 0){
+        this.loadTimes.increaseLoadTime();
+      }
       for (let item of result) {
         this.options.push(item);
       }

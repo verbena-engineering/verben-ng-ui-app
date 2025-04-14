@@ -85,7 +85,7 @@ export class DropDownComponent
   @Input() invalidMessage?: string;
   @Input() errorPosition: string = '';
   @Input() loadMoreCaption: string = 'See more';
-  @Input() display: string = 'default';
+  @Input() display: 'default' | 'chip' = 'chip';
   @Input() showClear: boolean = false;
   @Input() lazyLoad: boolean = false;
   @Input() selectKey: string | null = null;
@@ -100,7 +100,7 @@ export class DropDownComponent
   @Input() disabled: boolean = false;
   @Input() required: boolean = false;
   @Input() load?: (context: DropdownLoadEvent) => Promise<any[]>;
-  @Input() asyncLabel?: (context: any) => string | null;
+  @Input() asyncLabel?: (context: any) => Promise<string | null>;
   @Input() search?: (data: any, context: DropdownLoadEvent) => Promise<any[]>;
 
   // OUTPUTS
@@ -387,7 +387,9 @@ export class DropDownComponent
           item.isLoading = true;
           var result = await item.loadMore(item.loadTimes);
           item.isLoading = false;
-          item.loadTimes.increaseLoadTime();
+          if(result.length > 0){
+            item.loadTimes.increaseLoadTime();
+          }
           item.items = this.convertToExpandable(result);
           if (this.filter) {
             item.copy = cloneDeep(item.items);
@@ -431,7 +433,9 @@ export class DropDownComponent
           ? await item.search(searchContext, item.loadTimes)
           : await item.loadMore(item.loadTimes);
       item.isLoading = false;
-      item.loadTimes.increaseLoadTime();
+      if(result.length > 0){
+        item.loadTimes.increaseLoadTime();
+      }
       const converted = this.convertToExpandable(result);
       for (let res of converted) {
         item.items.push(res);
@@ -467,7 +471,9 @@ export class DropDownComponent
       if (this.group) {
         result = this.convertToExpandable(result);
       }
-      this.loadTimes.increaseLoadTime();
+      if(result.length > 0){
+        this.loadTimes.increaseLoadTime();
+      }
       for (let item of result) {
         this.options.push(item);
       }
@@ -627,7 +633,7 @@ export class DropDownComponent
     return null;
   }
 
-  writeValue(obj: any): void {
+  async writeValue(obj: any): Promise<void> {
     if (!this.multiselect) {
       if (obj == null || obj == undefined) {
         this.selectedOption = obj;
@@ -656,7 +662,7 @@ export class DropDownComponent
       }
       this.selectedOption = obj;
       this.selectedOptionLabel = this.asyncLabel
-        ? this.asyncLabel(obj)
+        ? await this.asyncLabel(obj)
         : this.getOptionLabel(obj);
       this.onTouched();
       this.onChange.emit({ value: this.selectedOption });
@@ -692,7 +698,7 @@ export class DropDownComponent
       for (let object of obj) {
         this.selectedOptionLabels.push(
           this.asyncLabel
-            ? this.asyncLabel(object)
+            ? await this.asyncLabel(object)
             : this.getOptionLabel(object)
         );
       }

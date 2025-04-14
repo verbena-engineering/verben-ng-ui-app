@@ -125,7 +125,7 @@ export class DropdownSampleComponent implements OnInit {
 
   constructor() {}
 
-  getParentLabel(context: any): string {
+  async getParentLabel(context: any): Promise<string> {
     console.log({ MissingObj: this.missingObject });
     return this.missingObject.Name;
   }
@@ -423,16 +423,16 @@ export class DropdownSampleComponent implements OnInit {
     );
   }
 
-  getAsyncLabel(context: string): string | null {
+  async getAsyncLabel(context: string): Promise<string | null> {
     const index = this.testChildObjects.findIndex((x) => x.Id == context);
     return index > -1 ? this.testChildObjects[index].Name : null;
   }
 
-  getAsyncLabelTwo(context: string): string | null {
+  async getAsyncLabelTwo(context: string): Promise<string | null> {
     const index = this.optionsTwo.findIndex((x) => x.Id == context);
     return index > -1 ? this.optionsTwo[index].Name : null;
   }
-  getAsyncLabelObject(context: TestChildObject): string | null {
+  async getAsyncLabelObject(context: TestChildObject): Promise<string | null> {
     return context.Name;
   }
 }

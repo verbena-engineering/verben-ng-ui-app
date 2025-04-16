@@ -652,7 +652,8 @@ export class DropDownComponent
             : isEqual(this.getValue(option), obj);
           if (equalityCheck) {
             this.selectedOption = this.getValue(option);
-            this.selectedOptionLabel = this.getOptionLabel(option);
+            this.selectedOptionLabel = this.asyncLabel
+            ? await this.asyncLabel(option) : this.getOptionLabel(option);
             break;
           }
         }
@@ -685,7 +686,8 @@ export class DropDownComponent
               : isEqual(this.getValue(option), object);
             if (equalityCheck) {
               this.selectedOptions.push(this.getValue(option));
-              this.selectedOptionLabels.push(this.getOptionLabel(option));
+              this.selectedOptionLabels.push(this.asyncLabel
+                ? await this.asyncLabel(object) :this.getOptionLabel(option));
               break;
             }
           }

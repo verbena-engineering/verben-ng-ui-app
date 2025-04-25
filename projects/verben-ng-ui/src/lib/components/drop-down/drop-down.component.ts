@@ -662,9 +662,17 @@ export class DropDownComponent
         return;
       }
       this.selectedOption = obj;
-      this.selectedOptionLabel = this.asyncLabel
-        ? await this.asyncLabel(obj)
-        : this.getOptionLabel(obj);
+      if(this.asyncLabel){
+        this.selectedOptionLabel = await this.asyncLabel(obj);
+      } else {
+        const item = this.options.find(option => this.selectKey? isEqual(this.getValue(option)[this.selectKey],(obj && obj[this.selectKey]) || null): isEqual(this.getValue(option), obj));
+        if(item) {
+          this.selectedOptionLabel = this.getOptionLabel(item);
+        }
+      }
+      // this.selectedOptionLabel = this.asyncLabel
+      //   ? await this.asyncLabel(obj)
+      //   : this.getOptionLabel(obj);
       this.onTouched();
       this.onChange.emit({ value: this.selectedOption });
     } else {

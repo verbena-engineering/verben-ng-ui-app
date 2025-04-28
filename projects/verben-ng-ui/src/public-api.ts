@@ -92,6 +92,16 @@ export * from './lib/components/data-export/data-export.service';
 export * from './lib/components/data-export/data-export.component';
 export * from './lib/components/data-export/data-export.types';
 
+export * from './lib/components/data-import/data-import.module';
+// export * from './lib/components/data-import/data-import.service';
+export * from './lib/components/data-import/data-import.component';
+// export * from './lib/components/data-import/data-import.types';
+
+export * from './lib/components/data-extend/data-extend.module';
+// export * from './lib/components/data-extend/data-extend.service';
+export * from './lib/components/data-extend/data-extend.component';
+export * from './lib/components/data-extend/data-extend.types';
+
 export * from './lib/components/data-xport/data-xport.module';
 export * from './lib/components/data-xport/data-xport.service';
 export * from './lib/components/data-xport/data-xport.component';
@@ -143,14 +153,14 @@ export * from './lib/components/verben-mail/verben-mail.component';
 export * from './lib/components/verben-dialogue/verben-dialogue.module';
 export * from './lib/components/verben-dialogue/verben-dialogue.component';
 
-export * from './lib/components/verben-time-picker/verben-time-picker.module'
-export * from './lib/components/verben-time-picker/verben-time-picker.component'
+export * from './lib/components/verben-time-picker/verben-time-picker.module';
+export * from './lib/components/verben-time-picker/verben-time-picker.component';
 
 //notification service
 export * from './lib/services/notification.services';
 
-export * from './lib/components/pop-up/pop-up.module'
-export * from './lib/components/pop-up/pop-up.component'
+export * from './lib/components/pop-up/pop-up.module';
+export * from './lib/components/pop-up/pop-up.component';
 
 export * from './lib/tokens';
 

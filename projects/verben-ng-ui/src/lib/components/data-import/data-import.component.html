@@ -1,0 +1,128 @@
+<verben-card
+  width="24rem"
+  borderRadius="1rem"
+  [border]="'1px solid #D4A007'"
+  bgColor="#FFFFFF"
+  class="export-card"
+>
+  <div card-header class="card-header">
+    <h4 class="header-title">Import</h4>
+    <button
+      class="reset-button"
+      [style.color]="'#3479E9'"
+      [style.background-color]="'transparent'"
+      [style.border]="'none'"
+      [style.cursor]="'pointer'"
+      [style.font-size]="'12px'"
+      (click)="reset()"
+    >
+      Reset
+    </button>
+  </div>
+  <div card-body class="card-body">
+    <div class="flex gap-4 justify-between">
+      <button class="export-button" (click)="handleTemplateExport()">
+        Download Template
+      </button>
+      <button class="export-button" (click)="save()">Upload File</button>
+    </div>
+    <hr class="divider" />
+    <section class="section">
+      <div
+        class="drop-area"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+      >
+        <p>
+          Drag and drop files here or
+          <label for="fileInput">click to browse</label>
+        </p>
+        <input
+          type="file"
+          id="fileInput"
+          (change)="onFileSelected($event)"
+          style="display: none"
+          accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+          multiple
+        />
+      </div>
+      <div *ngIf="files.length > 0">
+        <h3>Uploaded Files:</h3>
+        <ul>
+          <li *ngFor="let file of files">{{ file.name }}</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+  <div card-footer class="card-footer">
+    <button class="export-button" (click)="save()">Import</button>
+  </div>
+</verben-card>
+
+<!-- Modal Component -->
+<verben-dialogue
+  [showCloseIcon]="true"
+  [dismissOutsideClick]="true"
+  [closeOnEscape]="true"
+  [size]="'large'"
+  [mode]="'dialogue'"
+  [customClass]="'my-modal-custom-class'"
+  [disableFooter]="false"
+  [modalData]="[{ data: { first_name: 'verben-ng', last_name: 'verbena' } }]"
+  [isVisible]="showPreview"
+  [headerTemplate]="headerTemplate"
+  [bodyTemplate]="bodyTemplate"
+  [footerTemplate]="footerTemplate"
+>
+  <a download=""></a>
+</verben-dialogue>
+
+<!-- Define templates -->
+<ng-template #headerTemplate>
+  <h2>Upload Preview</h2>
+</ng-template>
+
+<ng-template #bodyTemplate>
+  <lib-data-table
+    [data]="previewData() ?? []"
+    [columns]="previewColumns() ?? []"
+  >
+    @for (column of previewColumns(); track column.id) {
+    <ng-container [libColumn]="column.id">
+      <ng-template #cell let-value="value" let-row="row">
+        <p>{{ value }}</p>
+      </ng-template>
+      @if (column.formControlName) {
+      <ng-template #cellEdit let-value="value" let-row="row">
+        <input type="text" [formControlName]="column.formControlName" />
+      </ng-template>
+      }
+    </ng-container>
+    }
+
+    <ng-container libColumn="actions">
+      <!-- <ng-template
+        #cell
+        let-isEditing="isEditing"
+        let-toggleRowEdit="toggleRowEdit"
+        let-row="row"
+        let-rowIndex="rowIndex"
+      >
+        <button
+          (click)="
+            editForms.set(rowIndex, generateFormGroup(row)); toggleRowEdit()
+          "
+          [disabled]="isEditing ? !isRowValid(rowIndex) : false"
+        >
+          {{ isEditing ? "Save" : "Edit" }}
+        </button>
+      </ng-template> -->
+    </ng-container>
+  </lib-data-table>
+</ng-template>
+
+<ng-template #footerTemplate>
+  <!-- <button class="btn btn-secondary" (click)="onModalClose($event)">Cancel</button>
+  <button class="btn btn-primary" (click)="onConfirm()">Confirm</button> -->
+</ng-template>

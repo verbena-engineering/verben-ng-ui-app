@@ -163,3 +163,22 @@ export * from './lib/components/pop-up/pop-up.module';
 export * from './lib/components/pop-up/pop-up.component';
 
 export * from './lib/tokens';
+
+
+export * from './lib/components/icons/icons.module'; // Export IconModule
+export * from './lib/components/icons/icons.component'; // Export IconComponent
+export * from './lib/services/icon.service'; // Export IconService
+
+export * from './lib/components/verbena-icon/verbena-icon.component'; // Export IconComponent
+export * from './lib/components/verbena-icon/verbena-icon.module'; // Export IconService
+
+
+
+
+export * from './lib/components/verbena-tab/verbena-tab.module'; 
+export * from './lib/components/verbena-tab/verbena-tab.component'; 
+export * from './lib/components/verbena-tab/tab-item.component'; 
+
+
+export * from './lib/components/number-input/number-input.component'
+export * from './lib/components/number-input/number-input.module'

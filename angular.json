@@ -36,10 +36,14 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/verben-ng-ui/assets",
+                "output": "./assets/lib-icons"
               }
             ],
             "styles": [
-        
               "src/styles.scss"
             ],
             "scripts": []

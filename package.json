@@ -22,6 +22,7 @@
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "xlsx": "^0.18.5",
+    "verben-ng-ui": "file:dist/verben-ng-ui",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {

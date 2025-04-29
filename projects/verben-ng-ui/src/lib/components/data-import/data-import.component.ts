@@ -1,5 +1,15 @@
-import { Component, effect, input, output } from '@angular/core';
-import { ColumnDefinition } from '../data-table/data-table.types';
+import {
+  Component,
+  effect,
+  input,
+  output,
+  signal,
+  WritableSignal,
+} from '@angular/core';
+import {
+  ColumnDefinition,
+  FormGroupConfig,
+} from '../data-table/data-table.types';
 import {
   AbstractControl,
   FormArray,
@@ -12,9 +22,13 @@ import {
   templateUrl: './data-import.component.html',
   styleUrl: './data-import.component.css',
 })
-export class DataImportComponent<T extends { Id: string | number }> {
+export class DataImportComponent<T> {
   previewColumns = input<ColumnDefinition<T>[]>();
-  formControls = input<FormGroup['controls']>();
+  formGroupConfig = input<
+    FormGroupConfig<{
+      [K in keyof T]: AbstractControl;
+    }>
+  >();
   title = input<string>();
   previewData = input<T[]>();
   exportTemplateEvent = output<string[]>();
@@ -22,6 +36,7 @@ export class DataImportComponent<T extends { Id: string | number }> {
 
   previewColumnsList: ColumnDefinition<T>[] = [];
   forms = new FormArray<FormGroup>([]);
+  uniqueIdentifiers: WritableSignal<string[]> = signal([]);
 
   private _ext: 'xlsx' | 'xls' | 'csv' = 'xlsx';
 
@@ -33,10 +48,9 @@ export class DataImportComponent<T extends { Id: string | number }> {
     effect(() => {
       this.previewData()?.forEach((datum) => {
         console.log(datum);
-        const formGroup = new FormGroup(this.formControls());
-        formGroup.patchValue(datum);
-        this.forms.push(formGroup);
       });
+
+      console.log(this.previewColumns());
     });
   }
 
@@ -55,11 +69,13 @@ export class DataImportComponent<T extends { Id: string | number }> {
     this.isDragging = false;
     this.files = Array.from(event.dataTransfer!.files);
     this.importEvent.emit(this.files[0]);
+    this.showPreview = true;
   }
 
   onFileSelected(event: any) {
     this.files = Array.from(event.target.files);
     this.importEvent.emit(this.files[0]);
+    this.showPreview = true;
   }
 
   reset() {}
@@ -68,8 +84,16 @@ export class DataImportComponent<T extends { Id: string | number }> {
     this.showPreview = true;
   }
 
+  getControlNames() {
+    const controls = this.formGroupConfig()?.controls;
+    if (controls) {
+      return Object.keys(controls);
+    }
+    return [];
+  }
+
   handleTemplateExport() {
-    const fg = this.formControls();
+    const fg = this.formGroupConfig()?.controls;
     if (fg) {
       this.exportTemplateEvent.emit(Object.keys(fg));
     }

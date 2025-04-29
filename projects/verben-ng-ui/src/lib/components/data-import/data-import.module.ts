@@ -5,8 +5,9 @@ import { CardModule } from '../card/card.module';
 import { VerbenDialogueModule } from '../verben-dialogue/verben-dialogue.module';
 import { DataTableModule } from '../data-table/data-table.module';
 import { VerbenaInputModule } from '../../Verbena-input/verbena-input.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SvgModule } from '../svg/svg.module';
+import { DropDownModule } from '../drop-down/drop-down.module';
 
 @NgModule({
   declarations: [DataImportComponent],
@@ -16,7 +17,9 @@ import { SvgModule } from '../svg/svg.module';
     VerbenDialogueModule,
     DataTableModule,
     VerbenaInputModule,
+    DropDownModule,
     ReactiveFormsModule,
+    FormsModule,
     SvgModule,
   ],
   exports: [DataImportComponent],

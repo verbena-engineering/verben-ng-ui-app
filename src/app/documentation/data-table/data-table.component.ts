@@ -1,4 +1,9 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  signal,
+  ChangeDetectionStrategy,
+  WritableSignal,
+} from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   ColumnDefinition,
@@ -100,6 +105,25 @@ export class DataTableComponent {
 
   controlledCols = signal<ColumnDefinition<YourDataType>[]>(this.tableColumns2);
 
+  smallCols = signal<ColumnDefinition<{ Name: string; Friend: string }>[]>([
+    {
+      id: 'Name',
+      header: 'Name',
+      accessorKey: 'Name',
+      formControlName: 'Name',
+    },
+    {
+      id: 'Friend',
+      header: 'Friend',
+      accessorKey: 'Friend',
+      formControlName: 'Friend',
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+    },
+  ]);
+
   tableColumns3: ColumnDefinition<YourDataType>[] = [
     {
       id: 'names',
@@ -125,9 +149,9 @@ export class DataTableComponent {
 
   form!: FormGroup;
   controls: FormGroup['controls'];
-  importedData: any[] = [];
+  importedData: WritableSignal<any[]> = signal([]);
 
-  formGroupConfig: FormGroupConfig<FormControlOf<{ Name: string }>>;
+  formGroupConfig: WritableSignal<FormGroupConfig<any>>;
 
   constructor(
     private fb: FormBuilder,
@@ -142,13 +166,14 @@ export class DataTableComponent {
       role: this.fb.control(''),
     };
 
-    this.formGroupConfig = {
+    this.formGroupConfig = signal({
       controls: {
         Name: this.fb.control(''),
+        Friend: this.fb.control(''),
       },
-      validatorOrOpts: null,
-      asyncValidator: null,
-    };
+      // validatorOrOpts: null,
+      // asyncValidator: null,
+    });
   }
 
   async ngOnInit() {
@@ -362,7 +387,7 @@ export class DataTableComponent {
         // previewer(imported);
       }
       console.log('Imported data:', JSON.stringify(imported, null, 2));
-      this.importedData = imported;
+      this.importedData.set(imported);
       return imported;
     };
     return reader.readAsArrayBuffer(file);

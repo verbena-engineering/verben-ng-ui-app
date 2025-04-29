@@ -90,7 +90,7 @@
     <verben-drop-down
       [multiselect]="true"
       placeholder="Find duplicates by"
-      [options]="getControlNames()"
+      [options]="fields()"
       [ngModel]="uniqueIdentifiers()"
       (ngModelChange)="uniqueIdentifiers.set($event)"
     ></verben-drop-down>

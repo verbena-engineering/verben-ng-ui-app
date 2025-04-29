@@ -41,20 +41,7 @@ export class DataTableComponent<T> {
       [K in keyof T]: AbstractControl;
     }>
   >();
-  // @Input({ required: true })
-  // set data(value: T[]) {
-  //   this._data = value;
-  // }
-  // get data(): T[] {
-  //   return this.groupedData();
-  // }
-  // private _data: T[] = [];
-  // Modify columns input to use a signal
-  // @Input({ required: true })
-  // set columns(value: ColumnDefinition<T>[]) {
-  //   this.columnsSignal.set(value);
-  // }
-  // New inputs for grouping
+
   groupBy = input<keyof T | ((row: T) => any)>();
 
   @Input() styleConfig: TableStyles = defaultTableStyles;

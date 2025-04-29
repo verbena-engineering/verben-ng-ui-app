@@ -5,12 +5,12 @@
 </ng-template>
 
 <lib-data-import
-  [formControls]="this.controls"
+  [formGroupConfig]="this.formGroupConfig()"
   (exportTemplateEvent)="handleTemplateExport($event)"
   (importEvent)="handleImport($event)"
-  [previewColumns]="controlledCols()"
+  [previewColumns]="smallCols()"
   title="Hello"
-  [previewData]="importedData"
+  [previewData]="importedData()"
 >
   <!-- <ng-container
 [ngTemplateOutlet]="nameField"
@@ -364,15 +364,6 @@
 
   <lib-data-extend [properties]="[]" (extendDataEvent)="handleExtend($event)">
   </lib-data-extend>
-
-  <lib-data-import
-    [formControls]="this.controls"
-    (exportTemplateEvent)="handleTemplateExport($event)"
-    (importEvent)="handleImport($event)"
-    [previewColumns]="controlledCols()"
-    title="Hello"
-    [previewData]="importedData"
-  ></lib-data-import>
 
   <!-- <app-table-export
     [data]="tableData()"

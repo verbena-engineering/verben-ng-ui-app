@@ -84,40 +84,123 @@
 </ng-template>
 
 <ng-template #bodyTemplate>
+  <div class="flex gap-4 items-center justify-between">
+    <p class="">Total Items: {{ previewData()?.length }}</p>
+
+    <verben-drop-down
+      [multiselect]="true"
+      placeholder="Find duplicates by"
+      [options]="getControlNames()"
+      [ngModel]="uniqueIdentifiers()"
+      (ngModelChange)="uniqueIdentifiers.set($event)"
+    ></verben-drop-down>
+  </div>
   <lib-data-table
     [data]="previewData() ?? []"
     [columns]="previewColumns() ?? []"
+    [formGroupConfig]="formGroupConfig()"
   >
     @for (column of previewColumns(); track column.id) {
     <ng-container [libColumn]="column.id">
-      <ng-template #cell let-value="value" let-row="row">
+      <!-- <ng-template #cell let-value="value" let-row="row">
         <p>{{ value }}</p>
+      </ng-template> -->
+      @if (column.formControlName || column.accessorKey) {
+      <ng-template
+        #cell
+        let-value="value"
+        let-row="row"
+        let-formControl="formControl"
+      >
+        @if (formControl) {
+        <input type="text" [formControl]="formControl" />
+        } @else if (column.accessorKey) {
+        <input type="text" [ngModel]="value" />
+        } @else if (column.cellEditTemplate) {
+        <ng-container
+          [ngTemplateOutlet]="column.cellEditTemplate"
+          [ngTemplateOutletContext]="formControl"
+        ></ng-container>
+        }
       </ng-template>
-      @if (column.formControlName) {
-      <ng-template #cellEdit let-value="value" let-row="row">
-        <input type="text" [formControlName]="column.formControlName" />
+
+      <ng-template
+        #cellEdit
+        let-value="value"
+        let-row="row"
+        let-formControl="formControl"
+      >
+        @if (formControl) {
+        <input type="text" [formControl]="formControl" />
+        } @else if (column.accessorKey) {
+        <input type="text" [ngModel]="value" />
+        } @else if (column.cellEditTemplate) {
+        <ng-container
+          [ngTemplateOutlet]="column.cellEditTemplate"
+          [ngTemplateOutletContext]="formControl"
+        ></ng-container>
+        }
       </ng-template>
       }
     </ng-container>
     }
 
     <ng-container libColumn="actions">
-      <!-- <ng-template
+      <ng-template
         #cell
+        let-value
+        let-deleteRow="deleteRow"
         let-isEditing="isEditing"
         let-toggleRowEdit="toggleRowEdit"
         let-row="row"
         let-rowIndex="rowIndex"
       >
-        <button
-          (click)="
-            editForms.set(rowIndex, generateFormGroup(row)); toggleRowEdit()
-          "
-          [disabled]="isEditing ? !isRowValid(rowIndex) : false"
-        >
-          {{ isEditing ? "Save" : "Edit" }}
-        </button>
-      </ng-template> -->
+        <div class="flex gap-6">
+          <verben-svg
+            (click)="toggleRowEdit()"
+            icon="edit"
+            [width]="15"
+            [height]="15"
+            class="cursor-pointer"
+          ></verben-svg>
+
+          <verben-svg
+            icon="delete"
+            [width]="15"
+            [height]="15"
+            (click)="deleteRow()"
+            class="cursor-pointer"
+          ></verben-svg>
+        </div>
+      </ng-template>
+
+      <ng-template
+        #cellEdit
+        let-value
+        let-deleteRow
+        let-isEditing="isEditing"
+        let-toggleRowEdit="toggleRowEdit"
+        let-row="row"
+        let-rowIndex="rowIndex"
+      >
+        <div class="flex gap-6">
+          <verben-svg
+            (click)="toggleRowEdit()"
+            icon="tick"
+            [width]="15"
+            [height]="15"
+            class="cursor-pointer"
+          ></verben-svg>
+
+          <verben-svg
+            icon="delete"
+            [width]="15"
+            [height]="15"
+            (click)="toggleRowEdit()"
+            class="cursor-pointer"
+          ></verben-svg>
+        </div>
+      </ng-template>
     </ng-container>
   </lib-data-table>
 </ng-template>

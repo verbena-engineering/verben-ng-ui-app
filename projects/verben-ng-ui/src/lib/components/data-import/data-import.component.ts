@@ -34,6 +34,7 @@ export class DataImportComponent<T> {
   previewData = input<T[]>();
   exportTemplateEvent = output<string[]>();
   importEvent = output<File>();
+  importEventData = output<T[]>();
 
   previewColumnsList: ColumnDefinition<T>[] = [];
   forms = new FormArray<FormGroup>([]);
@@ -82,6 +83,7 @@ export class DataImportComponent<T> {
   reset() {}
 
   save() {
+    this.importEventData.emit(this.previewData() || []);
     this.showPreview = true;
   }
 

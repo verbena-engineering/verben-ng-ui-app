@@ -29,6 +29,7 @@ export class DataImportComponent<T> {
       [K in keyof T]: AbstractControl;
     }>
   >();
+  fields = input<string[]>([]);
   title = input<string>();
   previewData = input<T[]>();
   exportTemplateEvent = output<string[]>();

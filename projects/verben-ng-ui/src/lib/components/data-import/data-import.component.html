@@ -102,10 +102,19 @@
   >
     @for (column of previewColumns(); track column.id) {
     <ng-container [libColumn]="column.id">
-      <!-- <ng-template #cell let-value="value" let-row="row">
-        <p>{{ value }}</p>
-      </ng-template> -->
-      @if (column.formControlName || column.accessorKey) {
+      <ng-template
+        #cell
+        let-value="value"
+        let-row="row"
+        let-formControl="formControl"
+        let-updateValue="updateValue"
+      >
+        <verbena-input
+          [value]="value"
+          (valueChange)="updateValue($event)"
+        ></verbena-input>
+      </ng-template>
+      <!-- @if (column.formControlName || column.accessorKey) {
       <ng-template
         #cell
         let-value="value"
@@ -141,7 +150,7 @@
         ></ng-container>
         }
       </ng-template>
-      }
+      } -->
     </ng-container>
     }
 

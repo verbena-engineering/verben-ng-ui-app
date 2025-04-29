@@ -97,6 +97,8 @@ export class DataImportComponent<T> {
     const fg = this.formGroupConfig()?.controls;
     if (fg) {
       this.exportTemplateEvent.emit(Object.keys(fg));
+    } else {
+      this.exportTemplateEvent.emit(this.fields());
     }
   }
 

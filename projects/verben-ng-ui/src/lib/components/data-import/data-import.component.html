@@ -84,8 +84,12 @@
 </ng-template>
 
 <ng-template #bodyTemplate>
-  <div class="flex gap-4 items-center justify-between">
-    <p class="">Total Items: {{ previewData()?.length }}</p>
+  <div class="flex gap-4 items-center justify-between my-4">
+    <p class="">Total Items: {{ previewData().length }}</p>
+
+    <p class="">Duplicates: {{ duplicateIndexSet.size }}</p>
+
+    <p class="">Invalid Items: {{ 0 }}</p>
 
     <verben-drop-down
       [multiselect]="true"
@@ -96,14 +100,14 @@
     ></verben-drop-down>
   </div>
   <lib-data-table
-    [data]="previewData() ?? []"
-    [columns]="previewColumns() ?? []"
+    [data]="previewData()"
+    [columns]="previewColumnsList()"
     [formGroupConfig]="formGroupConfig()"
   >
     @for (column of previewColumns(); track column.id) {
     <ng-container [libColumn]="column.id">
       <ng-template
-        #cell
+        #cellEdit
         let-value="value"
         let-row="row"
         let-formControl="formControl"
@@ -205,7 +209,7 @@
             icon="delete"
             [width]="15"
             [height]="15"
-            (click)="toggleRowEdit()"
+            (click)="deleteRow()"
             class="cursor-pointer"
           ></verben-svg>
         </div>
@@ -215,8 +219,12 @@
 </ng-template>
 
 <ng-template #footerTemplate>
-  <button class="btn btn-secondary" (click)="showPreview = false">
-    Cancel
-  </button>
-  <button class="btn btn-primary" (click)="save()">Complete</button>
+  <div class="footer-buttons flex gap-4 items-center justify-between my-4">
+    <button class="btn btn-secondary" (click)="showPreview = false">
+      Cancel
+    </button>
+    <button class="btn btn-primary export-button" (click)="save()">
+      Complete
+    </button>
+  </div>
 </ng-template>

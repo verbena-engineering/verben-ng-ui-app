@@ -167,7 +167,7 @@ export class DataTableComponent<T> {
 
     // Existing logic for normal rows
     if (column.accessorKey) {
-      return (row as any)[column.accessorKey];
+      return row[column.accessorKey];
     }
     return column.accessorFn ? column.accessorFn(row) : undefined;
   };

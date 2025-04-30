@@ -1,8 +1,23 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table/data-table.types';
+import {
+  Component,
+  signal,
+  ChangeDetectionStrategy,
+  WritableSignal,
+} from '@angular/core';
+import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  ColumnDefinition,
+  FormControlOf,
+  FormGroupConfig,
+} from 'verben-ng-ui/src/lib/components/data-table/data-table.types';
 import { TableStyles } from 'verben-ng-ui/src/lib/components/data-table/style.types';
-import { DataExportService, SortCondition, FilterCondition } from 'verben-ng-ui/src/public-api';
+import {
+  DataExportService,
+  SortCondition,
+  FilterCondition,
+  DataExtendItem,
+} from 'verben-ng-ui/src/public-api';
+import { read, utils, writeFile } from 'xlsx';
 
 @Component({
   selector: 'app-data-table',
@@ -53,6 +68,11 @@ export class DataTableComponent {
       header: 'Select',
     },
     {
+      id: 'customer',
+      header: 'Customer',
+      formControlName: 'customer',
+    },
+    {
       id: 'names',
       header: 'Full Name',
       accessorFn: (row) => `${row.names?.firstName} ${row.names?.lastName}`,
@@ -85,6 +105,25 @@ export class DataTableComponent {
 
   controlledCols = signal<ColumnDefinition<YourDataType>[]>(this.tableColumns2);
 
+  smallCols = signal<ColumnDefinition<{ Name: string; Friend: string }>[]>([
+    {
+      id: 'Name',
+      header: 'Name',
+      accessorKey: 'Name',
+      formControlName: 'Name',
+    },
+    {
+      id: 'Friend',
+      header: 'Friend',
+      accessorKey: 'Friend',
+      formControlName: 'Friend',
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+    },
+  ]);
+
   tableColumns3: ColumnDefinition<YourDataType>[] = [
     {
       id: 'names',
@@ -109,11 +148,33 @@ export class DataTableComponent {
   ];
 
   form!: FormGroup;
+  controls: FormGroup['controls'];
+  importedData: WritableSignal<any[]> = signal([]);
+
+  formGroupConfig: WritableSignal<FormGroupConfig<any>>;
 
   constructor(
     private fb: FormBuilder,
     private exportService: DataExportService
-  ) {}
+  ) {
+    this.controls = {
+      customer: this.fb.control(''),
+      income: this.fb.control(''),
+      age: this.fb.control(''),
+      money: this.fb.control(''),
+      message: this.fb.control(''),
+      role: this.fb.control(''),
+    };
+
+    this.formGroupConfig = signal({
+      controls: {
+        Name: this.fb.control(''),
+        Friend: this.fb.control(''),
+      },
+      // validatorOrOpts: null,
+      // asyncValidator: null,
+    });
+  }
 
   async ngOnInit() {
     this.form = this.fb.group({
@@ -193,6 +254,10 @@ export class DataTableComponent {
     this.downloadCSV(exportedData);
   }
 
+  handleExtend(extendedProperties: DataExtendItem[]) {
+    console.log('Extended properties:', extendedProperties);
+  }
+
   onFiltersApplied(filters: FilterCondition[]) {
     // Apply filters to your data
     console.log('Applying filters:', filters);
@@ -207,7 +272,7 @@ export class DataTableComponent {
     console.log('Applying columns:', columns);
     this.controlledCols.set(columns);
     // Apply columns to your data
-    console.log(this.controlledCols())
+    console.log(this.controlledCols());
   }
 
   private downloadCSV(data: Partial<any>[]) {
@@ -280,6 +345,52 @@ export class DataTableComponent {
       activityDetails: activityDetails.slice(0, count),
       numberOfParticipants: count,
     };
+  }
+
+  handleTemplateExport(headings: string[]) {
+    const wb = utils.book_new();
+    const ws: any = utils.json_to_sheet([]);
+    utils.sheet_add_aoa(ws, [headings]);
+    // utils.sheet_add_json(ws, this._data, { origin: 'A2', skipHeader: true });
+    utils.book_append_sheet(wb, ws, 'test-title');
+    writeFile(wb, 'test-title' + '-template.' + 'xlsx');
+  }
+
+  handleImport(
+    file: File,
+    previewer?: (data: any[]) => void,
+    parseImport?: (data: any) => any[]
+  ) {
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      // const wb = read(event.target.result, {
+      //   type: 'string',
+      //   raw: true,
+      //   cellText: true,
+      //   cellFormula: false,
+      //   cellNF: false,
+      // });
+      let imported: any[] = [];
+      const wb = read(event.target.result, { raw: true });
+      const sheets = wb.SheetNames;
+      if (sheets.length) {
+        const rows = utils.sheet_to_json(wb.Sheets[sheets[0]], {
+          // raw: true,
+          // rawNumbers: true,
+          dateNF: 'dd/mm/yyyy',
+        });
+        if (parseImport) {
+          imported = parseImport(rows);
+        } else {
+          imported = rows as any[];
+        }
+        // previewer(imported);
+      }
+      console.log('Imported data:', JSON.stringify(imported, null, 2));
+      this.importedData.set(imported);
+      return imported;
+    };
+    return reader.readAsArrayBuffer(file);
   }
 }
 

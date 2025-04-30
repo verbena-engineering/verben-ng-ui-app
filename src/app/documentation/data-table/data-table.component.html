@@ -1,3 +1,24 @@
+<ng-template #nameField let-control>
+  <div class="width-max">
+    <verbena-input [formControl]="control"></verbena-input>
+  </div>
+</ng-template>
+
+<lib-data-import
+  [formGroupConfig]="this.formGroupConfig()"
+  (exportTemplateEvent)="handleTemplateExport($event)"
+  (importEvent)="handleImport($event)"
+  [previewColumns]="smallCols()"
+  title="Hello"
+  [previewData]="importedData()"
+>
+  <!-- <ng-container
+[ngTemplateOutlet]="nameField"
+[ngTemplateOutletContext]="{ $implicit: picked }"
+>
+</ng-container> -->
+</lib-data-import>
+
 <lib-data-table
   [data]="tableData()"
   [columns]="tableColumns3"
@@ -340,6 +361,9 @@
     [columns]="controlledCols()"
     (columnsUpdated)="onColumnsUpdated($event)"
   ></lib-data-columns>
+
+  <lib-data-extend [properties]="[]" (extendDataEvent)="handleExtend($event)">
+  </lib-data-extend>
 
   <!-- <app-table-export
     [data]="tableData()"

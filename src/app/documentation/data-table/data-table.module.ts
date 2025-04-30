@@ -18,7 +18,9 @@ import {
   DataFilterModule,
   DataXportModule,
   DataSortModule,
-  DataColumnsModule
+  DataColumnsModule,
+  DataExtendModule,
+  DataImportModule,
 } from 'verben-ng-ui/src/public-api';
 import { TableExportComponent } from './table-export/table-export.component';
 
@@ -40,7 +42,9 @@ import { TableExportComponent } from './table-export/table-export.component';
     SvgModule,
     TooltipModule,
     VerbenaTextareaModule,
-    DataColumnsModule
+    DataColumnsModule,
+    DataExtendModule,
+    DataImportModule,
   ],
   exports: [DataTableComponent],
   providers: [DataExportService],

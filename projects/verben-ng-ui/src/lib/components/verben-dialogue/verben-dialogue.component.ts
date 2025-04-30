@@ -28,7 +28,7 @@ export class VerbenDialogueComponent {
   @Input() padding: string = '10px';
   @Input() borderRadius: string = '10px';
   @Input() dialogueBgColor: string = '#fff';
-  @Input() width: string = '';
+  @Input() width: string = 'max-w-[100px]';
   @Input() closeIconClass: string = 'closeIconClass';
   @Input() boxShadow: string = 'box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1)';
   @Input() enableTransition: boolean = true;
@@ -65,13 +65,13 @@ export class VerbenDialogueComponent {
       }
     }
   }
-  get containerClassMap(): { [klass: string]: boolean } {
+  setStyles() {
     return {
       'modal-content p-4': this.mode === 'dialogue',
       'max-w-sm': this.size === 'small' && this.mode === 'dialogue',
       'max-w-md': this.size === 'medium' && this.mode === 'dialogue',
       'max-w-lg': this.size === 'large' && this.mode === 'dialogue',
-      [this.width || '']: this.size === 'any' && this.mode === 'dialogue' && !!this.width,
+      [this.width]: this.size === 'any' && this.mode === 'dialogue',
       'drawer-left': this.mode === 'drawer' && this.position === 'left',
       'drawer-right': this.mode === 'drawer' && this.position === 'right',
       'drawer-show-left': this.mode === 'drawer' && this.position === 'left' && this.isVisible,

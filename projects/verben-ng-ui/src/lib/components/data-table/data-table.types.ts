@@ -1,4 +1,11 @@
 import { TemplateRef } from '@angular/core';
+import {
+  AbstractControl,
+  AbstractControlOptions,
+  AsyncValidatorFn,
+  FormControl,
+  ValidatorFn,
+} from '@angular/forms';
 
 export interface ColumnDefinition<T> {
   id: string;
@@ -10,6 +17,7 @@ export interface ColumnDefinition<T> {
   headerTemplate?: TemplateRef<any>;
   footerTemplate?: TemplateRef<any>;
   sortAction?: 'ASC' | 'DESC';
+  formControlName?: string;
 }
 
 export type GroupedDataRow<T> = T & {
@@ -17,6 +25,18 @@ export type GroupedDataRow<T> = T & {
   groupValue?: any;
   groupTitle?: any;
 };
+
+export type FormControlOf<T> = {
+  [K in keyof T]?: FormControl;
+};
+
+export interface FormGroupConfig<
+  TControl extends { [key: string]: AbstractControl }
+> {
+  controls: TControl;
+  validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null;
+  asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null;
+}
 
 export type EditedData<T> = {
   [K in keyof T]?: T[K] extends object ? Partial<T[K]> : T[K];

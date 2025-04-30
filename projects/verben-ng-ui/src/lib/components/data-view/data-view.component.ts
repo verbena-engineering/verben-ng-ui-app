@@ -20,6 +20,8 @@ interface ViewState {
   isSelect?: boolean;
   isCreate?:boolean
   isToggle?:boolean
+  isImport?:boolean
+  isExtend?:boolean
 }
 
 @Component({
@@ -35,8 +37,10 @@ export class DataViewComponent implements OnInit {
   @Input() columnCustomClass?:string=''
   @Input() filterCustomClass?:string=''
   @Input() sortCustomClass?:string=''
+    @Input() extendCustomClass?:string=''
   @Input() exportCustomClass?:string=''
   @Input() selectCustomClass?:string=''
+    @Input() importCustomClass?:string=''
   @Input() zIndex?:number=5
   @Input() createCustomClass:string=''
   @Input() tableIcon: string = 'grid-3';
@@ -54,11 +58,15 @@ export class DataViewComponent implements OnInit {
     isExport: true,
     isSelect: true,
     isCreate:true,
-    isToggle:true
+    isToggle:true,
+    isExtend:true,
+    isImport:true
   };
 
   @Input() searchTemplate?: Node;
+  @Input() importTemplate?: Node;
   @Input() columnTemplate?: Node;
+  @Input() extendTemplate?: Node;
   @Input() filterTemplate?: Node;
   @Input() sortTemplate?: Node;
   @Input() children?: Node;
@@ -72,7 +80,9 @@ export class DataViewComponent implements OnInit {
   @Input()showColumnChild: boolean = false;
   @Input() showSortChild: boolean = false;
   @Input() showFilterChild: boolean = false;
+  @Input() showImportChild:boolean=false
   @Input() showExportChild: boolean = false;
+  @Input() showExtendChild:boolean=false
   @Input() create: boolean = false;
   @Input() showSelected: boolean = false;
   
@@ -145,6 +155,14 @@ onClearSearch(){
         this.showExportChild = !this.showExportChild;
         this.resetChildViewsExcept('export');
         break;
+        case 'import':
+          this.showExportChild = !this.showImportChild;
+          this.resetChildViewsExcept('import');
+          break;
+          case 'extend':
+            this.showExportChild = !this.showExtendChild;
+            this.resetChildViewsExcept('extend');
+            break;
         case 'create':
           this.create = !this.create;
           this.resetChildViewsExcept('create');
@@ -159,6 +177,8 @@ onClearSearch(){
     if (viewType !== 'sort') this.showSortChild = false;
     if (viewType !== 'select') this.showSelected = false;
     if (viewType !== 'export') this.showExportChild = false;
+    if (viewType !== 'import') this.showImportChild = false;
+    if (viewType !== 'extend') this.showExtendChild = false;
     if (viewType !== 'create') this.create = false;
   }
 
@@ -175,6 +195,10 @@ onClearSearch(){
         return this.showSelected;
       case 'export':
         return this.showExportChild;
+        case 'import':
+          return this.showImportChild;
+          case 'extend':
+            return this.showExtendChild;
         case 'create':
         return this.create;
       default:

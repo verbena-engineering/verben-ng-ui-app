@@ -6,7 +6,7 @@
   }" [ngStyle]="{ 'background-color': backdropColor, 'transition': 'opacity 0.3s ease' }">
   <div [style.padding]="padding" [style.margin]="margin" [style.background-color]="dialogueBgColor"
     [style.border-radius]="mode==='dialogue' && borderRadius" [style.box-shadow]="boxShadow" [class]="customClass"
-    [ngStyle]="{'max-width':mode==='drawer'&&drawerWidth}" [ngClass]="containerClassMap">
+    [ngStyle]="{'max-width':mode==='drawer'&&drawerWidth}" [ngClass]="setStyles()">
     <!-- Close Icon -->
     <verben-svg *ngIf="showCloseIcon" [class]="closeIconClass" (click)="onClose()" icon="close" [width]="20"
       [height]="20" fill="white" stroke="#000"></verben-svg>

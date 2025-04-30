@@ -8,6 +8,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrl: './verbena-input-textarea.component.scss'
 })
 export class VerbenaInputTextareaComponent {
+  testMail: string = '';
   email: string = '';
   age: string = '';
   decimalValue: string = '';
@@ -20,7 +21,7 @@ value: any;
   onSubmit() {
     console.log('Form Value:', this.form.value);
   }
-
+  
   quantity: number = 1;
   number: number = 3;
 

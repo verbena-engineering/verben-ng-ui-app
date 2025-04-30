@@ -28,6 +28,7 @@ export class NumberInputComponent implements ControlValueAccessor {
   @Input() max?: number;
   @Input() step: number = 1;
   @Input() value: number = 0;
+  @Input() label?: string = '';
   @Input() controlButton: boolean = false;
 
   @Output() valueChange = new EventEmitter<number>();

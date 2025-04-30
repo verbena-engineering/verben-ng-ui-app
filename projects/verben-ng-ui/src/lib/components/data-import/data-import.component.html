@@ -85,7 +85,11 @@
 
 <ng-template #bodyTemplate>
   <div class="flex gap-4 items-center justify-between my-4">
-    <p class="">Total Items: {{ previewData()?.length }}</p>
+    <p class="">Total Items: {{ previewData().length }}</p>
+
+    <p class="">Duplicates: {{ duplicateIndexSet.size }}</p>
+
+    <p class="">Invalid Items: {{ 0 }}</p>
 
     <verben-drop-down
       [multiselect]="true"
@@ -96,7 +100,7 @@
     ></verben-drop-down>
   </div>
   <lib-data-table
-    [data]="previewData() ?? []"
+    [data]="previewData()"
     [columns]="previewColumnsList()"
     [formGroupConfig]="formGroupConfig()"
   >

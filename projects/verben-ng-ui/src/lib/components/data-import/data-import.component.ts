@@ -32,15 +32,18 @@ export class DataImportComponent<T> {
     }>
   >();
   fields = input<string[]>([]);
-  title = input<string>();
-  previewData = input<T[]>();
+  title = input<string>('title');
+  previewData = input.required<T[]>();
   exportTemplateEvent = output<string[]>();
   importEvent = output<File>();
   importEventData = output<T[]>();
 
+  // data: Signal<(T & { isDuplicate: boolean })[]>;
   previewColumnsList: Signal<ColumnDefinition<T>[]>;
   forms = new FormArray<FormGroup>([]);
   uniqueIdentifiers: WritableSignal<string[]> = signal([]);
+  // duplicateDataMap: Map<string, number> = new Map();
+  duplicateIndexSet = new Set<number>();
 
   private _ext: 'xlsx' | 'xls' | 'csv' = 'xlsx';
 
@@ -54,7 +57,27 @@ export class DataImportComponent<T> {
         console.log(datum);
       });
 
-      console.log(this.previewColumns());
+      const isDuplicate = (datum: T, array: T[]) => {
+        const identifiers = this.uniqueIdentifiers();
+
+        return (
+          array.filter(
+            (dat) =>
+              identifiers.length > 0 &&
+              identifiers.every(
+                (identifier) =>
+                  datum[identifier as keyof T] &&
+                  datum[identifier as keyof T] === dat[identifier as keyof T]
+              )
+          ).length > 1
+        );
+      };
+
+      this.previewData()?.forEach((d, i, arr) => {
+        if (isDuplicate(d, arr)) {
+          this.duplicateIndexSet.add(i);
+        }
+      });
     });
 
     this.previewColumnsList = computed(() => {

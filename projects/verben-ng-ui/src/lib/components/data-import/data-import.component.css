@@ -14,7 +14,8 @@
   z-index: 10;
 }
 
-.card-header {
+.card-header,
+.card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -103,22 +104,31 @@
   cursor: pointer;
 }
 
-.card-footer {
+.footer-buttons {
   display: flex;
-  justify-content: flex-end;
-  background-color: transparent;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
 }
 
+.cancel-button,
 .export-button {
-  margin-top: 0.5rem;
   outline: none;
   border: none;
   padding: 0.2rem 1.6rem;
-  background-color: #ffe681;
-  color: #404040;
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
+}
+
+.cancel-button {
+  background-color: #404040;
+  color: #fff;
+}
+
+.export-button {
+  background-color: #ffe681;
+  color: #404040;
 }
 
 .value-range {

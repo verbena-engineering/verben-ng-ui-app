@@ -1,8 +1,10 @@
 import {
   Component,
+  computed,
   effect,
   input,
   output,
+  Signal,
   signal,
   WritableSignal,
 } from '@angular/core';
@@ -23,7 +25,7 @@ import {
   styleUrl: './data-import.component.css',
 })
 export class DataImportComponent<T> {
-  previewColumns = input<ColumnDefinition<T>[]>();
+  previewColumns = input.required<ColumnDefinition<T>[]>();
   formGroupConfig = input<
     FormGroupConfig<{
       [K in keyof T]: AbstractControl;
@@ -36,7 +38,7 @@ export class DataImportComponent<T> {
   importEvent = output<File>();
   importEventData = output<T[]>();
 
-  previewColumnsList: ColumnDefinition<T>[] = [];
+  previewColumnsList: Signal<ColumnDefinition<T>[]>;
   forms = new FormArray<FormGroup>([]);
   uniqueIdentifiers: WritableSignal<string[]> = signal([]);
 
@@ -53,6 +55,17 @@ export class DataImportComponent<T> {
       });
 
       console.log(this.previewColumns());
+    });
+
+    this.previewColumnsList = computed(() => {
+      return this.previewColumns()
+        .filter((col) => col.accessorKey)
+        .concat([
+          {
+            id: 'actions',
+            header: 'Actions',
+          },
+        ]);
     });
   }
 
@@ -83,8 +96,9 @@ export class DataImportComponent<T> {
   reset() {}
 
   save() {
+    console.log('PREVDATA', this.previewData());
     this.importEventData.emit(this.previewData() || []);
-    this.showPreview = true;
+    this.showPreview = false;
   }
 
   getControlNames() {

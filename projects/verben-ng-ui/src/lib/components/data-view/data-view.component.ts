@@ -113,19 +113,7 @@ export class DataViewComponent implements OnInit {
     this.searchSubject.next(this.searchValue); 
   }
 stopPropagation(event:Event) {
-  const target = event.target as HTMLElement;
-
- 
-  if (target.classList.contains('drop-down-menu-item')) {
-    console.log(true);
-    
-    
-    event.stopPropagation(); 
-  }
-  else{
-    this.showFilterChild=true
-    
-  }
+ event.stopPropagation(); 
 }
 
   

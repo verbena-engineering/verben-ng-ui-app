@@ -8,9 +8,11 @@
   [formGroupConfig]="this.formGroupConfig()"
   (exportTemplateEvent)="handleTemplateExport($event)"
   (importEvent)="handleImport($event)"
+  (importEventData)="log($event)"
   [previewColumns]="smallCols()"
   title="Hello"
   [previewData]="importedData()"
+  [fields]="['Name', 'Friend']"
 >
   <!-- <ng-container
 [ngTemplateOutlet]="nameField"

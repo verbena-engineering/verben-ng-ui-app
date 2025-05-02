@@ -118,10 +118,6 @@ export class DataTableComponent {
       accessorKey: 'Friend',
       formControlName: 'Friend',
     },
-    {
-      id: 'actions',
-      header: 'Actions',
-    },
   ]);
 
   tableColumns3: ColumnDefinition<YourDataType>[] = [
@@ -391,6 +387,10 @@ export class DataTableComponent {
       return imported;
     };
     return reader.readAsArrayBuffer(file);
+  }
+
+  log(data: any[]) {
+    console.log('Data:', data);
   }
 }
 

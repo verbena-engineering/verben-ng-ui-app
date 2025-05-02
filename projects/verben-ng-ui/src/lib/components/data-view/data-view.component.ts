@@ -156,11 +156,11 @@ onClearSearch(){
         this.resetChildViewsExcept('export');
         break;
         case 'import':
-          this.showExportChild = !this.showImportChild;
+          this.showImportChild = !this.showImportChild;
           this.resetChildViewsExcept('import');
           break;
           case 'extend':
-            this.showExportChild = !this.showExtendChild;
+            this.showExtendChild = !this.showExtendChild;
             this.resetChildViewsExcept('extend');
             break;
         case 'create':

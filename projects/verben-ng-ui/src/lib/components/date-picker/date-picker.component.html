@@ -24,9 +24,11 @@
 
       <ng-template #dropdowns>
         <verben-drop-down
+        
           [placeholder]="yearPlaceholder"
           (onChange)="onDropdownYearChange($event)"
           [options]="yearRange"
+          
           [(ngModel)]="selectedYear"
         ></verben-drop-down>
 
@@ -39,20 +41,26 @@
       </ng-template>
     </div>
 
-    <div class="calendar-body">
-      <div class="weekdays">
-        <span *ngFor="let day of weekDays">{{ day }}</span>
-      </div>
-      <div class="dates">
-        <button
-          *ngFor="let day of getDaysInMonth()"
-          [class.selected]="isSelected(day)"
-          (click)="selectTemporaryDate(day)"
-        >
-          {{ day.getDate() }}
-        </button>
-      </div>
-    </div>
+   <div class="calendar-body">
+  <div class="weekdays">
+    <span *ngFor="let day of weekDays">{{ day }}</span>
+  </div>
+  <div class="dates">
+    <ng-container *ngFor="let day of getDaysInMonth()">
+      <button
+        *ngIf="day; else empty"
+        [class.selected]="isSelected(day)"
+        (click)="selectTemporaryDate(day)"
+      >
+        {{ day.getDate() }}
+      </button>
+      <ng-template #empty>
+        <span class="empty-date"></span> <!-- or use a styled placeholder -->
+      </ng-template>
+    </ng-container>
+  </div>
+</div>
+
 
     <div class="calendar-footer">
       <button (click)="cancel()">Cancel</button>

@@ -18,6 +18,7 @@ import {
   FormControl,
   FormGroup,
 } from '@angular/forms';
+import { ColumnDirective } from '../data-table/column.directive';
 
 @Component({
   selector: 'lib-data-import',
@@ -33,10 +34,16 @@ export class DataImportComponent<T> {
   >();
   fields = input<string[]>([]);
   title = input<string>('title');
+  columnTemplates = input<readonly ColumnDirective[]>([]);
   previewData = input.required<T[]>();
   exportTemplateEvent = output<string[]>();
   importEvent = output<File>();
   importEventData = output<T[]>();
+  rowSave = output<{
+    index: number;
+    key: number | string;
+    data: Partial<T>;
+  }>();
 
   // data: Signal<(T & { isDuplicate: boolean })[]>;
   previewColumnsList: Signal<ColumnDefinition<T>[]>;
@@ -80,9 +87,44 @@ export class DataImportComponent<T> {
       });
     });
 
+    // this.importTableColumns = computed(() => {
+    //   return this.previewColumns().map((column) => {
+    //     const matchingTemplate = this.columnTemplates().find(
+    //       (t) => t.columnId === column.id
+    //     );
+    //     console.log(matchingTemplate);
+    //     if (matchingTemplate) {
+    //       return {
+    //         ...column,
+    //         cellTemplate: matchingTemplate.cellTemplate,
+    //         cellEditTemplate: matchingTemplate.cellEditTemplate,
+    //         headerTemplate: matchingTemplate.headerTemplate,
+    //         footerTemplate: matchingTemplate.footerTemplate,
+    //       };
+    //     }
+    //     return column;
+    //   });
+    // });
+
     this.previewColumnsList = computed(() => {
       return this.previewColumns()
-        .filter((col) => col.accessorKey)
+        .filter((col) => col.accessorKey || col.formControlName)
+        .map((column) => {
+          const matchingTemplate = this.columnTemplates().find(
+            (t) => t.columnId === column.id
+          );
+          console.log(matchingTemplate);
+          if (matchingTemplate) {
+            return {
+              ...column,
+              cellTemplate: matchingTemplate.cellTemplate,
+              cellEditTemplate: matchingTemplate.cellEditTemplate,
+              headerTemplate: matchingTemplate.headerTemplate,
+              footerTemplate: matchingTemplate.footerTemplate,
+            };
+          }
+          return column;
+        })
         .concat([
           {
             id: 'actions',
@@ -116,12 +158,14 @@ export class DataImportComponent<T> {
     this.showPreview = true;
   }
 
-  reset() {}
+  reset() {
+    this.files = [];
+  }
 
   save() {
     console.log('PREVDATA', this.previewData());
-    this.importEventData.emit(this.previewData() || []);
     this.showPreview = false;
+    this.importEventData.emit(this.previewData() || []);
   }
 
   getControlNames() {

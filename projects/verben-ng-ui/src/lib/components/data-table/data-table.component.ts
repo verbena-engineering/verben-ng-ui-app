@@ -183,7 +183,21 @@ export class DataTableComponent<T> {
     return this.editingRowsSignal().has(row._key);
   };
 
-  toggleRowEdit = (row: DataWithKey<T>, index: number) => {
+  toggleRowEdit = (rowId: DataWithKey<T>['_key']) => {
+    this.editingRowsSignal.update((set) => {
+      const newSet = new Set(set);
+      if (newSet.has(rowId)) {
+        newSet.delete(rowId);
+        // this.saveRow(rowId, index);
+      } else {
+        newSet.add(rowId);
+        // this.initializeEditedData(row);
+      }
+      return newSet;
+    });
+  };
+
+  private toggleRowEditInternal = (row: DataWithKey<T>, index: number) => {
     this.editingRowsSignal.update((set) => {
       const newSet = new Set(set);
       if (newSet.has(row._key)) {
@@ -435,7 +449,7 @@ export class DataTableComponent<T> {
       formControl,
       isSelected: this.isRowSelected(rowId),
       toggleRowSelection: () => this.toggleRowSelection(rowId),
-      toggleRowEdit: () => this.toggleRowEdit(row, rowIndex),
+      toggleRowEdit: () => this.toggleRowEditInternal(row, rowIndex),
       deleteRow: () => this.deleteRow(rowId),
       updateValue: (newValue: any) =>
         this.updateEditedValue(rowId, column, newValue),

@@ -24,7 +24,7 @@
       <button class="export-button" (click)="handleTemplateExport()">
         Download Template
       </button>
-      <button class="export-button" (click)="save()">Upload File</button>
+      <label for="fileInput" class="export-button">Upload File</label>
     </div>
     <hr class="divider" />
     <section class="section">
@@ -103,61 +103,8 @@
     [data]="previewData()"
     [columns]="previewColumnsList()"
     [formGroupConfig]="formGroupConfig()"
+    (rowSave)="rowSave.emit($event)"
   >
-    @for (column of previewColumns(); track column.id) {
-    <ng-container [libColumn]="column.id">
-      <ng-template
-        #cellEdit
-        let-value="value"
-        let-row="row"
-        let-formControl="formControl"
-        let-updateValue="updateValue"
-      >
-        <verbena-input
-          [value]="value"
-          (valueChange)="updateValue($event)"
-        ></verbena-input>
-      </ng-template>
-      <!-- @if (column.formControlName || column.accessorKey) {
-      <ng-template
-        #cell
-        let-value="value"
-        let-row="row"
-        let-formControl="formControl"
-      >
-        @if (formControl) {
-        <input type="text" [formControl]="formControl" />
-        } @else if (column.accessorKey) {
-        <input type="text" [ngModel]="value" />
-        } @else if (column.cellEditTemplate) {
-        <ng-container
-          [ngTemplateOutlet]="column.cellEditTemplate"
-          [ngTemplateOutletContext]="formControl"
-        ></ng-container>
-        }
-      </ng-template>
-
-      <ng-template
-        #cellEdit
-        let-value="value"
-        let-row="row"
-        let-formControl="formControl"
-      >
-        @if (formControl) {
-        <input type="text" [formControl]="formControl" />
-        } @else if (column.accessorKey) {
-        <input type="text" [ngModel]="value" />
-        } @else if (column.cellEditTemplate) {
-        <ng-container
-          [ngTemplateOutlet]="column.cellEditTemplate"
-          [ngTemplateOutletContext]="formControl"
-        ></ng-container>
-        }
-      </ng-template>
-      } -->
-    </ng-container>
-    }
-
     <ng-container libColumn="actions">
       <ng-template
         #cell
@@ -168,7 +115,7 @@
         let-row="row"
         let-rowIndex="rowIndex"
       >
-        <div class="flex gap-6">
+        <div class="flex action-buttons">
           <verben-svg
             (click)="toggleRowEdit()"
             icon="edit"
@@ -196,7 +143,7 @@
         let-row="row"
         let-rowIndex="rowIndex"
       >
-        <div class="flex gap-6">
+        <div class="flex action-buttons">
           <verben-svg
             (click)="toggleRowEdit()"
             icon="tick"

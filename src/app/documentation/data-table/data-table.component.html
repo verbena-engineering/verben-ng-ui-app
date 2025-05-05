@@ -4,6 +4,71 @@
   </div>
 </ng-template>
 
+<lib-data-table
+  [data]="smallData()"
+  [columns]="smallCols()"
+  [formGroupConfig]="this.formGroupConfig()"
+  [styleConfig]="table2Styles"
+  (rowSave)="addRow($event)"
+>
+  <ng-container libColumn="Name">
+    <ng-template #cell let-value="value">
+      <div>
+        <p>{{ value }}</p>
+      </div>
+    </ng-template>
+    <ng-template
+      #cellEdit
+      let-value="value"
+      let-updateValue="updateValue"
+      let-control="formControl"
+    >
+      <!-- <input [formControl]="control" /> -->
+      <verbena-input [formControl]="control"></verbena-input>
+    </ng-template>
+  </ng-container>
+
+  <ng-container libColumn="Friend">
+    <ng-template #cell let-value="value">
+      <div>
+        <p>{{ value }}</p>
+      </div>
+    </ng-template>
+    <ng-template
+      #cellEdit
+      let-value="value"
+      let-updateValue="updateValue"
+      let-control="formControl"
+    >
+      <!-- <input [formControl]="control" /> -->
+      <verbena-input
+        [ngModel]="value"
+        (ngModelChange)="updateValue($event)"
+      ></verbena-input>
+    </ng-template>
+  </ng-container>
+
+  <ng-container libColumn="actions">
+    <ng-template
+      #cell
+      let-isEditing="isEditing"
+      let-toggleRowEdit="toggleRowEdit"
+      let-deleteRow="deleteRow"
+    >
+      <div class="flex gap-4 items-center">
+        <button (click)="toggleRowEdit()">
+          {{ isEditing ? "Save" : "Edit" }}
+        </button>
+
+        <button (click)="deleteRow()">Remove</button>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <strong>Actions</strong>
+    </ng-template>
+  </ng-container>
+</lib-data-table>
+
 <lib-data-import
   [formGroupConfig]="this.formGroupConfig()"
   (exportTemplateEvent)="handleTemplateExport($event)"
@@ -13,6 +78,7 @@
   title="Hello"
   [previewData]="importedData()"
   [fields]="['Name', 'Friend']"
+  [columnTemplates]="columnTemplates()"
 >
   <!-- <ng-container
 [ngTemplateOutlet]="nameField"
@@ -53,7 +119,6 @@
   [data]="tableData()"
   [columns]="tableColumns"
   (rowEdit)="onRowEdit($event)"
-  (rowSave)="onRowSave($event)"
   (rowDelete)="onRowDelete($event)"
   (selectionChange)="onSelectionChange($event)"
   [styleConfig]="stickyStyles"
@@ -158,7 +223,6 @@
   [data]="tableData()"
   [columns]="controlledCols()"
   (rowEdit)="onRowEdit($event)"
-  (rowSave)="onRowSave($event)"
   (rowDelete)="onRowDelete($event)"
   (selectionChange)="onSelectionChange($event)"
   [styleConfig]="table2Styles"

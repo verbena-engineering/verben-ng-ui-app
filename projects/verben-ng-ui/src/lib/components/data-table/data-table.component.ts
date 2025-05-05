@@ -49,7 +49,11 @@ export class DataTableComponent<T> {
   columnTemplates = contentChildren(ColumnDirective);
 
   @Output() rowEdit = new EventEmitter<T>();
-  @Output() rowSave = new EventEmitter<T>();
+  @Output() rowSave = new EventEmitter<{
+    index: number;
+    key: number | string;
+    data: Partial<T>;
+  }>();
   @Output() rowDelete = new EventEmitter<T>();
   @Output() selectionChange = new EventEmitter<T[]>();
 
@@ -58,7 +62,10 @@ export class DataTableComponent<T> {
 
   private editingRowsSignal = signal<Set<string | number>>(new Set());
   private selectedRowsSignal = signal<Set<string | number>>(new Set());
-  private editedDataSignal = signal<Map<string | number, EditedData<T>>>(
+  // private editedDataSignal = signal<Map<string | number, EditedData<T>>>(
+  //   new Map()
+  // );
+  private unEditedDataSignal = signal<Map<string | number, EditedData<T>>>(
     new Map()
   );
   private formGroupsSignal = signal<Map<string | number, FormGroup>>(new Map());
@@ -176,12 +183,12 @@ export class DataTableComponent<T> {
     return this.editingRowsSignal().has(row._key);
   };
 
-  toggleRowEdit = (row: DataWithKey<T>) => {
+  toggleRowEdit = (row: DataWithKey<T>, index: number) => {
     this.editingRowsSignal.update((set) => {
       const newSet = new Set(set);
       if (newSet.has(row._key)) {
         newSet.delete(row._key);
-        this.saveRow(row._key);
+        this.saveRow(row._key, index);
       } else {
         newSet.add(row._key);
         this.initializeEditedData(row);
@@ -192,7 +199,7 @@ export class DataTableComponent<T> {
 
   private initializeEditedData(row: DataWithKey<T>) {
     const rowId = row._key;
-    this.editedDataSignal.update((map) => {
+    this.unEditedDataSignal.update((map) => {
       const newMap = new Map(map);
       newMap.set(rowId, { ...row });
       return newMap;
@@ -204,6 +211,7 @@ export class DataTableComponent<T> {
         formGroupConfig.validatorOrOpts,
         formGroupConfig.asyncValidator
       );
+      formGroup.patchValue(row as any);
       this.formGroupsSignal.update((map) => {
         const newMap = new Map(map);
         newMap.set(rowId, formGroup);
@@ -212,22 +220,21 @@ export class DataTableComponent<T> {
     }
   }
 
-  private saveRow(rowId: string | number) {
-    const editedData = this.editedDataSignal().get(rowId);
+  private saveRow(rowId: string | number, rowIndex: number) {
     const editedForm = this.formGroupsSignal().get(rowId);
 
-    if (editedData) {
-      const originalRow = this.tableData().find((row) => row._key === rowId);
-      if (originalRow) {
-        const updatedRow = { ...originalRow, ...editedData };
-        this.rowSave.emit(updatedRow);
-        this.editedDataSignal.update((map) => {
-          const newMap = new Map(map);
-          newMap.delete(rowId);
-          return newMap;
-        });
-      }
-    }
+    // if (editedData) {
+    //   const originalRow = this.tableData().find((row) => row._key === rowId);
+    //   if (originalRow) {
+    //     const updatedRow = { ...originalRow, ...editedData };
+    //     this.rowSave.emit(updatedRow);
+    //     this.editedDataSignal.update((map) => {
+    //       const newMap = new Map(map);
+    //       newMap.delete(rowId);
+    //       return newMap;
+    //     });
+    //   }
+    // }
 
     if (editedForm) {
       editedForm.markAsPristine();
@@ -237,7 +244,19 @@ export class DataTableComponent<T> {
         newMap.delete(rowId);
         return newMap;
       });
-      this.rowSave.emit(editedForm.value);
+      this.rowSave.emit({
+        index: rowIndex,
+        key: rowId,
+        data: editedForm.value,
+      });
+    }
+
+    if (this.unEditedDataSignal().has(rowId)) {
+      this.unEditedDataSignal.update((map) => {
+        const newMap = new Map(map);
+        newMap.delete(rowId);
+        return newMap;
+      });
     }
   }
 
@@ -308,21 +327,19 @@ export class DataTableComponent<T> {
     column: ColumnDefinition<T>,
     value: any
   ) {
-    this.editedDataSignal.update((map) => {
-      const newMap = new Map(map);
-      const rowData = newMap.get(rowId) || ({} as EditedData<T>);
-
-      if (column.accessorKey) {
-        newMap.set(rowId, { ...rowData, [column.accessorKey]: value });
-      } else {
-        console.warn(
-          'Cannot update value for column without accessorKey:',
-          column.id
-        );
-      }
-
-      return newMap;
-    });
+    // this.editedDataSignal.update((map) => {
+    //   const newMap = new Map(map);
+    //   const rowData = newMap.get(rowId) || ({} as EditedData<T>);
+    //   if (column.accessorKey) {
+    //     newMap.set(rowId, { ...rowData, [column.accessorKey]: value });
+    //   } else {
+    //     console.warn(
+    //       'Cannot update value for column without accessorKey:',
+    //       column.id
+    //     );
+    //   }
+    //   return newMap;
+    // });
   }
 
   updateEditedValueFn(
@@ -330,21 +347,21 @@ export class DataTableComponent<T> {
     valueFn: (value: any) => T,
     value: any
   ) {
-    this.editedDataSignal.update((map) => {
-      const newMap = new Map(map);
-      const rowData = newMap.get(rowId) || ({} as EditedData<T>);
-      newMap.set(rowId, { ...rowData, ...valueFn(value) });
-      return newMap;
-    });
+    // this.editedDataSignal.update((map) => {
+    //   const newMap = new Map(map);
+    //   const rowData = newMap.get(rowId) || ({} as EditedData<T>);
+    //   newMap.set(rowId, { ...rowData, ...valueFn(value) });
+    //   return newMap;
+    // });
   }
 
   updateEditedData(rowId: string | number, data: Partial<T>) {
-    this.editedDataSignal.update((map) => {
-      const newMap = new Map(map);
-      const rowData = newMap.get(rowId) || ({} as EditedData<T>);
-      newMap.set(rowId, { ...rowData, ...data });
-      return newMap;
-    });
+    // this.editedDataSignal.update((map) => {
+    //   const newMap = new Map(map);
+    //   const rowData = newMap.get(rowId) || ({} as EditedData<T>);
+    //   newMap.set(rowId, { ...rowData, ...data });
+    //   return newMap;
+    // });
   }
 
   updateNestedEditedValue(
@@ -353,28 +370,26 @@ export class DataTableComponent<T> {
     nestedField: string,
     value: any
   ) {
-    this.editedDataSignal.update((map) => {
-      const newMap = new Map(map);
-      const rowData = newMap.get(rowId) || ({} as EditedData<T>);
-
-      if (column.accessorKey) {
-        const columnData = (rowData[column.accessorKey] as any) || {};
-        newMap.set(rowId, {
-          ...rowData,
-          [column.accessorKey]: {
-            ...columnData,
-            [nestedField]: value,
-          },
-        });
-      } else {
-        console.warn(
-          'Cannot update nested value for column without accessorKey:',
-          column.id
-        );
-      }
-
-      return newMap;
-    });
+    // this.editedDataSignal.update((map) => {
+    //   const newMap = new Map(map);
+    //   const rowData = newMap.get(rowId) || ({} as EditedData<T>);
+    //   if (column.accessorKey) {
+    //     const columnData = (rowData[column.accessorKey] as any) || {};
+    //     newMap.set(rowId, {
+    //       ...rowData,
+    //       [column.accessorKey]: {
+    //         ...columnData,
+    //         [nestedField]: value,
+    //       },
+    //     });
+    //   } else {
+    //     console.warn(
+    //       'Cannot update nested value for column without accessorKey:',
+    //       column.id
+    //     );
+    //   }
+    //   return newMap;
+    // });
   }
 
   getCellContext(
@@ -384,7 +399,7 @@ export class DataTableComponent<T> {
   ) {
     const rowId = row._key;
     const isEditing = this.isRowEditing(row);
-    const editedData = this.editedDataSignal().get(rowId);
+    // const editedData = this.editedDataSignal().get(rowId);
     const editedForm = this.formGroupsSignal().get(rowId);
     const formControl = editedForm?.get(column.formControlName || '');
 
@@ -392,18 +407,19 @@ export class DataTableComponent<T> {
     if (isEditing) {
       if (formControl) {
         value = formControl.value;
-      } else if (editedData) {
-        if (column.accessorKey && column.accessorKey in editedData) {
-          // If column has an accessorKey and it exists in edited data, use that
-          value = editedData[column.accessorKey];
-        } else if (column.accessorFn) {
-          // If column has an accessorFn, apply it to the edited data
-          value = column.accessorFn({ ...row, ...editedData });
-        } else {
-          // Fallback to getting the value from the original row
-          value = this.getCellValue(row, column);
-        }
       }
+      // else if (editedData) {
+      //   if (column.accessorKey && column.accessorKey in editedData) {
+      //     // If column has an accessorKey and it exists in edited data, use that
+      //     value = editedData[column.accessorKey];
+      //   } else if (column.accessorFn) {
+      //     // If column has an accessorFn, apply it to the edited data
+      //     value = column.accessorFn({ ...row, ...editedData });
+      //   } else {
+      //     // Fallback to getting the value from the original row
+      //     value = this.getCellValue(row, column);
+      //   }
+      // }
     } else {
       value = this.getCellValue(row, column);
     }
@@ -414,11 +430,12 @@ export class DataTableComponent<T> {
       row,
       column,
       rowIndex,
+      rowId,
       isEditing,
       formControl,
       isSelected: this.isRowSelected(rowId),
       toggleRowSelection: () => this.toggleRowSelection(rowId),
-      toggleRowEdit: () => this.toggleRowEdit(row),
+      toggleRowEdit: () => this.toggleRowEdit(row, rowIndex),
       deleteRow: () => this.deleteRow(rowId),
       updateValue: (newValue: any) =>
         this.updateEditedValue(rowId, column, newValue),

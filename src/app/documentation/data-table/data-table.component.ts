@@ -3,6 +3,7 @@ import {
   signal,
   ChangeDetectionStrategy,
   WritableSignal,
+  viewChildren,
 } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -17,6 +18,7 @@ import {
   FilterCondition,
   DataExtendItem,
 } from 'verben-ng-ui/src/public-api';
+import { ColumnDirective } from 'verben-ng-ui/src/public-api';
 import { read, utils, writeFile } from 'xlsx';
 
 @Component({
@@ -118,7 +120,24 @@ export class DataTableComponent {
       accessorKey: 'Friend',
       formControlName: 'Friend',
     },
+    {
+      id: 'actions',
+      header: 'Actions',
+    },
   ]);
+
+  smallData = signal<{ Name: string; Friend: string }[]>([
+    {
+      Name: 'John Doe',
+      Friend: 'Jane Smith',
+    },
+    {
+      Name: 'Alice Johnson',
+      Friend: 'Bob Brown',
+    },
+  ]);
+
+  columnTemplates = viewChildren<ColumnDirective>(ColumnDirective);
 
   tableColumns3: ColumnDefinition<YourDataType>[] = [
     {
@@ -200,6 +219,24 @@ export class DataTableComponent {
         }))
       );
     }, 500);
+  }
+
+  addRow(event: {
+    index: number;
+    key: string | number;
+    data: Partial<{ Name: string; Friend: string }>;
+  }) {
+    console.log(event);
+    this.smallData.update((dat) => {
+      // dat[event.index] = { ...dat[event.index], ...event.data };
+      return dat.map((d, i) => {
+        if (i === event.index) {
+          return { ...d, ...event.data };
+        }
+        return d;
+      });
+    });
+    console.log(this.smallData());
   }
 
   changeCols() {

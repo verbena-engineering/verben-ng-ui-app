@@ -13,6 +13,7 @@ import {
   styleUrls: ['./verben-dialogue.component.css'],
 })
 export class VerbenDialogueComponent {
+  @Input() dialogueWidth: string = '';
   @Input() headerTemplate: TemplateRef<any> | null = null;
   @Input() bodyTemplate: TemplateRef<any> | null = null;
   @Input() footerTemplate: TemplateRef<any> | null = null;
@@ -66,18 +67,21 @@ export class VerbenDialogueComponent {
     }
   }
   setStyles() {
+    const isDialogue = this.mode === 'dialogue';
+    const noCustomWidth = !this.dialogueWidth;
+  
     return {
-      'modal-content p-4': this.mode === 'dialogue',
-      'max-w-sm': this.size === 'small' && this.mode === 'dialogue',
-      'max-w-md': this.size === 'medium' && this.mode === 'dialogue',
-      'max-w-lg': this.size === 'large' && this.mode === 'dialogue',
-      [this.width]: this.size === 'any' && this.mode === 'dialogue',
+      'modal-content p-4': isDialogue,
+      'max-w-sm': isDialogue && this.size === 'small' && noCustomWidth,
+      'max-w-md': isDialogue && this.size === 'medium' && noCustomWidth,
+      'max-w-lg': isDialogue && this.size === 'large' && noCustomWidth,
       'drawer-left': this.mode === 'drawer' && this.position === 'left',
       'drawer-right': this.mode === 'drawer' && this.position === 'right',
       'drawer-show-left': this.mode === 'drawer' && this.position === 'left' && this.isVisible,
       'drawer-show-right': this.mode === 'drawer' && this.position === 'right' && this.isVisible
     };
   }
+  
   
   onClose() {
     this.isVisible = false;

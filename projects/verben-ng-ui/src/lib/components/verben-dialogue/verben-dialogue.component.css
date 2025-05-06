@@ -46,8 +46,7 @@
 
 .modal-content {
   position: relative;
-  max-width: 600px;
-  width: 100%;
+
 }
 .drawer-left,
 .drawer-right {
@@ -77,20 +76,14 @@
 right: 0;
 }
 .max-w-sm {
-  max-width: 400px;
+  min-width: 400px;
 }
 .max-w-md {
-  max-width: 600px;
+  min-width: 600px;
 }
 
 .max-w-lg {
-  max-width: 800px;
+  min-width: 800px;
 }
 
-@media (max-width: 768px) {
-  .modal-content {
-    width: 100%;
-    max-width: none;
-    margin: 0 1rem;
-  }
-}
+

@@ -11,7 +11,7 @@
   [styleConfig]="table2Styles"
   (rowSave)="addRow($event)"
 >
-  <ng-container libColumn="Name">
+  <!-- <ng-container libColumn="Name">
     <ng-template #cell let-value="value">
       <div>
         <p>{{ value }}</p>
@@ -23,7 +23,6 @@
       let-updateValue="updateValue"
       let-control="formControl"
     >
-      <!-- <input [formControl]="control" /> -->
       <verbena-input [formControl]="control"></verbena-input>
     </ng-template>
   </ng-container>
@@ -40,13 +39,12 @@
       let-updateValue="updateValue"
       let-control="formControl"
     >
-      <!-- <input [formControl]="control" /> -->
       <verbena-input
         [ngModel]="value"
         (ngModelChange)="updateValue($event)"
       ></verbena-input>
     </ng-template>
-  </ng-container>
+  </ng-container> -->
 
   <ng-container libColumn="actions">
     <ng-template
@@ -77,7 +75,7 @@
   [previewColumns]="smallCols()"
   title="Hello"
   [previewData]="importedData()"
-  [fields]="['Name', 'Friend']"
+  [fields]="['Name', 'Friend', 'Date']"
   [columnTemplates]="columnTemplates()"
 >
   <!-- <ng-container
@@ -85,6 +83,62 @@
 [ngTemplateOutletContext]="{ $implicit: picked }"
 >
 </ng-container> -->
+</lib-data-import>
+
+<lib-data-table
+  [data]="smallData()"
+  [columns]="smallCols2()"
+  [styleConfig]="table2Styles"
+  (rowSave)="addRow($event)"
+>
+  <ng-container libColumn="Friend">
+    <ng-template #cell let-row="row" let-value>
+      <span class="px-2 py-[2px] rounded-3xl"> {{ value }}</span>
+    </ng-template>
+    <ng-template #cellEdit let-row="row" let-updateData="updateData" let-value>
+      <div class="width-max">
+        <verben-drop-down
+          [options]="['Jabar', 'Jaleel', 'Hasim']"
+          [width]="'100%'"
+          placeholder="select Friend"
+          [disabled]="false"
+          [(ngModel)]="row.Friend"
+        ></verben-drop-down>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-container libColumn="Date">
+    <ng-template #cell let-row="row" let-value>
+      {{ value | date }}
+    </ng-template>
+    <ng-template #cellEdit let-row="row" let-updateData="updateData" let-value>
+      <div class="width-max">
+        <app-date-picker [(date)]="row.Date"></app-date-picker>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-container libColumn="Name">
+    <ng-template #cell let-row="row" let-value>
+      {{ value }}
+    </ng-template>
+    <ng-template #cellEdit let-row="row" let-updateData="updateData" let-value>
+      <div class="width-max">
+        <verbena-input [(ngModel)]="row.Name"></verbena-input>
+      </div>
+    </ng-template>
+  </ng-container>
+</lib-data-table>
+
+<lib-data-import
+  (exportTemplateEvent)="handleTemplateExport($event)"
+  (importEvent)="handleImport($event)"
+  (importEventData)="log($event)"
+  [previewColumns]="smallCols2()"
+  title="Hello"
+  [previewData]="importedData()"
+  [fields]="['Name', 'Friend', 'Date']"
+  [columnTemplates]="columnTemplates()"
+>
 </lib-data-import>
 
 <lib-data-table

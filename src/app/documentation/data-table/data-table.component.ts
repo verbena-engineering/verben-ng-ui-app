@@ -107,7 +107,9 @@ export class DataTableComponent {
 
   controlledCols = signal<ColumnDefinition<YourDataType>[]>(this.tableColumns2);
 
-  smallCols = signal<ColumnDefinition<{ Name: string; Friend: string }>[]>([
+  smallCols = signal<
+    ColumnDefinition<{ Name: string; Friend: string; Date: Date }>[]
+  >([
     {
       id: 'Name',
       header: 'Name',
@@ -121,19 +123,56 @@ export class DataTableComponent {
       formControlName: 'Friend',
     },
     {
+      id: 'Date',
+      header: 'Date',
+      accessorKey: 'Date',
+      formControlName: 'Date',
+    },
+    {
       id: 'actions',
       header: 'Actions',
     },
   ]);
 
-  smallData = signal<{ Name: string; Friend: string }[]>([
+  smallCols2 = signal<
+    ColumnDefinition<{ Name: string; Friend: string; Date: Date }>[]
+  >([
+    {
+      id: 'Name',
+      header: 'Name',
+      accessorKey: 'Name',
+    },
+    {
+      id: 'Friend',
+      header: 'Friend',
+      accessorKey: 'Friend',
+    },
+    {
+      id: 'Date',
+      header: 'Date',
+      accessorKey: 'Date',
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+    },
+  ]);
+
+  smallData = signal<{ Name: string; Friend: string; Date: Date }[]>([
     {
       Name: 'John Doe',
       Friend: 'Jane Smith',
+      Date: new Date(),
     },
     {
       Name: 'Alice Johnson',
       Friend: 'Bob Brown',
+      Date: new Date(),
+    },
+    {
+      Name: 'Jam Jam',
+      Friend: 'Yuckan Mo',
+      Date: new Date(),
     },
   ]);
 
@@ -404,14 +443,16 @@ export class DataTableComponent {
       //   cellNF: false,
       // });
       let imported: any[] = [];
-      const wb = read(event.target.result, { raw: true });
+      // const wb = read(event.target.result, { raw: true });
+      const wb = read(event.target.result, { cellDates: true });
       const sheets = wb.SheetNames;
       if (sheets.length) {
         const rows = utils.sheet_to_json(wb.Sheets[sheets[0]], {
           // raw: true,
           // rawNumbers: true,
-          dateNF: 'dd/mm/yyyy',
+          // dateNF: 'dd/mm/yyyy',
         });
+
         if (parseImport) {
           imported = parseImport(rows);
         } else {
@@ -419,7 +460,13 @@ export class DataTableComponent {
         }
         // previewer(imported);
       }
-      console.log('Imported data:', JSON.stringify(imported, null, 2));
+      // console.log('Imported data:', JSON.stringify(imported, null, 2));
+      // imported = imported.map((imp) => {
+      //   if (imp['Date']) {
+      //     imp['Date'] = new Date((imp['Date'] - (25567 + 2)) * 86400 * 1000);
+      //   }
+      //   return imp;
+      // });
       this.importedData.set(imported);
       return imported;
     };

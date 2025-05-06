@@ -21,6 +21,7 @@ import {
   DataColumnsModule,
   DataExtendModule,
   DataImportModule,
+  DatePickerModule,
 } from 'verben-ng-ui/src/public-api';
 import { TableExportComponent } from './table-export/table-export.component';
 
@@ -45,6 +46,7 @@ import { TableExportComponent } from './table-export/table-export.component';
     DataColumnsModule,
     DataExtendModule,
     DataImportModule,
+    DatePickerModule,
   ],
   exports: [DataTableComponent],
   providers: [DataExportService],

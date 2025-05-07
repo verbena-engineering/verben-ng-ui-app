@@ -150,8 +150,9 @@ export class DatePickerComponent {
   }
 
   confirm() {
+    this.tempSelectedDate.setHours(12, 0, 0, 0);
     this.selectedDate = new Date(this.tempSelectedDate);
-    this.dateChange.emit(this.selectedDate); // Emit change
+    this.dateChange.emit(this.selectedDate);
     this.showCalendar = false;
   }
 

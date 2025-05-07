@@ -74,6 +74,7 @@
   [headerTemplate]="headerTemplate"
   [bodyTemplate]="bodyTemplate"
   [footerTemplate]="footerTemplate"
+  dialogueWidth="85%"
 >
   <a download=""></a>
 </verben-dialogue>
@@ -167,7 +168,10 @@
 
 <ng-template #footerTemplate>
   <div class="footer-buttons flex gap-4 items-center justify-between my-4">
-    <button class="btn btn-secondary" (click)="showPreview = false">
+    <button
+      class="btn btn-secondary cancel-button"
+      (click)="showPreview = false"
+    >
       Cancel
     </button>
     <button class="btn btn-primary export-button" (click)="save()">

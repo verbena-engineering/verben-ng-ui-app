@@ -54,6 +54,11 @@ export class DataTableComponent<T> {
     key: number | string;
     data: Partial<T>;
   }>();
+  @Output() rowRevert = new EventEmitter<{
+    index: number;
+    key: number | string;
+    data: T;
+  }>();
   @Output() rowDelete = new EventEmitter<T>();
   @Output() selectionChange = new EventEmitter<T[]>();
 
@@ -65,9 +70,7 @@ export class DataTableComponent<T> {
   // private editedDataSignal = signal<Map<string | number, EditedData<T>>>(
   //   new Map()
   // );
-  private unEditedDataSignal = signal<Map<string | number, EditedData<T>>>(
-    new Map()
-  );
+  private unEditedDataSignal = signal<Map<string | number, T>>(new Map());
   private formGroupsSignal = signal<Map<string | number, FormGroup>>(new Map());
 
   columnsSignal = computed(() => this.columns());
@@ -183,18 +186,24 @@ export class DataTableComponent<T> {
     return this.editingRowsSignal().has(row._key);
   };
 
+  /**
+   * Only exists because some boys started using the method externally
+   * and the signature changed. It hurts. Always use 'private', kids.
+   * */
   toggleRowEdit = (rowId: DataWithKey<T>['_key']) => {
-    this.editingRowsSignal.update((set) => {
-      const newSet = new Set(set);
-      if (newSet.has(rowId)) {
-        newSet.delete(rowId);
-        // this.saveRow(rowId, index);
-      } else {
-        newSet.add(rowId);
-        // this.initializeEditedData(row);
+    let data: DataWithKey<T> | undefined = undefined;
+    let index: number = -1;
+
+    this.tableData().forEach((datum, i) => {
+      if (datum._key === rowId) {
+        data = datum;
+        index = i;
       }
-      return newSet;
     });
+
+    if (data !== undefined && index >= 0) {
+      this.toggleRowEditInternal(data, index);
+    }
   };
 
   private toggleRowEditInternal = (row: DataWithKey<T>, index: number) => {
@@ -236,6 +245,7 @@ export class DataTableComponent<T> {
 
   private saveRow(rowId: string | number, rowIndex: number) {
     const editedForm = this.formGroupsSignal().get(rowId);
+    const unEditedData = this.unEditedDataSignal().get(rowId);
 
     // if (editedData) {
     //   const originalRow = this.tableData().find((row) => row._key === rowId);
@@ -265,11 +275,16 @@ export class DataTableComponent<T> {
       });
     }
 
-    if (this.unEditedDataSignal().has(rowId)) {
+    if (unEditedData) {
       this.unEditedDataSignal.update((map) => {
         const newMap = new Map(map);
         newMap.delete(rowId);
         return newMap;
+      });
+      this.rowRevert.emit({
+        index: rowIndex,
+        key: rowId,
+        data: unEditedData,
       });
     }
   }

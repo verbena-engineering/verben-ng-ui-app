@@ -17,6 +17,7 @@ import {
 } from '@angular/core';
 import {
   ColumnDefinition,
+  DataWithKey,
   EditedData,
   FormGroupConfig,
   GroupedDataRow,
@@ -98,9 +99,18 @@ export class DataTableComponent<T> {
 
     this.tableData = computed(() => {
       return this.data().map((item, index) => {
-        const key =
-          this._getRowIdByDataKey(item) ?? (index as DataWithKey<T>['_key']);
-        return { ...item, _key: key };
+        let key;
+        const dataKey = this._getRowIdByDataKey(item);
+        if (dataKey) {
+          key = dataKey;
+        } else {
+          key = index as DataWithKey<T>['_key'];
+        }
+        return {
+          originalData: item,
+          _key: key,
+          _key_prop: this.dataKey() ?? '_index',
+        };
       });
     });
   }
@@ -139,11 +149,11 @@ export class DataTableComponent<T> {
         ? (this.groupBy() as (row: T) => any)
         : (row: T) => row[this.groupBy() as keyof T];
 
-    const groups = new Map<any, T[]>();
+    const groups = new Map<any, DataWithKey<T>[]>();
 
     this.tableData().forEach((row) => {
       if (getGroupValue !== undefined) {
-        const groupValue = getGroupValue(row);
+        const groupValue = getGroupValue(row.originalData);
         const existingGroup = groups.get(groupValue) || [];
         groups.set(groupValue, [...existingGroup, row]);
       }
@@ -154,7 +164,7 @@ export class DataTableComponent<T> {
     groups.forEach((groupRows, groupValue) => {
       // Create group header row
       const groupRow: GroupedDataRow<T> = {
-        ...({} as T), // Create empty object of type T as base
+        ...({} as DataWithKey<T>), // Create empty object of type T as base
         _key: `group-${groupValue}`,
         isGroupRow: true,
         groupValue,
@@ -186,10 +196,6 @@ export class DataTableComponent<T> {
     return this.editingRowsSignal().has(row._key);
   };
 
-  /**
-   * Only exists because some boys started using the method externally
-   * and the signature changed. It hurts. Always use 'private', kids.
-   * */
   toggleRowEdit = (rowId: DataWithKey<T>['_key']) => {
     let data: DataWithKey<T> | undefined = undefined;
     let index: number = -1;
@@ -224,7 +230,7 @@ export class DataTableComponent<T> {
     const rowId = row._key;
     this.unEditedDataSignal.update((map) => {
       const newMap = new Map(map);
-      newMap.set(rowId, { ...row });
+      newMap.set(rowId, { ...row.originalData });
       return newMap;
     });
     const formGroupConfig = this.formGroupConfig();
@@ -327,7 +333,7 @@ export class DataTableComponent<T> {
       this.selectedRowsSignal.set(new Set());
     } else {
       const nonGroupRows = this.tableData().filter(
-        (row) => !this.isGroupRow(row)
+        (row) => !this.isGroupRow(row.originalData)
       );
       this.selectedRowsSignal.set(new Set(nonGroupRows.map((row) => row._key)));
     }
@@ -338,7 +344,9 @@ export class DataTableComponent<T> {
     const selectedRows = this.tableData().filter((row) =>
       this.selectedRowsSignal().has(row._key)
     );
-    this.selectionChange.emit(selectedRows);
+    this.selectionChange.emit(
+      selectedRows.map(({ originalData }) => originalData)
+    );
   }
 
   getHeaderContext(column: ColumnDefinition<T>) {
@@ -449,14 +457,15 @@ export class DataTableComponent<T> {
       //     value = this.getCellValue(row, column);
       //   }
       // }
+      value = this.getCellValue(row.originalData, column);
     } else {
-      value = this.getCellValue(row, column);
+      value = this.getCellValue(row.originalData, column);
     }
 
     return {
       $implicit: value,
       value,
-      row,
+      row: row.originalData,
       column,
       rowIndex,
       rowId,
@@ -480,7 +489,7 @@ export class DataTableComponent<T> {
   deleteRow = (rowId: string | number) => {
     const rowToDelete = this.tableData().find((row) => row._key === rowId);
     if (rowToDelete) {
-      this.rowDelete.emit(rowToDelete);
+      this.rowDelete.emit(rowToDelete.originalData);
     }
   };
 
@@ -575,9 +584,6 @@ export class DataTableComponent<T> {
     return cellStyle;
   }
 }
-
-// Define a type that extends T with a _key property
-type DataWithKey<T> = T & { _key: string | number };
 
 // Default styles
 const defaultTableStyles: TableStyles = {

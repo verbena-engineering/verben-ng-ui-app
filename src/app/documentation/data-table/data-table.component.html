@@ -127,7 +127,29 @@
       </div>
     </ng-template>
   </ng-container>
+
+  <ng-container libColumn="actions">
+    <ng-template
+      #cell
+      let-isEditing="isEditing"
+      let-toggleRowEdit="toggleRowEdit"
+      let-deleteRow="deleteRow"
+    >
+      <div class="flex gap-4 items-center">
+        <button (click)="toggleRowEdit()">
+          {{ isEditing ? "Save" : "Edit" }}
+        </button>
+
+        <button (click)="deleteRow()">Remove</button>
+      </div>
+    </ng-template>
+    <!-- <ng-template #header>
+      <strong>Actions</strong>
+    </ng-template> -->
+  </ng-container>
 </lib-data-table>
+
+<!-- {{ smallData()[0].Name }} -->
 
 <lib-data-import
   (exportTemplateEvent)="handleTemplateExport($event)"

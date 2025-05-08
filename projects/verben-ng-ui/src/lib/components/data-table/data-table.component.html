@@ -17,13 +17,13 @@
   </thead>
   <tbody>
     @for (row of tableData(); track row._key; let rowIndex = $index) { @if
-    (isGroupRow(row)) {
+    (isGroupRow(row.originalData)) {
     <tr class="group-row" [ngStyle]="getRowStyle(rowIndex)">
       <td
         [attr.colspan]="displayColumns().length"
         [ngStyle]="getCellStyle(rowIndex, 0)"
       >
-        {{ getCellValue(row, displayColumns()[0]) }}
+        {{ getCellValue(row.originalData, displayColumns()[0]) }}
       </td>
     </tr>
     } @else {
@@ -42,7 +42,7 @@
           [ngTemplateOutletContext]="getCellContext(row, column, rowIndex)"
         ></ng-container>
         } @else {
-        {{ getCellValue(row, column) }}
+        {{ getCellValue(row.originalData, column) }}
         }
       </td>
       }

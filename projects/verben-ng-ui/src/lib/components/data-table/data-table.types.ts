@@ -20,7 +20,14 @@ export interface ColumnDefinition<T> {
   formControlName?: string;
 }
 
-export type GroupedDataRow<T> = T & {
+// Define a type that extends T with a _key property
+export type DataWithKey<T> = {
+  _key: string | number;
+  _key_prop: keyof T | '_index';
+  originalData: T;
+};
+
+export type GroupedDataRow<T> = DataWithKey<T> & {
   isGroupRow?: boolean;
   groupValue?: any;
   groupTitle?: any;

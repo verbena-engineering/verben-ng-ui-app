@@ -18,6 +18,7 @@ export interface ColumnDefinition<T> {
   footerTemplate?: TemplateRef<any>;
   sortAction?: 'ASC' | 'DESC';
   formControlName?: string;
+  groupName?: string;
 }
 
 // Define a type that extends T with a _key property

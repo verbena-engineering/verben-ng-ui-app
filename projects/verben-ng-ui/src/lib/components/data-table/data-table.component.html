@@ -1,5 +1,10 @@
 <table [ngStyle]="getTableStyle()">
   <thead>
+    <!-- <tr [ngStyle]="getHeaderStyle()">
+      <th colspan="2" scope="colgroup">Group 1</th>
+      <th colspan="1" scope="colgroup">Group 2</th>
+    </tr> -->
+
     <tr [ngStyle]="getHeaderStyle()">
       @for (column of displayColumns(); track column.id) {
       <th [ngStyle]="getCellStyle(-1, $index)">

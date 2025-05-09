@@ -31,7 +31,7 @@
       @for (column of displayColumns(); track column.id; let colIndex = $index)
       {
       <td [ngStyle]="getCellStyle(rowIndex, colIndex)">
-        @if (isRowEditing(row) && column.cellEditTemplate) {
+        @if (isRowEditing(row._key) && column.cellEditTemplate) {
         <ng-container
           [ngTemplateOutlet]="column.cellEditTemplate"
           [ngTemplateOutletContext]="getCellContext(row, column, rowIndex)"

@@ -192,11 +192,11 @@ export class DataTableComponent<T> {
     return column.accessorFn ? column.accessorFn(row) : undefined;
   };
 
-  isRowEditing = (row: DataWithKey<T>): boolean => {
-    return this.editingRowsSignal().has(row._key);
+  public isRowEditing = (rowKey: DataWithKey<T>['_key']): boolean => {
+    return this.editingRowsSignal().has(rowKey);
   };
 
-  toggleRowEdit = (rowId: DataWithKey<T>['_key']) => {
+  public toggleRowEdit = (rowId: DataWithKey<T>['_key']) => {
     let data: DataWithKey<T> | undefined = undefined;
     let index: number = -1;
 
@@ -295,11 +295,11 @@ export class DataTableComponent<T> {
     }
   }
 
-  isRowSelected = (rowId: string | number): boolean => {
+  private isRowSelected = (rowId: string | number): boolean => {
     return this.selectedRowsSignal().has(rowId);
   };
 
-  toggleRowSelection = (rowId: string | number) => {
+  private toggleRowSelection = (rowId: string | number) => {
     this.selectedRowsSignal.update((set) => {
       const newSet = new Set(set);
       if (newSet.has(rowId)) {
@@ -312,7 +312,7 @@ export class DataTableComponent<T> {
     });
   };
 
-  allRowsSelected = (): boolean => {
+  private allRowsSelected = (): boolean => {
     const nonGroupRows = this.data().filter((row) => !this.isGroupRow(row));
     return (
       nonGroupRows.length > 0 &&
@@ -320,7 +320,7 @@ export class DataTableComponent<T> {
     );
   };
 
-  someRowsSelected = (): boolean => {
+  private someRowsSelected = (): boolean => {
     const nonGroupRows = this.data().filter((row) => !this.isGroupRow(row));
     return (
       this.selectedRowsSignal().size > 0 &&
@@ -328,7 +328,7 @@ export class DataTableComponent<T> {
     );
   };
 
-  toggleAllRows = () => {
+  private toggleAllRows = () => {
     if (this.allRowsSelected()) {
       this.selectedRowsSignal.set(new Set());
     } else {
@@ -435,7 +435,7 @@ export class DataTableComponent<T> {
     rowIndex: number
   ) {
     const rowId = row._key;
-    const isEditing = this.isRowEditing(row);
+    const isEditing = this.isRowEditing(row._key);
     // const editedData = this.editedDataSignal().get(rowId);
     const editedForm = this.formGroupsSignal().get(rowId);
     const formControl = editedForm?.get(column.formControlName || '');

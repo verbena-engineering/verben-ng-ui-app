@@ -25,7 +25,7 @@ import { ColumnDirective } from '../data-table/column.directive';
   templateUrl: './data-import.component.html',
   styleUrl: './data-import.component.css',
 })
-export class DataImportComponent<T> {
+export class DataImportComponent<T extends {}> {
   previewColumns = input.required<ColumnDefinition<T>[]>();
   formGroupConfig = input<
     FormGroupConfig<{
@@ -51,6 +51,7 @@ export class DataImportComponent<T> {
   uniqueIdentifiers: WritableSignal<string[]> = signal([]);
   // duplicateDataMap: Map<string, number> = new Map();
   duplicateIndexSet = new Set<number>();
+  invalidIndexSet = new Map<number, ColumnDirective['columnId'][]>();
 
   private _ext: 'xlsx' | 'xls' | 'csv' = 'xlsx';
 
@@ -60,9 +61,9 @@ export class DataImportComponent<T> {
 
   constructor() {
     effect(() => {
-      this.previewData()?.forEach((datum) => {
-        console.log(datum);
-      });
+      // this.previewData()?.forEach((datum) => {
+      //   console.log(datum);
+      // });
 
       const isDuplicate = (datum: T, array: T[]) => {
         const identifiers = this.uniqueIdentifiers();
@@ -80,10 +81,39 @@ export class DataImportComponent<T> {
         );
       };
 
+      const columns = this.previewColumnsList();
+
       this.previewData()?.forEach((d, i, arr) => {
         if (isDuplicate(d, arr)) {
           this.duplicateIndexSet.add(i);
         }
+
+        columns
+          .filter(({ validatorFn }) => validatorFn !== undefined)
+          .forEach((column) => {
+            // const invalidFields = Object.entries(d).reduce<(keyof T)[]>((f, [k, v]) => {
+            //   if (column.validatorFn && !column.validatorFn(v as T[keyof T])) {
+            //     f.push(k as keyof T);
+            //   }
+            //   return f;
+            // }, []);
+            const invalidFields = Object.entries(d).reduce<string[]>(
+              (f, [k, v], i) => {
+                if (
+                  column.validatorFn &&
+                  !column.validatorFn(v as T[keyof T])
+                ) {
+                  f.push(column.id);
+                }
+                return f;
+              },
+              []
+            );
+
+            if (invalidFields.length > 0) {
+              this.invalidIndexSet.set(i, invalidFields);
+            }
+          });
       });
     });
 

@@ -37,6 +37,7 @@ export interface BaseStyles {
   overflowX?: 'visible' | 'hidden' | 'scroll' | 'auto';
   overflowY?: 'visible' | 'hidden' | 'scroll' | 'auto';
   fontStyle?: string;
+  display?: string;
 }
 
 interface NTHStyles {

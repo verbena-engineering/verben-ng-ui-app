@@ -18,7 +18,7 @@ export class DataFilterComponent<T> implements OnInit {
   @Input() columns!: ColumnDefinition<T>[];
   @Input() data!: T[];
   @Output() filterApplied = new EventEmitter<FilterCondition[]>();
-
+  @Output() resetFilter = new EventEmitter();
   filterableColumns: ColumnDefinition<T>[] = [];
   availableOperators: FilterOperator[] = [];
   savedFilters: (FilterCondition & { selected: boolean })[] = [];
@@ -135,8 +135,10 @@ export class DataFilterComponent<T> implements OnInit {
   }
 
   resetAll() {
+  
     this.savedFilters = [];
     this.resetCurrentFilter();
+    this.resetFilter.emit()
   }
 
   applyFilters() {

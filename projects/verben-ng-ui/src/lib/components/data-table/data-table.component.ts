@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  contentChildren,
   ContentChildren,
   EventEmitter,
   input,
@@ -14,9 +15,16 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { ColumnDefinition, GroupedDataRow } from './data-table.types';
+import {
+  ColumnDefinition,
+  DataWithKey,
+  EditedData,
+  FormGroupConfig,
+  GroupedDataRow,
+} from './data-table.types';
 import { ColumnDirective } from './column.directive';
 import { BaseStyles, TableStyles } from './style.types';
+import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'lib-data-table',
@@ -24,125 +32,56 @@ import { BaseStyles, TableStyles } from './style.types';
   styleUrl: './data-table.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DataTableComponent<T extends { Id: string | number }>
-  implements OnInit, AfterContentInit
-{
+export class DataTableComponent<T> {
   // Modify data input to use grouped data
   data = input.required<T[]>();
   columns = input.required<ColumnDefinition<T>[]>();
-  dataKey = input<keyof T>('Id'); // New required input for unique identifier
-  // @Input({ required: true })
-  // set data(value: T[]) {
-  //   this._data = value;
-  // }
-  // get data(): T[] {
-  //   return this.groupedData();
-  // }
-  // private _data: T[] = [];
-  // Modify columns input to use a signal
-  // @Input({ required: true })
-  // set columns(value: ColumnDefinition<T>[]) {
-  //   this.columnsSignal.set(value);
-  // }
-  // New inputs for grouping
+  dataKey = input<keyof T>(); // New required input for unique identifier
+  formGroupConfig = input<
+    FormGroupConfig<{
+      [K in keyof T]: AbstractControl;
+    }>
+  >();
+
   groupBy = input<keyof T | ((row: T) => any)>();
 
   @Input() styleConfig: TableStyles = defaultTableStyles;
 
-  @ContentChildren(ColumnDirective)
-  columnTemplates!: QueryList<ColumnDirective>;
+  columnTemplates = contentChildren(ColumnDirective);
 
   @Output() rowEdit = new EventEmitter<T>();
-  @Output() rowSave = new EventEmitter<T>();
+  @Output() rowSave = new EventEmitter<{
+    index: number;
+    key: number | string;
+    data: Partial<T>;
+  }>();
+  @Output() rowRevert = new EventEmitter<{
+    index: number;
+    key: number | string;
+    data: T;
+  }>();
   @Output() rowDelete = new EventEmitter<T>();
   @Output() selectionChange = new EventEmitter<T[]>();
 
+  /** Internally maintained data, with guaranteed uniqueness due to key property */
+  tableData: Signal<DataWithKey<T>[]>;
+
   private editingRowsSignal = signal<Set<string | number>>(new Set());
   private selectedRowsSignal = signal<Set<string | number>>(new Set());
-  private editedDataSignal = signal<Map<string | number, EditedData<T>>>(
-    new Map()
-  );
+  // private editedDataSignal = signal<Map<string | number, EditedData<T>>>(
+  //   new Map()
+  // );
+  private unEditedDataSignal = signal<Map<string | number, T>>(new Map());
+  private formGroupsSignal = signal<Map<string | number, FormGroup>>(new Map());
 
-  columnsSignal: WritableSignal<ColumnDefinition<T>[]> = signal([]);
+  columnsSignal = computed(() => this.columns());
 
-  hasFooter = computed(() =>
-    this.columnsSignal().some((col) => col.footerTemplate !== undefined)
-  );
+  displayColumns: Signal<ColumnDefinition<T>[]>;
 
-  // Helper method to get unique identifier for a row
-  getRowId(row: T): string | number {
-    const key = this.dataKey();
-    const value = row[key];
-
-    // Convert to string or number if possible, otherwise stringify
-    if (typeof value === 'string' || typeof value === 'number') {
-      return value;
-    }
-    return JSON.stringify(value);
-  }
-
-  // Type guard method to check for group rows
-  isGroupRow(row: T): row is T & { isGroupRow: true; groupTitle: any } {
-    return !!(row as any).isGroupRow;
-  }
-
-  // Computed property for grouped data
-
-  groupedData = computed(() => {
-    if (!this.groupBy()) return this.data() as GroupedDataRow<T>[];
-
-    const getGroupValue =
-      typeof this.groupBy() === 'function'
-        ? (this.groupBy() as (row: T) => any)
-        : (row: T) => row[this.groupBy() as keyof T];
-
-    const groups = new Map<any, T[]>();
-
-    this.data().forEach((row) => {
-      if (getGroupValue !== undefined) {
-        const groupValue = getGroupValue(row);
-        const existingGroup = groups.get(groupValue) || [];
-        groups.set(groupValue, [...existingGroup, row]);
-      }
-    });
-
-    const groupedDataArray: GroupedDataRow<T>[] = [];
-
-    groups.forEach((groupRows, groupValue) => {
-      // Create group header row
-      const groupRow: GroupedDataRow<T> = {
-        ...({} as T), // Create empty object of type T as base
-        [this.dataKey()]: `group-${groupValue}`,
-        isGroupRow: true,
-        groupValue,
-        groupTitle: groupValue,
-      };
-
-      groupedDataArray.push(groupRow);
-      // Add regular rows with the optional isGroupRow property (undefined by default)
-      groupedDataArray.push(...(groupRows as GroupedDataRow<T>[]));
-    });
-
-    return groupedDataArray;
-  });
-
-  ngOnInit() {
-    // Set initial columns if not already set
-    if (this.columnsSignal().length === 0) {
-      this.columnsSignal.set(this.columns());
-    }
-  }
-
-  ngAfterContentInit() {
-    this.columnTemplates.changes.subscribe(() => this.mergeColumnTemplates());
-    this.mergeColumnTemplates();
-  }
-
-  private mergeColumnTemplates() {
-    // Only merge if we have both columns and templates
-    if (this.columnsSignal().length > 0) {
-      const updatedColumns = this.columnsSignal().map((column) => {
-        const matchingTemplate = this.columnTemplates.find(
+  constructor() {
+    this.displayColumns = computed(() => {
+      return this.columnsSignal().map((column) => {
+        const matchingTemplate = this.columnTemplates().find(
           (t) => t.columnId === column.id
         );
         if (matchingTemplate) {
@@ -156,9 +95,89 @@ export class DataTableComponent<T extends { Id: string | number }>
         }
         return column;
       });
-      this.columnsSignal.set(updatedColumns);
-    }
+    });
+
+    this.tableData = computed(() => {
+      return this.data().map((item, index) => {
+        let key;
+        const dataKey = this._getRowIdByDataKey(item);
+        if (dataKey) {
+          key = dataKey;
+        } else {
+          key = index as DataWithKey<T>['_key'];
+        }
+        return {
+          originalData: item,
+          _key: key,
+          _key_prop: this.dataKey() ?? '_index',
+        };
+      });
+    });
   }
+
+  hasFooter = computed(() =>
+    this.displayColumns().some((col) => col.footerTemplate !== undefined)
+  );
+
+  // Helper method to get unique identifier for a row
+  private _getRowIdByDataKey(row: T): string | number | undefined {
+    const key = this.dataKey();
+    if (key) {
+      const value = row[key];
+
+      // Convert to string or number if possible, otherwise stringify
+      if (typeof value === 'string' || typeof value === 'number') {
+        return value;
+      }
+      return JSON.stringify(value);
+    }
+    return;
+  }
+
+  // Type guard method to check for group rows
+  isGroupRow(row: T): row is T & { isGroupRow: true; groupTitle: any } {
+    return !!(row as any).isGroupRow;
+  }
+
+  // Computed property for grouped data
+
+  groupedData = computed(() => {
+    if (!this.groupBy()) return this.tableData() as GroupedDataRow<T>[];
+
+    const getGroupValue =
+      typeof this.groupBy() === 'function'
+        ? (this.groupBy() as (row: T) => any)
+        : (row: T) => row[this.groupBy() as keyof T];
+
+    const groups = new Map<any, DataWithKey<T>[]>();
+
+    this.tableData().forEach((row) => {
+      if (getGroupValue !== undefined) {
+        const groupValue = getGroupValue(row.originalData);
+        const existingGroup = groups.get(groupValue) || [];
+        groups.set(groupValue, [...existingGroup, row]);
+      }
+    });
+
+    const groupedDataArray: GroupedDataRow<T>[] = [];
+
+    groups.forEach((groupRows, groupValue) => {
+      // Create group header row
+      const groupRow: GroupedDataRow<T> = {
+        ...({} as DataWithKey<T>), // Create empty object of type T as base
+        _key: `group-${groupValue}`,
+        isGroupRow: true,
+        groupValue,
+        groupTitle: groupValue,
+      };
+
+      groupedDataArray.push(groupRow);
+      // Add regular rows with the optional isGroupRow property (undefined by default)
+      groupedDataArray.push(...(groupRows as GroupedDataRow<T>[]));
+    });
+
+    return groupedDataArray;
+  });
 
   getCellValue = (row: T, column: ColumnDefinition<T>): any => {
     // For group rows, return the group title if it exists
@@ -168,60 +187,119 @@ export class DataTableComponent<T extends { Id: string | number }>
 
     // Existing logic for normal rows
     if (column.accessorKey) {
-      return (row as any)[column.accessorKey];
+      return row[column.accessorKey];
     }
     return column.accessorFn ? column.accessorFn(row) : undefined;
   };
 
-  isRowEditing = (row: T): boolean => {
-    return this.editingRowsSignal().has(this.getRowId(row));
+  public isRowEditing = (rowKey: DataWithKey<T>['_key']): boolean => {
+    return this.editingRowsSignal().has(rowKey);
   };
 
-  toggleRowEdit = (row: T) => {
+  public toggleRowEdit = (rowId: DataWithKey<T>['_key']) => {
+    let data: DataWithKey<T> | undefined = undefined;
+    let index: number = -1;
+
+    this.tableData().forEach((datum, i) => {
+      if (datum._key === rowId) {
+        data = datum;
+        index = i;
+      }
+    });
+
+    if (data !== undefined && index >= 0) {
+      this.toggleRowEditInternal(data, index);
+    }
+  };
+
+  private toggleRowEditInternal = (row: DataWithKey<T>, index: number) => {
     this.editingRowsSignal.update((set) => {
       const newSet = new Set(set);
-      if (newSet.has(this.getRowId(row))) {
-        newSet.delete(this.getRowId(row));
-        // this.saveRow(this.getRowId(row));
+      if (newSet.has(row._key)) {
+        newSet.delete(row._key);
+        this.saveRow(row._key, index);
       } else {
-        newSet.add(this.getRowId(row));
+        newSet.add(row._key);
         this.initializeEditedData(row);
       }
       return newSet;
     });
   };
 
-  private initializeEditedData(row: T) {
-    const rowId = this.getRowId(row);
-    this.editedDataSignal.update((map) => {
+  private initializeEditedData(row: DataWithKey<T>) {
+    const rowId = row._key;
+    this.unEditedDataSignal.update((map) => {
       const newMap = new Map(map);
-      newMap.set(rowId, { ...row });
+      newMap.set(rowId, { ...row.originalData });
       return newMap;
     });
+    const formGroupConfig = this.formGroupConfig();
+    if (formGroupConfig) {
+      const formGroup = new FormGroup(
+        formGroupConfig.controls,
+        formGroupConfig.validatorOrOpts,
+        formGroupConfig.asyncValidator
+      );
+      formGroup.patchValue(row as any);
+      this.formGroupsSignal.update((map) => {
+        const newMap = new Map(map);
+        newMap.set(rowId, formGroup);
+        return newMap;
+      });
+    }
   }
 
-  // private saveRow(rowId: string | number) {
-  //   const editedData = this.editedDataSignal().get(rowId);
-  //   if (editedData) {
-  //     const originalRowIndex = this.data().findIndex((r) => r.id === rowId);
-  //     if (originalRowIndex !== -1) {
-  //       const updatedRow = { ...this.data()[originalRowIndex], ...editedData };
-  //       this.data()[originalRowIndex] = updatedRow;
-  //       this.rowSave.emit(updatedRow);
-  //       this.editedDataSignal.update((map) => {
-  //         const newMap = new Map(map);
-  //         newMap.delete(rowId);
-  //         return newMap;
-  //       });
-  //     }
-  //   }
-  // }
+  private saveRow(rowId: string | number, rowIndex: number) {
+    const editedForm = this.formGroupsSignal().get(rowId);
+    const unEditedData = this.unEditedDataSignal().get(rowId);
 
-  isRowSelected = (rowId: string | number): boolean => {
+    // if (editedData) {
+    //   const originalRow = this.tableData().find((row) => row._key === rowId);
+    //   if (originalRow) {
+    //     const updatedRow = { ...originalRow, ...editedData };
+    //     this.rowSave.emit(updatedRow);
+    //     this.editedDataSignal.update((map) => {
+    //       const newMap = new Map(map);
+    //       newMap.delete(rowId);
+    //       return newMap;
+    //     });
+    //   }
+    // }
+
+    if (editedForm) {
+      editedForm.markAsPristine();
+      editedForm.markAsUntouched();
+      this.formGroupsSignal.update((map) => {
+        const newMap = new Map(map);
+        newMap.delete(rowId);
+        return newMap;
+      });
+      this.rowSave.emit({
+        index: rowIndex,
+        key: rowId,
+        data: editedForm.value,
+      });
+    }
+
+    if (unEditedData) {
+      this.unEditedDataSignal.update((map) => {
+        const newMap = new Map(map);
+        newMap.delete(rowId);
+        return newMap;
+      });
+      this.rowRevert.emit({
+        index: rowIndex,
+        key: rowId,
+        data: unEditedData,
+      });
+    }
+  }
+
+  private isRowSelected = (rowId: string | number): boolean => {
     return this.selectedRowsSignal().has(rowId);
   };
 
-  toggleRowSelection = (rowId: string | number) => {
+  private toggleRowSelection = (rowId: string | number) => {
     this.selectedRowsSignal.update((set) => {
       const newSet = new Set(set);
       if (newSet.has(rowId)) {
@@ -234,7 +312,7 @@ export class DataTableComponent<T extends { Id: string | number }>
     });
   };
 
-  allRowsSelected = (): boolean => {
+  private allRowsSelected = (): boolean => {
     const nonGroupRows = this.data().filter((row) => !this.isGroupRow(row));
     return (
       nonGroupRows.length > 0 &&
@@ -242,7 +320,7 @@ export class DataTableComponent<T extends { Id: string | number }>
     );
   };
 
-  someRowsSelected = (): boolean => {
+  private someRowsSelected = (): boolean => {
     const nonGroupRows = this.data().filter((row) => !this.isGroupRow(row));
     return (
       this.selectedRowsSignal().size > 0 &&
@@ -250,23 +328,25 @@ export class DataTableComponent<T extends { Id: string | number }>
     );
   };
 
-  toggleAllRows = () => {
+  private toggleAllRows = () => {
     if (this.allRowsSelected()) {
       this.selectedRowsSignal.set(new Set());
     } else {
-      const nonGroupRows = this.data().filter((row) => !this.isGroupRow(row));
-      this.selectedRowsSignal.set(
-        new Set(nonGroupRows.map((row) => this.getRowId(row)))
+      const nonGroupRows = this.tableData().filter(
+        (row) => !this.isGroupRow(row.originalData)
       );
+      this.selectedRowsSignal.set(new Set(nonGroupRows.map((row) => row._key)));
     }
     this.emitSelectionChange();
   };
 
   private emitSelectionChange() {
-    const selectedRows = this.data().filter((row) =>
-      this.selectedRowsSignal().has(this.getRowId(row))
+    const selectedRows = this.tableData().filter((row) =>
+      this.selectedRowsSignal().has(row._key)
     );
-    this.selectionChange.emit(selectedRows);
+    this.selectionChange.emit(
+      selectedRows.map(({ originalData }) => originalData)
+    );
   }
 
   getHeaderContext(column: ColumnDefinition<T>) {
@@ -279,13 +359,24 @@ export class DataTableComponent<T extends { Id: string | number }>
     };
   }
 
-  updateEditedValue(rowId: string | number, columnId: keyof T, value: any) {
-    this.editedDataSignal.update((map) => {
-      const newMap = new Map(map);
-      const rowData = newMap.get(rowId) || ({} as EditedData<T>);
-      newMap.set(rowId, { ...rowData, [columnId]: value });
-      return newMap;
-    });
+  updateEditedValue(
+    rowId: string | number,
+    column: ColumnDefinition<T>,
+    value: any
+  ) {
+    // this.editedDataSignal.update((map) => {
+    //   const newMap = new Map(map);
+    //   const rowData = newMap.get(rowId) || ({} as EditedData<T>);
+    //   if (column.accessorKey) {
+    //     newMap.set(rowId, { ...rowData, [column.accessorKey]: value });
+    //   } else {
+    //     console.warn(
+    //       'Cannot update value for column without accessorKey:',
+    //       column.id
+    //     );
+    //   }
+    //   return newMap;
+    // });
   }
 
   updateEditedValueFn(
@@ -293,77 +384,101 @@ export class DataTableComponent<T extends { Id: string | number }>
     valueFn: (value: any) => T,
     value: any
   ) {
-    this.editedDataSignal.update((map) => {
-      const newMap = new Map(map);
-      const rowData = newMap.get(rowId) || ({} as EditedData<T>);
-      newMap.set(rowId, { ...rowData, ...valueFn(value) });
-      return newMap;
-    });
+    // this.editedDataSignal.update((map) => {
+    //   const newMap = new Map(map);
+    //   const rowData = newMap.get(rowId) || ({} as EditedData<T>);
+    //   newMap.set(rowId, { ...rowData, ...valueFn(value) });
+    //   return newMap;
+    // });
   }
 
   updateEditedData(rowId: string | number, data: Partial<T>) {
-    this.editedDataSignal.update((map) => {
-      const newMap = new Map(map);
-      const rowData = newMap.get(rowId) || ({} as EditedData<T>);
-      newMap.set(rowId, { ...rowData, ...data });
-      return newMap;
-    });
+    // this.editedDataSignal.update((map) => {
+    //   const newMap = new Map(map);
+    //   const rowData = newMap.get(rowId) || ({} as EditedData<T>);
+    //   newMap.set(rowId, { ...rowData, ...data });
+    //   return newMap;
+    // });
   }
 
   updateNestedEditedValue(
     rowId: string | number,
-    columnId: keyof T,
+    column: ColumnDefinition<T>,
     nestedField: string,
     value: any
   ) {
-    this.editedDataSignal.update((map) => {
-      const newMap = new Map(map);
-      const rowData = newMap.get(rowId) || ({} as EditedData<T>);
-      const columnData = (rowData[columnId] as any) || {};
-      newMap.set(rowId, {
-        ...rowData,
-        [columnId]: {
-          ...columnData,
-          [nestedField]: value,
-        },
-      });
-      return newMap;
-    });
+    // this.editedDataSignal.update((map) => {
+    //   const newMap = new Map(map);
+    //   const rowData = newMap.get(rowId) || ({} as EditedData<T>);
+    //   if (column.accessorKey) {
+    //     const columnData = (rowData[column.accessorKey] as any) || {};
+    //     newMap.set(rowId, {
+    //       ...rowData,
+    //       [column.accessorKey]: {
+    //         ...columnData,
+    //         [nestedField]: value,
+    //       },
+    //     });
+    //   } else {
+    //     console.warn(
+    //       'Cannot update nested value for column without accessorKey:',
+    //       column.id
+    //     );
+    //   }
+    //   return newMap;
+    // });
   }
 
-  getCellContext(row: T, column: ColumnDefinition<T>, rowIndex: number) {
-    const rowId = this.getRowId(row);
-    const isEditing = this.isRowEditing(row);
-    const editedData = this.editedDataSignal().get(rowId);
+  getCellContext(
+    row: DataWithKey<T>,
+    column: ColumnDefinition<T>,
+    rowIndex: number
+  ) {
+    const rowId = row._key;
+    const isEditing = this.isRowEditing(row._key);
+    // const editedData = this.editedDataSignal().get(rowId);
+    const editedForm = this.formGroupsSignal().get(rowId);
+    const formControl = editedForm?.get(column.formControlName || '');
 
     let value: any;
-    if (isEditing && editedData && column.id in editedData) {
-      value = editedData[column.id as keyof T];
+    if (isEditing) {
+      if (formControl) {
+        value = formControl.value;
+      }
+      // else if (editedData) {
+      //   if (column.accessorKey && column.accessorKey in editedData) {
+      //     // If column has an accessorKey and it exists in edited data, use that
+      //     value = editedData[column.accessorKey];
+      //   } else if (column.accessorFn) {
+      //     // If column has an accessorFn, apply it to the edited data
+      //     value = column.accessorFn({ ...row, ...editedData });
+      //   } else {
+      //     // Fallback to getting the value from the original row
+      //     value = this.getCellValue(row, column);
+      //   }
+      // }
+      value = this.getCellValue(row.originalData, column);
     } else {
-      value = this.getCellValue(row, column);
+      value = this.getCellValue(row.originalData, column);
     }
 
     return {
       $implicit: value,
       value,
-      row,
+      row: row.originalData,
       column,
       rowIndex,
+      rowId,
       isEditing,
+      formControl,
       isSelected: this.isRowSelected(rowId),
       toggleRowSelection: () => this.toggleRowSelection(rowId),
-      toggleRowEdit: () => this.toggleRowEdit(row),
+      toggleRowEdit: () => this.toggleRowEditInternal(row, rowIndex),
       deleteRow: () => this.deleteRow(rowId),
       updateValue: (newValue: any) =>
-        this.updateEditedValue(rowId, column.id as keyof T, newValue),
+        this.updateEditedValue(rowId, column, newValue),
       updateNestedValue: (nestedField: string, newValue: any) =>
-        this.updateNestedEditedValue(
-          rowId,
-          column.id as keyof T,
-          nestedField,
-          newValue
-        ),
-
+        this.updateNestedEditedValue(rowId, column, nestedField, newValue),
       updateValueFn: (valueFn: (value: any) => T, newValue: any) =>
         this.updateEditedValueFn(rowId, valueFn, newValue),
       updateData: (newData: Partial<T>) =>
@@ -372,9 +487,9 @@ export class DataTableComponent<T extends { Id: string | number }>
   }
 
   deleteRow = (rowId: string | number) => {
-    const rowToDelete = this.data().find((row) => this.getRowId(row) === rowId);
+    const rowToDelete = this.tableData().find((row) => row._key === rowId);
     if (rowToDelete) {
-      this.rowDelete.emit(rowToDelete);
+      this.rowDelete.emit(rowToDelete.originalData);
     }
   };
 
@@ -433,7 +548,7 @@ export class DataTableComponent<T extends { Id: string | number }>
 
   getCellStyle(rowIndex: number, colIndex: number): any {
     const isFirstColumn = colIndex === 0;
-    const isLastColumn = colIndex === this.columnsSignal().length - 1;
+    const isLastColumn = colIndex === this.displayColumns().length - 1;
 
     let cellStyle = { ...this.styleConfig.cells };
 
@@ -469,10 +584,6 @@ export class DataTableComponent<T extends { Id: string | number }>
     return cellStyle;
   }
 }
-
-type EditedData<T> = {
-  [K in keyof T]?: T[K] extends object ? Partial<T[K]> : T[K];
-};
 
 // Default styles
 const defaultTableStyles: TableStyles = {

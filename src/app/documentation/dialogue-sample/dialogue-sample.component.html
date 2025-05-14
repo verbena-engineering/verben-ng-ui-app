@@ -5,8 +5,8 @@
   [showCloseIcon]="true"
   [dismissOutsideClick]="true"
   [closeOnEscape]="true"
-  [size]="'large'"
-  [mode]="'drawer'"
+  [mode]="'dialogue'"
+   [size]="'large'"
   [customClass]="'my-modal-custom-class'"
   [disableFooter]="false"
   [modalData]="[{data:{first_name:'verben-ng', last_name:'verbena'}}]"
@@ -18,6 +18,7 @@
   [footerTemplate]="footerTemplate"
   (closeModal)="onModalClose($event)"
 >
+<a download=""></a>
 </verben-dialogue>
 
 <!-- Define templates -->

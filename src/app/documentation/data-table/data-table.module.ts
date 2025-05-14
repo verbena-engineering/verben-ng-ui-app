@@ -2,6 +2,7 @@
 // import { CommonModule } from '@angular/common';
 // import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+<<<<<<< HEAD
 // import { DataTableRoutingModule } from './data-table-routing.module';
 // import { DataTableComponent } from './data-table.component';
 // // import { DataTableModule as LibDataTableModule } from '../../../../projects/verben-ng-ui/src/lib/components/data-table/data-table.module';
@@ -42,3 +43,55 @@
 //   providers: [DataExportService],
 // })
 // export class DataTableModule {}
+=======
+import { DataTableRoutingModule } from './data-table-routing.module';
+import { DataTableComponent } from './data-table.component';
+// import { DataTableModule as LibDataTableModule } from '../../../../projects/verben-ng-ui/src/lib/components/data-table/data-table.module';
+import {
+  DataTableModule as LibDataTableModule,
+  CardModule,
+  DataExportModule,
+  DataExportService,
+  DropDownModule,
+  SvgModule,
+  TooltipModule,
+  VerbenaInputModule,
+  VerbenaTextareaModule,
+  DataFilterModule,
+  DataXportModule,
+  DataSortModule,
+  DataColumnsModule,
+  DataExtendModule,
+  DataImportModule,
+  DatePickerModule,
+} from 'verben-ng-ui/src/public-api';
+import { TableExportComponent } from './table-export/table-export.component';
+
+@NgModule({
+  declarations: [DataTableComponent, TableExportComponent],
+  imports: [
+    CommonModule,
+    DataTableRoutingModule,
+    LibDataTableModule,
+    FormsModule,
+    ReactiveFormsModule,
+    DataExportModule,
+    DataXportModule,
+    DataFilterModule,
+    DataSortModule,
+    DropDownModule,
+    VerbenaInputModule,
+    CardModule,
+    SvgModule,
+    TooltipModule,
+    VerbenaTextareaModule,
+    DataColumnsModule,
+    DataExtendModule,
+    DataImportModule,
+    DatePickerModule,
+  ],
+  exports: [DataTableComponent],
+  providers: [DataExportService],
+})
+export class DataTableModule {}
+>>>>>>> f0eae6b6958bbb51202cec651cd9ab3cf6acf982

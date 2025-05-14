@@ -60,6 +60,9 @@
     justify-content: end;
     gap: 20px;
     padding:4px 10px;
-    color: purple;
+    color: #000;
     font-weight:600;
+  }
+  .calendar-footer button{
+    color: #000;
   }

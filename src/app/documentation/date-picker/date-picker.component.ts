@@ -9,5 +9,10 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SampleDatePickerComponent {
- 
+ selectedDate:Date=new Date()
+ endDate:Date=new Date()
+ onDateChange(date:Date){
+  console.log(date,'date');
+  
+ }
 }

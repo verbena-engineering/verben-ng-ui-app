@@ -1,7 +1,12 @@
 <table [ngStyle]="getTableStyle()">
   <thead>
+    <!-- <tr [ngStyle]="getHeaderStyle()">
+      <th colspan="2" scope="colgroup">Group 1</th>
+      <th colspan="1" scope="colgroup">Group 2</th>
+    </tr> -->
+
     <tr [ngStyle]="getHeaderStyle()">
-      @for (column of columnsSignal(); track column.id) {
+      @for (column of displayColumns(); track column.id) {
       <th [ngStyle]="getCellStyle(-1, $index)">
         @if (column.headerTemplate) {
         <ng-container
@@ -16,21 +21,22 @@
     </tr>
   </thead>
   <tbody>
-    @for (row of data(); track dataKey(); let rowIndex = $index) { @if
-    (isGroupRow(row)) {
+    @for (row of tableData(); track row._key; let rowIndex = $index) { @if
+    (isGroupRow(row.originalData)) {
     <tr class="group-row" [ngStyle]="getRowStyle(rowIndex)">
       <td
-        [attr.colspan]="columnsSignal().length"
+        [attr.colspan]="displayColumns().length"
         [ngStyle]="getCellStyle(rowIndex, 0)"
       >
-        {{ getCellValue(row, columnsSignal()[0]) }}
+        {{ getCellValue(row.originalData, displayColumns()[0]) }}
       </td>
     </tr>
     } @else {
     <tr [ngStyle]="getRowStyle(rowIndex)">
-      @for (column of columnsSignal(); track column.id; let colIndex = $index) {
+      @for (column of displayColumns(); track column.id; let colIndex = $index)
+      {
       <td [ngStyle]="getCellStyle(rowIndex, colIndex)">
-        @if (isRowEditing(row) && column.cellEditTemplate) {
+        @if (isRowEditing(row._key) && column.cellEditTemplate) {
         <ng-container
           [ngTemplateOutlet]="column.cellEditTemplate"
           [ngTemplateOutletContext]="getCellContext(row, column, rowIndex)"
@@ -41,7 +47,7 @@
           [ngTemplateOutletContext]="getCellContext(row, column, rowIndex)"
         ></ng-container>
         } @else {
-        {{ getCellValue(row, column) }}
+        {{ getCellValue(row.originalData, column) }}
         }
       </td>
       }
@@ -51,7 +57,7 @@
   @if (hasFooter()) {
   <tfoot>
     <tr [ngStyle]="getFooterStyle()">
-      @for (column of columnsSignal(); track column.id) {
+      @for (column of displayColumns(); track column.id) {
       <td [ngStyle]="getCellStyle(-1, $index)">
         @if (column.footerTemplate) {
         <ng-container

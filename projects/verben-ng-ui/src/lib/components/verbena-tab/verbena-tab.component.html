@@ -1,0 +1,30 @@
+<div 
+  class="tab-container" 
+  [ngStyle]="{'background-color': backgroundColor}"
+>
+  <div class="tab-header">
+    <div 
+      *ngFor="let tab of tabs" 
+      class="tab-item" 
+      [ngClass]="{'active': tab.active, 'disabled': tab.disabled}"
+      [ngStyle]="{
+        'background-color': tab.active ? (tab.activeTabBgColor || activeTabBgColor) : tab.tabColor,
+        'color': tab.textColor || textColor,
+        'border-color': !tab.tabColor? activeTabBgColor : tab.tabColor
+      }"
+      (click)="!tab.disabled && selectTab(tab)"
+    >
+      {{ tab.title }}
+      <span 
+        class="tab-badge" 
+        *ngIf="tab.badgeCount !== null"
+        [ngStyle]="{'background-color': tab.badgeColor}"
+      >
+        {{ tab.badgeCount }}
+      </span>
+    </div>
+  </div>
+  <div class="tab-content" *ngIf="activeTab" [ngStyle]="{'background-color': !activeTab.tabColor? activeTabBgColor : activeTab.tabColor}">
+    <ng-container [ngTemplateOutlet]="activeTab.content"></ng-container>
+  </div>
+</div>

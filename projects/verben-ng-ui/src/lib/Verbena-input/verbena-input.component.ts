@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, Optional, Self, Inject, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
+
 @Component({
   selector: 'verbena-input',
   templateUrl: './verbena-input.component.html',
@@ -31,6 +32,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() errorBorderColor?: string;
   @Input() errorPosition: 'left' | 'right' | 'top' | 'bottom' = 'bottom';
   @Input() svg: string = '';
+  @Input() fontSize: string = '';
   @Input() svgWidth: number = 20;
   @Input() svgHeight: number = 20;
   @Input() svgColor: string = '';
@@ -54,7 +56,6 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
     tel?: string;
     url?: string;
   } = {};
-  @Input() fontSize: string = "14px";
 
   @Output() valueChange = new EventEmitter<string | FileList>();
 
@@ -106,6 +107,9 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
       this.onChange(sanitizedValue);
       this.valueChange.emit(sanitizedValue);
     }
+
+    this.validate();
+    
   }
 
   applyCapitalization(value: string, format: string): string {
@@ -193,15 +197,10 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
       return;
     }
     
-
-    //phone number
-    if (this.type === 'tel') {
-      const phoneNumberRegex = /^\+?[0-9\s\-().]{7,}$/;
-      if (!phoneNumberRegex.test(this.value)) {
-        this.errorMessage = this.customErrorMessages.tel || 'Please enter a valid telephone number.';
-        this.isInvalid = true;
-        return;
-      }
+    if (this.type === 'tel' && !/^\+?[1-9]\d{1,14}$/.test(this.value)) {
+      this.errorMessage = this.customErrorMessages.tel || 'Please enter a valid telephone number.';
+      this.isInvalid = true;
+      return;
     }
 
     if (this.type === 'url' && !/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/.test(this.value)) {
@@ -227,5 +226,10 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
   setDisabledState(isDisabled: boolean): void {
     this.disable = isDisabled;
+  }
+
+  onBlur() {
+    this.onTouch();  // for ControlValueAccessor
+    this.validate(); // for manual validation
   }
 }

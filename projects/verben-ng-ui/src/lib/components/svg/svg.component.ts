@@ -1,30 +1,41 @@
-import { Component, Input, OnInit, ElementRef, ViewChild, OnChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ElementRef,
+  ViewChild,
+  OnChanges,
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'verben-svg',
   template: '<span #svgContainer></span>',
-  styleUrls: ['./svg.component.css']
+  styleUrls: ['./svg.component.css'],
 })
 export class SvgComponent implements OnInit, OnChanges {
   @Input() icon: string = '';
-  @Input() width: number = 24;  
-  @Input() height: number = 24; 
+  @Input() width: number = 24;
+  @Input() height: number = 24;
+  color: string = '';
   @Input() fill: string = '';
   @Input() stroke: string = '';
+  @Input() type: 'default' | 'outline' | 'solid' = 'default';
 
-  @Input() size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'; 
+  @Input() size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
 
   @ViewChild('svgContainer', { static: true }) svgContainer!: ElementRef;
 
   constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
+    this.color = this.fill.length > 0 ? this.fill : this.stroke;
     this.loadSvgIcon(this.icon);
   }
 
   ngOnChanges(): void {
+    this.color = this.fill.length > 0 ? this.fill : this.stroke;
     this.loadSvgIcon(this.icon);
   }
 
@@ -55,9 +66,9 @@ export class SvgComponent implements OnInit, OnChanges {
         case '4xl':
           width = height = 80;
           break;
-        default: 
-        width = height = 16;
-        break;
+        default:
+          width = height = 16;
+          break;
       }
     }
 
@@ -65,13 +76,87 @@ export class SvgComponent implements OnInit, OnChanges {
   }
 
   loadSvgIcon(iconName: string): void {
-    this.http.get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
-      .subscribe((svgContent: string) => {
-        this.updateSvg(svgContent);
-      }, (error) => {
-        console.error(`Error loading SVG icon: ${error}`);
-      });
+    this.http
+      .get(`assets/lib-icons/${this.type}/${iconName}.svg`, {
+        responseType: 'text',
+      })
+      .subscribe(
+        (svgContent: string | null) => {
+          if (svgContent && svgContent.includes('<svg')) {
+            try {
+              this.updateSvg(svgContent);
+            } catch (err: any) {
+              // console.log({ Error: err });
+            }
+          } else {
+            // If response is not a valid SVG, try loading from project assets
+            this.fallbackLoad(iconName);
+          }
+        },
+        (error) => {
+          this.fallbackLoad(iconName);
+        }
+      );
   }
+
+  private fallbackLoad(iconName: string): void {
+    this.http
+      .get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
+      .subscribe(
+        (svgContent: string | null) => {
+          if (svgContent && svgContent.includes('<svg')) {
+            try {
+              this.updateSvg(svgContent);
+            } catch (err: any) {
+              // console.log({ Error: err });
+            }
+          } else {
+            //console.error(`Invalid SVG response for ${iconName}`);
+          }
+        },
+        (error) => {
+          // console.error(`Error loading SVG icon: ${error}`);
+        }
+      );
+  }
+
+  // loadSvgIcon(iconName: string): void {
+  //   this.http
+  //     .get(`assets/lib-icons/${this.type}/${iconName}.svg`, {
+  //       responseType: 'text',
+  //     })
+  //     .subscribe(
+  //       (svgContent: string | null) => {
+  //         //console.log({SvgContent: svgContent});
+  //         if (svgContent) {
+  //           try {
+  //             this.updateSvg(svgContent);
+  //           } catch (err: any) {
+  //             console.log({ Error: err });
+  //           }
+  //         }
+  //       },
+  //       (error) => {
+  //         this.http
+  //           .get(`assets/icons/${iconName}.svg`, { responseType: 'text' })
+  //           .subscribe(
+  //             (svgContent: string | null) => {
+  //               //console.log({SvgContent: svgContent});
+  //               if (svgContent) {
+  //                 try {
+  //                   this.updateSvg(svgContent);
+  //                 } catch (err: any) {
+  //                   console.log({ Error: err });
+  //                 }
+  //               }
+  //             },
+  //             (error) => {
+  //               console.error(`Error loading SVG icon: ${error}`);
+  //             }
+  //           );
+  //       }
+  //     );
+  // }
 
   private updateSvg(svgContent: string): void {
     const parser = new DOMParser();
@@ -83,16 +168,40 @@ export class SvgComponent implements OnInit, OnChanges {
     svgElement.setAttribute('width', width.toString());
     svgElement.setAttribute('height', height.toString());
 
-    const elementsToUpdate = ['path', 'circle', 'line', 'rect', 'polygon', 'polyline', 'ellipse'];
+    const elementsToUpdate = [
+      'path',
+      'circle',
+      'line',
+      'rect',
+      'polygon',
+      'polyline',
+      'ellipse',
+    ];
 
-    elementsToUpdate.forEach(tag => {
+    elementsToUpdate.forEach((tag) => {
       const elements = svgElement.querySelectorAll(tag);
-      elements.forEach(element => {
-        if (this.fill) {
-          element.setAttribute('fill', this.fill);
+      elements.forEach((element) => {
+        const hasStroke =
+          element.hasAttribute('stroke') &&
+          element.getAttribute('stroke') !== 'none';
+        const hasFill =
+          element.hasAttribute('fill') &&
+          element.getAttribute('fill') !== 'none';
+
+        //  if (this.icon == 'academic-cap') {
+        //     console.log({
+        //       Element: element,
+        //       hasStroke: hasStroke,
+        //       hasFill: hasFill,
+        //       Stroke: element.getAttribute('stroke'),
+        //       Fill: element.getAttribute('fill'),
+        //     });
+        //   }
+        if (this.color && hasFill) {
+          element.setAttribute('fill', this.color);
         }
-        if (this.stroke) {
-          element.setAttribute('stroke', this.stroke);
+        if (this.color && hasStroke) {
+          element.setAttribute('stroke', this.color);
         }
       });
     });
@@ -102,16 +211,16 @@ export class SvgComponent implements OnInit, OnChanges {
       const newMaskId = `mask_${this.icon}_${index}`;
       mask.setAttribute('id', newMaskId);
 
-      const maskReferences = svgElement.querySelectorAll(`[mask="url(#${mask.id})"]`);
-      maskReferences.forEach(ref => {
+      const maskReferences = svgElement.querySelectorAll(
+        `[mask="url(#${mask.id})"]`
+      );
+      maskReferences.forEach((ref) => {
         ref.setAttribute('mask', `url(#${newMaskId})`);
       });
     });
-
 
     const svgContainerEl = this.svgContainer.nativeElement;
     svgContainerEl.innerHTML = '';
     svgContainerEl.appendChild(svgElement);
   }
 }
-

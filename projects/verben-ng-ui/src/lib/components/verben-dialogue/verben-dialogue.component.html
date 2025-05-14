@@ -1,43 +1,22 @@
-<div
-  class="modal-wrapper fixed inset-0 flex justify-center items-center"
-  [ngClass]="{
+<div class="modal-wrapper fixed inset-0 flex justify-center items-center" [ngClass]="{
     'visible opacity-100': isVisible,
     'invisible opacity-0': !isVisible,
     'justify-start': mode === 'drawer' && position === 'left',
     'justify-end': mode === 'drawer' && position === 'right'
-  }"
-  [ngStyle]="{ 'background-color': backdropColor, 'transition': 'opacity 0.3s ease' }"
+  }" [ngStyle]="{ 'background-color': backdropColor, 'transition': 'opacity 0.3s ease' }">
+ <div
+ [style.padding]="padding"
+ [style.margin]="margin"
+ [style.background-color]="dialogueBgColor"
+ [style.border-radius]="mode === 'dialogue' && borderRadius"
+ [style.box-shadow]="boxShadow"
+ [style.width]="mode === 'dialogue' ? dialogueWidth :drawerWidth"
+ [class]="customClass"
+ [ngClass]="setStyles()"
 >
-  <div
-    [style.padding]="padding"
-    [style.margin]="margin"
-    [style.background-color]="dialogueBgColor"
-    [style.border-radius]="mode==='dialogue' && borderRadius"
-    [style.box-shadow]="boxShadow"
-    [class]="customClass"
-    [ngStyle]="{'max-width':mode==='drawer'&&drawerWidth}"
-    [ngClass]="{
-      'modal-content p-4': mode === 'dialogue',
-      'max-w-sm': size === 'small' && mode === 'dialogue',
-      'max-w-md': size === 'medium' && mode === 'dialogue',
-      'max-w-lg': size === 'large' && mode === 'dialogue',
-      'drawer-left': mode  === 'drawer' && position === 'left',
-      'drawer-right': mode === 'drawer' && position === 'right',
-      'drawer-show-left': mode === 'drawer' && position === 'left' && isVisible,
-      'drawer-show-right': mode === 'drawer' && position === 'right' && isVisible
-    }"
-  >
     <!-- Close Icon -->
-    <verben-svg
-      *ngIf="showCloseIcon"
-      [class]="closeIconClass"
-      (click)="onClose()"
-      icon="close"
-      [width]="20"
-      [height]="20"
-      fill="white"
-      stroke="#000"
-    ></verben-svg>
+    <verben-svg *ngIf="showCloseIcon" [class]="closeIconClass" (click)="onClose()" icon="close" [width]="20"
+      [height]="20" fill="white" stroke="#000"></verben-svg>
 
     <!-- Modal Header -->
     <div class="modal-header text-lg font-semibold mb-4">

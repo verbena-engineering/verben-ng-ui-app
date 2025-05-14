@@ -43,6 +43,7 @@ export class VerbenTimePickerComponent {
       meridiem: this.format24 ? '' : this.meridiem
     });
   }
+  
 
   setMeridiem(value: string) {
     this.meridiem = value;

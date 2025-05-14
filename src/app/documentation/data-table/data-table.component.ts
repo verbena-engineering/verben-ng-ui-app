@@ -1,9 +1,25 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FilterCondition } from 'verben-ng-ui';
-import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table/data-table.types';
+import {
+  Component,
+  signal,
+  ChangeDetectionStrategy,
+  WritableSignal,
+  viewChildren,
+} from '@angular/core';
+import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  ColumnDefinition,
+  FormControlOf,
+  FormGroupConfig,
+} from 'verben-ng-ui/src/lib/components/data-table/data-table.types';
 import { TableStyles } from 'verben-ng-ui/src/lib/components/data-table/style.types';
-import { DataExportService, SortCondition } from 'verben-ng-ui/src/public-api';
+import {
+  DataExportService,
+  SortCondition,
+  FilterCondition,
+  DataExtendItem,
+} from 'verben-ng-ui/src/public-api';
+import { ColumnDirective } from 'verben-ng-ui/src/public-api';
+import { read, utils, writeFile } from 'xlsx';
 
 @Component({
   selector: 'app-data-table',
@@ -54,6 +70,11 @@ export class DataTableComponent {
       header: 'Select',
     },
     {
+      id: 'customer',
+      header: 'Customer',
+      formControlName: 'customer',
+    },
+    {
       id: 'names',
       header: 'Full Name',
       accessorFn: (row) => `${row.names?.firstName} ${row.names?.lastName}`,
@@ -86,6 +107,77 @@ export class DataTableComponent {
 
   controlledCols = signal<ColumnDefinition<YourDataType>[]>(this.tableColumns2);
 
+  smallCols = signal<
+    ColumnDefinition<{ Name: string; Friend: string; Date: Date }>[]
+  >([
+    {
+      id: 'Name',
+      header: 'Name',
+      accessorKey: 'Name',
+      formControlName: 'Name',
+    },
+    {
+      id: 'Friend',
+      header: 'Friend',
+      accessorKey: 'Friend',
+      formControlName: 'Friend',
+    },
+    {
+      id: 'Date',
+      header: 'Date',
+      accessorKey: 'Date',
+      formControlName: 'Date',
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+    },
+  ]);
+
+  smallCols2 = signal<
+    ColumnDefinition<{ Name: string; Friend: string; Date: Date }>[]
+  >([
+    {
+      id: 'Name',
+      header: 'Name',
+      accessorKey: 'Name',
+    },
+    {
+      id: 'Friend',
+      header: 'Friend',
+      accessorKey: 'Friend',
+    },
+    {
+      id: 'Date',
+      header: 'Date',
+      accessorKey: 'Date',
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+    },
+  ]);
+
+  smallData = signal<{ Name: string; Friend: string; Date: Date }[]>([
+    {
+      Name: 'John Doe',
+      Friend: 'Jane Smith',
+      Date: new Date(),
+    },
+    {
+      Name: 'Alice Johnson',
+      Friend: 'Bob Brown',
+      Date: new Date(),
+    },
+    {
+      Name: 'Jam Jam',
+      Friend: 'Yuckan Mo',
+      Date: new Date(),
+    },
+  ]);
+
+  columnTemplates = viewChildren<ColumnDirective>(ColumnDirective);
+
   tableColumns3: ColumnDefinition<YourDataType>[] = [
     {
       id: 'names',
@@ -110,11 +202,33 @@ export class DataTableComponent {
   ];
 
   form!: FormGroup;
+  controls: FormGroup['controls'];
+  importedData: WritableSignal<any[]> = signal([]);
+
+  formGroupConfig: WritableSignal<FormGroupConfig<any>>;
 
   constructor(
     private fb: FormBuilder,
     private exportService: DataExportService
-  ) {}
+  ) {
+    this.controls = {
+      customer: this.fb.control(''),
+      income: this.fb.control(''),
+      age: this.fb.control(''),
+      money: this.fb.control(''),
+      message: this.fb.control(''),
+      role: this.fb.control(''),
+    };
+
+    this.formGroupConfig = signal({
+      controls: {
+        Name: this.fb.control(''),
+        Friend: this.fb.control(''),
+      },
+      // validatorOrOpts: null,
+      // asyncValidator: null,
+    });
+  }
 
   async ngOnInit() {
     this.form = this.fb.group({
@@ -144,6 +258,24 @@ export class DataTableComponent {
         }))
       );
     }, 500);
+  }
+
+  addRow(event: {
+    index: number;
+    key: string | number;
+    data: Partial<{ Name: string; Friend: string }>;
+  }) {
+    console.log(event);
+    this.smallData.update((dat) => {
+      // dat[event.index] = { ...dat[event.index], ...event.data };
+      return dat.map((d, i) => {
+        if (i === event.index) {
+          return { ...d, ...event.data };
+        }
+        return d;
+      });
+    });
+    console.log(this.smallData());
   }
 
   changeCols() {
@@ -194,6 +326,10 @@ export class DataTableComponent {
     this.downloadCSV(exportedData);
   }
 
+  handleExtend(extendedProperties: DataExtendItem[]) {
+    console.log('Extended properties:', extendedProperties);
+  }
+
   onFiltersApplied(filters: FilterCondition[]) {
     // Apply filters to your data
     console.log('Applying filters:', filters);
@@ -202,6 +338,13 @@ export class DataTableComponent {
   onSortApplied(sorts: SortCondition[]) {
     console.log('Applying sorts:', sorts);
     // Apply sorts to your data
+  }
+
+  onColumnsUpdated(columns: ColumnDefinition<YourDataType>[]) {
+    console.log('Applying columns:', columns);
+    this.controlledCols.set(columns);
+    // Apply columns to your data
+    console.log(this.controlledCols());
   }
 
   private downloadCSV(data: Partial<any>[]) {
@@ -274,6 +417,64 @@ export class DataTableComponent {
       activityDetails: activityDetails.slice(0, count),
       numberOfParticipants: count,
     };
+  }
+
+  handleTemplateExport(headings: string[]) {
+    const wb = utils.book_new();
+    const ws: any = utils.json_to_sheet([]);
+    utils.sheet_add_aoa(ws, [headings]);
+    // utils.sheet_add_json(ws, this._data, { origin: 'A2', skipHeader: true });
+    utils.book_append_sheet(wb, ws, 'test-title');
+    writeFile(wb, 'test-title' + '-template.' + 'xlsx');
+  }
+
+  handleImport(
+    file: File,
+    previewer?: (data: any[]) => void,
+    parseImport?: (data: any) => any[]
+  ) {
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      // const wb = read(event.target.result, {
+      //   type: 'string',
+      //   raw: true,
+      //   cellText: true,
+      //   cellFormula: false,
+      //   cellNF: false,
+      // });
+      let imported: any[] = [];
+      // const wb = read(event.target.result, { raw: true });
+      const wb = read(event.target.result, { cellDates: true });
+      const sheets = wb.SheetNames;
+      if (sheets.length) {
+        const rows = utils.sheet_to_json(wb.Sheets[sheets[0]], {
+          // raw: true,
+          // rawNumbers: true,
+          // dateNF: 'dd/mm/yyyy',
+        });
+
+        if (parseImport) {
+          imported = parseImport(rows);
+        } else {
+          imported = rows as any[];
+        }
+        // previewer(imported);
+      }
+      // console.log('Imported data:', JSON.stringify(imported, null, 2));
+      // imported = imported.map((imp) => {
+      //   if (imp['Date']) {
+      //     imp['Date'] = new Date((imp['Date'] - (25567 + 2)) * 86400 * 1000);
+      //   }
+      //   return imp;
+      // });
+      this.importedData.set(imported);
+      return imported;
+    };
+    return reader.readAsArrayBuffer(file);
+  }
+
+  log(data: any[]) {
+    console.log('Data:', data);
   }
 }
 

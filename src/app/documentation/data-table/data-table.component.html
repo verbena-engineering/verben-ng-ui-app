@@ -1,4 +1,173 @@
+<<<<<<< HEAD
 <!-- <lib-data-table
+=======
+<ng-template #nameField let-control>
+  <div class="width-max">
+    <verbena-input [formControl]="control"></verbena-input>
+  </div>
+</ng-template>
+
+<lib-data-table
+  [data]="smallData()"
+  [columns]="smallCols()"
+  [formGroupConfig]="this.formGroupConfig()"
+  [styleConfig]="table2Styles"
+  (rowSave)="addRow($event)"
+>
+  <!-- <ng-container libColumn="Name">
+    <ng-template #cell let-value="value">
+      <div>
+        <p>{{ value }}</p>
+      </div>
+    </ng-template>
+    <ng-template
+      #cellEdit
+      let-value="value"
+      let-updateValue="updateValue"
+      let-control="formControl"
+    >
+      <verbena-input [formControl]="control"></verbena-input>
+    </ng-template>
+  </ng-container>
+
+  <ng-container libColumn="Friend">
+    <ng-template #cell let-value="value">
+      <div>
+        <p>{{ value }}</p>
+      </div>
+    </ng-template>
+    <ng-template
+      #cellEdit
+      let-value="value"
+      let-updateValue="updateValue"
+      let-control="formControl"
+    >
+      <verbena-input
+        [ngModel]="value"
+        (ngModelChange)="updateValue($event)"
+      ></verbena-input>
+    </ng-template>
+  </ng-container> -->
+
+  <ng-container libColumn="actions">
+    <ng-template
+      #cell
+      let-isEditing="isEditing"
+      let-toggleRowEdit="toggleRowEdit"
+      let-deleteRow="deleteRow"
+    >
+      <div class="flex gap-4 items-center">
+        <button (click)="toggleRowEdit()">
+          {{ isEditing ? "Save" : "Edit" }}
+        </button>
+
+        <button (click)="deleteRow()">Remove</button>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <strong>Actions</strong>
+    </ng-template>
+  </ng-container>
+</lib-data-table>
+
+<lib-data-import
+  [formGroupConfig]="this.formGroupConfig()"
+  (exportTemplateEvent)="handleTemplateExport($event)"
+  (importEvent)="handleImport($event)"
+  (importEventData)="log($event)"
+  [previewColumns]="smallCols()"
+  title="Hello"
+  [previewData]="importedData()"
+  [fields]="['Name', 'Friend', 'Date']"
+  [columnTemplates]="columnTemplates()"
+>
+  <!-- <ng-container
+[ngTemplateOutlet]="nameField"
+[ngTemplateOutletContext]="{ $implicit: picked }"
+>
+</ng-container> -->
+</lib-data-import>
+
+<lib-data-table
+  [data]="smallData()"
+  [columns]="smallCols2()"
+  [styleConfig]="table2Styles"
+  (rowSave)="addRow($event)"
+>
+  <ng-container libColumn="Friend">
+    <ng-template #cell let-row="row" let-value>
+      <span class="px-2 py-[2px] rounded-3xl"> {{ value }}</span>
+    </ng-template>
+    <ng-template #cellEdit let-row="row" let-updateData="updateData" let-value>
+      <div class="width-max">
+        <verben-drop-down
+          [options]="['Jabar', 'Jaleel', 'Hasim']"
+          [width]="'100%'"
+          placeholder="select Friend"
+          [disabled]="false"
+          [(ngModel)]="row.Friend"
+        ></verben-drop-down>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-container libColumn="Date">
+    <ng-template #cell let-row="row" let-value>
+      {{ value | date }}
+    </ng-template>
+    <ng-template #cellEdit let-row="row" let-updateData="updateData" let-value>
+      <div class="width-max">
+        <app-date-picker [(date)]="row.Date"></app-date-picker>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-container libColumn="Name">
+    <ng-template #cell let-row="row" let-value>
+      {{ value }}
+    </ng-template>
+    <ng-template #cellEdit let-row="row" let-updateData="updateData" let-value>
+      <div class="width-max">
+        <verbena-input [(ngModel)]="row.Name"></verbena-input>
+      </div>
+    </ng-template>
+  </ng-container>
+
+  <ng-container libColumn="actions">
+    <ng-template
+      #cell
+      let-isEditing="isEditing"
+      let-toggleRowEdit="toggleRowEdit"
+      let-deleteRow="deleteRow"
+    >
+      <div class="flex gap-4 items-center">
+        <button (click)="toggleRowEdit()">
+          {{ isEditing ? "Save" : "Edit" }}
+        </button>
+
+        <button (click)="deleteRow()">Remove</button>
+      </div>
+    </ng-template>
+    <!-- <ng-template #header>
+      <strong>Actions</strong>
+    </ng-template> -->
+  </ng-container>
+</lib-data-table>
+
+<!-- {{ smallData()[0].Name }} -->
+
+<lib-data-import
+  (exportTemplateEvent)="handleTemplateExport($event)"
+  (importEvent)="handleImport($event)"
+  (importEventData)="log($event)"
+  [previewColumns]="smallCols2()"
+  title="Hello"
+  [previewData]="importedData()"
+  [fields]="['Name', 'Friend', 'Date']"
+  [columnTemplates]="columnTemplates()"
+>
+</lib-data-import>
+
+<lib-data-table
+>>>>>>> f0eae6b6958bbb51202cec651cd9ab3cf6acf982
   [data]="tableData()"
   [columns]="tableColumns3"
   (selectionChange)="onSelectionChange($event)"
@@ -30,7 +199,6 @@
   [data]="tableData()"
   [columns]="tableColumns"
   (rowEdit)="onRowEdit($event)"
-  (rowSave)="onRowSave($event)"
   (rowDelete)="onRowDelete($event)"
   (selectionChange)="onSelectionChange($event)"
   [styleConfig]="stickyStyles"
@@ -126,11 +294,15 @@
 
 <button (click)="changeCols()">Shuffle cols</button>
 
+<lib-data-columns
+  [columns]="controlledCols()"
+  (columnsUpdated)="onColumnsUpdated($event)"
+></lib-data-columns>
+
 <lib-data-table
   [data]="tableData()"
   [columns]="controlledCols()"
   (rowEdit)="onRowEdit($event)"
-  (rowSave)="onRowSave($event)"
   (rowDelete)="onRowDelete($event)"
   (selectionChange)="onSelectionChange($event)"
   [styleConfig]="table2Styles"
@@ -330,6 +502,14 @@
     [data]="tableData()"
     (sortApplied)="onSortApplied($event)"
   ></lib-data-sort> -->
+
+  <lib-data-columns
+    [columns]="controlledCols()"
+    (columnsUpdated)="onColumnsUpdated($event)"
+  ></lib-data-columns>
+
+  <lib-data-extend [properties]="[]" (extendDataEvent)="handleExtend($event)">
+  </lib-data-extend>
 
   <!-- <app-table-export
     [data]="tableData()"

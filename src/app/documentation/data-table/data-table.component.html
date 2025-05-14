@@ -1,21 +1,21 @@
-<lib-data-table
+<!-- <lib-data-table
   [data]="tableData()"
   [columns]="tableColumns3"
   (selectionChange)="onSelectionChange($event)"
   [styleConfig]="testTableStyles"
   groupBy="role"
->
+> -->
   <!-- Template for each column that needs custom rendering -->
-  <ng-container *ngFor="let column of tableColumns" [libColumn]="column.id">
+  <!-- <ng-container *ngFor="let column of tableColumns" [libColumn]="column.id">
     <ng-template
       #cell
       let-value="value"
       let-row="row"
       let-isSelected="isSelected"
       let-toggleRowSelection="toggleRowSelection"
-    >
+    > -->
       <!-- Wrap cell content in clickable div -->
-      <div
+      <!-- <div
         class="cell-content"
         [class.selected]="isSelected"
         (click)="toggleRowSelection()"
@@ -24,9 +24,9 @@
       </div>
     </ng-template>
   </ng-container>
-</lib-data-table>
+</lib-data-table> -->
 
-<lib-data-table
+<!-- <lib-data-table
   [data]="tableData()"
   [columns]="tableColumns"
   (rowEdit)="onRowEdit($event)"
@@ -91,13 +91,13 @@
       <input
         [ngModel]="value.names"
         (ngModelChange)="updateData(reverseNameTransform($event))"
-      />
+      /> -->
       <!-- <input
         type="number"
         [ngModel]="value.participants"
         (ngModelChange)="updateNestedValue('participants', $event)"
       /> -->
-    </ng-template>
+    <!-- </ng-template>
     <ng-template #header>
       <strong>Customer</strong>
     </ng-template>
@@ -120,9 +120,9 @@
       <strong>Actions</strong>
     </ng-template>
   </ng-container>
-</lib-data-table>
+</lib-data-table> -->
 
-<hr style="margin-block: 4rem" />
+<!-- <hr style="margin-block: 4rem" />
 
 <button (click)="changeCols()">Shuffle cols</button>
 
@@ -169,9 +169,9 @@
         <p>{{ value }}</p>
       </div>
     </ng-template>
-    <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+    <ng-template #cellEdit let-value="value" let-updateValue="updateValue"> -->
       <!-- <input [ngModel]="value" (ngModelChange)="updateValue($event)" /> -->
-      <verben-drop-down
+      <!-- <verben-drop-down
         placeholder="Select Value"
         (ngModelChange)="updateValue($event)"
         [options]="dropdownOptions"
@@ -205,13 +205,13 @@
         <p>{{ value }}</p>
       </div>
     </ng-template>
-    <ng-template #cellEdit let-value="value" let-updateValue="updateValue">
+    <ng-template #cellEdit let-value="value" let-updateValue="updateValue"> -->
       <!-- <input
         type="number"
         [ngModel]="value"
         (ngModelChange)="updateValue($event)"
       /> -->
-      <verbena-input
+      <!-- <verbena-input
         [placeHolder]="'Enter your age'"
         [required]="true"
         [type]="'integer'"
@@ -270,9 +270,9 @@
         (valueChange)="updateValue($event)"
       ></verbena-textarea>
     </ng-template>
-  </ng-container>
+  </ng-container> -->
 
-  <ng-container libColumn="actions">
+  <!-- <ng-container libColumn="actions">
     <ng-template
       #cell
       let-isEditing="isEditing"
@@ -289,9 +289,9 @@
       <strong>Actions</strong>
     </ng-template>
   </ng-container>
-</lib-data-table>
+</lib-data-table> -->
 
-<div class="">
+<!-- <div class=""> -->
   <!-- <lib-data-export
     [data]="tableData()"
     (exportDataEvent)="handleExport($event)"
@@ -312,7 +312,7 @@
   >
   </lib-data-xport> -->
 
-  <lib-data-xport
+  <!-- <lib-data-xport
     [columns]="controlledCols()"
     [data]="tableData()"
     (exportDataEvent)="handleExport($event)"
@@ -329,10 +329,10 @@
     [columns]="controlledCols()"
     [data]="tableData()"
     (sortApplied)="onSortApplied($event)"
-  ></lib-data-sort>
+  ></lib-data-sort> -->
 
   <!-- <app-table-export
     [data]="tableData()"
     (exportDataEvent)="handleExport($event)"
   ></app-table-export> -->
-</div>
+<!-- </div> -->

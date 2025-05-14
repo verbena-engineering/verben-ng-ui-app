@@ -100,70 +100,72 @@
       (ngModelChange)="uniqueIdentifiers.set($event)"
     ></verben-drop-down>
   </div>
-  <lib-data-table
-    [data]="previewData()"
-    [columns]="previewColumnsList()"
-    [formGroupConfig]="formGroupConfig()"
-    (rowSave)="rowSave.emit($event)"
-  >
-    <ng-container libColumn="actions">
-      <ng-template
-        #cell
-        let-value
-        let-deleteRow="deleteRow"
-        let-isEditing="isEditing"
-        let-toggleRowEdit="toggleRowEdit"
-        let-row="row"
-        let-rowIndex="rowIndex"
-      >
-        <div class="flex action-buttons">
-          <verben-svg
-            (click)="toggleRowEdit()"
-            icon="edit"
-            [width]="15"
-            [height]="15"
-            class="cursor-pointer"
-          ></verben-svg>
+  <div style="max-height: min(75vh, 780px); overflow: auto">
+    <lib-data-table
+      [data]="previewData()"
+      [columns]="previewColumnsList()"
+      [formGroupConfig]="formGroupConfig()"
+      (rowSave)="rowSave.emit($event)"
+    >
+      <ng-container libColumn="actions">
+        <ng-template
+          #cell
+          let-value
+          let-deleteRow="deleteRow"
+          let-isEditing="isEditing"
+          let-toggleRowEdit="toggleRowEdit"
+          let-row="row"
+          let-rowIndex="rowIndex"
+        >
+          <div class="flex action-buttons">
+            <verben-svg
+              (click)="toggleRowEdit()"
+              icon="edit"
+              [width]="15"
+              [height]="15"
+              class="cursor-pointer"
+            ></verben-svg>
 
-          <verben-svg
-            icon="delete"
-            [width]="15"
-            [height]="15"
-            (click)="deleteRow()"
-            class="cursor-pointer"
-          ></verben-svg>
-        </div>
-      </ng-template>
+            <verben-svg
+              icon="delete"
+              [width]="15"
+              [height]="15"
+              (click)="deleteRow()"
+              class="cursor-pointer"
+            ></verben-svg>
+          </div>
+        </ng-template>
 
-      <ng-template
-        #cellEdit
-        let-value
-        let-deleteRow
-        let-isEditing="isEditing"
-        let-toggleRowEdit="toggleRowEdit"
-        let-row="row"
-        let-rowIndex="rowIndex"
-      >
-        <div class="flex action-buttons">
-          <verben-svg
-            (click)="toggleRowEdit()"
-            icon="tick"
-            [width]="15"
-            [height]="15"
-            class="cursor-pointer"
-          ></verben-svg>
+        <ng-template
+          #cellEdit
+          let-value
+          let-deleteRow
+          let-isEditing="isEditing"
+          let-toggleRowEdit="toggleRowEdit"
+          let-row="row"
+          let-rowIndex="rowIndex"
+        >
+          <div class="flex action-buttons">
+            <verben-svg
+              (click)="toggleRowEdit()"
+              icon="tick"
+              [width]="15"
+              [height]="15"
+              class="cursor-pointer"
+            ></verben-svg>
 
-          <verben-svg
-            icon="delete"
-            [width]="15"
-            [height]="15"
-            (click)="deleteRow()"
-            class="cursor-pointer"
-          ></verben-svg>
-        </div>
-      </ng-template>
-    </ng-container>
-  </lib-data-table>
+            <verben-svg
+              icon="delete"
+              [width]="15"
+              [height]="15"
+              (click)="deleteRow()"
+              class="cursor-pointer"
+            ></verben-svg>
+          </div>
+        </ng-template>
+      </ng-container>
+    </lib-data-table>
+  </div>
 </ng-template>
 
 <ng-template #footerTemplate>

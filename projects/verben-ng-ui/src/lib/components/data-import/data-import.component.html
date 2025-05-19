@@ -86,11 +86,11 @@
 
 <ng-template #bodyTemplate>
   <div class="flex gap-4 items-center justify-between my-4">
-    <p class="">Total Items: {{ service.importedData() }}</p>
+    <p class="">Total Items: {{ service.importedData().length }}</p>
 
     <p class="">Duplicates: {{ duplicateIndexSet.size }}</p>
 
-    <p class="">Invalid Items: {{ 0 }}</p>
+    <p class="">Invalid Items: {{ invalidIndexSet.size }}</p>
 
     <verben-drop-down
       [multiselect]="true"
@@ -105,7 +105,7 @@
       [data]="service.importedData()"
       [columns]="previewColumnsList()"
       [formGroupConfig]="formGroupConfig()"
-      (rowSave)="service.addRow($event); rowSave.emit($event)"
+      (rowSave)="service.addRow($event)"
     >
       <ng-container libColumn="actions">
         <ng-template

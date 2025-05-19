@@ -85,6 +85,23 @@
 </ng-container> -->
 </lib-data-import>
 
+<h1 class="text-lg font-semibold my-2">Import</h1>
+
+<lib-data-import
+  (importEventData)="log($event)"
+  [previewColumns]="smallColsII()"
+  title="Hello"
+  [columnTemplates]="columnTemplates()"
+>
+  <!-- <ng-container
+[ngTemplateOutlet]="nameField"
+[ngTemplateOutletContext]="{ $implicit: picked }"
+>
+</ng-container> -->
+</lib-data-import>
+
+<h1 class="text-lg font-semibold my-4">No Form Control</h1>
+
 <lib-data-table
   [data]="smallData()"
   [columns]="smallCols2()"

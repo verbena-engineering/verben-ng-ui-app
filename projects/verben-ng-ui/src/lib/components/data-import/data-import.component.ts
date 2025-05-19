@@ -215,8 +215,8 @@ export class DataImportComponent<T extends {}> {
 
   save() {
     console.log('PREVDATA', this.service.importedData());
-    this.showPreview = false;
     this.importEventData.emit(this.service.importedData() || []);
+    this.showPreview = false;
   }
 
   getControlNames() {

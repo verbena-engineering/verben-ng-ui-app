@@ -134,6 +134,33 @@ export class DataTableComponent {
     },
   ]);
 
+  smallColsII = signal<
+    ColumnDefinition<{ Name: string; Friend: string; Date: Date }>[]
+  >([
+    {
+      id: 'Name',
+      header: 'Name',
+      accessorKey: 'Name',
+      importKey: 'Name',
+    },
+    {
+      id: 'Friend',
+      header: 'Friend',
+      accessorKey: 'Friend',
+      importKey: 'Friend',
+    },
+    {
+      id: 'Date',
+      header: 'Date',
+      accessorKey: 'Date',
+      importKey: 'Date',
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+    },
+  ]);
+
   smallCols2 = signal<
     ColumnDefinition<{ Name: string; Friend: string; Date: Date }>[]
   >([

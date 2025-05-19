@@ -38,9 +38,9 @@ export class DataImportComponent<T extends {}> {
   title = input<string>('title');
   columnTemplates = input<readonly ColumnDirective[]>([]);
   parser = input<(data: any) => Partial<T>[]>();
-  // previewData = input.required<T[]>();
+  previewData = input.required<T[]>();
   exportTemplateEvent = output<string[]>();
-  // importEvent = output<File>();
+  importEvent = output<File>();
   importEventData = output<Partial<T>[]>();
   rowSave = output<{
     index: number;

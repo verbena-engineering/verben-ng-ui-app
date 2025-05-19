@@ -20,6 +20,7 @@ export interface ColumnDefinition<T> {
   formControlName?: string;
   groupName?: string;
   validatorFn?: (value: T[keyof T]) => boolean;
+  importKey?: keyof T;
 }
 
 // Define a type that extends T with a _key property

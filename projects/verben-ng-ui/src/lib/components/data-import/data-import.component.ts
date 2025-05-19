@@ -19,11 +19,13 @@ import {
   FormGroup,
 } from '@angular/forms';
 import { ColumnDirective } from '../data-table/column.directive';
+import { DataImportService } from './data-import.service';
 
 @Component({
   selector: 'lib-data-import',
   templateUrl: './data-import.component.html',
   styleUrl: './data-import.component.css',
+  providers: [DataImportService],
 })
 export class DataImportComponent<T extends {}> {
   previewColumns = input.required<ColumnDefinition<T>[]>();
@@ -35,10 +37,11 @@ export class DataImportComponent<T extends {}> {
   fields = input<string[]>([]);
   title = input<string>('title');
   columnTemplates = input<readonly ColumnDirective[]>([]);
-  previewData = input.required<T[]>();
+  parser = input<(data: any) => Partial<T>[]>();
+  // previewData = input.required<T[]>();
   exportTemplateEvent = output<string[]>();
-  importEvent = output<File>();
-  importEventData = output<T[]>();
+  // importEvent = output<File>();
+  importEventData = output<Partial<T>[]>();
   rowSave = output<{
     index: number;
     key: number | string;
@@ -59,13 +62,13 @@ export class DataImportComponent<T extends {}> {
   isDragging = false;
   showPreview = false;
 
-  constructor() {
+  constructor(public service: DataImportService<T>) {
     effect(() => {
       // this.previewData()?.forEach((datum) => {
       //   console.log(datum);
       // });
 
-      const isDuplicate = (datum: T, array: T[]) => {
+      const isDuplicate = (datum: Partial<T>, array: Partial<T>[]) => {
         const identifiers = this.uniqueIdentifiers();
 
         return (
@@ -83,7 +86,7 @@ export class DataImportComponent<T extends {}> {
 
       const columns = this.previewColumnsList();
 
-      this.previewData()?.forEach((d, i, arr) => {
+      this.service.importedData()?.forEach((d, i, arr) => {
         if (isDuplicate(d, arr)) {
           this.duplicateIndexSet.add(i);
         }
@@ -138,7 +141,9 @@ export class DataImportComponent<T extends {}> {
 
     this.previewColumnsList = computed(() => {
       return this.previewColumns()
-        .filter((col) => col.accessorKey || col.formControlName)
+        .filter(
+          (col) => col.accessorKey || col.importKey || col.formControlName
+        )
         .map((column) => {
           const matchingTemplate = this.columnTemplates().find(
             (t) => t.columnId === column.id
@@ -147,6 +152,7 @@ export class DataImportComponent<T extends {}> {
           if (matchingTemplate) {
             return {
               ...column,
+              accessorKey: column.importKey ?? column.accessorKey,
               cellTemplate: matchingTemplate.cellTemplate,
               cellEditTemplate: matchingTemplate.cellEditTemplate,
               headerTemplate: matchingTemplate.headerTemplate,
@@ -178,13 +184,17 @@ export class DataImportComponent<T extends {}> {
     event.preventDefault();
     this.isDragging = false;
     this.files = Array.from(event.dataTransfer!.files);
-    this.importEvent.emit(this.files[0]);
+
+    this.service.handleImport(this.files[0], this.parser());
+    // this.importEvent.emit(this.files[0]);
     this.showPreview = true;
   }
 
   onFileSelected(event: any) {
     this.files = Array.from(event.target.files);
-    this.importEvent.emit(this.files[0]);
+    this.service.handleImport(this.files[0], this.parser());
+
+    // this.importEvent.emit(this.files[0]);
     this.showPreview = true;
   }
 
@@ -193,9 +203,9 @@ export class DataImportComponent<T extends {}> {
   }
 
   save() {
-    console.log('PREVDATA', this.previewData());
+    console.log('PREVDATA', this.service.importedData());
     this.showPreview = false;
-    this.importEventData.emit(this.previewData() || []);
+    this.importEventData.emit(this.service.importedData() || []);
   }
 
   getControlNames() {
@@ -207,12 +217,14 @@ export class DataImportComponent<T extends {}> {
   }
 
   handleTemplateExport() {
-    const fg = this.formGroupConfig()?.controls;
-    if (fg) {
-      this.exportTemplateEvent.emit(Object.keys(fg));
-    } else {
-      this.exportTemplateEvent.emit(this.fields());
-    }
+    const headers =
+      this.fields() ??
+      this.previewColumnsList()
+        .filter((col) => col.accessorKey)
+        .map((col) => col.header);
+
+    this.service.handleTemplateExport(headers, this.title());
+    this.exportTemplateEvent.emit(headers);
   }
 
   // getFormControl(index: number, field: string) {

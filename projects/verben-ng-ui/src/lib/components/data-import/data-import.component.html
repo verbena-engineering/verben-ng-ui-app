@@ -95,7 +95,7 @@
     <verben-drop-down
       [multiselect]="true"
       placeholder="Find duplicates by"
-      [options]="fields()"
+      [options]="headers()"
       [ngModel]="uniqueIdentifiers()"
       (ngModelChange)="uniqueIdentifiers.set($event)"
     ></verben-drop-down>

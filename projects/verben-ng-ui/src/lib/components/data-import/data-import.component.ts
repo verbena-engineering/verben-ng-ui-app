@@ -34,11 +34,11 @@ export class DataImportComponent<T extends {}> {
       [K in keyof T]: AbstractControl;
     }>
   >();
-  fields = input<string[]>([]);
-  title = input<string>('title');
+  fields = input<string[]>();
+  title = input<string>('export-template');
   columnTemplates = input<readonly ColumnDirective[]>([]);
   parser = input<(data: any) => Partial<T>[]>();
-  previewData = input.required<T[]>();
+  previewData = input<T[]>();
   exportTemplateEvent = output<string[]>();
   importEvent = output<File>();
   importEventData = output<Partial<T>[]>();
@@ -55,6 +55,8 @@ export class DataImportComponent<T extends {}> {
   // duplicateDataMap: Map<string, number> = new Map();
   duplicateIndexSet = new Set<number>();
   invalidIndexSet = new Map<number, ColumnDirective['columnId'][]>();
+
+  headers: Signal<string[]>;
 
   private _ext: 'xlsx' | 'xls' | 'csv' = 'xlsx';
 
@@ -168,6 +170,15 @@ export class DataImportComponent<T extends {}> {
           },
         ]);
     });
+
+    this.headers = computed(() => {
+      return (
+        this.fields() ??
+        this.previewColumnsList()
+          .filter((col) => col.accessorKey)
+          .map((col) => col.header.toString())
+      );
+    });
   }
 
   onDragOver(event: DragEvent) {
@@ -217,14 +228,8 @@ export class DataImportComponent<T extends {}> {
   }
 
   handleTemplateExport() {
-    const headers =
-      this.fields() ??
-      this.previewColumnsList()
-        .filter((col) => col.accessorKey)
-        .map((col) => col.header);
-
-    this.service.handleTemplateExport(headers, this.title());
-    this.exportTemplateEvent.emit(headers);
+    this.service.handleTemplateExport(this.headers(), this.title());
+    this.exportTemplateEvent.emit(this.headers());
   }
 
   // getFormControl(index: number, field: string) {

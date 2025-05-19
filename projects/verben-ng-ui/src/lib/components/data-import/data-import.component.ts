@@ -143,9 +143,7 @@ export class DataImportComponent<T extends {}> {
 
     this.previewColumnsList = computed(() => {
       return this.previewColumns()
-        .filter(
-          (col) => col.accessorKey || col.importKey || col.formControlName
-        )
+        .filter((col) => col.importKey || col.formControlName)
         .map((column) => {
           const matchingTemplate = this.columnTemplates().find(
             (t) => t.columnId === column.id
@@ -154,7 +152,7 @@ export class DataImportComponent<T extends {}> {
           if (matchingTemplate) {
             return {
               ...column,
-              accessorKey: column.importKey ?? column.accessorKey,
+              accessorKey: column.importKey,
               cellTemplate: matchingTemplate.cellTemplate,
               cellEditTemplate: matchingTemplate.cellEditTemplate,
               headerTemplate: matchingTemplate.headerTemplate,

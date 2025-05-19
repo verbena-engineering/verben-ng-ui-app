@@ -86,7 +86,7 @@
 
 <ng-template #bodyTemplate>
   <div class="flex gap-4 items-center justify-between my-4">
-    <p class="">Total Items: {{ previewData().length }}</p>
+    <p class="">Total Items: {{ service.importedData() }}</p>
 
     <p class="">Duplicates: {{ duplicateIndexSet.size }}</p>
 
@@ -102,10 +102,10 @@
   </div>
   <div style="max-height: min(75vh, 780px); overflow: auto">
     <lib-data-table
-      [data]="previewData()"
+      [data]="service.importedData()"
       [columns]="previewColumnsList()"
       [formGroupConfig]="formGroupConfig()"
-      (rowSave)="rowSave.emit($event)"
+      (rowSave)="service.addRow($event); rowSave.emit($event)"
     >
       <ng-container libColumn="actions">
         <ng-template

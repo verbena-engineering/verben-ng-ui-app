@@ -152,7 +152,7 @@ export class DataImportComponent<T extends {}> {
           if (matchingTemplate) {
             return {
               ...column,
-              accessorKey: column.importKey,
+              // accessorKey: column.importKey,
               cellTemplate: matchingTemplate.cellTemplate,
               cellEditTemplate: matchingTemplate.cellEditTemplate,
               headerTemplate: matchingTemplate.headerTemplate,
@@ -173,7 +173,7 @@ export class DataImportComponent<T extends {}> {
       return (
         this.fields() ??
         this.previewColumnsList()
-          .filter((col) => col.accessorKey)
+          .filter((col) => col.importKey)
           .map((col) => col.header.toString())
       );
     });

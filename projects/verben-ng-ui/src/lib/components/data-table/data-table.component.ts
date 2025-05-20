@@ -444,6 +444,8 @@ export class DataTableComponent<T> {
     if (isEditing) {
       if (formControl) {
         value = formControl.value;
+      } else {
+        value = this.getCellValue(row.originalData, column);
       }
       // else if (editedData) {
       //   if (column.accessorKey && column.accessorKey in editedData) {
@@ -457,7 +459,6 @@ export class DataTableComponent<T> {
       //     value = this.getCellValue(row, column);
       //   }
       // }
-      value = this.getCellValue(row.originalData, column);
     } else {
       value = this.getCellValue(row.originalData, column);
     }

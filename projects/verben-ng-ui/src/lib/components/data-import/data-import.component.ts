@@ -66,9 +66,9 @@ export class DataImportComponent<T extends {}> {
 
   constructor(public service: DataImportService<T>) {
     effect(() => {
-      // this.previewData()?.forEach((datum) => {
-      //   console.log(datum);
-      // });
+      this.previewData()?.forEach((datum) => {
+        console.log(datum);
+      });
 
       const isDuplicate = (datum: Partial<T>, array: Partial<T>[]) => {
         const identifiers = this.uniqueIdentifiers();

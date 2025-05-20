@@ -188,14 +188,22 @@ export class DataImportComponent<T extends {}> {
     this.isDragging = false;
     this.files = Array.from(event.dataTransfer!.files);
 
-    this.service.handleImport(this.files[0], this.parser());
+    this.service.handleImport(
+      this.files[0],
+      this.previewColumnsList(),
+      this.parser()
+    );
     // this.importEvent.emit(this.files[0]);
     this.showPreview = true;
   }
 
   onFileSelected(event: any) {
     this.files = Array.from(event.target.files);
-    this.service.handleImport(this.files[0], this.parser());
+    this.service.handleImport(
+      this.files[0],
+      this.previewColumnsList(),
+      this.parser()
+    );
 
     // this.importEvent.emit(this.files[0]);
     this.showPreview = true;

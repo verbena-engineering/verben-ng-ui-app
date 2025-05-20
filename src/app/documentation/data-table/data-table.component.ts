@@ -140,7 +140,10 @@ export class DataTableComponent {
     {
       id: 'Name',
       header: 'Name',
-      accessorKey: 'Name',
+      // accessorKey: 'Name',
+      accessorFn: (row: { Name: string; Friend: string; Date: Date }) => {
+        return row;
+      },
       importKey: 'Name',
     },
     {

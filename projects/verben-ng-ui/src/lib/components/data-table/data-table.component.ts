@@ -68,17 +68,18 @@ export class DataTableComponent<T> {
   private unEditedDataSignal = signal<Map<string | number, T>>(new Map());
   private formGroupsSignal = signal<Map<string | number, FormGroup>>(new Map());
 
-  columnsSignal = computed(() => this.columns());
+  // columnsSignal = computed(() => this.columns());
 
   displayColumns: Signal<ColumnDefinition<T>[]>;
 
   constructor() {
     this.displayColumns = computed(() => {
-      return this.columnsSignal().map((column) => {
+      return this.columns().map((column) => {
         const matchingTemplate = this.columnTemplates().find(
           (t) => t.columnId === column.id
         );
         if (matchingTemplate) {
+          console.log('Found matching template:', matchingTemplate);
           return {
             ...column,
             cellTemplate: matchingTemplate.cellTemplate ?? column.cellTemplate,

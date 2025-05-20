@@ -20,6 +20,7 @@ import {
 } from 'verben-ng-ui/src/public-api';
 import { ColumnDirective } from 'verben-ng-ui/src/public-api';
 import { read, utils, writeFile } from 'xlsx';
+import { OperationAccount } from './sample-models';
 
 @Component({
   selector: 'app-data-table',
@@ -133,6 +134,69 @@ export class DataTableComponent {
       header: 'Actions',
     },
   ]);
+
+  columnnnn: ColumnDefinition<OperationAccount>[] = [
+    {
+      id: 'select',
+      header: '',
+    },
+    {
+      id: 'code',
+      header: 'CODE',
+      accessorKey: 'Code',
+    },
+    {
+      id: 'name',
+      header: 'NAME',
+      accessorKey:'Name',
+      importKey: 'Name',
+    },
+    {
+      id: 'description',
+      header: 'DESCRIPTION',
+      accessorKey:'Description',
+      importKey: 'Description',
+    },
+    {
+      id: 'group',
+      header: 'ACCOUNT GROUP',
+     accessorKey:'AccountGroup',
+     importKey:'AccountGroup'
+    },
+    {
+      id: 'currency',
+      header: 'CURRENCY',
+      accessorKey:'Currency',
+      importKey:'Currency'
+    },
+    {
+      id: 'balance',
+      header: 'BALANCE',
+     accessorKey:'Balance'
+    },
+    {
+      id: 'mainAccount',
+      header: 'MAIN ACCOUNT',
+     accessorKey:'MainAccountCode'
+    },
+    {
+      id: 'tags',
+      header: 'TAGS',
+     accessorKey:'Tags'
+    },
+    // {
+    //   id: 'status',
+    //   header: 'STATUS',
+    //  accessorKey:'Status'
+    // },
+    {
+      id: 'actions',
+      header: 'ACTIONS',
+      accessorFn: (row:OperationAccount) => {
+        return row;
+      },
+    },
+  ];
 
   smallColsII = signal<
     ColumnDefinition<{ Name: string; Friend: string; Date: Date }>[]

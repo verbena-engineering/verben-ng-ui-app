@@ -1,5 +1,6 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import { read, utils, writeFile } from 'xlsx';
+import { ColumnDefinition } from '../data-table/data-table.types';
 
 @Injectable()
 export class DataImportService<T> {
@@ -7,9 +8,48 @@ export class DataImportService<T> {
 
   constructor() {}
 
+  // Function to transform imported data to match your model structure
+  transformImportData<T>(
+    importedData: Record<string, any>[],
+    columnDefinitions: ColumnDefinition<T>[]
+  ): Partial<T>[] {
+    // Create a mapping from header to importKey
+    const headerToImportKeyMap = new Map<string, keyof T>();
+
+    // Filter column definitions to only those with importKey and populate the map
+    columnDefinitions
+      .filter((col) => col.importKey)
+      .forEach((col) => {
+        const header =
+          typeof col.header === 'string'
+            ? col.header
+            : col.header({}).toString();
+        headerToImportKeyMap.set(header, col.importKey as keyof T);
+      });
+
+    // Transform each row in the imported data
+    return importedData.map((row) => {
+      const transformedRow: Partial<T> = {};
+
+      // Process each key in the row
+      Object.entries(row).forEach(([key, value]) => {
+        // Find the corresponding import key for this header/key
+        const importKey = headerToImportKeyMap.get(key);
+
+        // Only add the field if there's a matching import key
+        if (importKey) {
+          transformedRow[importKey] = value;
+        }
+      });
+
+      return transformedRow;
+    });
+  }
+
   handleImport(
     file: File,
     // previewer?: (data: any[]) => void,
+    columnDefinitions: ColumnDefinition<T>[],
     parseImport?: (data: any) => Partial<T>[]
   ) {
     const reader = new FileReader();
@@ -38,7 +78,9 @@ export class DataImportService<T> {
         // previewer(imported);
       }
       console.log('Imported data:', JSON.stringify(imported, null, 2));
-      this.importedData.set(imported);
+      this.importedData.set(
+        this.transformImportData(imported, columnDefinitions) as T[]
+      );
       return imported;
     };
     return reader.readAsArrayBuffer(file);

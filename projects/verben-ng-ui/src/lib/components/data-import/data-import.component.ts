@@ -66,9 +66,9 @@ export class DataImportComponent<T extends {}> {
 
   constructor(public service: DataImportService<T>) {
     effect(() => {
-      // this.previewData()?.forEach((datum) => {
-      //   console.log(datum);
-      // });
+      this.service.importedData()?.forEach((datum) => {
+        console.log(datum);
+      });
 
       const isDuplicate = (datum: Partial<T>, array: Partial<T>[]) => {
         const identifiers = this.uniqueIdentifiers();
@@ -86,39 +86,33 @@ export class DataImportComponent<T extends {}> {
         );
       };
 
-      const columns = this.previewColumnsList();
+      // const columns = this.previewColumnsList();
 
       this.service.importedData()?.forEach((d, i, arr) => {
         if (isDuplicate(d, arr)) {
           this.duplicateIndexSet.add(i);
         }
 
-        columns
-          .filter(({ validatorFn }) => validatorFn !== undefined)
-          .forEach((column) => {
-            // const invalidFields = Object.entries(d).reduce<(keyof T)[]>((f, [k, v]) => {
-            //   if (column.validatorFn && !column.validatorFn(v as T[keyof T])) {
-            //     f.push(k as keyof T);
-            //   }
-            //   return f;
-            // }, []);
-            const invalidFields = Object.entries(d).reduce<string[]>(
-              (f, [k, v], i) => {
-                if (
-                  column.validatorFn &&
-                  !column.validatorFn(v as T[keyof T])
-                ) {
-                  f.push(column.id);
-                }
-                return f;
-              },
-              []
-            );
+        // columns
+        //   .filter(({ validatorFn }) => validatorFn !== undefined)
+        //   .forEach((column) => {
+        //     const invalidFields = Object.entries(d).reduce<string[]>(
+        //       (f, [k, v], i) => {
+        //         if (
+        //           column.validatorFn &&
+        //           !column.validatorFn(v as T[keyof T])
+        //         ) {
+        //           f.push(column.id);
+        //         }
+        //         return f;
+        //       },
+        //       []
+        //     );
 
-            if (invalidFields.length > 0) {
-              this.invalidIndexSet.set(i, invalidFields);
-            }
-          });
+        //     if (invalidFields.length > 0) {
+        //       this.invalidIndexSet.set(i, invalidFields);
+        //     }
+        //   });
       });
     });
 
@@ -194,14 +188,22 @@ export class DataImportComponent<T extends {}> {
     this.isDragging = false;
     this.files = Array.from(event.dataTransfer!.files);
 
-    this.service.handleImport(this.files[0], this.parser());
+    this.service.handleImport(
+      this.files[0],
+      this.previewColumnsList(),
+      this.parser()
+    );
     // this.importEvent.emit(this.files[0]);
     this.showPreview = true;
   }
 
   onFileSelected(event: any) {
     this.files = Array.from(event.target.files);
-    this.service.handleImport(this.files[0], this.parser());
+    this.service.handleImport(
+      this.files[0],
+      this.previewColumnsList(),
+      this.parser()
+    );
 
     // this.importEvent.emit(this.files[0]);
     this.showPreview = true;

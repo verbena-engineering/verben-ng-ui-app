@@ -4,48 +4,13 @@
   </div>
 </ng-template>
 
-<lib-data-table
+<!-- <lib-data-table
   [data]="smallData()"
   [columns]="smallCols()"
   [formGroupConfig]="this.formGroupConfig()"
   [styleConfig]="table2Styles"
   (rowSave)="addRow($event)"
 >
-  <!-- <ng-container libColumn="Name">
-    <ng-template #cell let-value="value">
-      <div>
-        <p>{{ value }}</p>
-      </div>
-    </ng-template>
-    <ng-template
-      #cellEdit
-      let-value="value"
-      let-updateValue="updateValue"
-      let-control="formControl"
-    >
-      <verbena-input [formControl]="control"></verbena-input>
-    </ng-template>
-  </ng-container>
-
-  <ng-container libColumn="Friend">
-    <ng-template #cell let-value="value">
-      <div>
-        <p>{{ value }}</p>
-      </div>
-    </ng-template>
-    <ng-template
-      #cellEdit
-      let-value="value"
-      let-updateValue="updateValue"
-      let-control="formControl"
-    >
-      <verbena-input
-        [ngModel]="value"
-        (ngModelChange)="updateValue($event)"
-      ></verbena-input>
-    </ng-template>
-  </ng-container> -->
-
   <ng-container libColumn="actions">
     <ng-template
       #cell
@@ -65,9 +30,9 @@
       <strong>Actions</strong>
     </ng-template>
   </ng-container>
-</lib-data-table>
+</lib-data-table> -->
 
-<lib-data-import
+<!-- <lib-data-import
   [formGroupConfig]="this.formGroupConfig()"
   (exportTemplateEvent)="handleTemplateExport($event)"
   (importEvent)="handleImport($event)"
@@ -78,12 +43,7 @@
   [fields]="['Name', 'Friend', 'Date']"
   [columnTemplates]="columnTemplates()"
 >
-  <!-- <ng-container
-[ngTemplateOutlet]="nameField"
-[ngTemplateOutletContext]="{ $implicit: picked }"
->
-</ng-container> -->
-</lib-data-import>
+</lib-data-import> -->
 
 <h1 class="text-lg font-semibold my-2">Import</h1>
 
@@ -93,11 +53,16 @@
   title="Hello"
   [columnTemplates]="columnTemplates()"
 >
-  <!-- <ng-container
-[ngTemplateOutlet]="nameField"
-[ngTemplateOutletContext]="{ $implicit: picked }"
+</lib-data-import>
+
+<h1 class="text-lg font-semibold my-2">Import</h1>
+
+<lib-data-import
+  (importEventData)="log($event)"
+  [previewColumns]="columnnnn"
+  title="o-a"
+  [columnTemplates]="columnTemplates()"
 >
-</ng-container> -->
 </lib-data-import>
 
 <h1 class="text-lg font-semibold my-4">No Form Control</h1>
@@ -136,11 +101,11 @@
   </ng-container>
   <ng-container libColumn="Name">
     <ng-template #cell let-row="row" let-value>
-      {{ value }}
+      {{ value.Name }}
     </ng-template>
     <ng-template #cellEdit let-row="row" let-updateData="updateData" let-value>
       <div class="width-max">
-        <verbena-input [(ngModel)]="row.Name"></verbena-input>
+        <verbena-input [(ngModel)]="value.Name"></verbena-input>
       </div>
     </ng-template>
   </ng-container>
@@ -168,7 +133,7 @@
 
 <!-- {{ smallData()[0].Name }} -->
 
-<lib-data-import
+<!-- <lib-data-import
   (exportTemplateEvent)="handleTemplateExport($event)"
   (importEvent)="handleImport($event)"
   (importEventData)="log($event)"
@@ -178,7 +143,7 @@
   [fields]="['Name', 'Friend', 'Date']"
   [columnTemplates]="columnTemplates()"
 >
-</lib-data-import>
+</lib-data-import> -->
 
 <lib-data-table
   [data]="tableData()"

@@ -69,7 +69,7 @@
   [mode]="'dialogue'"
   [customClass]="'my-modal-custom-class'"
   [disableFooter]="false"
-  [modalData]="[{ data: { first_name: 'verben-ng', last_name: 'verbena' } }]"
+  [modalData]="[{ data: {} }]"
   [isVisible]="showPreview"
   [headerTemplate]="headerTemplate"
   [bodyTemplate]="bodyTemplate"
@@ -139,7 +139,7 @@
         <ng-template
           #cellEdit
           let-value
-          let-deleteRow
+          let-deleteRow="deleteRow"
           let-isEditing="isEditing"
           let-toggleRowEdit="toggleRowEdit"
           let-row="row"

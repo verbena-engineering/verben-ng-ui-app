@@ -1,29 +1,23 @@
 import {
-  AfterContentInit,
   ChangeDetectionStrategy,
   Component,
   computed,
   contentChildren,
-  ContentChildren,
   EventEmitter,
   input,
   Input,
-  OnInit,
   Output,
-  QueryList,
   Signal,
   signal,
-  WritableSignal,
 } from '@angular/core';
 import {
   ColumnDefinition,
   DataWithKey,
-  EditedData,
   FormGroupConfig,
   GroupedDataRow,
 } from './data-table.types';
 import { ColumnDirective } from './column.directive';
-import { BaseStyles, TableStyles } from './style.types';
+import { TableStyles } from './style.types';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -74,23 +68,27 @@ export class DataTableComponent<T> {
   private unEditedDataSignal = signal<Map<string | number, T>>(new Map());
   private formGroupsSignal = signal<Map<string | number, FormGroup>>(new Map());
 
-  columnsSignal = computed(() => this.columns());
+  // columnsSignal = computed(() => this.columns());
 
   displayColumns: Signal<ColumnDefinition<T>[]>;
 
   constructor() {
     this.displayColumns = computed(() => {
-      return this.columnsSignal().map((column) => {
+      return this.columns().map((column) => {
         const matchingTemplate = this.columnTemplates().find(
           (t) => t.columnId === column.id
         );
         if (matchingTemplate) {
+          console.log('Found matching template:', matchingTemplate);
           return {
             ...column,
-            cellTemplate: matchingTemplate.cellTemplate,
-            cellEditTemplate: matchingTemplate.cellEditTemplate,
-            headerTemplate: matchingTemplate.headerTemplate,
-            footerTemplate: matchingTemplate.footerTemplate,
+            cellTemplate: matchingTemplate.cellTemplate ?? column.cellTemplate,
+            cellEditTemplate:
+              matchingTemplate.cellEditTemplate ?? column.cellEditTemplate,
+            headerTemplate:
+              matchingTemplate.headerTemplate ?? column.headerTemplate,
+            footerTemplate:
+              matchingTemplate.footerTemplate ?? column.footerTemplate,
           };
         }
         return column;
@@ -265,6 +263,10 @@ export class DataTableComponent<T> {
     //     });
     //   }
     // }
+
+    console.log(this.formGroupConfig());
+    console.log(editedForm);
+    console.log(unEditedData);
 
     if (editedForm) {
       editedForm.markAsPristine();

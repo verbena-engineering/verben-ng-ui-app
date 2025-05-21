@@ -19,7 +19,10 @@
       }
     </div>
     <ng-content
-      *ngTemplateOutlet="cardFooter; context: { index: $index }"
+      *ngTemplateOutlet="
+        cardFooter;
+        context: { index: $index, $implicit: item }
+      "
     ></ng-content>
   </div>
 </div>

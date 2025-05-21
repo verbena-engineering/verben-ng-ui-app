@@ -17,13 +17,13 @@
         "
       ></ng-content>
       }
+      <ng-content
+        *ngTemplateOutlet="
+          cardFooter;
+          context: { index: $index, $implicit: item }
+        "
+      ></ng-content>
     </div>
-    <ng-content
-      *ngTemplateOutlet="
-        cardFooter;
-        context: { index: $index, $implicit: item }
-      "
-    ></ng-content>
   </div>
 </div>
 

@@ -17,6 +17,8 @@
         "
       ></ng-content>
       }
+    </div>
+    <div *ngIf="item.isChildrenExpanded" class="false-padding">
       <ng-content
         *ngTemplateOutlet="
           cardFooter;

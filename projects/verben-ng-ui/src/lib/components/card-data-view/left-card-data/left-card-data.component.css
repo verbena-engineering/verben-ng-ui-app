@@ -34,3 +34,7 @@ box-sizing: border-box;
   display: flex;
   gap: 10px;
 }
+
+.false-padding {
+  padding-left: calc(100% - 85%);
+}

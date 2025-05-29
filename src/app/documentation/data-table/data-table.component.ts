@@ -148,41 +148,41 @@ export class DataTableComponent {
     {
       id: 'name',
       header: 'NAME',
-      accessorKey:'Name',
+      accessorKey: 'Name',
       importKey: 'Name',
     },
     {
       id: 'description',
       header: 'DESCRIPTION',
-      accessorKey:'Description',
+      accessorKey: 'Description',
       importKey: 'Description',
     },
     {
       id: 'group',
       header: 'ACCOUNT GROUP',
-     accessorKey:'AccountGroup',
-     importKey:'AccountGroup'
+      accessorKey: 'AccountGroup',
+      importKey: 'AccountGroup',
     },
     {
       id: 'currency',
       header: 'CURRENCY',
-      accessorKey:'Currency',
-      importKey:'Currency'
+      accessorKey: 'Currency',
+      importKey: 'Currency',
     },
     {
       id: 'balance',
       header: 'BALANCE',
-     accessorKey:'Balance'
+      accessorKey: 'Balance',
     },
     {
       id: 'mainAccount',
       header: 'MAIN ACCOUNT',
-     accessorKey:'MainAccountCode'
+      accessorKey: 'MainAccountCode',
     },
     {
       id: 'tags',
       header: 'TAGS',
-     accessorKey:'Tags'
+      accessorKey: 'Tags',
     },
     // {
     //   id: 'status',
@@ -192,15 +192,27 @@ export class DataTableComponent {
     {
       id: 'actions',
       header: 'ACTIONS',
-      accessorFn: (row:OperationAccount) => {
+      accessorFn: (row: OperationAccount) => {
         return row;
       },
     },
   ];
 
   smallColsII = signal<
-    ColumnDefinition<{ Name: string; Friend: string; Date: Date }>[]
+    ColumnDefinition<{
+      Tag: string;
+      Name: string;
+      Friend: string;
+      Date: Date;
+      Balance: number;
+    }>[]
   >([
+    {
+      id: 'Tag',
+      header: 'Tag',
+      accessorKey: 'Tag',
+      importKey: 'Tag',
+    },
     {
       id: 'Name',
       header: 'Name',
@@ -221,6 +233,12 @@ export class DataTableComponent {
       header: 'Date',
       accessorKey: 'Date',
       importKey: 'Date',
+    },
+    {
+      id: 'Balance',
+      header: 'Balance',
+      accessorKey: 'Balance',
+      importKey: 'Balance',
     },
     {
       id: 'actions',

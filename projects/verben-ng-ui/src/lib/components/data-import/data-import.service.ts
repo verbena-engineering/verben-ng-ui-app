@@ -62,11 +62,12 @@ export class DataImportService<T> {
       //   cellNF: false,
       // });
       let imported: any[] = [];
-      const wb = read(event.target.result, { cellDates: true });
+      const wb = read(event.target.result, { raw: true });
       const sheets = wb.SheetNames;
       if (sheets.length) {
         const rows = utils.sheet_to_json(wb.Sheets[sheets[0]], {
-          // raw: true,
+          raw: false,
+          defval: '',
           // rawNumbers: true,
           // dateNF: 'dd/mm/yyyy',
         });
@@ -77,7 +78,7 @@ export class DataImportService<T> {
         }
         // previewer(imported);
       }
-      console.log('Imported data:', JSON.stringify(imported, null, 2));
+      // console.log('Imported data:', JSON.stringify(imported, null, 2));
       this.importedData.set(
         this.transformImportData(imported, columnDefinitions) as T[]
       );
@@ -97,7 +98,7 @@ export class DataImportService<T> {
   }
 
   addRow(event: { index: number; key: string | number; data: Partial<T> }) {
-    console.log(event);
+    // console.log(event);
     this.importedData.update((dat) => {
       // dat[event.index] = { ...dat[event.index], ...event.data };
       return dat.map((d, i) => {
@@ -107,6 +108,6 @@ export class DataImportService<T> {
         return d;
       });
     });
-    console.log(this.importedData());
+    // console.log(this.importedData());
   }
 }

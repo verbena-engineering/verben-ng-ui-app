@@ -22,7 +22,11 @@ export class DataExportService {
       {
         id: 'default',
         name: 'All',
-        items: [],
+        items: this.baseProperties.map((prop) => ({
+        id: prop,
+        name: prop,
+        type: 'property' as ExportItemType,
+      })),
       },
     ];
   }

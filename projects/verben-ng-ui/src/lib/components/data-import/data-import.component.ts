@@ -34,14 +34,37 @@ export class DataImportComponent<T extends {}> {
       [K in keyof T]: AbstractControl;
     }>
   >();
+  /**
+   * @deprecated Use importKey of previewColumns instead
+   */
   fields = input<string[]>();
   title = input<string>('export-template');
   columnTemplates = input<readonly ColumnDirective[]>([]);
   parser = input<(data: any) => Partial<T>[]>();
+  /**
+   * @deprecated Please remove, now handled internally
+   */
   previewData = input<T[]>();
+  /**
+   * Pass the method to use the imported data,
+   * and eventually returns true if successfully used
+   */
+  onImportComplete = input<(data: Partial<T>[]) => Promise<boolean>>();
+  /**
+   * @deprecated Please remove, now handled internally
+   */
   exportTemplateEvent = output<string[]>();
+  /**
+   * @deprecated Please remove, now handled internally
+   */
   importEvent = output<File>();
+  /**
+   * @deprecated Use the onImportComplete input instead
+   */
   importEventData = output<Partial<T>[]>();
+  /**
+   * @deprecated Please remove, now handled internally
+   */
   rowSave = output<{
     index: number;
     key: number | string;
@@ -214,9 +237,18 @@ export class DataImportComponent<T extends {}> {
   }
 
   save() {
-    console.log('PREVDATA', this.service.importedData());
-    this.importEventData.emit(this.service.importedData() || []);
-    this.showPreview = false;
+    // console.log('PREVDATA', this.service.importedData());
+    const onComplete = this.onImportComplete();
+    if (onComplete) {
+      onComplete(this.service.importedData()).then((success) => {
+        if (success) {
+          this.showPreview = false;
+        }
+      });
+    } else {
+      this.importEventData.emit(this.service.importedData() || []);
+      this.showPreview = false;
+    }
   }
 
   getControlNames() {
@@ -229,7 +261,7 @@ export class DataImportComponent<T extends {}> {
 
   handleTemplateExport() {
     this.service.handleTemplateExport(this.headers(), this.title());
-    this.exportTemplateEvent.emit(this.headers());
+    // this.exportTemplateEvent.emit(this.headers());
   }
 
   // getFormControl(index: number, field: string) {

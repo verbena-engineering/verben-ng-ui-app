@@ -67,7 +67,7 @@ export class DataImportService<T> {
       if (sheets.length) {
         const rows = utils.sheet_to_json(wb.Sheets[sheets[0]], {
           raw: false,
-          defval: '',
+          // defval: '',
           // rawNumbers: true,
           // dateNF: 'dd/mm/yyyy',
         });

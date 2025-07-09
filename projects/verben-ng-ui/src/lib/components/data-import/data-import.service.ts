@@ -79,9 +79,11 @@ export class DataImportService<T> {
         // previewer(imported);
       }
       // console.log('Imported data:', JSON.stringify(imported, null, 2));
+      // console.time('Start Process');
       this.importedData.set(
         this.transformImportData(imported, columnDefinitions) as T[]
       );
+      // console.time('End process');
       return imported;
     };
     return reader.readAsArrayBuffer(file);
@@ -109,5 +111,19 @@ export class DataImportService<T> {
       });
     });
     // console.log(this.importedData());
+  }
+
+  isDuplicate(datum: Partial<T>, array: Partial<T>[], identifiers: string[]) {
+    return (
+      array.filter(
+        (dat) =>
+          identifiers.length > 0 &&
+          identifiers.every(
+            (identifier) =>
+              datum[identifier as keyof T] &&
+              datum[identifier as keyof T] === dat[identifier as keyof T]
+          )
+      ).length > 1
+    );
   }
 }

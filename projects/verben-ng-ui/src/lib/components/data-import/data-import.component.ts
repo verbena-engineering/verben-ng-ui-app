@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -26,6 +27,7 @@ import { DataImportService } from './data-import.service';
   templateUrl: './data-import.component.html',
   styleUrl: './data-import.component.css',
   providers: [DataImportService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataImportComponent<T extends {}> {
   previewColumns = input.required<ColumnDefinition<T>[]>();
@@ -89,30 +91,12 @@ export class DataImportComponent<T extends {}> {
 
   constructor(public service: DataImportService<T>) {
     effect(() => {
-      this.service.importedData()?.forEach((datum) => {
-        console.log(datum);
-      });
-
-      const isDuplicate = (datum: Partial<T>, array: Partial<T>[]) => {
-        const identifiers = this.uniqueIdentifiers();
-
-        return (
-          array.filter(
-            (dat) =>
-              identifiers.length > 0 &&
-              identifiers.every(
-                (identifier) =>
-                  datum[identifier as keyof T] &&
-                  datum[identifier as keyof T] === dat[identifier as keyof T]
-              )
-          ).length > 1
-        );
-      };
-
       // const columns = this.previewColumnsList();
 
+      const identifiers = this.uniqueIdentifiers();
+
       this.service.importedData()?.forEach((d, i, arr) => {
-        if (isDuplicate(d, arr)) {
+        if (service.isDuplicate(d, arr, identifiers)) {
           this.duplicateIndexSet.add(i);
         }
 
@@ -165,7 +149,6 @@ export class DataImportComponent<T extends {}> {
           const matchingTemplate = this.columnTemplates().find(
             (t) => t.columnId === column.id
           );
-          console.log(matchingTemplate);
           if (matchingTemplate) {
             return {
               ...column,

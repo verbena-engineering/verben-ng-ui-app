@@ -4,6 +4,26 @@
   </div>
 </ng-template>
 
+<!-- <table>
+  <thead>
+    <tr>
+      <th>First</th>
+      <th>Second</th>
+      <th>Third</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (item of testData; track $index) {
+    <tr>
+      <td>{{ item.a }}</td>
+      <td>{{ item.b }}</td>
+      <td>{{ item.c }}</td>
+    </tr>
+    }
+  </tbody>
+</table> -->
+
 <!-- <lib-data-table
   [data]="smallData()"
   [columns]="smallCols()"
@@ -278,7 +298,7 @@
 ></lib-data-columns>
 
 <lib-data-table
-  [data]="tableData()"
+  [data]="tableDataMax()"
   [columns]="controlledCols()"
   (rowEdit)="onRowEdit($event)"
   (rowDelete)="onRowDelete($event)"

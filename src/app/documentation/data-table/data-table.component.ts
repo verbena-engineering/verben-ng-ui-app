@@ -32,6 +32,7 @@ export class DataTableComponent {
   dropdownOptions: string[] = ['Tester', 'Admin', 'Staff'];
 
   tableData = signal<YourDataType[]>([]);
+  tableDataMax = signal<YourDataType[]>([]);
 
   tableColumns: ColumnDefinition<YourDataType>[] = [
     {
@@ -130,7 +131,7 @@ export class DataTableComponent {
       formControlName: 'Date',
     },
     {
-      id: 'actions',
+      id: 'Actions',
       header: 'Actions',
     },
   ]);
@@ -319,6 +320,12 @@ export class DataTableComponent {
 
   formGroupConfig: WritableSignal<FormGroupConfig<any>>;
 
+  testData = Array.from({ length: 1500 }, (_, i) => ({
+    a: `A-${i + 1}`,
+    b: `B-${i + 1}`,
+    c: `C-${i + 1}`,
+  }));
+
   constructor(
     private fb: FormBuilder,
     private exportService: DataExportService
@@ -354,6 +361,24 @@ export class DataTableComponent {
     setTimeout(() => {
       this.tableData.set(
         Array.from({ length: 10 }, (_, index) => ({
+          Id: `ACTIVITY-${index + 1}`,
+          id: `ACTIVITY-${index + 1}`,
+          activityDetails: Array.from(
+            { length: Math.floor(Math.random() * 5) + 1 },
+            () => generateRandomName()
+          ),
+          numberOfParticipants: Math.floor(Math.random() * 20) + 1,
+          role: 'Tester',
+          names: generateRandomName(),
+          age: Math.floor(Math.random() * 50) + 1,
+          money: Math.floor(Math.random() * 500) + 1,
+          message:
+            'Dark seas and dark towers. Night sky and wry smile. Loneliness, nonetheless.',
+        }))
+      );
+
+      this.tableDataMax.set(
+        Array.from({ length: 1000 }, (_, index) => ({
           Id: `ACTIVITY-${index + 1}`,
           id: `ACTIVITY-${index + 1}`,
           activityDetails: Array.from(

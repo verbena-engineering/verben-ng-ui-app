@@ -57,6 +57,7 @@ export class DropDownComponent
   // INTERNAL
   private _options: any[] = []; // Internal variable for options
 
+  private ignoreSet = false;
   // INPUTS
   @Input()
   set options(value: any[]) {
@@ -69,7 +70,11 @@ export class DropDownComponent
     } else {
       this._options = value;
     }
-    this.firstSearch = false;
+    if (!this.ignoreSet) {
+      this.firstSearch = false;
+    } else {
+      this.ignoreSet = false;
+    }
   }
 
   get options(): any[] {
@@ -207,6 +212,7 @@ export class DropDownComponent
               this.isLoading = false;
               if (this.searchContext.length > 0) {
                 this._options = this.convertToExpandable(result);
+                this.ignoreSet = true;
                 this.group
                   ? this.optionsChange.emit(this.options as DropdownMenuItem[])
                   : this.optionsChange.emit(this.options);

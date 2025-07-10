@@ -22,7 +22,6 @@ interface TestChildObject {
   Name: string;
 }
 
-
 @Component({
   selector: 'app-dropdown-sample',
   templateUrl: './dropdown-sample.component.html',
@@ -32,11 +31,7 @@ export class DropdownSampleComponent implements OnInit {
   chipValues: string[] = ['try', 'to'];
   basicChip: string[] = [];
 
-  options: string[] = [
-    'Opt 1',
-    'Opt 2',
-    'Opt 3yewrrrrrrrrrrrrrrrrrrrrwwwwweuweyweueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-  ];
+  options: string[] = [];
   optionsTwo: TestDropdownObject[] = [
     { Id: '1', Name: 'One' },
     { Id: '2', Name: 'Two' },
@@ -131,10 +126,13 @@ export class DropdownSampleComponent implements OnInit {
   }
 
   clearSelection() {
-    this.basicOption = '';
+    this.options = ['Ten', 'Eleven', 'Twelve'];
   }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.options = ['Opt 1', 'Opt 2', 'Opt 3ye'];
+    }, 1000);
     this.selectedParent = '1';
     this.selectedOption = ['Opt 1'];
     this.selectedOptionTwo = ['1'];

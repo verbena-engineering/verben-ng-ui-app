@@ -123,25 +123,6 @@ export class DataImportComponent<T extends {}> {
       });
     });
 
-    // this.importTableColumns = computed(() => {
-    //   return this.previewColumns().map((column) => {
-    //     const matchingTemplate = this.columnTemplates().find(
-    //       (t) => t.columnId === column.id
-    //     );
-    //     console.log(matchingTemplate);
-    //     if (matchingTemplate) {
-    //       return {
-    //         ...column,
-    //         cellTemplate: matchingTemplate.cellTemplate,
-    //         cellEditTemplate: matchingTemplate.cellEditTemplate,
-    //         headerTemplate: matchingTemplate.headerTemplate,
-    //         footerTemplate: matchingTemplate.footerTemplate,
-    //       };
-    //     }
-    //     return column;
-    //   });
-    // });
-
     this.previewColumnsList = computed(() => {
       return this.previewColumns()
         .filter((col) => col.importKey || col.formControlName)

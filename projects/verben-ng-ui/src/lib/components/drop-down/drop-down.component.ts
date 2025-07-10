@@ -69,6 +69,7 @@ export class DropDownComponent
     } else {
       this._options = value;
     }
+    this.firstSearch = false;
   }
 
   get options(): any[] {
@@ -112,6 +113,7 @@ export class DropDownComponent
   onItemChange: (value: any) => void = () => {};
   onTouched: () => void = () => {};
   isInvalid: boolean = false;
+  firstSearch: boolean = false;
 
   //TEMPLATING
   @ViewChild('dropdownContainer', { static: true })
@@ -204,7 +206,7 @@ export class DropDownComponent
               const result = await this.search(searchTerm, this.loadTimes);
               this.isLoading = false;
               if (this.searchContext.length > 0) {
-                this.options = this.convertToExpandable(result);
+                this._options = this.convertToExpandable(result);
                 this.group
                   ? this.optionsChange.emit(this.options as DropdownMenuItem[])
                   : this.optionsChange.emit(this.options);
@@ -250,6 +252,10 @@ export class DropDownComponent
 
   onInputBlur() {
     this.isInputFocused = false;
+  }
+
+  updateOptionsCopy() {
+    this.optionsCopy = cloneDeep(this._options);
   }
 
   onSearch(event: any) {
@@ -299,19 +305,24 @@ export class DropDownComponent
         }
       }
     } else {
+      if (this.firstSearch == false) {
+        this.optionsCopy = cloneDeep(this._options);
+        this.firstSearch = true;
+      }
       if (searchTerm.trim().length == 0) {
-        this.options = cloneDeep(this.optionsCopy);
+        this._options = cloneDeep(this.optionsCopy);
         this.loadTimes = cloneDeep(this.loadTimesCopy);
         this.group
           ? this.optionsChange.emit(this.options as DropdownMenuItem[])
           : this.optionsChange.emit(this.options);
+        this.firstSearch = false;
         return;
       }
       if (this.lazyLoad) {
         this.searchTerm$.next(searchTerm);
       } else {
         if (this.filterBy) {
-          this.options = this.optionsCopy.filter(
+          this._options = this.optionsCopy.filter(
             (x) =>
               typeof x[this.filterBy!] == 'string' &&
               new RegExp(searchTerm, 'i').test(x[this.filterBy!])
@@ -320,7 +331,7 @@ export class DropDownComponent
             ? this.optionsChange.emit(this.options as DropdownMenuItem[])
             : this.optionsChange.emit(this.options);
         } else {
-          this.options = this.optionsCopy.filter(
+          this._options = this.optionsCopy.filter(
             (x) => typeof x == 'string' && new RegExp(searchTerm, 'i').test(x)
           );
           this.group
@@ -387,7 +398,7 @@ export class DropDownComponent
           item.isLoading = true;
           var result = await item.loadMore(item.loadTimes);
           item.isLoading = false;
-          if(result.length > 0){
+          if (result.length > 0) {
             item.loadTimes.increaseLoadTime();
           }
           item.items = this.convertToExpandable(result);
@@ -433,7 +444,7 @@ export class DropDownComponent
           ? await item.search(searchContext, item.loadTimes)
           : await item.loadMore(item.loadTimes);
       item.isLoading = false;
-      if(result.length > 0){
+      if (result.length > 0) {
         item.loadTimes.increaseLoadTime();
       }
       const converted = this.convertToExpandable(result);
@@ -471,11 +482,11 @@ export class DropDownComponent
       if (this.group) {
         result = this.convertToExpandable(result);
       }
-      if(result.length > 0){
+      if (result.length > 0) {
         this.loadTimes.increaseLoadTime();
       }
       for (let item of result) {
-        this.options.push(item);
+        this._options.push(item);
       }
       if (this.filter) {
         if (searchContext.length == 0 || !this.search) {
@@ -653,7 +664,8 @@ export class DropDownComponent
           if (equalityCheck) {
             this.selectedOption = this.getValue(option);
             this.selectedOptionLabel = this.asyncLabel
-            ? await this.asyncLabel(option) : this.getOptionLabel(option);
+              ? await this.asyncLabel(option)
+              : this.getOptionLabel(option);
             break;
           }
         }
@@ -662,11 +674,18 @@ export class DropDownComponent
         return;
       }
       this.selectedOption = obj;
-      if(this.asyncLabel){
+      if (this.asyncLabel) {
         this.selectedOptionLabel = await this.asyncLabel(obj);
       } else {
-        const item = this.options.find(option => this.selectKey? isEqual(this.getValue(option)[this.selectKey],(obj && obj[this.selectKey]) || null): isEqual(this.getValue(option), obj));
-        if(item) {
+        const item = this.options.find((option) =>
+          this.selectKey
+            ? isEqual(
+                this.getValue(option)[this.selectKey],
+                (obj && obj[this.selectKey]) || null
+              )
+            : isEqual(this.getValue(option), obj)
+        );
+        if (item) {
           this.selectedOptionLabel = this.getOptionLabel(item);
         } else {
           this.selectedOptionLabel = obj;
@@ -696,8 +715,11 @@ export class DropDownComponent
               : isEqual(this.getValue(option), object);
             if (equalityCheck) {
               this.selectedOptions.push(this.getValue(option));
-              this.selectedOptionLabels.push(this.asyncLabel
-                ? await this.asyncLabel(object) :this.getOptionLabel(option));
+              this.selectedOptionLabels.push(
+                this.asyncLabel
+                  ? await this.asyncLabel(object)
+                  : this.getOptionLabel(option)
+              );
               break;
             }
           }

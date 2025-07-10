@@ -38,6 +38,8 @@ export class DataTableComponent<T> {
   >();
 
   groupBy = input<keyof T | ((row: T) => any)>();
+  useVirtualScroll = input<boolean>(false);
+  virtualScrollItemSize = input<number>(48);
 
   @Input() styleConfig: TableStyles = defaultTableStyles;
 
@@ -135,6 +137,10 @@ export class DataTableComponent<T> {
   // Type guard method to check for group rows
   isGroupRow(row: T): row is T & { isGroupRow: true; groupTitle: any } {
     return !!(row as any).isGroupRow;
+  }
+
+  trackByRowKey(index: number, row: any) {
+    return row._key;
   }
 
   // Computed property for grouped data

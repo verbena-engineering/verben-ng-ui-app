@@ -61,6 +61,7 @@ export class DataImportService<T> {
       //   cellFormula: false,
       //   cellNF: false,
       // });
+      console.time('Begin');
       let imported: any[] = [];
       const wb = read(event.target.result, { raw: true });
       const sheets = wb.SheetNames;
@@ -83,7 +84,7 @@ export class DataImportService<T> {
       this.importedData.set(
         this.transformImportData(imported, columnDefinitions) as T[]
       );
-      // console.time('End process');
+      console.timeEnd('Begin');
       return imported;
     };
     return reader.readAsArrayBuffer(file);

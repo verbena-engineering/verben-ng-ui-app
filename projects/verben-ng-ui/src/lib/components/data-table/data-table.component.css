@@ -1,0 +1,6 @@
+.virtual-scroll-viewport {
+  width: 100%;
+  min-height: 200px;
+  max-height: 600px; /* or as needed */
+  overflow: auto;
+}

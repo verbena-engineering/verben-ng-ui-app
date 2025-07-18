@@ -78,8 +78,9 @@
     <verben-drop-down
       [group]="true"
       placeholder="Select test item"
-      (onChange)="onDropdownChange($event)"
+      (onChange)="onDropdownChangeTest($event)"
       [(options)]="optionsThree"
+      selectKey="Id"
       [(ngModel)]="selectedOptionFive"
     ></verben-drop-down>
   </div>

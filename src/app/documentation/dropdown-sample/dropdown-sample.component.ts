@@ -130,6 +130,11 @@ export class DropdownSampleComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.selectedOptionFive = {
+      ParentId: '2',
+      Id: '1',
+      Name: 'Random',
+    };
     setTimeout(() => {
       this.options = ['Opt 1', 'Opt 2', 'Opt 3ye'];
     }, 1000);
@@ -159,7 +164,11 @@ export class DropdownSampleComponent implements OnInit {
     });
   }
 
+  onDropdownChangeTest(event: DropdownChangeEvent): void {
+    console.log({ SingleNoPagination: event.value });
+  }
   onDropdownChange(event: DropdownChangeEvent): void {
+    // console.log({ SingleNoPagination: event.value });
     // console.log({
     //   'Test Parent Value': this.selectedParent,
     //   'Basic Dropdown. Single Select. No Group': this.basicOption,

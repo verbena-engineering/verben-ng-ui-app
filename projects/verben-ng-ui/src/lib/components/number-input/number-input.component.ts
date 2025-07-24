@@ -10,7 +10,6 @@ import {
   NG_VALUE_ACCESSOR
 } from '@angular/forms';
 
-// ✅ FIX: Define provider constant outside the component
 const NUMBER_INPUT_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => NumberInputComponent),
@@ -30,6 +29,7 @@ export class NumberInputComponent implements ControlValueAccessor {
   @Input() value: number = 0;
   @Input() label?: string = '';
   @Input() controlButton: boolean = false;
+  @Input() disabled: boolean = false; // ✅ New input
 
   @Output() valueChange = new EventEmitter<number>();
 
@@ -41,6 +41,7 @@ export class NumberInputComponent implements ControlValueAccessor {
   inputWrapperClass: any;
 
   increase() {
+    if (this.disabled) return; // ✅ Respect disabled state
     if (this.max === undefined || this.value + this.step <= this.max) {
       this.value += this.step;
       this.validateValue();
@@ -50,6 +51,7 @@ export class NumberInputComponent implements ControlValueAccessor {
   }
 
   decrease() {
+    if (this.disabled) return; 
     if (this.min === undefined || this.value - this.step >= this.min) {
       this.value -= this.step;
       this.validateValue();
@@ -59,6 +61,7 @@ export class NumberInputComponent implements ControlValueAccessor {
   }
 
   onInput(event: Event) {
+    if (this.disabled) return; 
     const inputValue = (event.target as HTMLInputElement).value;
     let newValue = Number(inputValue);
     this.value = newValue;
@@ -100,6 +103,6 @@ export class NumberInputComponent implements ControlValueAccessor {
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    // Optional: Implement if you want to disable the input field
+    this.disabled = isDisabled; // ✅ Sync with external state
   }
 }

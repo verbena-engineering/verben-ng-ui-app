@@ -3,6 +3,7 @@ import {
   signal,
   ChangeDetectionStrategy,
   WritableSignal,
+  viewChildren,
 } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -17,7 +18,9 @@ import {
   FilterCondition,
   DataExtendItem,
 } from 'verben-ng-ui/src/public-api';
+import { ColumnDirective } from 'verben-ng-ui/src/public-api';
 import { read, utils, writeFile } from 'xlsx';
+import { OperationAccount } from './sample-models';
 
 @Component({
   selector: 'app-data-table',
@@ -29,6 +32,7 @@ export class DataTableComponent {
   dropdownOptions: string[] = ['Tester', 'Admin', 'Staff'];
 
   tableData = signal<YourDataType[]>([]);
+  tableDataMax = signal<YourDataType[]>([]);
 
   tableColumns: ColumnDefinition<YourDataType>[] = [
     {
@@ -105,7 +109,9 @@ export class DataTableComponent {
 
   controlledCols = signal<ColumnDefinition<YourDataType>[]>(this.tableColumns2);
 
-  smallCols = signal<ColumnDefinition<{ Name: string; Friend: string }>[]>([
+  smallCols = signal<
+    ColumnDefinition<{ Name: string; Friend: string; Date: Date }>[]
+  >([
     {
       id: 'Name',
       header: 'Name',
@@ -118,7 +124,172 @@ export class DataTableComponent {
       accessorKey: 'Friend',
       formControlName: 'Friend',
     },
+    {
+      id: 'Date',
+      header: 'Date',
+      accessorKey: 'Date',
+      formControlName: 'Date',
+    },
+    {
+      id: 'Actions',
+      header: 'Actions',
+    },
   ]);
+
+  columnnnn: ColumnDefinition<OperationAccount>[] = [
+    {
+      id: 'select',
+      header: '',
+    },
+    {
+      id: 'code',
+      header: 'CODE',
+      accessorKey: 'Code',
+    },
+    {
+      id: 'name',
+      header: 'NAME',
+      accessorKey: 'Name',
+      importKey: 'Name',
+    },
+    {
+      id: 'description',
+      header: 'DESCRIPTION',
+      accessorKey: 'Description',
+      importKey: 'Description',
+    },
+    {
+      id: 'group',
+      header: 'ACCOUNT GROUP',
+      accessorKey: 'AccountGroup',
+      importKey: 'AccountGroup',
+    },
+    {
+      id: 'currency',
+      header: 'CURRENCY',
+      accessorKey: 'Currency',
+      importKey: 'Currency',
+    },
+    {
+      id: 'balance',
+      header: 'BALANCE',
+      accessorKey: 'Balance',
+    },
+    {
+      id: 'mainAccount',
+      header: 'MAIN ACCOUNT',
+      accessorKey: 'MainAccountCode',
+    },
+    {
+      id: 'tags',
+      header: 'TAGS',
+      accessorKey: 'Tags',
+    },
+    // {
+    //   id: 'status',
+    //   header: 'STATUS',
+    //  accessorKey:'Status'
+    // },
+    {
+      id: 'actions',
+      header: 'ACTIONS',
+      accessorFn: (row: OperationAccount) => {
+        return row;
+      },
+    },
+  ];
+
+  smallColsII = signal<
+    ColumnDefinition<{
+      Tag: string;
+      Name: string;
+      Friend: string;
+      Date: Date;
+      Balance: number;
+    }>[]
+  >([
+    {
+      id: 'Tag',
+      header: 'Tag',
+      accessorKey: 'Tag',
+      importKey: 'Tag',
+    },
+    {
+      id: 'Name',
+      header: 'Name',
+      // accessorKey: 'Name',
+      accessorFn: (row: { Name: string; Friend: string; Date: Date }) => {
+        return row;
+      },
+      importKey: 'Name',
+    },
+    {
+      id: 'Friend',
+      header: 'Friend',
+      accessorKey: 'Friend',
+      importKey: 'Friend',
+    },
+    {
+      id: 'Date',
+      header: 'Date',
+      accessorKey: 'Date',
+      importKey: 'Date',
+    },
+    {
+      id: 'Balance',
+      header: 'Balance',
+      accessorKey: 'Balance',
+      importKey: 'Balance',
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+    },
+  ]);
+
+  smallCols2 = signal<
+    ColumnDefinition<{ Name: string; Friend: string; Date: Date }>[]
+  >([
+    {
+      id: 'Name',
+      header: 'Name',
+      accessorKey: 'Name',
+    },
+    {
+      id: 'Friend',
+      header: 'Friend',
+      accessorKey: 'Friend',
+    },
+    {
+      id: 'Date',
+      header: 'Date',
+      accessorKey: 'Date',
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+    },
+  ]);
+
+  smallData = signal<{ Name: string; Friend: string; Date: Date }[]>([
+    {
+      Name: 'John Doe',
+      Friend: 'Jane Smith',
+      Date: new Date(),
+    },
+    {
+      Name: 'Alice Johnson',
+      Friend: 'Bob Brown',
+      Date: new Date(),
+    },
+    {
+      Name: 'Jam Jam',
+      Friend: 'Yuckan Mo',
+      Date: new Date(),
+    },
+  ]);
+
+  columnTemplates = viewChildren<ColumnDirective>(ColumnDirective);
 
   tableColumns3: ColumnDefinition<YourDataType>[] = [
     {
@@ -148,6 +319,12 @@ export class DataTableComponent {
   importedData: WritableSignal<any[]> = signal([]);
 
   formGroupConfig: WritableSignal<FormGroupConfig<any>>;
+
+  testData = Array.from({ length: 1500 }, (_, i) => ({
+    a: `A-${i + 1}`,
+    b: `B-${i + 1}`,
+    c: `C-${i + 1}`,
+  }));
 
   constructor(
     private fb: FormBuilder,
@@ -199,7 +376,43 @@ export class DataTableComponent {
             'Dark seas and dark towers. Night sky and wry smile. Loneliness, nonetheless.',
         }))
       );
+
+      this.tableDataMax.set(
+        Array.from({ length: 1000 }, (_, index) => ({
+          Id: `ACTIVITY-${index + 1}`,
+          id: `ACTIVITY-${index + 1}`,
+          activityDetails: Array.from(
+            { length: Math.floor(Math.random() * 5) + 1 },
+            () => generateRandomName()
+          ),
+          numberOfParticipants: Math.floor(Math.random() * 20) + 1,
+          role: 'Tester',
+          names: generateRandomName(),
+          age: Math.floor(Math.random() * 50) + 1,
+          money: Math.floor(Math.random() * 500) + 1,
+          message:
+            'Dark seas and dark towers. Night sky and wry smile. Loneliness, nonetheless.',
+        }))
+      );
     }, 500);
+  }
+
+  addRow(event: {
+    index: number;
+    key: string | number;
+    data: Partial<{ Name: string; Friend: string }>;
+  }) {
+    console.log(event);
+    this.smallData.update((dat) => {
+      // dat[event.index] = { ...dat[event.index], ...event.data };
+      return dat.map((d, i) => {
+        if (i === event.index) {
+          return { ...d, ...event.data };
+        }
+        return d;
+      });
+    });
+    console.log(this.smallData());
   }
 
   changeCols() {
@@ -367,14 +580,16 @@ export class DataTableComponent {
       //   cellNF: false,
       // });
       let imported: any[] = [];
-      const wb = read(event.target.result, { raw: true });
+      // const wb = read(event.target.result, { raw: true });
+      const wb = read(event.target.result, { cellDates: true });
       const sheets = wb.SheetNames;
       if (sheets.length) {
         const rows = utils.sheet_to_json(wb.Sheets[sheets[0]], {
           // raw: true,
           // rawNumbers: true,
-          dateNF: 'dd/mm/yyyy',
+          // dateNF: 'dd/mm/yyyy',
         });
+
         if (parseImport) {
           imported = parseImport(rows);
         } else {
@@ -382,7 +597,13 @@ export class DataTableComponent {
         }
         // previewer(imported);
       }
-      console.log('Imported data:', JSON.stringify(imported, null, 2));
+      // console.log('Imported data:', JSON.stringify(imported, null, 2));
+      // imported = imported.map((imp) => {
+      //   if (imp['Date']) {
+      //     imp['Date'] = new Date((imp['Date'] - (25567 + 2)) * 86400 * 1000);
+      //   }
+      //   return imp;
+      // });
       this.importedData.set(imported);
       return imported;
     };

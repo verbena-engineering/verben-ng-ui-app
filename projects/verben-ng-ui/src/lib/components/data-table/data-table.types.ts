@@ -18,9 +18,19 @@ export interface ColumnDefinition<T> {
   footerTemplate?: TemplateRef<any>;
   sortAction?: 'ASC' | 'DESC';
   formControlName?: string;
+  groupName?: string;
+  validatorFn?: (value: T[keyof T]) => boolean;
+  importKey?: keyof T;
 }
 
-export type GroupedDataRow<T> = T & {
+// Define a type that extends T with a _key property
+export type DataWithKey<T> = {
+  _key: string | number;
+  _key_prop: keyof T | '_index';
+  originalData: T;
+};
+
+export type GroupedDataRow<T> = DataWithKey<T> & {
   isGroupRow?: boolean;
   groupValue?: any;
   groupTitle?: any;
@@ -41,3 +51,45 @@ export interface FormGroupConfig<
 export type EditedData<T> = {
   [K in keyof T]?: T[K] extends object ? Partial<T[K]> : T[K];
 };
+
+// ====================================
+
+// export type ColumnDefinitionBase<T> = {
+//   id: string;
+//   header: string | ((context: any) => any);
+//   cellTemplate?: TemplateRef<any>;
+//   cellEditTemplate?: TemplateRef<any>;
+//   headerTemplate?: TemplateRef<any>;
+//   footerTemplate?: TemplateRef<any>;
+//   sortAction?: 'ASC' | 'DESC';
+//   formControlName?: string;
+//   groupName?: string;
+// };
+
+// // Helper type to create a column definition with a specific accessor key
+// export type ColumnDefinitionWithKey<
+//   T,
+//   K extends keyof T
+// > = ColumnDefinitionBase<T> & {
+//   accessorKey: K;
+//   accessorFn?: never;
+//   validatorFn?: (value: T[K]) => boolean;
+// };
+
+// export type ColumnDefinitionWithFn<T, R = any> = ColumnDefinitionBase<T> & {
+//   accessorKey?: never;
+//   accessorFn: (row: T) => R;
+//   validatorFn?: (value: R) => boolean;
+// };
+
+// export type ColumnDefinitionWithNeither<T> = ColumnDefinitionBase<T> & {
+//   accessorKey?: never;
+//   accessorFn?: never;
+//   validatorFn?: never;
+// };
+
+// // Union type that represents all possible column definition variants
+// export type ColumnDefinition<T> =
+//   | { [K in keyof T]: ColumnDefinitionWithKey<T, K> }[keyof T]
+//   | ColumnDefinitionWithFn<T>
+//   | ColumnDefinitionWithNeither<T>;

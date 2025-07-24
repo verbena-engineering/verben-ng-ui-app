@@ -1,28 +1,23 @@
 import {
-  AfterContentInit,
   ChangeDetectionStrategy,
   Component,
   computed,
   contentChildren,
-  ContentChildren,
   EventEmitter,
   input,
   Input,
-  OnInit,
   Output,
-  QueryList,
   Signal,
   signal,
-  WritableSignal,
 } from '@angular/core';
 import {
   ColumnDefinition,
-  EditedData,
+  DataWithKey,
   FormGroupConfig,
   GroupedDataRow,
 } from './data-table.types';
 import { ColumnDirective } from './column.directive';
-import { BaseStyles, TableStyles } from './style.types';
+import { TableStyles } from './style.types';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -43,13 +38,24 @@ export class DataTableComponent<T> {
   >();
 
   groupBy = input<keyof T | ((row: T) => any)>();
+  useVirtualScroll = input<boolean>(false);
+  virtualScrollItemSize = input<number>(48);
 
   @Input() styleConfig: TableStyles = defaultTableStyles;
 
   columnTemplates = contentChildren(ColumnDirective);
 
   @Output() rowEdit = new EventEmitter<T>();
-  @Output() rowSave = new EventEmitter<T>();
+  @Output() rowSave = new EventEmitter<{
+    index: number;
+    key: number | string;
+    data: Partial<T>;
+  }>();
+  @Output() rowRevert = new EventEmitter<{
+    index: number;
+    key: number | string;
+    data: T;
+  }>();
   @Output() rowDelete = new EventEmitter<T>();
   @Output() selectionChange = new EventEmitter<T[]>();
 
@@ -58,28 +64,33 @@ export class DataTableComponent<T> {
 
   private editingRowsSignal = signal<Set<string | number>>(new Set());
   private selectedRowsSignal = signal<Set<string | number>>(new Set());
-  private editedDataSignal = signal<Map<string | number, EditedData<T>>>(
-    new Map()
-  );
+  // private editedDataSignal = signal<Map<string | number, EditedData<T>>>(
+  //   new Map()
+  // );
+  private unEditedDataSignal = signal<Map<string | number, T>>(new Map());
   private formGroupsSignal = signal<Map<string | number, FormGroup>>(new Map());
 
-  columnsSignal = computed(() => this.columns());
+  // columnsSignal = computed(() => this.columns());
 
   displayColumns: Signal<ColumnDefinition<T>[]>;
 
   constructor() {
     this.displayColumns = computed(() => {
-      return this.columnsSignal().map((column) => {
+      return this.columns().map((column) => {
         const matchingTemplate = this.columnTemplates().find(
           (t) => t.columnId === column.id
         );
         if (matchingTemplate) {
+          console.log('Found matching template:', matchingTemplate);
           return {
             ...column,
-            cellTemplate: matchingTemplate.cellTemplate,
-            cellEditTemplate: matchingTemplate.cellEditTemplate,
-            headerTemplate: matchingTemplate.headerTemplate,
-            footerTemplate: matchingTemplate.footerTemplate,
+            cellTemplate: matchingTemplate.cellTemplate ?? column.cellTemplate,
+            cellEditTemplate:
+              matchingTemplate.cellEditTemplate ?? column.cellEditTemplate,
+            headerTemplate:
+              matchingTemplate.headerTemplate ?? column.headerTemplate,
+            footerTemplate:
+              matchingTemplate.footerTemplate ?? column.footerTemplate,
           };
         }
         return column;
@@ -88,9 +99,18 @@ export class DataTableComponent<T> {
 
     this.tableData = computed(() => {
       return this.data().map((item, index) => {
-        const key =
-          this._getRowIdByDataKey(item) ?? (index as DataWithKey<T>['_key']);
-        return { ...item, _key: key };
+        let key;
+        const dataKey = this._getRowIdByDataKey(item);
+        if (dataKey) {
+          key = dataKey;
+        } else {
+          key = index as DataWithKey<T>['_key'];
+        }
+        return {
+          originalData: item,
+          _key: key,
+          _key_prop: this.dataKey() ?? '_index',
+        };
       });
     });
   }
@@ -119,6 +139,10 @@ export class DataTableComponent<T> {
     return !!(row as any).isGroupRow;
   }
 
+  trackByRowKey(index: number, row: any) {
+    return row._key;
+  }
+
   // Computed property for grouped data
 
   groupedData = computed(() => {
@@ -129,11 +153,11 @@ export class DataTableComponent<T> {
         ? (this.groupBy() as (row: T) => any)
         : (row: T) => row[this.groupBy() as keyof T];
 
-    const groups = new Map<any, T[]>();
+    const groups = new Map<any, DataWithKey<T>[]>();
 
     this.tableData().forEach((row) => {
       if (getGroupValue !== undefined) {
-        const groupValue = getGroupValue(row);
+        const groupValue = getGroupValue(row.originalData);
         const existingGroup = groups.get(groupValue) || [];
         groups.set(groupValue, [...existingGroup, row]);
       }
@@ -144,7 +168,7 @@ export class DataTableComponent<T> {
     groups.forEach((groupRows, groupValue) => {
       // Create group header row
       const groupRow: GroupedDataRow<T> = {
-        ...({} as T), // Create empty object of type T as base
+        ...({} as DataWithKey<T>), // Create empty object of type T as base
         _key: `group-${groupValue}`,
         isGroupRow: true,
         groupValue,
@@ -172,16 +196,32 @@ export class DataTableComponent<T> {
     return column.accessorFn ? column.accessorFn(row) : undefined;
   };
 
-  isRowEditing = (row: DataWithKey<T>): boolean => {
-    return this.editingRowsSignal().has(row._key);
+  public isRowEditing = (rowKey: DataWithKey<T>['_key']): boolean => {
+    return this.editingRowsSignal().has(rowKey);
   };
 
-  toggleRowEdit = (row: DataWithKey<T>) => {
+  public toggleRowEdit = (rowId: DataWithKey<T>['_key']) => {
+    let data: DataWithKey<T> | undefined = undefined;
+    let index: number = -1;
+
+    this.tableData().forEach((datum, i) => {
+      if (datum._key === rowId) {
+        data = datum;
+        index = i;
+      }
+    });
+
+    if (data !== undefined && index >= 0) {
+      this.toggleRowEditInternal(data, index);
+    }
+  };
+
+  private toggleRowEditInternal = (row: DataWithKey<T>, index: number) => {
     this.editingRowsSignal.update((set) => {
       const newSet = new Set(set);
       if (newSet.has(row._key)) {
         newSet.delete(row._key);
-        this.saveRow(row._key);
+        this.saveRow(row._key, index);
       } else {
         newSet.add(row._key);
         this.initializeEditedData(row);
@@ -192,9 +232,9 @@ export class DataTableComponent<T> {
 
   private initializeEditedData(row: DataWithKey<T>) {
     const rowId = row._key;
-    this.editedDataSignal.update((map) => {
+    this.unEditedDataSignal.update((map) => {
       const newMap = new Map(map);
-      newMap.set(rowId, { ...row });
+      newMap.set(rowId, { ...row.originalData });
       return newMap;
     });
     const formGroupConfig = this.formGroupConfig();
@@ -204,6 +244,7 @@ export class DataTableComponent<T> {
         formGroupConfig.validatorOrOpts,
         formGroupConfig.asyncValidator
       );
+      formGroup.patchValue(row as any);
       this.formGroupsSignal.update((map) => {
         const newMap = new Map(map);
         newMap.set(rowId, formGroup);
@@ -212,22 +253,26 @@ export class DataTableComponent<T> {
     }
   }
 
-  private saveRow(rowId: string | number) {
-    const editedData = this.editedDataSignal().get(rowId);
+  private saveRow(rowId: string | number, rowIndex: number) {
     const editedForm = this.formGroupsSignal().get(rowId);
+    const unEditedData = this.unEditedDataSignal().get(rowId);
 
-    if (editedData) {
-      const originalRow = this.tableData().find((row) => row._key === rowId);
-      if (originalRow) {
-        const updatedRow = { ...originalRow, ...editedData };
-        this.rowSave.emit(updatedRow);
-        this.editedDataSignal.update((map) => {
-          const newMap = new Map(map);
-          newMap.delete(rowId);
-          return newMap;
-        });
-      }
-    }
+    // if (editedData) {
+    //   const originalRow = this.tableData().find((row) => row._key === rowId);
+    //   if (originalRow) {
+    //     const updatedRow = { ...originalRow, ...editedData };
+    //     this.rowSave.emit(updatedRow);
+    //     this.editedDataSignal.update((map) => {
+    //       const newMap = new Map(map);
+    //       newMap.delete(rowId);
+    //       return newMap;
+    //     });
+    //   }
+    // }
+
+    console.log(this.formGroupConfig());
+    console.log(editedForm);
+    console.log(unEditedData);
 
     if (editedForm) {
       editedForm.markAsPristine();
@@ -237,15 +282,32 @@ export class DataTableComponent<T> {
         newMap.delete(rowId);
         return newMap;
       });
-      this.rowSave.emit(editedForm.value);
+      this.rowSave.emit({
+        index: rowIndex,
+        key: rowId,
+        data: editedForm.value,
+      });
+    }
+
+    if (unEditedData) {
+      this.unEditedDataSignal.update((map) => {
+        const newMap = new Map(map);
+        newMap.delete(rowId);
+        return newMap;
+      });
+      this.rowRevert.emit({
+        index: rowIndex,
+        key: rowId,
+        data: unEditedData,
+      });
     }
   }
 
-  isRowSelected = (rowId: string | number): boolean => {
+  private isRowSelected = (rowId: string | number): boolean => {
     return this.selectedRowsSignal().has(rowId);
   };
 
-  toggleRowSelection = (rowId: string | number) => {
+  private toggleRowSelection = (rowId: string | number) => {
     this.selectedRowsSignal.update((set) => {
       const newSet = new Set(set);
       if (newSet.has(rowId)) {
@@ -258,7 +320,7 @@ export class DataTableComponent<T> {
     });
   };
 
-  allRowsSelected = (): boolean => {
+  private allRowsSelected = (): boolean => {
     const nonGroupRows = this.data().filter((row) => !this.isGroupRow(row));
     return (
       nonGroupRows.length > 0 &&
@@ -266,7 +328,7 @@ export class DataTableComponent<T> {
     );
   };
 
-  someRowsSelected = (): boolean => {
+  private someRowsSelected = (): boolean => {
     const nonGroupRows = this.data().filter((row) => !this.isGroupRow(row));
     return (
       this.selectedRowsSignal().size > 0 &&
@@ -274,12 +336,12 @@ export class DataTableComponent<T> {
     );
   };
 
-  toggleAllRows = () => {
+  private toggleAllRows = () => {
     if (this.allRowsSelected()) {
       this.selectedRowsSignal.set(new Set());
     } else {
       const nonGroupRows = this.tableData().filter(
-        (row) => !this.isGroupRow(row)
+        (row) => !this.isGroupRow(row.originalData)
       );
       this.selectedRowsSignal.set(new Set(nonGroupRows.map((row) => row._key)));
     }
@@ -290,7 +352,9 @@ export class DataTableComponent<T> {
     const selectedRows = this.tableData().filter((row) =>
       this.selectedRowsSignal().has(row._key)
     );
-    this.selectionChange.emit(selectedRows);
+    this.selectionChange.emit(
+      selectedRows.map(({ originalData }) => originalData)
+    );
   }
 
   getHeaderContext(column: ColumnDefinition<T>) {
@@ -308,21 +372,19 @@ export class DataTableComponent<T> {
     column: ColumnDefinition<T>,
     value: any
   ) {
-    this.editedDataSignal.update((map) => {
-      const newMap = new Map(map);
-      const rowData = newMap.get(rowId) || ({} as EditedData<T>);
-
-      if (column.accessorKey) {
-        newMap.set(rowId, { ...rowData, [column.accessorKey]: value });
-      } else {
-        console.warn(
-          'Cannot update value for column without accessorKey:',
-          column.id
-        );
-      }
-
-      return newMap;
-    });
+    // this.editedDataSignal.update((map) => {
+    //   const newMap = new Map(map);
+    //   const rowData = newMap.get(rowId) || ({} as EditedData<T>);
+    //   if (column.accessorKey) {
+    //     newMap.set(rowId, { ...rowData, [column.accessorKey]: value });
+    //   } else {
+    //     console.warn(
+    //       'Cannot update value for column without accessorKey:',
+    //       column.id
+    //     );
+    //   }
+    //   return newMap;
+    // });
   }
 
   updateEditedValueFn(
@@ -330,21 +392,21 @@ export class DataTableComponent<T> {
     valueFn: (value: any) => T,
     value: any
   ) {
-    this.editedDataSignal.update((map) => {
-      const newMap = new Map(map);
-      const rowData = newMap.get(rowId) || ({} as EditedData<T>);
-      newMap.set(rowId, { ...rowData, ...valueFn(value) });
-      return newMap;
-    });
+    // this.editedDataSignal.update((map) => {
+    //   const newMap = new Map(map);
+    //   const rowData = newMap.get(rowId) || ({} as EditedData<T>);
+    //   newMap.set(rowId, { ...rowData, ...valueFn(value) });
+    //   return newMap;
+    // });
   }
 
   updateEditedData(rowId: string | number, data: Partial<T>) {
-    this.editedDataSignal.update((map) => {
-      const newMap = new Map(map);
-      const rowData = newMap.get(rowId) || ({} as EditedData<T>);
-      newMap.set(rowId, { ...rowData, ...data });
-      return newMap;
-    });
+    // this.editedDataSignal.update((map) => {
+    //   const newMap = new Map(map);
+    //   const rowData = newMap.get(rowId) || ({} as EditedData<T>);
+    //   newMap.set(rowId, { ...rowData, ...data });
+    //   return newMap;
+    // });
   }
 
   updateNestedEditedValue(
@@ -353,28 +415,26 @@ export class DataTableComponent<T> {
     nestedField: string,
     value: any
   ) {
-    this.editedDataSignal.update((map) => {
-      const newMap = new Map(map);
-      const rowData = newMap.get(rowId) || ({} as EditedData<T>);
-
-      if (column.accessorKey) {
-        const columnData = (rowData[column.accessorKey] as any) || {};
-        newMap.set(rowId, {
-          ...rowData,
-          [column.accessorKey]: {
-            ...columnData,
-            [nestedField]: value,
-          },
-        });
-      } else {
-        console.warn(
-          'Cannot update nested value for column without accessorKey:',
-          column.id
-        );
-      }
-
-      return newMap;
-    });
+    // this.editedDataSignal.update((map) => {
+    //   const newMap = new Map(map);
+    //   const rowData = newMap.get(rowId) || ({} as EditedData<T>);
+    //   if (column.accessorKey) {
+    //     const columnData = (rowData[column.accessorKey] as any) || {};
+    //     newMap.set(rowId, {
+    //       ...rowData,
+    //       [column.accessorKey]: {
+    //         ...columnData,
+    //         [nestedField]: value,
+    //       },
+    //     });
+    //   } else {
+    //     console.warn(
+    //       'Cannot update nested value for column without accessorKey:',
+    //       column.id
+    //     );
+    //   }
+    //   return newMap;
+    // });
   }
 
   getCellContext(
@@ -383,8 +443,8 @@ export class DataTableComponent<T> {
     rowIndex: number
   ) {
     const rowId = row._key;
-    const isEditing = this.isRowEditing(row);
-    const editedData = this.editedDataSignal().get(rowId);
+    const isEditing = this.isRowEditing(row._key);
+    // const editedData = this.editedDataSignal().get(rowId);
     const editedForm = this.formGroupsSignal().get(rowId);
     const formControl = editedForm?.get(column.formControlName || '');
 
@@ -392,33 +452,37 @@ export class DataTableComponent<T> {
     if (isEditing) {
       if (formControl) {
         value = formControl.value;
-      } else if (editedData) {
-        if (column.accessorKey && column.accessorKey in editedData) {
-          // If column has an accessorKey and it exists in edited data, use that
-          value = editedData[column.accessorKey];
-        } else if (column.accessorFn) {
-          // If column has an accessorFn, apply it to the edited data
-          value = column.accessorFn({ ...row, ...editedData });
-        } else {
-          // Fallback to getting the value from the original row
-          value = this.getCellValue(row, column);
-        }
+      } else {
+        value = this.getCellValue(row.originalData, column);
       }
+      // else if (editedData) {
+      //   if (column.accessorKey && column.accessorKey in editedData) {
+      //     // If column has an accessorKey and it exists in edited data, use that
+      //     value = editedData[column.accessorKey];
+      //   } else if (column.accessorFn) {
+      //     // If column has an accessorFn, apply it to the edited data
+      //     value = column.accessorFn({ ...row, ...editedData });
+      //   } else {
+      //     // Fallback to getting the value from the original row
+      //     value = this.getCellValue(row, column);
+      //   }
+      // }
     } else {
-      value = this.getCellValue(row, column);
+      value = this.getCellValue(row.originalData, column);
     }
 
     return {
       $implicit: value,
       value,
-      row,
+      row: row.originalData,
       column,
       rowIndex,
+      rowId,
       isEditing,
       formControl,
       isSelected: this.isRowSelected(rowId),
       toggleRowSelection: () => this.toggleRowSelection(rowId),
-      toggleRowEdit: () => this.toggleRowEdit(row),
+      toggleRowEdit: () => this.toggleRowEditInternal(row, rowIndex),
       deleteRow: () => this.deleteRow(rowId),
       updateValue: (newValue: any) =>
         this.updateEditedValue(rowId, column, newValue),
@@ -434,7 +498,7 @@ export class DataTableComponent<T> {
   deleteRow = (rowId: string | number) => {
     const rowToDelete = this.tableData().find((row) => row._key === rowId);
     if (rowToDelete) {
-      this.rowDelete.emit(rowToDelete);
+      this.rowDelete.emit(rowToDelete.originalData);
     }
   };
 
@@ -529,9 +593,6 @@ export class DataTableComponent<T> {
     return cellStyle;
   }
 }
-
-// Define a type that extends T with a _key property
-type DataWithKey<T> = T & { _key: string | number };
 
 // Default styles
 const defaultTableStyles: TableStyles = {

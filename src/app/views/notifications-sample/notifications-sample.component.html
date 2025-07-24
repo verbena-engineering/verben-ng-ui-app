@@ -1,16 +1,6 @@
-<button (click)="showWarningNotification()">show notifications</button>
+<button (click)="showInfoNotification()">show notifications</button>
 <verben-notification
   position="top-right"
- [buttons]="buttons"
- width="500px"
- (buttonClick)="handleButtonClick($event)"
+  width="500px"
+  (buttonClick)="handleButtonClick($event)"
 ></verben-notification>
-
-<button (click)="showSuccessNotification()">show success</button>
-<verben-notification
-  position="top-right"
- [buttons]="buttons"
- width="500px"
- (buttonClick)="handleButtonClick($event)"
-></verben-notification>
-

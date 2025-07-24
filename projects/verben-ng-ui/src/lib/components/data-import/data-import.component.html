@@ -24,7 +24,7 @@
       <button class="export-button" (click)="handleTemplateExport()">
         Download Template
       </button>
-      <button class="export-button" (click)="save()">Upload File</button>
+      <label for="fileInput" class="export-button">Upload File</label>
     </div>
     <hr class="divider" />
     <section class="section">
@@ -69,11 +69,12 @@
   [mode]="'dialogue'"
   [customClass]="'my-modal-custom-class'"
   [disableFooter]="false"
-  [modalData]="[{ data: { first_name: 'verben-ng', last_name: 'verbena' } }]"
+  [modalData]="[{ data: {} }]"
   [isVisible]="showPreview"
   [headerTemplate]="headerTemplate"
   [bodyTemplate]="bodyTemplate"
   [footerTemplate]="footerTemplate"
+  dialogueWidth="85%"
 >
   <a download=""></a>
 </verben-dialogue>
@@ -85,142 +86,95 @@
 
 <ng-template #bodyTemplate>
   <div class="flex gap-4 items-center justify-between my-4">
-    <p class="">Total Items: {{ previewData().length }}</p>
+    <p class="">Total Items: {{ service.importedData().length }}</p>
 
     <p class="">Duplicates: {{ duplicateIndexSet.size }}</p>
 
-    <p class="">Invalid Items: {{ 0 }}</p>
+    <p class="">Invalid Items: {{ invalidIndexSet.size }}</p>
 
     <verben-drop-down
       [multiselect]="true"
       placeholder="Find duplicates by"
-      [options]="fields()"
+      [options]="headers()"
       [ngModel]="uniqueIdentifiers()"
       (ngModelChange)="uniqueIdentifiers.set($event)"
     ></verben-drop-down>
   </div>
-  <lib-data-table
-    [data]="previewData()"
-    [columns]="previewColumnsList()"
-    [formGroupConfig]="formGroupConfig()"
-  >
-    @for (column of previewColumns(); track column.id) {
-    <ng-container [libColumn]="column.id">
-      <ng-template
-        #cellEdit
-        let-value="value"
-        let-row="row"
-        let-formControl="formControl"
-        let-updateValue="updateValue"
-      >
-        <verbena-input
-          [value]="value"
-          (valueChange)="updateValue($event)"
-        ></verbena-input>
-      </ng-template>
-      <!-- @if (column.formControlName || column.accessorKey) {
-      <ng-template
-        #cell
-        let-value="value"
-        let-row="row"
-        let-formControl="formControl"
-      >
-        @if (formControl) {
-        <input type="text" [formControl]="formControl" />
-        } @else if (column.accessorKey) {
-        <input type="text" [ngModel]="value" />
-        } @else if (column.cellEditTemplate) {
-        <ng-container
-          [ngTemplateOutlet]="column.cellEditTemplate"
-          [ngTemplateOutletContext]="formControl"
-        ></ng-container>
-        }
-      </ng-template>
+  <div style="max-height: min(75vh, 780px); overflow: auto">
+    <lib-data-table
+      [data]="service.importedData()"
+      [columns]="previewColumnsList()"
+      [formGroupConfig]="formGroupConfig()"
+      [useVirtualScroll]="true"
+      (rowSave)="service.addRow($event)"
+    >
+      <ng-container libColumn="actions">
+        <ng-template
+          #cell
+          let-value
+          let-deleteRow="deleteRow"
+          let-isEditing="isEditing"
+          let-toggleRowEdit="toggleRowEdit"
+          let-row="row"
+          let-rowIndex="rowIndex"
+        >
+          <div class="flex action-buttons">
+            <verben-svg
+              (click)="toggleRowEdit()"
+              icon="edit"
+              [width]="15"
+              [height]="15"
+              class="cursor-pointer"
+            ></verben-svg>
 
-      <ng-template
-        #cellEdit
-        let-value="value"
-        let-row="row"
-        let-formControl="formControl"
-      >
-        @if (formControl) {
-        <input type="text" [formControl]="formControl" />
-        } @else if (column.accessorKey) {
-        <input type="text" [ngModel]="value" />
-        } @else if (column.cellEditTemplate) {
-        <ng-container
-          [ngTemplateOutlet]="column.cellEditTemplate"
-          [ngTemplateOutletContext]="formControl"
-        ></ng-container>
-        }
-      </ng-template>
-      } -->
-    </ng-container>
-    }
+            <verben-svg
+              icon="delete"
+              [width]="15"
+              [height]="15"
+              (click)="deleteRow()"
+              class="cursor-pointer"
+            ></verben-svg>
+          </div>
+        </ng-template>
 
-    <ng-container libColumn="actions">
-      <ng-template
-        #cell
-        let-value
-        let-deleteRow="deleteRow"
-        let-isEditing="isEditing"
-        let-toggleRowEdit="toggleRowEdit"
-        let-row="row"
-        let-rowIndex="rowIndex"
-      >
-        <div class="flex gap-6">
-          <verben-svg
-            (click)="toggleRowEdit()"
-            icon="edit"
-            [width]="15"
-            [height]="15"
-            class="cursor-pointer"
-          ></verben-svg>
+        <ng-template
+          #cellEdit
+          let-value
+          let-deleteRow="deleteRow"
+          let-isEditing="isEditing"
+          let-toggleRowEdit="toggleRowEdit"
+          let-row="row"
+          let-rowIndex="rowIndex"
+        >
+          <div class="flex action-buttons">
+            <verben-svg
+              (click)="toggleRowEdit()"
+              icon="tick"
+              [width]="15"
+              [height]="15"
+              class="cursor-pointer"
+            ></verben-svg>
 
-          <verben-svg
-            icon="delete"
-            [width]="15"
-            [height]="15"
-            (click)="deleteRow()"
-            class="cursor-pointer"
-          ></verben-svg>
-        </div>
-      </ng-template>
-
-      <ng-template
-        #cellEdit
-        let-value
-        let-deleteRow
-        let-isEditing="isEditing"
-        let-toggleRowEdit="toggleRowEdit"
-        let-row="row"
-        let-rowIndex="rowIndex"
-      >
-        <div class="flex gap-6">
-          <verben-svg
-            (click)="toggleRowEdit()"
-            icon="tick"
-            [width]="15"
-            [height]="15"
-            class="cursor-pointer"
-          ></verben-svg>
-
-          <verben-svg
-            icon="delete"
-            [width]="15"
-            [height]="15"
-            (click)="deleteRow()"
-            class="cursor-pointer"
-          ></verben-svg>
-        </div>
-      </ng-template>
-    </ng-container>
-  </lib-data-table>
+            <verben-svg
+              icon="delete"
+              [width]="15"
+              [height]="15"
+              (click)="deleteRow()"
+              class="cursor-pointer"
+            ></verben-svg>
+          </div>
+        </ng-template>
+      </ng-container>
+    </lib-data-table>
+  </div>
 </ng-template>
 
 <ng-template #footerTemplate>
   <div class="footer-buttons flex gap-4 items-center justify-between my-4">
-    <button class="btn btn-secondary" (click)="showPreview = false">
+    <button
+      class="btn btn-secondary cancel-button"
+      (click)="showPreview = false"
+    >
       Cancel
     </button>
     <button class="btn btn-primary export-button" (click)="save()">

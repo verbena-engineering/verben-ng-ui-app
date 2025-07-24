@@ -39,7 +39,7 @@ export class NotificationService {
       error: { 
         backgroundColor: '#FFE681', 
         textColor: '#E20000', 
-        iconName: 'warning',
+        iconName: 'dangerInfo',
         iconWidth: 20,
         iconHeight: 20,
         stroke: '#E20000',
@@ -48,7 +48,7 @@ export class NotificationService {
       warning: { 
         backgroundColor: '#FFE681', 
         textColor: '#E20000', 
-        iconName: 'dangerInfo',
+        iconName: 'warning',
         iconWidth: 20,
         iconHeight: 20,
         stroke: '#E20000',

@@ -6,3 +6,11 @@
  (buttonClick)="handleButtonClick($event)"
 ></verben-notification>
 
+<button (click)="showSuccessNotification()">show success</button>
+<verben-notification
+  position="top-right"
+ [buttons]="buttons"
+ width="500px"
+ (buttonClick)="handleButtonClick($event)"
+></verben-notification>
+

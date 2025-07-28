@@ -9,7 +9,6 @@ import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   ColumnDefinition,
   FormControlOf,
-  FormGroupConfig,
 } from 'verben-ng-ui/src/lib/components/data-table/data-table.types';
 import { TableStyles } from 'verben-ng-ui/src/lib/components/data-table/style.types';
 import {
@@ -18,7 +17,7 @@ import {
   FilterCondition,
   DataExtendItem,
 } from 'verben-ng-ui/src/public-api';
-import { ColumnDirective } from 'verben-ng-ui/src/public-api';
+import { ColumnDirective, FormGroupConfig } from 'verben-ng-ui/src/public-api';
 import { read, utils, writeFile } from 'xlsx';
 import { OperationAccount } from './sample-models';
 
@@ -378,7 +377,7 @@ export class DataTableComponent {
       );
 
       this.tableDataMax.set(
-        Array.from({ length: 1000 }, (_, index) => ({
+        Array.from({ length: 100 }, (_, index) => ({
           Id: `ACTIVITY-${index + 1}`,
           id: `ACTIVITY-${index + 1}`,
           activityDetails: Array.from(

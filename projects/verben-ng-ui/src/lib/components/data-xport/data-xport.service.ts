@@ -115,7 +115,7 @@ export class DataXportService<T> {
       profile.items.forEach((item) => uniqueItems.add(item));
     });
 
-    return data.map((item) => {
+    const records = data.map((item) => {
       const exportedItem: Record<string, any> = {};
       uniqueItems.forEach((exportItem) => {
         if (exportItem.type === 'property') {
@@ -139,6 +139,34 @@ export class DataXportService<T> {
       });
       return exportedItem;
     });
+
+    this.downloadCSV(records);
+    return records;
+  }
+
+  downloadCSV(data: Partial<any>[]) {
+    const headers = Object.keys(data[0]);
+    const csvContent = [
+      headers.join(','),
+      ...data.map((row) =>
+        headers
+          .map((header) => row[header])
+          .map((datum) => `"${datum}"`)
+          .join(',')
+      ),
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'export.csv');
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   }
 
   private calculateOperation(item: T, operation: Operation): number | string {

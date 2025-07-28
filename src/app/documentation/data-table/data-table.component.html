@@ -482,12 +482,17 @@
   >
   </lib-data-xport> -->
 
-  <lib-data-xport
+  <h1 class="font-bold">Xport</h1>
+
+  <lib-data-xport [columns]="controlledCols()" [data]="tableData()">
+  </lib-data-xport>
+
+  <!-- <lib-data-xport
     [columns]="controlledCols()"
     [data]="tableData()"
     (exportDataEvent)="handleExport($event)"
   >
-  </lib-data-xport>
+  </lib-data-xport> -->
 
   <lib-data-filter
     [columns]="controlledCols()"

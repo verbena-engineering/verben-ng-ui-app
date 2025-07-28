@@ -244,7 +244,7 @@ export class DataTableComponent<T> {
         formGroupConfig.validatorOrOpts,
         formGroupConfig.asyncValidator
       );
-      formGroup.patchValue(row as any);
+      formGroup.patchValue(row.originalData as any);
       this.formGroupsSignal.update((map) => {
         const newMap = new Map(map);
         newMap.set(rowId, formGroup);

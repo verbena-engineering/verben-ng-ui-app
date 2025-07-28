@@ -240,6 +240,12 @@
     </section>
   </div>
   <div card-footer class="card-footer">
-    <button class="export-button" (click)="exportData()">Export</button>
+    <button
+      class="export-button"
+      [disabled]="!isAnyProfileSelected()"
+      (click)="exportData()"
+    >
+      Export
+    </button>
   </div>
 </verben-card>

@@ -73,8 +73,11 @@ export class DataXportComponent<T> {
   }
 
   initializeColumns() {
-    if (this.columns?.length) {
-      this.exportService.setColumns(this.columns);
+    const validColumns = this.columns.filter(
+      (col) => col.accessorKey || col.accessorFn
+    );
+    if (validColumns?.length) {
+      this.exportService.setColumns(validColumns);
       this.updateColumnTypes();
       this.updateGroupItems();
     }
@@ -229,13 +232,14 @@ export class DataXportComponent<T> {
       (profile) => profile.selected
     );
     if (selectedProfiles.length > 0) {
-      const exportedData = this.exportService.exportData(
-        this.data,
-        selectedProfiles
-      );
-      console.log(exportedData);
-      this.exportDataEvent.emit(exportedData);
+      this.exportService.exportData(this.data, selectedProfiles);
+      // console.log(exportedData);
+      // this.exportDataEvent.emit(exportedData);
     }
+  }
+
+  isAnyProfileSelected(): boolean {
+    return this.profiles.some((profile) => profile.selected);
   }
 
   onField1Change() {

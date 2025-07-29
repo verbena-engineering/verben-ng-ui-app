@@ -244,7 +244,7 @@ export class DataTableComponent<T> {
         formGroupConfig.validatorOrOpts,
         formGroupConfig.asyncValidator
       );
-      formGroup.patchValue(row as any);
+      formGroup.patchValue(row.originalData as any);
       this.formGroupsSignal.update((map) => {
         const newMap = new Map(map);
         newMap.set(rowId, formGroup);
@@ -270,9 +270,9 @@ export class DataTableComponent<T> {
     //   }
     // }
 
-    console.log(this.formGroupConfig());
-    console.log(editedForm);
-    console.log(unEditedData);
+    // console.log(this.formGroupConfig());
+    // console.log(editedForm);
+    // console.log(unEditedData);
 
     if (editedForm) {
       editedForm.markAsPristine();

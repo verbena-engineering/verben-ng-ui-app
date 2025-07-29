@@ -25,7 +25,7 @@
     </label>
   </div>
 
-  <!-- Columns List -->
+ <div class="center">
   <ul *ngFor="let column of columns; let i = index" class="column-options-container">
     <li
       [attr.draggable]="enableDragAndDrop"
@@ -51,6 +51,8 @@
       {{ displayedColumns === columns.length ? "Show Less" : "Show More" }}
     </span>
   </div>
+ </div>
+
   <hr />
 
   <!-- Save Button -->

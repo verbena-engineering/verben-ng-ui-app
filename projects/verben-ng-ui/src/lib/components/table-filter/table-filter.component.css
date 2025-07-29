@@ -46,6 +46,10 @@ hr{
     gap:0.4rem;
     cursor: pointer;
 }
+.center {
+  overflow-y: auto;
+  max-height: calc(32rem - 8rem); 
+}
 
 
 .inputsWrapper{ 

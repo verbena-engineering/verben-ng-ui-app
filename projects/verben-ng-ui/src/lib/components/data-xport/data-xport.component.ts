@@ -18,6 +18,10 @@ import { DataXportService } from './data-xport.service';
 export class DataXportComponent<T> {
   @Input() data!: T[];
   @Input() columns!: ColumnDefinition<T>[];
+  /**
+   * @deprecated will be removed in the near future
+   */
+  @Input() useImportKey: boolean = false;
   @Output() exportDataEvent = new EventEmitter<Record<string, any>[]>();
 
   profiles: (ExportProfile & { selected: boolean })[] = [];
@@ -74,7 +78,10 @@ export class DataXportComponent<T> {
 
   initializeColumns() {
     const validColumns = this.columns.filter(
-      (col) => col.accessorKey || col.accessorFn
+      (col) =>
+        col.accessorKey ||
+        col.accessorFn ||
+        (this.useImportKey && col.importKey)
     );
     if (validColumns?.length) {
       this.exportService.setColumns(validColumns);
@@ -88,7 +95,16 @@ export class DataXportComponent<T> {
       const sampleData = this.data[0];
 
       this.numericColumns = this.columns.filter((col) => {
-        const value = col.accessorFn
+        /**
+         * Remove the entire first part of the tenery on deprecation of this.useImportKey
+         */
+        const value = this.useImportKey
+          ? col.accessorFn && typeof col.accessorFn(sampleData) === 'number'
+            ? col.accessorFn(sampleData)
+            : col.importKey
+            ? sampleData[col.importKey]
+            : null
+          : col.accessorFn
           ? col.accessorFn(sampleData)
           : col.accessorKey
           ? sampleData[col.accessorKey]
@@ -97,7 +113,16 @@ export class DataXportComponent<T> {
       });
 
       this.stringColumns = this.columns.filter((col) => {
-        const value = col.accessorFn
+        /**
+         * Remove the entire first part of the tenery on deprecation of this.useImportKey
+         */
+        const value = this.useImportKey
+          ? col.accessorFn && typeof col.accessorFn(sampleData) === 'string'
+            ? col.accessorFn(sampleData)
+            : col.importKey
+            ? sampleData[col.importKey]
+            : null
+          : col.accessorFn
           ? col.accessorFn(sampleData)
           : col.accessorKey
           ? sampleData[col.accessorKey]

@@ -61,7 +61,7 @@ export class DataImportService<T> {
       //   cellFormula: false,
       //   cellNF: false,
       // });
-      console.time('Begin');
+      // console.time('Begin');
       let imported: any[] = [];
       const wb = read(event.target.result, { raw: true });
       const sheets = wb.SheetNames;
@@ -71,20 +71,18 @@ export class DataImportService<T> {
           // defval: '',
           // rawNumbers: true,
           // dateNF: 'dd/mm/yyyy',
-        });
+        }) as Record<string, any>[];
+
+        imported = this.transformImportData(rows, columnDefinitions) as T[];
         if (parseImport) {
           imported = parseImport(rows);
-        } else {
-          imported = rows as any[];
         }
         // previewer(imported);
       }
       // console.log('Imported data:', JSON.stringify(imported, null, 2));
       // console.time('Start Process');
-      this.importedData.set(
-        this.transformImportData(imported, columnDefinitions) as T[]
-      );
-      console.timeEnd('Begin');
+      this.importedData.set(imported);
+      // console.timeEnd('Begin');
       return imported;
     };
     return reader.readAsArrayBuffer(file);

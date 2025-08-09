@@ -83,17 +83,23 @@ export class DataTableComponent {
     {
       id: 'role',
       header: 'Role',
-      accessorKey: 'role',
+      // accessorKey: 'role',
+      accessorFn: (row) => row,
+      importKey: 'role',
     },
     {
       id: 'age',
       header: 'Age',
-      accessorKey: 'age',
+      // accessorKey: 'age',
+      accessorFn: (row) => row,
+      importKey: 'age',
     },
     {
       id: 'money',
       header: 'Money',
-      accessorKey: 'money',
+      // accessorKey: 'money',
+      accessorFn: (row) => row,
+      importKey: 'money',
     },
     {
       id: 'message',

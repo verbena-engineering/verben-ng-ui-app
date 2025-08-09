@@ -9,6 +9,7 @@ import {
 import { ColumnDefinition } from '../data-table/data-table.types';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataXportService } from './data-xport.service';
+import { isPrintableValue } from './data-xport.utils';
 
 @Component({
   selector: 'lib-data-xport',
@@ -98,17 +99,34 @@ export class DataXportComponent<T> {
         /**
          * Remove the entire first part of the tenery on deprecation of this.useImportKey
          */
-        const value = this.useImportKey
-          ? col.accessorFn && typeof col.accessorFn(sampleData) === 'number'
-            ? col.accessorFn(sampleData)
-            : col.importKey
-            ? sampleData[col.importKey]
-            : null
-          : col.accessorFn
-          ? col.accessorFn(sampleData)
-          : col.accessorKey
-          ? sampleData[col.accessorKey]
-          : null;
+        let value;
+
+        if (col.accessorKey && isPrintableValue(sampleData[col.accessorKey])) {
+          value = sampleData[col.accessorKey];
+        } else if (
+          col.accessorFn &&
+          isPrintableValue(col.accessorFn(sampleData))
+        ) {
+          value = col.accessorFn(sampleData);
+        } else if (
+          this.useImportKey &&
+          col.importKey &&
+          isPrintableValue(sampleData[col.importKey])
+        ) {
+          value = sampleData[col.importKey];
+        }
+
+        // this.useImportKey
+        //   ? col.accessorFn && typeof col.accessorFn(sampleData) === 'number'
+        //     ? col.accessorFn(sampleData)
+        //     : col.importKey
+        //     ? sampleData[col.importKey]
+        //     : null
+        //   : col.accessorFn
+        //   ? col.accessorFn(sampleData)
+        //   : col.accessorKey
+        //   ? sampleData[col.accessorKey]
+        //   : null;
         return typeof value === 'number';
       });
 
@@ -116,17 +134,33 @@ export class DataXportComponent<T> {
         /**
          * Remove the entire first part of the tenery on deprecation of this.useImportKey
          */
-        const value = this.useImportKey
-          ? col.accessorFn && typeof col.accessorFn(sampleData) === 'string'
-            ? col.accessorFn(sampleData)
-            : col.importKey
-            ? sampleData[col.importKey]
-            : null
-          : col.accessorFn
-          ? col.accessorFn(sampleData)
-          : col.accessorKey
-          ? sampleData[col.accessorKey]
-          : null;
+        let value;
+
+        if (col.accessorKey && isPrintableValue(sampleData[col.accessorKey])) {
+          value = sampleData[col.accessorKey];
+        } else if (
+          col.accessorFn &&
+          isPrintableValue(col.accessorFn(sampleData))
+        ) {
+          value = col.accessorFn(sampleData);
+        } else if (
+          this.useImportKey &&
+          col.importKey &&
+          isPrintableValue(sampleData[col.importKey])
+        ) {
+          value = sampleData[col.importKey];
+        }
+        // const value = this.useImportKey
+        //   ? col.accessorFn && typeof col.accessorFn(sampleData) === 'string'
+        //     ? col.accessorFn(sampleData)
+        //     : col.importKey
+        //     ? sampleData[col.importKey]
+        //     : null
+        //   : col.accessorFn
+        //   ? col.accessorFn(sampleData)
+        //   : col.accessorKey
+        //   ? sampleData[col.accessorKey]
+        //   : null;
         return typeof value === 'string';
       });
     }
@@ -257,7 +291,11 @@ export class DataXportComponent<T> {
       (profile) => profile.selected
     );
     if (selectedProfiles.length > 0) {
-      this.exportService.exportData(this.data, selectedProfiles);
+      this.exportService.exportData(
+        this.data,
+        selectedProfiles,
+        this.useImportKey
+      );
       // console.log(exportedData);
       // this.exportDataEvent.emit(exportedData);
     }

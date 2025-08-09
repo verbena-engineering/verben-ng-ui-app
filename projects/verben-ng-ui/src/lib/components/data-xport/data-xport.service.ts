@@ -8,6 +8,7 @@ import {
   StringOperation,
 } from './data-xport.types';
 import { ColumnDefinition } from '../data-table/data-table.types';
+import { isPrintableValue } from './data-xport.utils';
 
 @Injectable()
 export class DataXportService<T> {
@@ -108,12 +109,16 @@ export class DataXportService<T> {
 
   exportData(
     data: T[],
-    selectedProfiles: ExportProfile[]
+    selectedProfiles: ExportProfile[],
+    useImportKey: boolean = false
   ): Record<string, any>[] {
     const uniqueItems = new Set<ExportItem>();
     selectedProfiles.forEach((profile) => {
       profile.items.forEach((item) => uniqueItems.add(item));
     });
+
+    // console.log('ITEMSSS', Array.from(uniqueItems));
+    // console.log('DATAAA', Array.from(data));
 
     const records = data.map((item) => {
       const exportedItem: Record<string, any> = {};
@@ -121,11 +126,31 @@ export class DataXportService<T> {
         if (exportItem.type === 'property') {
           const column = this.columns.find((col) => col.id === exportItem.id);
           if (column) {
-            exportedItem[exportItem.name] = column.accessorFn
-              ? column.accessorFn(item)
-              : column.accessorKey
-              ? item[column.accessorKey]
-              : null;
+            // exportedItem[exportItem.name] = column.accessorFn
+            //   ? column.accessorFn(item)
+            //   : column.accessorKey
+            //   ? item[column.accessorKey]
+            //   : null;
+
+            if (
+              column.accessorKey &&
+              isPrintableValue(item[column.accessorKey])
+            ) {
+              exportedItem[exportItem.name] = item[column.accessorKey];
+            } else if (
+              column.accessorFn &&
+              isPrintableValue(column.accessorFn(item))
+            ) {
+              exportedItem[exportItem.name] = column.accessorFn(item);
+            } else if (
+              useImportKey &&
+              column.importKey &&
+              isPrintableValue(item[column.importKey])
+            ) {
+              exportedItem[exportItem.name] = item[column.importKey];
+            } else {
+              exportedItem[exportItem.name] = null;
+            }
           }
         } else {
           const operation = this.operations.find((o) => o.id === exportItem.id);

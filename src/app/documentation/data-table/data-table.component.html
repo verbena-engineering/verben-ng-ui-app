@@ -298,7 +298,7 @@
 ></lib-data-columns>
 
 <lib-data-table
-  [data]="tableDataMax()"
+  [data]="[] ?? tableDataMax()"
   [columns]="controlledCols()"
   (rowEdit)="onRowEdit($event)"
   (rowDelete)="onRowDelete($event)"
@@ -484,7 +484,11 @@
 
   <h1 class="font-bold">Xport</h1>
 
-  <lib-data-xport [columns]="controlledCols()" [data]="tableData()">
+  <lib-data-xport
+    [columns]="controlledCols()"
+    [data]="tableData()"
+    [useImportKey]="true"
+  >
   </lib-data-xport>
 
   <!-- <lib-data-xport

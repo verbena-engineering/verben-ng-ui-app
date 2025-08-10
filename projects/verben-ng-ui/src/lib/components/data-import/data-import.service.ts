@@ -74,8 +74,11 @@ export class DataImportService<T> {
         }) as Record<string, any>[];
 
         imported = this.transformImportData(rows, columnDefinitions) as T[];
+        console.log('TRANSFORMED', imported);
+
         if (parseImport) {
           imported = parseImport(rows);
+          console.log('PARSED', imported);
         }
         // previewer(imported);
       }

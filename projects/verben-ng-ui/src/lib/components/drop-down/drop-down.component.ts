@@ -529,7 +529,11 @@ export class DropDownComponent
       this.selectedOptionLabels = [];
       this.onItemChange([]);
       this.onTouched();
-      this.onChange.emit({ originalEvent: event, value: [] });
+      this.onChange.emit({
+        originalEvent: event,
+        value: [],
+        dataSet: this.options,
+      });
       if (this.required) {
         this.isInvalid = true;
       }
@@ -560,7 +564,11 @@ export class DropDownComponent
     }
     this.onItemChange(this.selectedOptions);
     this.onTouched();
-    this.onChange.emit({ originalEvent: event, value: this.selectedOptions });
+    this.onChange.emit({
+      originalEvent: event,
+      value: this.selectedOptions,
+      dataSet: this.options,
+    });
   }
 
   clearSelection(event: Event) {
@@ -569,13 +577,21 @@ export class DropDownComponent
       this.selectedOptionLabel = null;
       this.onItemChange(null);
       this.onTouched();
-      this.onChange.emit({ originalEvent: event, value: null });
+      this.onChange.emit({
+        originalEvent: event,
+        value: null,
+        dataSet: this.options,
+      });
     } else {
       this.selectedOptions = [];
       this.selectedOptionLabels = [];
       this.onItemChange([]);
       this.onTouched();
-      this.onChange.emit({ originalEvent: event, value: [] });
+      this.onChange.emit({
+        originalEvent: event,
+        value: [],
+        dataSet: this.options,
+      });
     }
     if (this.required) {
       this.isInvalid = true;
@@ -590,7 +606,11 @@ export class DropDownComponent
       this.selectedOptionLabel = this.getOptionLabel(value);
       this.onItemChange(this.getValue(value));
       this.onTouched();
-      this.onChange.emit({ originalEvent: event, value: this.getValue(value) });
+      this.onChange.emit({
+        originalEvent: event,
+        value: this.getValue(value),
+        dataSet: this.options,
+      });
       this.toggleDropdown();
     } else {
       const exists = this.checkMultiselectValue(value);
@@ -610,6 +630,7 @@ export class DropDownComponent
         this.onChange.emit({
           originalEvent: event,
           value: this.selectedOptions,
+          dataSet: this.options,
         });
       } else {
         this.selectedAll = false;
@@ -624,6 +645,7 @@ export class DropDownComponent
         this.onChange.emit({
           originalEvent: event,
           value: this.selectedOptions,
+          dataSet: this.options,
         });
       }
     }
@@ -638,7 +660,11 @@ export class DropDownComponent
     this.selectedOptionLabels = newSelectedOptionLabels;
     this.onItemChange(this.selectedOptions);
     this.onTouched();
-    this.onChange.emit({ originalEvent: event, value: this.selectedOptions });
+    this.onChange.emit({
+      originalEvent: event,
+      value: this.selectedOptions,
+      dataSet: this.options,
+    });
   }
 
   checkMultiselectValue(value: any): number | null {
@@ -676,7 +702,10 @@ export class DropDownComponent
           }
         }
         this.onTouched();
-        this.onChange.emit({ value: this.selectedOption });
+        this.onChange.emit({
+          value: this.selectedOption,
+          dataSet: this.options,
+        });
         return;
       }
       this.selectedOption = obj;
@@ -701,7 +730,7 @@ export class DropDownComponent
       //   ? await this.asyncLabel(obj)
       //   : this.getOptionLabel(obj);
       this.onTouched();
-      this.onChange.emit({ value: this.selectedOption });
+      this.onChange.emit({ value: this.selectedOption, dataSet: this.options });
     } else {
       if (!Array.isArray(obj)) {
         this.selectedOptions = [];
@@ -731,7 +760,10 @@ export class DropDownComponent
           }
         }
         this.onTouched();
-        this.onChange.emit({ value: this.selectedOptions });
+        this.onChange.emit({
+          value: this.selectedOptions,
+          dataSet: this.options,
+        });
         return;
       }
       this.selectedOptions = obj;
@@ -743,7 +775,10 @@ export class DropDownComponent
         );
       }
       this.onTouched();
-      this.onChange.emit({ value: this.selectedOptions });
+      this.onChange.emit({
+        value: this.selectedOptions,
+        dataSet: this.options,
+      });
     }
   }
 

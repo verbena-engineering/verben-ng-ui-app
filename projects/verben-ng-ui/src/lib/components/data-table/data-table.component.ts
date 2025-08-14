@@ -3,12 +3,14 @@ import {
   Component,
   computed,
   contentChildren,
+  effect,
   EventEmitter,
   input,
   Input,
   Output,
   Signal,
   signal,
+  viewChild,
 } from '@angular/core';
 import {
   ColumnDefinition,
@@ -19,6 +21,7 @@ import {
 import { ColumnDirective } from './column.directive';
 import { TableStyles } from './style.types';
 import { AbstractControl, FormGroup } from '@angular/forms';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'lib-data-table',
@@ -40,6 +43,7 @@ export class DataTableComponent<T> {
   groupBy = input<keyof T | ((row: T) => any)>();
   useVirtualScroll = input<boolean>(false);
   virtualScrollItemSize = input<number>(48);
+  viewPort = viewChild(CdkVirtualScrollViewport);
 
   @Input() styleConfig: TableStyles = defaultTableStyles;
 
@@ -113,6 +117,21 @@ export class DataTableComponent<T> {
         };
       });
     });
+
+    effect(() => {
+      const tableData = this.tableData();
+
+      if (this.useVirtualScroll()) {
+        this.updateVirtualScrollViewport();
+      }
+    });
+  }
+
+  updateVirtualScrollViewport() {
+    const viewportInstance = this.viewPort();
+    if (viewportInstance) {
+      viewportInstance.checkViewportSize(); // Example usage
+    }
   }
 
   hasFooter = computed(() =>

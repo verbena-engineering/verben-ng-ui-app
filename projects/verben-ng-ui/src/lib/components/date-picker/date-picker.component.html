@@ -3,10 +3,12 @@
     type="text"
     [placeholder]="placeholder"
     [value]="displayDate"
-    (click)="toggleCalendar()"
+    [disabled]="disabled"
+    (click)="!disabled && toggleCalendar()"
     class="w-full block"
     [style.background-color]="bgColor"
     [style.border]="border"
+    [ngClass]="{'cursor-not-allowed':disabled===true, 'cursor-pointer':disabled===false}"
     readonly
   />
 
@@ -68,3 +70,4 @@
     </div>
   </div>
 </div>
+ 

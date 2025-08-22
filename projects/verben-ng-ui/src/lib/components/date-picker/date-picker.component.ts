@@ -11,6 +11,7 @@ export class DatePickerComponent {
   @Input() format = 'MM/DD/YYYY';
   @Input() minDate?: Date;
   @Input() maxDate?: Date;
+    @Input() disabled?: boolean=false
   @Input() bgColor?: string='#fff'
     @Input() border?: string=''
   @Input() useDropdowns: boolean = true;
@@ -162,3 +163,4 @@ export class DatePickerComponent {
   
   
 }
+ 

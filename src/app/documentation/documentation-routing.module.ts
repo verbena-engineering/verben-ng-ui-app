@@ -4,11 +4,11 @@ import { DocumentationComponent } from './documentation.component';
 
 const routes: Routes = [
   { path: '', component: DocumentationComponent },
-  {
-    path: 'data-table',
-    loadChildren: () =>
-      import('./data-table/data-table.module').then((m) => m.DataTableModule),
-  },
+  // {
+  //   path: 'data-table',
+  //   loadChildren: () =>
+  //     import('./data-table/data-table.module').then((m) => m.DataTableModule),
+  // },
   {
     path: 'button-badge',
     loadChildren: () =>

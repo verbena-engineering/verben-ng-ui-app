@@ -6,6 +6,7 @@ import {
   STRING_SORT_OPERATORS,
   NUMBER_SORT_OPERATORS,
   DATE_SORT_OPERATORS,
+  SortDirection,
 } from './data-sort.types';
 
 @Component({
@@ -20,7 +21,7 @@ export class DataSortComponent<T> implements OnInit {
   @Output() sortApplied = new EventEmitter<SortCondition[]>();
   @Output() resetFilter = new EventEmitter();
   sortableColumns: ColumnDefinition<T>[] = [];
-  selectedSorts: Map<string, 'asc' | 'desc'> = new Map();
+  selectedSorts: Map<string, SortDirection> = new Map();
   showAllProperties = false;
   maxVisibleItems = 3;
   draggedIndex: number | null = null;
@@ -128,7 +129,7 @@ export class DataSortComponent<T> implements OnInit {
     return 'string';
   }
 
-  updateSort(columnId: string, direction: 'asc' | 'desc') {
+  updateSort(columnId: string, direction: SortDirection) {
     if (direction) {
       this.selectedSorts.set(columnId, direction);
     } else {
@@ -136,7 +137,7 @@ export class DataSortComponent<T> implements OnInit {
     }
   }
 
-  isColumnSorted(columnId: string, direction: 'asc' | 'desc'): boolean {
+  isColumnSorted(columnId: string, direction: SortDirection): boolean {
     return this.selectedSorts.get(columnId) === direction;
   }
 
@@ -147,7 +148,7 @@ export class DataSortComponent<T> implements OnInit {
   }
 
   resetAll() {
-    this.resetFilter.emit()
+    this.resetFilter.emit();
     this.selectedSorts.clear();
     this.selectedColumns.clear();
     this.checkAll = false;

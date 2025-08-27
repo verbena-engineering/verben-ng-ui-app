@@ -7,6 +7,7 @@
   [style.width]="width"
   [style.height]="height"
   [style.padding]="pd"
+  class="sort-wrapper"
 >
   <!-- Header Section -->
   <div class="sort-header flex justify-between text-sm">
@@ -16,23 +17,23 @@
     </span>
     <span
       [style.color]="secondaryColor"
-      [style.border]="'none'"
-      [style.cursor]="'pointer'"
       [style.font-size]="'12px'"
       class="cursor-pointer"
       (click)="resetSort()"
-      >{{ resetText }}</span
     >
-
+      {{ resetText }}
+    </span>
   </div>
+
   <hr />
-  <!-- Sort Options -->
-  <div [style.max-height]="containerHeight" class="sort-options">
+
+  <!-- Sort Options (Scrollable Section) -->
+  <div class="sort-options flex-grow overflow-y-auto my-2">
     <p class="pd">{{ propertyText }}</p>
+
     <div class="flex items-center gap" [style.padding]="'4px 10px'">
       <label [style.font-size]="'13px'" [style.font-weight]="'500'">
-        <input type="checkbox" [checked]="checkAll"
-        (change)="toggleSelectAll()" />
+        <input type="checkbox" [checked]="checkAll" (change)="toggleSelectAll()" />
         Select All
       </label>
     </div>
@@ -94,7 +95,6 @@
             />
             100-1
           </label>
-
           <label
             class="flex items-center gap-sm"
             *ngIf="option.type === 'String' || option.type === 'Date'"
@@ -127,7 +127,7 @@
       </div>
     </div>
 
-    <!-- Show More Options -->
+    <!-- Show More -->
     <div *ngIf="showMore && hiddenSortOptions.length > 0">
       <span
         [style.padding]="'20px 10px 0px 10px'"
@@ -139,11 +139,12 @@
       </span>
     </div>
   </div>
+
   <hr />
+
   <!-- Sort Button -->
-  <div class="btn-wrapper">
+  <div class="btn-wrapper mt-2 flex-shrink-0">
     <button
-      [style.margin-top]="'0.5rem'"
       [style.outline]="'none'"
       [style.border]="'none'"
       [style.padding]="'0.2rem 1.6rem'"
@@ -153,8 +154,8 @@
       [style.font-weight]="'600'"
       [disabled]="countSelectedSorts() === 0"
       [ngClass]="{
-      disabledBtn:countSelectedSorts()===0,
-      enableBtn:countSelectedSorts()!==0,
+        disabledBtn: countSelectedSorts() === 0,
+        enableBtn: countSelectedSorts() !== 0
       }"
       (click)="applySort()"
     >

@@ -1,1 +1,2 @@
-<app-date-picker [(date)]="selectedDate" ></app-date-picker>
+<app-date-picker (dateChange)="onDateChange($event)" [(date)]="selectedDate" ></app-date-picker>
+<app-date-picker (dateChange)="onDateChange($event)" [(date)]="endDate" ></app-date-picker>

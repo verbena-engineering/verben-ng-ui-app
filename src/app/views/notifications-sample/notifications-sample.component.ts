@@ -18,7 +18,7 @@ export class NotificationsSampleComponent {
   constructor(private notificationService: NotificationService) {}
 
   showSuccessNotification() {
-    this.notificationService.success("Operation successful!", { timeout: 2000});
+    this.notificationService.success("Operation successful!", { timeout:36000});
   }
 
   showErrorNotification() {

@@ -103,7 +103,36 @@
        </div>
      </ng-template>
    </ng-container>
+   <!--import Section-->
+   <ng-container
+     [appOutSideClick]="showImportChild"
+     (outSideClick)="resetChildViewsExcept('import')"
+     *ngIf="viewState.isImport"
+     (click)="stopPropagation($event)"
+   >
+     <ng-container *ngIf="importTemplate; else defaultImport"></ng-container>
+     <ng-template #defaultImport>
+       <span
+         [ngClass]="[
+           'flex gap text-xs items-center pd rounded cursor-pointer',
+          importCustomClass ? importCustomClass : ''
+         ]"
+         [style.background-color]="'#D9D9D940'"
+         (click)="toggleChildView('import')"
+       >
+         <verben-svg [width]="15" [icon]="'file'"></verben-svg>
+         <span
+           >Import</span
+         >
+       </span>
+       <div (click)="stopPropagation($event)" [style.z-index]="zIndex" class="data-view-element">
 
+          <ng-content *ngIf="showImportChild" select="[import-content]"></ng-content>
+      
+      
+       </div>
+     </ng-template>
+   </ng-container>
    <!-- Sort Section -->
    <ng-container
      [appOutSideClick]="showSortChild"
@@ -133,7 +162,36 @@
        </div>
      </ng-template>
    </ng-container>
+<!--Extend Section-->
+<ng-container
+[appOutSideClick]="showExtendChild"
+(outSideClick)="resetChildViewsExcept('extend')"
+*ngIf="viewState.isExtend"
+(click)="stopPropagation($event)"
+>
+<ng-container *ngIf="extendTemplate; else defaultExtend"></ng-container>
+<ng-template #defaultExtend>
+  <span
+    [ngClass]="[
+      'flex gap text-xs items-center pd rounded cursor-pointer',
+     importCustomClass ? extendCustomClass : ''
+    ]"
+    [style.background-color]="'#D9D9D940'"
+    (click)="toggleChildView('extend')"
+  >
+    <verben-svg [width]="15" [icon]="'extend'"></verben-svg>
+    <span
+      >Extend</span
+    >
+  </span>
+  <div (click)="stopPropagation($event)" [style.z-index]="zIndex" class="data-view-element">
 
+     <ng-content *ngIf="showImportChild" select="[extend-content]"></ng-content>
+ 
+ 
+  </div>
+</ng-template>
+</ng-container>
    <!-- Export Section -->
    <ng-container
      [appOutSideClick]="showExportChild"
@@ -163,7 +221,7 @@
    </ng-container>
 
    <!-- Select Section -->
-   <div *ngIf="viewState.isSelect">
+   <!-- <div *ngIf="viewState.isSelect">
      <span
        [ngClass]="[
          'flex gap text-xs items-center pd rounded cursor-pointer',
@@ -176,9 +234,9 @@
        <span>Select</span>
        <verben-svg [width]="6" [icon]="'chevron-down'"></verben-svg>
      </span>
-   </div>
+   </div> -->
 
-   <!-- Create Button -->
+   <!-- Create Button jj-->
 
    <div
      [appOutSideClick]="create"

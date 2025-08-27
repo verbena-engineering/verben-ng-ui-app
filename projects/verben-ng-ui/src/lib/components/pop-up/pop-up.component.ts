@@ -26,6 +26,7 @@ export class VerbenPopUpComponent implements AfterViewChecked {
   @Input() border: string = '';
   @Input() borderRadius: string = '';
   @Input() enableMouseLeave: boolean = true;
+  @Input() cdkPosition: any[] | null = null;
   @Output() close: EventEmitter<Event> = new EventEmitter();
   @ViewChild('expansion', { static: false })
   expansion!: ElementRef;

@@ -13,6 +13,7 @@ import {
   styleUrls: ['./verben-dialogue.component.css'],
 })
 export class VerbenDialogueComponent {
+  @Input() dialogueWidth: string = '';
   @Input() headerTemplate: TemplateRef<any> | null = null;
   @Input() bodyTemplate: TemplateRef<any> | null = null;
   @Input() footerTemplate: TemplateRef<any> | null = null;
@@ -20,7 +21,7 @@ export class VerbenDialogueComponent {
   @Input() dismissOutsideClick: boolean = true;
   @Input() closeOnEscape: boolean = true;
   @Input() isVisible: boolean = false;
-  @Input() size: 'small' | 'medium' | 'large' = 'small';
+  @Input() size: 'small' | 'medium' | 'large'|'any' = 'small';
   @Input() backdropColor: string = '#0000005d';
   @Input() customClass: string = '';
   @Input() disableFooter: boolean = false;
@@ -28,6 +29,7 @@ export class VerbenDialogueComponent {
   @Input() padding: string = '10px';
   @Input() borderRadius: string = '10px';
   @Input() dialogueBgColor: string = '#fff';
+  @Input() width: string = 'max-w-[100px]';
   @Input() closeIconClass: string = 'closeIconClass';
   @Input() boxShadow: string = 'box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1)';
   @Input() enableTransition: boolean = true;
@@ -64,7 +66,23 @@ export class VerbenDialogueComponent {
       }
     }
   }
-
+  setStyles() {
+    const isDialogue = this.mode === 'dialogue';
+    const noCustomWidth = !this.dialogueWidth;
+  
+    return {
+      'modal-content p-4': isDialogue,
+      'max-w-sm': isDialogue && this.size === 'small' && noCustomWidth,
+      'max-w-md': isDialogue && this.size === 'medium' && noCustomWidth,
+      'max-w-lg': isDialogue && this.size === 'large' && noCustomWidth,
+      'drawer-left': this.mode === 'drawer' && this.position === 'left',
+      'drawer-right': this.mode === 'drawer' && this.position === 'right',
+      'drawer-show-left': this.mode === 'drawer' && this.position === 'left' && this.isVisible,
+      'drawer-show-right': this.mode === 'drawer' && this.position === 'right' && this.isVisible
+    };
+  }
+  
+  
   onClose() {
     this.isVisible = false;
     this.closeModal.emit(this.modalData);

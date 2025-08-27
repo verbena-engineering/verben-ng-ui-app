@@ -49,12 +49,12 @@ export class VisibleColumnComponent {
   }
 
   resetColumns() {
-    this.resetFilter.emit()
-    // Reset columns to the original order
+ 
     this.columns = JSON.parse(JSON.stringify(this.originalColumnOrder)); // Ensure it's a deep copy
     this.initializeColumnVisibility();
     this.selectAll = false; // Reset select all
     this.updateSelectAllStatus();
+    this.resetFilter.emit()
   }
 
   getSelectedColumnCount(): number {

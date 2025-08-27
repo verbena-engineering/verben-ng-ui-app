@@ -1,4 +1,8 @@
-export type SortDirection = 'asc' | 'desc';
+export enum SortDirection {
+  Asc = 'Asc',
+  Desc = 'Desc',
+  // None = 'None',
+}
 
 export interface SortCondition {
   columnId: string;
@@ -12,16 +16,16 @@ export interface SortOperator {
 }
 
 export const STRING_SORT_OPERATORS: SortOperator[] = [
-  { label: 'A to Z', value: 'asc', type: 'string' },
-  { label: 'Z to A', value: 'desc', type: 'string' },
+  { label: 'A to Z', value: SortDirection.Asc, type: 'string' },
+  { label: 'Z to A', value: SortDirection.Desc, type: 'string' },
 ];
 
 export const NUMBER_SORT_OPERATORS: SortOperator[] = [
-  { label: '1 to 100', value: 'asc', type: 'number' },
-  { label: '100 to 1', value: 'desc', type: 'number' },
+  { label: '1 to 100', value: SortDirection.Asc, type: 'number' },
+  { label: '100 to 1', value: SortDirection.Desc, type: 'number' },
 ];
 
 export const DATE_SORT_OPERATORS: SortOperator[] = [
-  { label: 'Oldest First', value: 'asc', type: 'date' },
-  { label: 'Newest First', value: 'desc', type: 'date' },
+  { label: 'Oldest First', value: SortDirection.Asc, type: 'date' },
+  { label: 'Newest First', value: SortDirection.Desc, type: 'date' },
 ];

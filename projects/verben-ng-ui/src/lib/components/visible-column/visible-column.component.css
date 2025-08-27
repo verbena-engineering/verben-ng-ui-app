@@ -18,6 +18,11 @@ hr{
 .font-semibold{
   font-weight: 600;
 }
+.center {
+  overflow-y: auto;
+  max-height: calc(32rem - 8rem); /* 512px - 128px = 384px */
+}
+
 .font-normal{
   font-weight: 400;
 }

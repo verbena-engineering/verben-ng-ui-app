@@ -29,6 +29,24 @@
 
 
 
+<verben-number-input
+  [(ngModel)]="quantity"
+  [min]="1"
+  [max]="10"
+  [step]="1"
+  label="Quantity"
+></verben-number-input>
+
+<verben-number-input
+  [(ngModel)]="quantity"
+  [min]="1"
+  [max]="10"
+  [step]="1"
+  label="Quantity"
+  [disabled]="true"
+></verben-number-input>
+
+
 
 
 
@@ -58,6 +76,7 @@
 
 
 <p>Selected Quantity: {{ value }}</p>
+
 
 
 

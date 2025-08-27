@@ -11,6 +11,7 @@ export class DatePickerComponent {
   @Input() format = 'MM/DD/YYYY';
   @Input() minDate?: Date;
   @Input() maxDate?: Date;
+    @Input() disabled?: boolean=false
   @Input() bgColor?: string='#fff'
     @Input() border?: string=''
   @Input() useDropdowns: boolean = true;
@@ -18,18 +19,19 @@ export class DatePickerComponent {
   @Input() monthPlaceholder: string = 'Select a month';
   @Input() date: Date | null|string = null; // Two-way binding support
   @Output() dateChange = new EventEmitter<Date>(); // Emit date changes
-
+  yearRange: number[] = [];
+  filteredYearRange: number[] = [];
   selectedDate: Date = new Date();
   tempSelectedDate: Date = new Date();
   showCalendar = false;
 
-  weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat','Sun'];
   months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
-  yearRange: number[] = Array.from({ length: new Date().getFullYear() - 1960 + 1 }, (_, i) => 1960 + i);
+
   
   selectedMonth: number = 1;
   selectedMonthString:string=''
@@ -44,7 +46,12 @@ export class DatePickerComponent {
       this.selectedYear = this.selectedDate.getFullYear();
     }
   }
-  
+  ngOnInit() {
+    const currentYear = new Date().getFullYear();
+    const endYear = currentYear + 10;
+    this.yearRange = Array.from({ length: endYear - 1960 + 1 }, (_, i) => 1960 + i);
+    this.yearRange.sort((a, b) => b - a);
+  }
   get displayDate(): string {
     const parsedDate = typeof this.date === 'string' ? new Date(this.date) : this.date;
     return parsedDate ? this.formatDate(parsedDate, this.format) : '';
@@ -93,19 +100,28 @@ export class DatePickerComponent {
     this.tempSelectedDate.setFullYear(this.selectedYear);
   }
 
-  getDaysInMonth(): Date[] {
-    const days: Date[] = [];
+  getDaysInMonth(): (Date | null)[] {
+    const days: (Date | null)[] = [];
     const year = this.selectedYear;
     const month = this.selectedMonth;
   
-    const totalDays = new Date(year, month + 1, 0).getDate(); // Get last day of the month
+    const firstDayOfMonth = new Date(year, month, 1).getDay();
+    const offset = (firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1); 
   
+    for (let i = 0; i < offset; i++) {
+      days.push(null);
+    }
+  
+    const totalDays = new Date(year, month + 1, 0).getDate(); 
+  
+    // Add the actual days of the month
     for (let i = 1; i <= totalDays; i++) {
       days.push(new Date(year, month, i));
     }
   
     return days;
   }
+  
   
 
   selectTemporaryDate(day: Date) {
@@ -135,12 +151,16 @@ export class DatePickerComponent {
   }
 
   confirm() {
+    this.tempSelectedDate.setHours(12, 0, 0, 0);
     this.selectedDate = new Date(this.tempSelectedDate);
-    this.dateChange.emit(this.selectedDate); // Emit change
+    this.dateChange.emit(this.selectedDate);
     this.showCalendar = false;
   }
 
   cancel() {
     this.showCalendar = false;
   }
+  
+  
 }
+ 

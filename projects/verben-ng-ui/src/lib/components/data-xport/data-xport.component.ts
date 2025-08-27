@@ -26,6 +26,8 @@ export class DataXportComponent<T> {
   @Input() useImportKey: boolean = false;
   dataFetchUrl = input<string>();
   dataQueryParameters = input<SearchPropertyValue[]>();
+  dataQueryFunction =
+    input<(range: { skip: number; limit: number }) => Promise<T[]>>();
   @Output() exportDataEvent = new EventEmitter<Record<string, any>[]>();
   @Output() exportDataRangeEvent = new EventEmitter<{
     skip: number;
@@ -56,8 +58,8 @@ export class DataXportComponent<T> {
     { value: 'divide', label: '÷' },
   ];
 
-  skip = 0;
-  limit = 0;
+  skip: null | number = null;
+  limit: null | number = null;
 
   constructor(
     private exportService: DataXportService<T>,
@@ -300,10 +302,22 @@ export class DataXportComponent<T> {
     const selectedProfiles = this.profiles.filter(
       (profile) => profile.selected
     );
+    const dataQueryFunction = this.dataQueryFunction();
 
     if (selectedProfiles.length > 0) {
-      if (this.skip > 0 && this.limit > 0) {
-        this.exportDataRangeEvent.emit({ skip: this.skip, limit: this.limit });
+      if (this.skip !== null && this.limit !== null && dataQueryFunction) {
+        // this.exportDataRangeEvent.emit({ skip: this.skip, limit: this.limit });
+        dataQueryFunction({ skip: this.skip, limit: this.limit }).then(
+          (data) => {
+            if (data) {
+              this.exportService.exportData(
+                data,
+                selectedProfiles,
+                this.useImportKey
+              );
+            }
+          }
+        );
       } else {
         this.exportService.exportData(
           this.data,

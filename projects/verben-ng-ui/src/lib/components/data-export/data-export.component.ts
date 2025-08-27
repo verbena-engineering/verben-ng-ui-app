@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  input,
   Input,
   Output,
 } from '@angular/core';
@@ -12,6 +13,7 @@ import {
   ExportProfile,
   Operation,
   Operators,
+  SearchPropertyValue,
 } from './data-export.types';
 import { ColumnDefinition } from '../data-table/data-table.types';
 
@@ -24,6 +26,8 @@ import { ColumnDefinition } from '../data-table/data-table.types';
 export class DataExportComponent<T extends { id: string | number }> {
   @Input() columns!: ColumnDefinition<T>;
   @Input() data!: any[];
+  dataFetchUrl = input<string>();
+  dataQueryParameters = input<SearchPropertyValue[]>();
   @Output() exportDataEvent = new EventEmitter<Record<string, any>[]>();
 
   profiles: (ExportProfile & { selected: boolean })[] = [];

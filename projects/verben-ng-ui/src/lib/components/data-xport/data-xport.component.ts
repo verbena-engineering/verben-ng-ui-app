@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, input, Input, Output } from '@angular/core';
 import {
   ArithmeticOperation,
   ExportItem,
@@ -9,6 +9,7 @@ import {
 import { ColumnDefinition } from '../data-table/data-table.types';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataXportService } from './data-xport.service';
+import { SearchPropertyValue } from '../data-export/data-export.types';
 
 @Component({
   selector: 'lib-data-xport',
@@ -18,7 +19,13 @@ import { DataXportService } from './data-xport.service';
 export class DataXportComponent<T> {
   @Input() data!: T[];
   @Input() columns!: ColumnDefinition<T>[];
+  dataFetchUrl = input<string>();
+  dataQueryParameters = input<SearchPropertyValue[]>();
   @Output() exportDataEvent = new EventEmitter<Record<string, any>[]>();
+  @Output() exportDataRangeEvent = new EventEmitter<{
+    skip: number;
+    limit: number;
+  }>();
 
   profiles: (ExportProfile & { selected: boolean })[] = [];
   groupItems: (ExportItem & { selected: boolean })[] = [];
@@ -43,6 +50,9 @@ export class DataXportComponent<T> {
     { value: 'multiply', label: '×' },
     { value: 'divide', label: '÷' },
   ];
+
+  skip = 0;
+  limit = 0;
 
   constructor(
     private exportService: DataXportService<T>,
@@ -231,10 +241,13 @@ export class DataXportComponent<T> {
     const selectedProfiles = this.profiles.filter(
       (profile) => profile.selected
     );
+
     if (selectedProfiles.length > 0) {
-      this.exportService.exportData(this.data, selectedProfiles);
-      // console.log(exportedData);
-      // this.exportDataEvent.emit(exportedData);
+      if (this.skip > 0 && this.limit > 0) {
+        this.exportDataRangeEvent.emit({ skip: this.skip, limit: this.limit });
+      } else {
+        this.exportService.exportData(this.data, selectedProfiles);
+      }
     }
   }
 

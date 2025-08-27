@@ -1,3 +1,5 @@
+import { SortDirection } from '../data-sort/data-sort.types';
+
 export type ExportItemType = 'property' | 'operation';
 
 export interface ExportItem {
@@ -28,4 +30,38 @@ export enum Operators {
   concatenateSpace = 'concatenateSpace',
   concatenateCommaSpace = 'concatenateCommaSpace',
   concatenateComma = 'concatenateComma',
+}
+
+export enum SearchPropertyValueType {
+  Int = 'Int',
+  Float = 'Float',
+  Decimal = 'Decimal',
+  Double = 'Double',
+  String = 'String',
+  Bool = 'Bool',
+  Date = 'Date',
+}
+
+export enum SearchOperator {
+  And = 'And',
+  Or = 'Or',
+}
+
+export enum SearchPropertySign {
+  EQ = 'EQ',
+  NEQ = 'NEQ',
+  GT = 'GT',
+  GTE = 'GTE',
+  LT = 'LT',
+  LTE = 'LTE',
+  LIKE = 'LIKE',
+}
+
+export interface SearchPropertyValue {
+  PropertyName: string;
+  EntityValue: string;
+  Type?: SearchPropertyValueType;
+  Operator: SearchOperator;
+  Sign: SearchPropertySign;
+  Sort?: SortDirection;
 }

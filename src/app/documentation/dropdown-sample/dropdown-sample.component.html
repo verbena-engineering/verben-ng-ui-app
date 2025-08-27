@@ -96,8 +96,8 @@
       [showClear]="true"
       placeholder="Second Test"
       [load]="this.mockAsyncFunction.bind(this)"
-      (onChange)="onDropdownChange($event)"
-      [(options)]="options"
+      (onChange)="onDropdownChangeTestTwo($event)"
+      [options]="options"
       [(ngModel)]="selectedOption"
     ></verben-drop-down>
   </div>

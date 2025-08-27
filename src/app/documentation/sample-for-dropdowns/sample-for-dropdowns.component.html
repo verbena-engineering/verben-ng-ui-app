@@ -1,7 +1,17 @@
-<section>
-  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim, placeat.</p>
-  <verben-pop-Up [(dropdownOpen)]="isOpen2" [enableMouseLeave]="false" (close)="onClose2()"
-    [customStyles]="{ 'background-color': 'blue', 'padding': '10px','border-radius':'20px' }">
+<section class="main-sec">
+  <p>
+    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim, placeat.
+  </p>
+  <verben-pop-Up
+    [(dropdownOpen)]="isOpen2"
+    [enableMouseLeave]="false"
+    (close)="onClose2()"
+    [customStyles]="{
+      'background-color': 'blue',
+      padding: '10px',
+      'border-radius': '20px'
+    }"
+  >
     <button dropdown-trigger>Toggle Dropdown</button>
 
     <div dropdown-content>
@@ -14,8 +24,16 @@
 
   <div class="">
     <span>A</span>
-    <verben-pop-Up [(dropdownOpen)]="isOpen" [enableMouseLeave]="false" (close)="onClose()"
-      [customStyles]="{ 'background-color': 'blue', 'padding': '10px','border-radius':'20px' }">
+    <verben-pop-Up
+      [(dropdownOpen)]="isOpen"
+      [enableMouseLeave]="false"
+      (close)="onClose()"
+      [customStyles]="{
+        'background-color': 'blue',
+        padding: '10px',
+        'border-radius': '20px'
+      }"
+    >
       <button dropdown-trigger>Toggle Dropdown</button>
 
       <div dropdown-content>
@@ -26,5 +44,7 @@
       </div>
     </verben-pop-Up>
   </div>
-  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim, placeat.</p>
+  <p>
+    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim, placeat.
+  </p>
 </section>

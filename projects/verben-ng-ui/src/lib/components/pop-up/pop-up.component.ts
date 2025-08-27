@@ -1,3 +1,4 @@
+import { Overlay, ScrollStrategy } from '@angular/cdk/overlay';
 import {
   Component,
   EventEmitter,
@@ -30,8 +31,41 @@ export class VerbenPopUpComponent implements AfterViewChecked {
   @Output() close: EventEmitter<Event> = new EventEmitter();
   @ViewChild('expansion', { static: false })
   expansion!: ElementRef;
+  scrollStrategy: ScrollStrategy;
+  defaultPositions = [
+    {
+      originX: 'start',
+      originY: 'bottom',
+      overlayX: 'start',
+      overlayY: 'top',
+    },
+    {
+      originX: 'end',
+      originY: 'bottom',
+      overlayX: 'end',
+      overlayY: 'top',
+    },
+    {
+      originX: 'start',
+      originY: 'top',
+      overlayX: 'start',
+      overlayY: 'bottom',
+    },
+    {
+      originX: 'end',
+      originY: 'top',
+      overlayX: 'end',
+      overlayY: 'bottom',
+    },
+  ];
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private overlay: Overlay
+  ) {
+    this.scrollStrategy = this.overlay.scrollStrategies.reposition();
+  }
 
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;

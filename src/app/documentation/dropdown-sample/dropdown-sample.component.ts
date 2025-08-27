@@ -167,6 +167,10 @@ export class DropdownSampleComponent implements OnInit {
   onDropdownChangeTest(event: DropdownChangeEvent): void {
     console.log({ SingleNoPagination: event.value });
   }
+
+  onDropdownChangeTestTwo(event: DropdownChangeEvent): void {
+    console.log({ NewEvent: event });
+  }
   onDropdownChange(event: DropdownChangeEvent): void {
     // console.log({ SingleNoPagination: event.value });
     // console.log({

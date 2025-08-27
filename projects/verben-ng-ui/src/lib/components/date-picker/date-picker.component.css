@@ -1,4 +1,4 @@
-/* date-picker.component.scss */
+
 .date-picker {
     position: relative;
     width: 250px;
@@ -9,9 +9,14 @@
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    cursor: pointer;
   }
-  
+  .cursor-pointer{
+      cursor: pointer;
+  }
+  .cursor-not-allowed{
+    cursor: not-allowed;
+    color: rgba(128, 128, 128, 0.562);
+  }
   .calendar {
     position: absolute;
     top: 100%;
@@ -66,3 +71,4 @@
   .calendar-footer button{
     color: #000;
   }
+ 

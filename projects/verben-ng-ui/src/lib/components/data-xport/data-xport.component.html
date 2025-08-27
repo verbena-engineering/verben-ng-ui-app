@@ -238,6 +238,46 @@
         {{ isEditingOperation ? "Update" : "+ Add" }}
       </button>
     </section>
+
+    <section class="section">
+      @if (dataFetchUrl()) {
+      <div class="section-header">
+        <h3 class="section-title">Record Size</h3>
+      </div>
+
+      <div class="flex gap-4 items-center">
+        <verbena-input
+          placeholder="Skip"
+          border="1px solid #ccc"
+          borderRadius="5px"
+          textColor="black"
+          fontSize="11px"
+          width="100%"
+          height="1.025rem"
+          pd="2px 6px"
+          bgColor="transparent"
+          [showBorder]="true"
+          [(ngModel)]="skip"
+        ></verbena-input>
+
+        <span>-</span>
+
+        <verbena-input
+          placeholder="Limit"
+          border="1px solid #ccc"
+          borderRadius="5px"
+          textColor="black"
+          fontSize="11px"
+          width="100%"
+          height="1.025rem"
+          pd="2px 6px"
+          bgColor="transparent"
+          [showBorder]="true"
+          [(ngModel)]="limit"
+        ></verbena-input>
+      </div>
+      }
+    </section>
   </div>
   <div card-footer class="card-footer">
     <button

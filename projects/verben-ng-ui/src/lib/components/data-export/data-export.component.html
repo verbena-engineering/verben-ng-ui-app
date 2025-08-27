@@ -206,6 +206,14 @@
         {{ isEditingOperation ? "Update" : "+ Add" }}
       </button>
     </section>
+
+    <section class="section">
+      @if (dataFetchUrl()) {
+      <div class="section-header">
+        <h3 class="section-title">Record Size</h3>
+      </div>
+      }
+    </section>
   </div>
   <div card-footer class="card-footer">
     <button class="export-button" (click)="exportData()">Export</button>

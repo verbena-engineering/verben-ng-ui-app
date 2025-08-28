@@ -192,12 +192,16 @@ export class DataImportComponent<T extends {}> {
       this.parser()
     );
 
+    event.target.value = '';
+
     // this.importEvent.emit(this.files[0]);
     this.showPreview = true;
   }
 
   reset() {
     this.files = [];
+    this.showPreview = false;
+    this.service.clearData();
   }
 
   save() {

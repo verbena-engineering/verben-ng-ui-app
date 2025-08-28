@@ -92,8 +92,8 @@ export class DataXportComponent<T> {
   initializeColumns() {
     const validColumns = this.columns.filter(
       (col) =>
-        col.accessorKey ||
-        col.accessorFn ||
+        col.exportBy ||
+        (col.canExport !== false && (col.accessorKey || col.accessorFn)) ||
         (this.useImportKey && col.importKey)
     );
     if (validColumns?.length) {

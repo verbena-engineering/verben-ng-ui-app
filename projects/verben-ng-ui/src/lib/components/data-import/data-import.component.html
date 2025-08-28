@@ -36,7 +36,9 @@
       >
         <p>
           Drag and drop files here or
-          <label for="fileInput">click to browse</label>
+          <label for="fileInput" [style.color]="'#3479E9'"
+            >click to browse</label
+          >
         </p>
         <input
           type="file"
@@ -56,7 +58,13 @@
     </section>
   </div>
   <div card-footer class="card-footer">
-    <button class="export-button" (click)="save()">Import</button>
+    <button
+      [disabled]="service.importedData().length < 1"
+      class="export-button"
+      (click)="save()"
+    >
+      Import
+    </button>
   </div>
 </verben-card>
 

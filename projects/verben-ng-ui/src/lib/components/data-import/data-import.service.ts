@@ -128,4 +128,8 @@ export class DataImportService<T> {
       ).length > 1
     );
   }
+
+  clearData() {
+    this.importedData.set([]);
+  }
 }

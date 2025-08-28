@@ -21,6 +21,10 @@ export interface ColumnDefinition<T> {
   groupName?: string;
   validatorFn?: (value: T[keyof T]) => boolean;
   importKey?: keyof T;
+  canImport?: boolean;
+  canExport?: boolean;
+  importBy?: keyof T | ((importedRow: any) => T[keyof T]);
+  exportBy?: keyof T | ((row: T) => any);
 }
 
 // Define a type that extends T with a _key property

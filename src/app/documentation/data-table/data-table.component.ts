@@ -383,7 +383,7 @@ export class DataTableComponent {
       );
 
       this.tableDataMax.set(
-        Array.from({ length: 100 }, (_, index) => ({
+        Array.from({ length: 10 }, (_, index) => ({
           Id: `ACTIVITY-${index + 1}`,
           id: `ACTIVITY-${index + 1}`,
           activityDetails: Array.from(

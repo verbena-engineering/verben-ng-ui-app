@@ -298,7 +298,7 @@
 ></lib-data-columns>
 
 <lib-data-table
-  [data]="[] ?? tableDataMax()"
+  [data]="tableDataMax()"
   [columns]="controlledCols()"
   (rowEdit)="onRowEdit($event)"
   (rowDelete)="onRowDelete($event)"

@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ColumnDefinition } from '../data-table/data-table.types';
+import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table';
 
 @Component({
   selector: 'lib-data-columns',
   templateUrl: './data-columns.component.html',
-  styleUrl: './data-columns.component.css'
+  styleUrl: './data-columns.component.css',
 })
 export class DataColumnsComponent<T> implements OnInit {
   @Input() columns!: ColumnDefinition<T>[];
@@ -27,15 +27,15 @@ export class DataColumnsComponent<T> implements OnInit {
   private initializeColumns() {
     this.visibleColumns = [...this.columns];
     // Initialize visibility map with current column states
-    this.visibleColumns.forEach(column => {
+    this.visibleColumns.forEach((column) => {
       this.columnVisibility.set(column.id, true);
     });
     this.updateSelectAllStatus();
   }
 
   get columnsToShow() {
-    return this.showAllColumns 
-      ? this.visibleColumns 
+    return this.showAllColumns
+      ? this.visibleColumns
       : this.visibleColumns.slice(0, this.maxVisibleItems);
   }
 
@@ -71,7 +71,7 @@ export class DataColumnsComponent<T> implements OnInit {
   toggleSelectAll() {
     this.selectAll = !this.selectAll;
     const newValue = this.selectAll;
-    this.visibleColumns.forEach(column => {
+    this.visibleColumns.forEach((column) => {
       this.columnVisibility.set(column.id, newValue);
     });
     this.emitUpdatedColumns();
@@ -89,12 +89,14 @@ export class DataColumnsComponent<T> implements OnInit {
   }
 
   private updateSelectAllStatus() {
-    this.selectAll = Array.from(this.columnVisibility.values()).every(value => value);
+    this.selectAll = Array.from(this.columnVisibility.values()).every(
+      (value) => value
+    );
   }
 
   getColumnHeader(column: ColumnDefinition<T>): string {
-    return typeof column.header === 'function' 
-      ? column.header({}) 
+    return typeof column.header === 'function'
+      ? column.header({})
       : column.header;
   }
 
@@ -104,13 +106,14 @@ export class DataColumnsComponent<T> implements OnInit {
   }
 
   emitUpdatedColumns() {
-    const updatedColumns = this.visibleColumns.filter(column => 
+    const updatedColumns = this.visibleColumns.filter((column) =>
       this.columnVisibility.get(column.id)
     );
     this.columnsUpdated.emit(updatedColumns);
   }
 
   get activeColumnCount(): number {
-    return Array.from(this.columnVisibility.values()).filter(value => value).length;
+    return Array.from(this.columnVisibility.values()).filter((value) => value)
+      .length;
   }
 }

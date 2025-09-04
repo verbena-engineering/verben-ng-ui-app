@@ -1,8 +1,9 @@
-import { DataFilterType } from './table-filter';
+import { DataFilterType } from './DataFilterType';
 
 export interface IDataFilter {
   name: string;
   type: DataFilterType;
-  value?: string | number;
+  value?: any;
   checked: boolean;
+  condition?: string;
 }

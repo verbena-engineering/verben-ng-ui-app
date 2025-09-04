@@ -1,12 +1,12 @@
-import { TabItemComponent } from 'verben-ng-ui/src/public-api';
+import { TabItemComponent } from 'verben-ng-ui';
 import { ButtonBadgeModule } from './button-badge.module';
-import { VerbenaTabComponent } from 'verben-ng-ui/src/public-api';
+import { VerbenaTabComponent } from 'verben-ng-ui';
 import { Component, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'button-badge-component',
   templateUrl: './button-badge.component.html',
-  styleUrl: './button-badge.scss'
+  styleUrl: './button-badge.scss',
 })
 export class ButtonBadgeComponent {
   @ViewChild(VerbenaTabComponent) verbenaTabComponent!: VerbenaTabComponent;
@@ -14,10 +14,6 @@ export class ButtonBadgeComponent {
   age: string = '';
   decimalValue: string = '';
 
-
-
-   
-  
   onTabChange(tab: TabItemComponent) {
     console.log('Active tab changed:', tab.title, 'with ID:', tab.id);
   }
@@ -26,7 +22,7 @@ export class ButtonBadgeComponent {
     console.log('Submitted Values:', {
       email: this.email,
       age: this.age,
-      decimalValue: this.decimalValue
+      decimalValue: this.decimalValue,
     });
   }
 }

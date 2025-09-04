@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { DataFilterType, IDataFilter } from '../../models/table-filter';
-import { Config } from '../../config';
+import { DataFilterType, IDataFilter } from 'verben-ng-ui/src/lib/models';
+import { Config } from 'verben-ng-ui/src/lib/models';
 
 @Component({
   selector: 'verben-table-filter',

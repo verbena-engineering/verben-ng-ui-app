@@ -12,14 +12,14 @@ import {
 import {
   ColumnDefinition,
   FormGroupConfig,
-} from '../data-table/data-table.types';
+} from 'verben-ng-ui/src/lib/components/data-table';
 import {
   AbstractControl,
   FormArray,
   FormControl,
   FormGroup,
 } from '@angular/forms';
-import { ColumnDirective } from '../data-table/column.directive';
+import { ColumnDirective } from 'verben-ng-ui/src/lib/components/data-table';
 import { DataImportService } from './data-import.service';
 
 @Component({

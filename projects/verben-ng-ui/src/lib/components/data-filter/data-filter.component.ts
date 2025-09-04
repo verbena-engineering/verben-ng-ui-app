@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { ColumnDefinition } from '../data-table/data-table.types';
+import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table';
 import {
   FilterOperator,
   FilterCondition,
@@ -135,10 +135,9 @@ export class DataFilterComponent<T> implements OnInit {
   }
 
   resetAll() {
-  
     this.savedFilters = [];
     this.resetCurrentFilter();
-    this.resetFilter.emit()
+    this.resetFilter.emit();
   }
 
   applyFilters() {

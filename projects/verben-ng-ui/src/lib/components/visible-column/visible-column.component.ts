@@ -1,5 +1,11 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { IDataFilter } from '../../models/data-filter';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { IDataFilter } from 'verben-ng-ui/src/lib/models';
 
 interface Item {
   [key: string]: any;
@@ -49,12 +55,11 @@ export class VisibleColumnComponent {
   }
 
   resetColumns() {
- 
     this.columns = JSON.parse(JSON.stringify(this.originalColumnOrder)); // Ensure it's a deep copy
     this.initializeColumnVisibility();
     this.selectAll = false; // Reset select all
     this.updateSelectAllStatus();
-    this.resetFilter.emit()
+    this.resetFilter.emit();
   }
 
   getSelectedColumnCount(): number {
@@ -62,12 +67,11 @@ export class VisibleColumnComponent {
   }
 
   saveColumnVisibility() {
-    
     this.columns.forEach((column, index) => {
       column.checked = this.visibleColumns[index];
     });
- 
-    const selectedColumns = this.columns.filter(column => column.checked);
+
+    const selectedColumns = this.columns.filter((column) => column.checked);
     this.columnsUpdated.emit(selectedColumns);
   }
 
@@ -82,7 +86,7 @@ export class VisibleColumnComponent {
   }
 
   updateSelectAllStatus() {
-    this.selectAll = this.visibleColumns.every(isVisible => isVisible);
+    this.selectAll = this.visibleColumns.every((isVisible) => isVisible);
   }
 
   onDragStart(index: number, event: DragEvent) {
@@ -103,7 +107,13 @@ export class VisibleColumnComponent {
   }
 
   private swapColumns(fromIndex: number, toIndex: number) {
-    [this.columns[fromIndex], this.columns[toIndex]] = [this.columns[toIndex], this.columns[fromIndex]];
-    [this.visibleColumns[fromIndex], this.visibleColumns[toIndex]] = [this.visibleColumns[toIndex], this.visibleColumns[fromIndex]];
+    [this.columns[fromIndex], this.columns[toIndex]] = [
+      this.columns[toIndex],
+      this.columns[fromIndex],
+    ];
+    [this.visibleColumns[fromIndex], this.visibleColumns[toIndex]] = [
+      this.visibleColumns[toIndex],
+      this.visibleColumns[fromIndex],
+    ];
   }
 }

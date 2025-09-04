@@ -6,11 +6,11 @@ import {
   Operation,
   StringOperation,
 } from './data-xport.types';
-import { ColumnDefinition } from '../data-table/data-table.types';
+import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataXportService } from './data-xport.service';
 import { isPrintableValue } from './data-xport.utils';
-import { SearchPropertyValue } from '../data-export/data-export.types';
+import { SearchPropertyValue } from 'verben-ng-ui/src/lib/components/data-export';
 
 @Component({
   selector: 'lib-data-xport',

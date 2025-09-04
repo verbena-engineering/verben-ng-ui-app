@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataImportComponent } from './data-import.component';
-import { CardModule } from '../card/card.module';
-import { VerbenDialogueModule } from '../verben-dialogue/verben-dialogue.module';
-import { DataTableModule } from '../data-table/data-table.module';
-import { VerbenaInputModule } from '../../Verbena-input/verbena-input.module';
+import { CardModule } from 'verben-ng-ui/src/lib/components/card';
+import { VerbenDialogueModule } from 'verben-ng-ui/src/lib/components/verben-dialogue';
+import { DataTableModule } from 'verben-ng-ui/src/lib/components/data-table';
+import { VerbenaInputModule } from 'verben-ng-ui/src/lib/verbena-input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SvgModule } from '../svg/svg.module';
-import { DropDownModule } from '../drop-down/drop-down.module';
+import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
+import { DropDownModule } from 'verben-ng-ui/src/lib/components/drop-down';
 
 @NgModule({
   declarations: [DataImportComponent],

@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SvgModule } from '../svg/svg.module';
-import { CardModule } from '../card/card.module';
-import { DropDownModule } from '../drop-down/drop-down.module';
-import { TooltipModule } from '../tooltip/tooltip.module';
-import { VerbenaInputModule } from '../../Verbena-input/verbena-input.module';
+import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
+import { CardModule } from 'verben-ng-ui/src/lib/components/card';
+import { DropDownModule } from 'verben-ng-ui/src/lib/components/drop-down';
+import { TooltipModule } from 'verben-ng-ui/src/lib/components/tooltip';
+import { VerbenaInputModule } from 'verben-ng-ui/src/lib/verbena-input';
 import { DataXportService } from './data-xport.service';
 import { DataXportComponent } from './data-xport.component';
 

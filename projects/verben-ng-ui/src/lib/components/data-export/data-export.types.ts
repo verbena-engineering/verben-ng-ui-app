@@ -1,4 +1,4 @@
-import { SortDirection } from '../data-sort/data-sort.types';
+import { SortDirection } from 'verben-ng-ui/src/lib/components/data-sort';
 
 export type ExportItemType = 'property' | 'operation';
 

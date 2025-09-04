@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ChipChangeEvent } from 'verben-ng-ui/src/public-api';
+import { ChipChangeEvent } from 'verben-ng-ui';
 
 @Component({
   selector: 'app-chip',

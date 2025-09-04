@@ -1,9 +1,9 @@
 import { forwardRef, NgModule } from '@angular/core';
 import { FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { TooltipModule } from '../components/tooltip/tooltip.module';
+import { TooltipModule } from 'verben-ng-ui/src/lib/components/tooltip';
 import { VerbenaInputComponent } from './verbena-input.component';
-import { SvgModule } from '../components/svg/svg.module';
+import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
 
 @NgModule({
   declarations: [VerbenaInputComponent],

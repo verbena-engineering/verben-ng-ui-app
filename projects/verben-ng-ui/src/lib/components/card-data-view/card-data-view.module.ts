@@ -6,15 +6,25 @@ import { LeftCardDataViewComponent } from './left-card-data-view/left-card-data-
 import { RightCardDataViewComponent } from './right-card-data-view/right-card-data-view.component';
 import { CardDataViewFooterComponent } from './card-data-view-footer/card-data-view-footer.component';
 import { CardDataViewHeaderComponent } from './card-data-view-header/card-data-view-header.component';
-import { SvgModule } from "../svg/svg.module";
+import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
 
 @NgModule({
-  declarations:[CardDataViewComponent,LeftCardDataComponent,
-    LeftCardDataViewComponent,RightCardDataViewComponent,CardDataViewFooterComponent,
-    CardDataViewHeaderComponent],
+  declarations: [
+    CardDataViewComponent,
+    LeftCardDataComponent,
+    LeftCardDataViewComponent,
+    RightCardDataViewComponent,
+    CardDataViewFooterComponent,
+    CardDataViewHeaderComponent,
+  ],
   imports: [CommonModule, SvgModule],
-  exports: [CardDataViewComponent,LeftCardDataComponent,
-    LeftCardDataViewComponent,RightCardDataViewComponent,CardDataViewFooterComponent,
-    CardDataViewHeaderComponent]
+  exports: [
+    CardDataViewComponent,
+    LeftCardDataComponent,
+    LeftCardDataViewComponent,
+    RightCardDataViewComponent,
+    CardDataViewFooterComponent,
+    CardDataViewHeaderComponent,
+  ],
 })
 export class CardDataViewModule {}

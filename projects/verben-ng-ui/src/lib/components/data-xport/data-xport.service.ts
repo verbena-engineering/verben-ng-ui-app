@@ -7,7 +7,7 @@ import {
   ArithmeticOperation,
   StringOperation,
 } from './data-xport.types';
-import { ColumnDefinition } from '../data-table/data-table.types';
+import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table';
 import { isPrintableValue } from './data-xport.utils';
 
 @Injectable()

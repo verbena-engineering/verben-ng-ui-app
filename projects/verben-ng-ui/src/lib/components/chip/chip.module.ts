@@ -2,7 +2,7 @@ import { forwardRef, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChipComponent } from './chip.component';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { SharedModule } from '../shared.module';
+import { SharedModule } from 'verben-ng-ui/src/lib/components/shared';
 
 @NgModule({
   declarations: [],

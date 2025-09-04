@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MailPayload } from '../../models/mail-model';
+import { MailPayload } from 'verben-ng-ui/src/lib/models';
 
 @Component({
   selector: 'verben-mail-template',
@@ -67,7 +67,7 @@ export class VerbenMailTemplate {
   }
 
   onCcChange(): void {
-    const newValues = this.mailForm.get('ccEmails')?.value||[];
+    const newValues = this.mailForm.get('ccEmails')?.value || [];
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const validEmails = newValues.filter((email: string) =>
       emailRegex.test(email)
@@ -75,7 +75,7 @@ export class VerbenMailTemplate {
     this.ccEmails = validEmails;
   }
   onBccChange(): void {
-    const newValues = this.mailForm.get('bccEmails')?.value||[];
+    const newValues = this.mailForm.get('bccEmails')?.value || [];
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const validEmails = newValues.filter((email: string) =>
       emailRegex.test(email)
@@ -138,8 +138,8 @@ export class VerbenMailTemplate {
     this.mailForm.get('toEmails')?.reset('');
     this.mailForm.get('ccEmails')?.reset('');
     this.mailForm.get('bccEmails')?.reset('');
-    this.mailForm.get("subject")?.reset('')
-    this.mailForm.get("body")?.reset('')
+    this.mailForm.get('subject')?.reset('');
+    this.mailForm.get('body')?.reset('');
     this.toEmailError = null;
     this.ccEmailError = null;
     this.bccEmailError = null;

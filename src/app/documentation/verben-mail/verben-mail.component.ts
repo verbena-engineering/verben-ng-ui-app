@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { MailPayload} from 'verben-ng-ui/src/public-api';
+import { MailPayload } from 'verben-ng-ui';
 
 @Component({
   selector: 'verben-mail',
-  templateUrl:'./verben-mail.component.html',
+  templateUrl: './verben-mail.component.html',
   styleUrl: './verben-mail.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

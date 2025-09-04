@@ -4,11 +4,11 @@ import { FormsModule } from '@angular/forms';
 
 import { SortTableRoutingModule } from './sort-table-routing.module';
 import { SortTableComponent } from './sort-table.component';
-import { SortTableModule } from 'verben-ng-ui/src/public-api'; 
+import { SortTableModule } from 'verben-ng-ui';
 
 @NgModule({
   declarations: [SortTableComponent],
   imports: [CommonModule, SortTableRoutingModule, SortTableModule, FormsModule],
-  exports:[SortTableComponent]
+  exports: [SortTableComponent],
 })
 export class SortModule {}

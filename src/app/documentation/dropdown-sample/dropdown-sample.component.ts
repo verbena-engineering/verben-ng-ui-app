@@ -4,7 +4,7 @@ import {
   DropdownChangeEvent,
   DropdownLoadEvent,
   DropdownMenuItem,
-} from '../../../../projects/verben-ng-ui/src/public-api';
+} from 'verben-ng-ui';
 
 interface TestDropdownObject {
   Id: string;

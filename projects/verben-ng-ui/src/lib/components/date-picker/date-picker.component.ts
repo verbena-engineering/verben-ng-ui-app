@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { DropdownChangeEvent } from '../drop-down/DropdownChangeEvent';
+import { DropdownChangeEvent } from 'verben-ng-ui/src/lib/components/drop-down';
 
 @Component({
   selector: 'app-date-picker',
@@ -11,13 +11,13 @@ export class DatePickerComponent {
   @Input() format = 'MM/DD/YYYY';
   @Input() minDate?: Date;
   @Input() maxDate?: Date;
-    @Input() disabled?: boolean=false
-  @Input() bgColor?: string='#fff'
-    @Input() border?: string=''
+  @Input() disabled?: boolean = false;
+  @Input() bgColor?: string = '#fff';
+  @Input() border?: string = '';
   @Input() useDropdowns: boolean = true;
   @Input() yearPlaceholder: string = 'Select a year';
   @Input() monthPlaceholder: string = 'Select a month';
-  @Input() date: Date | null|string = null; // Two-way binding support
+  @Input() date: Date | null | string = null; // Two-way binding support
   @Output() dateChange = new EventEmitter<Date>(); // Emit date changes
   yearRange: number[] = [];
   filteredYearRange: number[] = [];
@@ -25,21 +25,30 @@ export class DatePickerComponent {
   tempSelectedDate: Date = new Date();
   showCalendar = false;
 
-  weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat','Sun'];
+  weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
 
-
-  
   selectedMonth: number = 1;
-  selectedMonthString:string=''
+  selectedMonthString: string = '';
   selectedYear: number = new Date().getFullYear();
 
   ngOnChanges() {
     if (this.date) {
-      const parsedDate = typeof this.date === 'string' ? new Date(this.date) : this.date;
+      const parsedDate =
+        typeof this.date === 'string' ? new Date(this.date) : this.date;
       this.selectedDate = new Date(parsedDate);
       this.tempSelectedDate = new Date(parsedDate);
       this.selectedMonth = this.selectedDate.getMonth();
@@ -49,20 +58,23 @@ export class DatePickerComponent {
   ngOnInit() {
     const currentYear = new Date().getFullYear();
     const endYear = currentYear + 10;
-    this.yearRange = Array.from({ length: endYear - 1960 + 1 }, (_, i) => 1960 + i);
+    this.yearRange = Array.from(
+      { length: endYear - 1960 + 1 },
+      (_, i) => 1960 + i
+    );
     this.yearRange.sort((a, b) => b - a);
   }
   get displayDate(): string {
-    const parsedDate = typeof this.date === 'string' ? new Date(this.date) : this.date;
+    const parsedDate =
+      typeof this.date === 'string' ? new Date(this.date) : this.date;
     return parsedDate ? this.formatDate(parsedDate, this.format) : '';
   }
-  
 
   toggleCalendar() {
     this.showCalendar = !this.showCalendar;
     this.tempSelectedDate = new Date(this.date || new Date());
     this.selectedMonth = this.tempSelectedDate.getMonth();
-    this.selectedMonthString=this.months[this.selectedMonth]
+    this.selectedMonthString = this.months[this.selectedMonth];
     this.selectedYear = this.tempSelectedDate.getFullYear();
   }
 
@@ -90,8 +102,7 @@ export class DatePickerComponent {
   }
 
   onDropdownMonthChange(event: DropdownChangeEvent): void {
-   
-    this.selectedMonth = this.months.indexOf(event.value)
+    this.selectedMonth = this.months.indexOf(event.value);
     this.updateTempSelectedDate();
   }
 
@@ -104,25 +115,23 @@ export class DatePickerComponent {
     const days: (Date | null)[] = [];
     const year = this.selectedYear;
     const month = this.selectedMonth;
-  
+
     const firstDayOfMonth = new Date(year, month, 1).getDay();
-    const offset = (firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1); 
-  
+    const offset = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
+
     for (let i = 0; i < offset; i++) {
       days.push(null);
     }
-  
-    const totalDays = new Date(year, month + 1, 0).getDate(); 
-  
+
+    const totalDays = new Date(year, month + 1, 0).getDate();
+
     // Add the actual days of the month
     for (let i = 1; i <= totalDays; i++) {
       days.push(new Date(year, month, i));
     }
-  
+
     return days;
   }
-  
-  
 
   selectTemporaryDate(day: Date) {
     this.tempSelectedDate = day;
@@ -160,7 +169,4 @@ export class DatePickerComponent {
   cancel() {
     this.showCalendar = false;
   }
-  
-  
 }
- 

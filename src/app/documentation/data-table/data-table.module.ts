@@ -22,7 +22,7 @@ import {
   DataExtendModule,
   DataImportModule,
   DatePickerModule,
-} from 'verben-ng-ui/src/public-api';
+} from 'verben-ng-ui';
 import { TableExportComponent } from './table-export/table-export.component';
 
 @NgModule({

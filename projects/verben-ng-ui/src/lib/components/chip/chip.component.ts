@@ -12,24 +12,17 @@ import {
   Self,
   TemplateRef,
 } from '@angular/core';
-import { DropDownItemComponent } from '../drop-down/drop-down-item/drop-down-item.component';
 import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChipChangeEvent } from './ChipChangeEvent';
-import { SharedModule } from '../shared.module';
-import { TemplateDirective } from '../TemplateDirective.directive';
-import { SvgModule } from '../svg/svg.module';
+import { SharedModule } from 'verben-ng-ui/src/lib/components/shared';
+import { TemplateDirective } from 'verben-ng-ui/src/lib/components/shared';
+import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
 
 @Component({
   selector: 'verben-chip',
   standalone: true,
-  imports: [
-    CommonModule,
-    DropDownItemComponent,
-    SharedModule,
-    FormsModule,
-    SvgModule,
-  ],
+  imports: [CommonModule, SharedModule, FormsModule, SvgModule],
   templateUrl: './chip.component.html',
   styleUrl: './chip.component.css',
 })

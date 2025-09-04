@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
 import { IconsComponent } from './icons.component';
-import { IconService } from '../../services/icon.service';
+import { IconService } from 'verben-ng-ui/src/lib/services';
 
 @NgModule({
   declarations: [IconsComponent], // Declare the IconComponent

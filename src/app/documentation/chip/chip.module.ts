@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChipComponent } from './chip.component';
-import { ChipModule, SharedModule } from 'verben-ng-ui/src/public-api';
+import { ChipModule, SharedModule } from 'verben-ng-ui';
 import { RouterModule, Routes } from '@angular/router';
 
 export const appRoutes: Routes = [

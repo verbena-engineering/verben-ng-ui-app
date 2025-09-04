@@ -17,25 +17,16 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
-import { DropdownMenuItem } from './DropdownMenuItem';
+import { DropdownMenuItem, DropdownMenuItemWrapper } from './DropdownMenuItem';
 import { DropdownLoadEvent } from './DropdownLoadEvent';
-import { TemplateDirective } from '../TemplateDirective.directive';
+import { TemplateDirective } from 'verben-ng-ui/src/lib/components/shared';
 import { DropdownChangeEvent } from './DropdownChangeEvent';
 import { DropDownItemComponent } from './drop-down-item/drop-down-item.component';
 import { isEqual, cloneDeep } from 'lodash';
 import { debounceTime, Subject } from 'rxjs';
-import { SharedModule } from '../shared.module';
-import { SvgModule } from '../svg/svg.module';
-import { TooltipModule } from '../tooltip/tooltip.module';
-
-export interface DropdownMenuItemWrapper extends DropdownMenuItem {
-  expanded: boolean;
-  items?: DropdownMenuItemWrapper[];
-  isLoading: boolean;
-  copy: DropdownMenuItemWrapper[];
-  loadTimes?: DropdownLoadEvent;
-  loadTimesCopy?: DropdownLoadEvent;
-}
+import { SharedModule } from 'verben-ng-ui/src/lib/components/shared';
+import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
+import { TooltipModule } from 'verben-ng-ui/src/lib/components/tooltip';
 
 @Component({
   selector: 'verben-drop-down',

@@ -4,10 +4,15 @@ import { FormsModule } from '@angular/forms';
 
 import { VisibleColumnRoutingModule } from './visible-column-routing.module';
 import { VisibleColumnComponent } from './visible-column.component';
-import { VisibleColumnModule } from 'verben-ng-ui/src/public-api';
+import { VisibleColumnModule } from 'verben-ng-ui';
 
 @NgModule({
   declarations: [VisibleColumnComponent],
-  imports: [CommonModule,VisibleColumnRoutingModule,VisibleColumnModule , FormsModule],
+  imports: [
+    CommonModule,
+    VisibleColumnRoutingModule,
+    VisibleColumnModule,
+    FormsModule,
+  ],
 })
 export class VisibleColModule {}

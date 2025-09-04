@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ColumnDefinition } from '../data-table/data-table.types';
+import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table';
 import {
   SortCondition,
   SortOperator,

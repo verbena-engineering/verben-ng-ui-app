@@ -4,181 +4,224 @@
 
 // export * from './lib/verben-ng-ui.service';
 // export * from './lib/verben-ng-ui.component';
+//New Exports
+
+export * from 'verben-ng-ui/src/lib/models';
+export * from 'verben-ng-ui/src/lib/services';
+export * from 'verben-ng-ui/src/lib/components/shared';
+export * from 'verben-ng-ui/src/lib/components/card-data-view';
+export * from 'verben-ng-ui/src/lib/components/drop-down';
+export * from 'verben-ng-ui/src/lib/components/chip';
+export * from 'verben-ng-ui/src/lib/components/svg';
+export * from 'verben-ng-ui/src/lib/components/image';
+export * from 'verben-ng-ui/src/lib/components/tooltip';
+export * from 'verben-ng-ui/src/lib/components/table-filter';
+export * from 'verben-ng-ui/src/lib/components/notification';
+export * from 'verben-ng-ui/src/lib/components/card';
+export * from 'verben-ng-ui/src/lib/convert-to-number';
+export * from 'verben-ng-ui/src/lib/convert-to-integer';
+export * from 'verben-ng-ui/src/lib/components/sort-table';
+export * from 'verben-ng-ui/src/lib/components/visible-column';
+export * from 'verben-ng-ui/src/lib/components/data-view';
+export * from 'verben-ng-ui/src/lib/components/date-picker';
+export * from 'verben-ng-ui/src/lib/phone-number';
+export * from 'verben-ng-ui/src/lib/validate-input';
+export * from 'verben-ng-ui/src/lib/number-range';
+export * from 'verben-ng-ui/src/lib/required-input';
+export * from 'verben-ng-ui/src/lib/components/data-table';
+export * from 'verben-ng-ui/src/lib/components/data-export';
+export * from 'verben-ng-ui/src/lib/components/data-import';
+export * from 'verben-ng-ui/src/lib/components/data-extend';
+export * from 'verben-ng-ui/src/lib/components/data-xport';
+export * from 'verben-ng-ui/src/lib/components/data-filter';
+export * from 'verben-ng-ui/src/lib/components/data-sort';
+export * from 'verben-ng-ui/src/lib/components/data-columns';
+export * from 'verben-ng-ui/src/lib/control-options';
+export * from 'verben-ng-ui/src/lib/validate';
+export * from 'verben-ng-ui/src/lib/email-validator';
+export * from 'verben-ng-ui/src/lib/verbena-input';
+export * from 'verben-ng-ui/src/lib/verbena-button';
+export * from 'verben-ng-ui/src/lib/verbena-badge';
+export * from 'verben-ng-ui/src/lib/verbena-textarea';
+export * from 'verben-ng-ui/src/lib/verbena-switch';
+export * from 'verben-ng-ui/src/lib/components/verben-mail';
+export * from 'verben-ng-ui/src/lib/components/verben-dialogue';
+export * from 'verben-ng-ui/src/lib/components/verben-time-picker';
+export * from 'verben-ng-ui/src/lib/components/pop-up';
+export * from 'verben-ng-ui/src/lib/components/icons';
+export * from 'verben-ng-ui/src/lib/components/verbena-icon';
+export * from 'verben-ng-ui/src/lib/components/verbena-tab';
+export * from 'verben-ng-ui/src/lib/components/number-input';
 
 // Exporting modules
-export * from './lib/components/card-data-view/card-data-view.component';
-export * from './lib/components/card-data-view/card-data-view.module';
-export * from './lib/components/card-data-view/card-data';
-export * from './lib/components/card-data-view/left-card-data/left-card-data.component';
-export * from './lib/components/card-data-view/left-card-data-view/left-card-data-view.component';
-export * from './lib/components/card-data-view/right-card-data-view/right-card-data-view.component';
-export * from './lib/components/card-data-view/card-data-view-header/card-data-view-header.component';
-export * from './lib/components/card-data-view/card-data-view-footer/card-data-view-footer.component';
+// export * from './lib/components/card-data-view/card-data-view.component';
+// export * from './lib/components/card-data-view/card-data-view.module';
+// export * from './lib/components/card-data-view/card-data';
+// export * from './lib/components/card-data-view/left-card-data/left-card-data.component';
+// export * from './lib/components/card-data-view/left-card-data-view/left-card-data-view.component';
+// export * from './lib/components/card-data-view/right-card-data-view/right-card-data-view.component';
+// export * from './lib/components/card-data-view/card-data-view-header/card-data-view-header.component';
+// export * from './lib/components/card-data-view/card-data-view-footer/card-data-view-footer.component';
 
-export * from './lib/components/drop-down/DropdownMenuItem';
-export * from './lib/components/drop-down/DropdownChangeEvent';
-export * from './lib/components/drop-down/DropdownLoadEvent';
-export * from './lib/components/chip/ChipChangeEvent';
-export * from './lib/components/drop-down/drop-down.module';
-export * from './lib/components/drop-down/drop-down.component';
-export * from './lib/components/chip/chip.module';
-export * from './lib/components/chip/chip.component';
-export * from './lib/components/shared.module';
-export * from './lib/components/TemplateDirective.directive';
+// export * from './lib/components/drop-down/DropdownMenuItem';
+// export * from './lib/components/drop-down/DropdownChangeEvent';
+// export * from './lib/components/drop-down/DropdownLoadEvent';
+// export * from './lib/components/chip/ChipChangeEvent';
+// export * from './lib/components/drop-down/drop-down.module';
+// export * from './lib/components/drop-down/drop-down.component';
+// export * from './lib/components/chip/chip.module';
+// export * from './lib/components/chip/chip.component';
+// export * from './lib/components/shared.module';
+// export * from './lib/components/TemplateDirective.directive';
 
-export * from './lib/components/image/image.module';
-export * from './lib/components/image/image.component';
+// export * from './lib/components/image/image.module';
+// export * from './lib/components/image/image.component';
 
-export * from './lib/components/tooltip/tooltip.component';
-export * from './lib/components/tooltip/tooltip.module';
+// export * from './lib/components/tooltip/tooltip.component';
+// export * from './lib/components/tooltip/tooltip.module';
 
-export * from './lib/components/svg/svg.module';
-export * from './lib/components/svg/svg.component';
+// export * from './lib/components/svg/svg.module';
+// export * from './lib/components/svg/svg.component';
 
-export * from './lib/components/table-filter/table-filter.module';
-export * from './lib/components/table-filter/table-filter.component';
+// export * from './lib/components/table-filter/table-filter.module';
+// export * from './lib/components/table-filter/table-filter.component';
 
-export * from './lib/components/notification/notification.module';
-export * from './lib/components/notification/notification.component';
+// export * from './lib/components/notification/notification.module';
+// export * from './lib/components/notification/notification.component';
 
-export * from './lib/components/card/card.module';
-export * from './lib/components/card/card.component';
+// export * from './lib/components/card/card.module';
+// export * from './lib/components/card/card.component';
 
-export * from './lib/convert-to-number/convert-to-number.module';
-export * from './lib/convert-to-integer/convert-to-integer.module';
-export * from './lib/components/sort-table/sort-table.component';
-export * from './lib/components/sort-table/sort-table.module';
-export * from './lib/components/visible-column/visible-column.component';
-export * from './lib/components/visible-column/visible-column.module';
-export * from './lib/components/data-view/data-view.component';
-export * from './lib/components/data-view/data-view.module';
-export * from './lib/components/date-picker/date-picker.component';
-export * from './lib/components/date-picker/date-picker.module';
-// export * from './lib/convert-to-decimal/convert-to-decimal.module';
-export * from './lib/phone-number/phone-number.module';
+// export * from './lib/convert-to-number/convert-to-number.module';
+// export * from './lib/convert-to-integer/convert-to-integer.module';
+// export * from './lib/components/sort-table/sort-table.component';
+// export * from './lib/components/sort-table/sort-table.module';
+// export * from './lib/components/visible-column/visible-column.component';
+// export * from './lib/components/visible-column/visible-column.module';
+// export * from './lib/components/data-view/data-view.component';
+// export * from './lib/components/data-view/data-view.module';
+// export * from './lib/components/date-picker/date-picker.component';
+// export * from './lib/components/date-picker/date-picker.module';
+// // export * from './lib/convert-to-decimal/convert-to-decimal.module';
+// export * from './lib/phone-number/phone-number.module';
 
-export * from './lib/validate-input/validate-input.module';
+// export * from './lib/validate-input/validate-input.module';
 
-// Also export the directives if needed directly
-export * from './lib/convert-to-number/convert-to-number.directive';
-export * from './lib/convert-to-integer/convert-to-integer.directive';
-// export * from './lib/convert-to-decimal/convert-to-decimal.directive';
-export * from './lib/phone-number/phone-number.directive';
-export * from './lib/validate-input/validate-input.directive';
+// // Also export the directives if needed directly
+// export * from './lib/convert-to-number/convert-to-number.directive';
+// export * from './lib/convert-to-integer/convert-to-integer.directive';
+// // export * from './lib/convert-to-decimal/convert-to-decimal.directive';
+// export * from './lib/phone-number/phone-number.directive';
+// export * from './lib/validate-input/validate-input.directive';
 
-// Exporting MaxNumberModule and MaxNumberDirective
-export * from './lib/number-range/number-range.module';
-export * from './lib/number-range/number-range.directive';
+// // Exporting MaxNumberModule and MaxNumberDirective
+// export * from './lib/number-range/number-range.module';
+// export * from './lib/number-range/number-range.directive';
 
-export * from './lib/number-range/number-range.module';
-export * from './lib/number-range/number-range.directive';
+// // export * from './lib/number-range/number-range.module';
+// // export * from './lib/number-range/number-range.directive';
 
-// Exporting RequiredInputModule and RequiredInputDirective
-export * from './lib/required-input/required-input.module';
-export * from './lib/required-input/required-input.directive';
+// // Exporting RequiredInputModule and RequiredInputDirective
+// export * from './lib/required-input/required-input.module';
+// export * from './lib/required-input/required-input.directive';
 
-// Exporting EmailValidatorModule and EmailValidatorDirective
-export * from './lib/email-validator/email-validator.module';
-export * from './lib/email-validator/email-validator.directive';
+// // Exporting EmailValidatorModule and EmailValidatorDirective
+// export * from './lib/email-validator/email-validator.module';
+// export * from './lib/email-validator/email-validator.directive';
 
-export * from './lib/components/data-table/data-table.module';
-export * from './lib/components/data-table/data-table.component';
-export * from './lib/components/data-table/column.directive';
-export * from './lib/components/data-table/data-table.types';
-export * from './lib/components/data-table/style.types';
+// export * from './lib/components/data-table/data-table.module';
+// export * from './lib/components/data-table/data-table.component';
+// export * from './lib/components/data-table/column.directive';
+// export * from './lib/components/data-table/data-table.types';
+// export * from './lib/components/data-table/style.types';
 
-export * from './lib/components/data-export/data-export.module';
-export * from './lib/components/data-export/data-export.service';
-export * from './lib/components/data-export/data-export.component';
-export * from './lib/components/data-export/data-export.types';
+// export * from './lib/components/data-export/data-export.module';
+// export * from './lib/components/data-export/data-export.service';
+// export * from './lib/components/data-export/data-export.component';
+// export * from './lib/components/data-export/data-export.types';
 
-export * from './lib/components/data-import/data-import.module';
-// export * from './lib/components/data-import/data-import.service';
-export * from './lib/components/data-import/data-import.component';
-// export * from './lib/components/data-import/data-import.types';
+// export * from './lib/components/data-import/data-import.module';
+// // export * from './lib/components/data-import/data-import.service';
+// export * from './lib/components/data-import/data-import.component';
+// // export * from './lib/components/data-import/data-import.types';
 
-export * from './lib/components/data-extend/data-extend.module';
-// export * from './lib/components/data-extend/data-extend.service';
-export * from './lib/components/data-extend/data-extend.component';
-export * from './lib/components/data-extend/data-extend.types';
+// export * from './lib/components/data-extend/data-extend.module';
+// // export * from './lib/components/data-extend/data-extend.service';
+// export * from './lib/components/data-extend/data-extend.component';
+// export * from './lib/components/data-extend/data-extend.types';
 
-export * from './lib/components/data-xport/data-xport.module';
-export * from './lib/components/data-xport/data-xport.service';
-export * from './lib/components/data-xport/data-xport.component';
-// export * from './lib/components/data-xport/data-xport.types';
+// export * from './lib/components/data-xport/data-xport.module';
+// export * from './lib/components/data-xport/data-xport.service';
+// export * from './lib/components/data-xport/data-xport.component';
+// // export * from './lib/components/data-xport/data-xport.types';
 
-export * from './lib/components/data-filter/data-filter.module';
-export * from './lib/components/data-filter/data-filter.service';
-export * from './lib/components/data-filter/data-filter.component';
-export * from './lib/components/data-filter/data-filter.types';
+// export * from './lib/components/data-filter/data-filter.module';
+// export * from './lib/components/data-filter/data-filter.service';
+// export * from './lib/components/data-filter/data-filter.component';
+// export * from './lib/components/data-filter/data-filter.types';
 
-export * from './lib/components/data-sort/data-sort.module';
-export * from './lib/components/data-sort/data-sort.service';
-export * from './lib/components/data-sort/data-sort.component';
-export * from './lib/components/data-sort/data-sort.types';
+// export * from './lib/components/data-sort/data-sort.module';
+// export * from './lib/components/data-sort/data-sort.service';
+// export * from './lib/components/data-sort/data-sort.component';
+// export * from './lib/components/data-sort/data-sort.types';
 
-export * from './lib/components/data-columns/data-columns.module';
-export * from './lib/components/data-columns/data-columns.service';
-export * from './lib/components/data-columns/data-columns.component';
+// export * from './lib/components/data-columns/data-columns.module';
+// export * from './lib/components/data-columns/data-columns.service';
+// export * from './lib/components/data-columns/data-columns.component';
 
-// Exporting ControlOptionModule and ControlOptionDirective
-export * from './lib/control-options/control-options.module';
-export * from './lib/control-options/control-options.directive';
-// Exporting Enum type for sort table
-export * from './lib/models/table-filter';
-export * from './lib/models/mail-model';
+// // Exporting ControlOptionModule and ControlOptionDirective
+// export * from './lib/control-options/control-options.module';
+// export * from './lib/control-options/control-options.directive';
+// // Exporting Enum type for sort table
+// export * from './lib/models/table-filter';
+// export * from './lib/models/mail-model';
 
-export * from './lib/validate/error-message.service';
-export * from './lib/validate/validate.directive';
-export * from './lib/validate/validate.module';
+// export * from './lib/validate/error-message.service';
+// export * from './lib/validate/validate.directive';
+// export * from './lib/validate/validate.module';
 
-export * from './lib/Verbena-input/verbena-input.component';
-export * from './lib/Verbena-input/verbena-input.module';
+// export * from './lib/verbena-input/verbena-input.component';
+// export * from './lib/verbena-input/verbena-input.module';
 
-export * from './lib/verbena-button/verbena-button.component';
-export * from './lib/verbena-button/verbena-button.module';
+// export * from './lib/verbena-button/verbena-button.component';
+// export * from './lib/verbena-button/verbena-button.module';
 
-export * from './lib/verbena-badge/verbena-badge.component';
-export * from './lib/verbena-badge/verbena-badge.module';
+// export * from './lib/verbena-badge/verbena-badge.component';
+// export * from './lib/verbena-badge/verbena-badge.module';
 
-export * from './lib/verbena-textarea/verbena-textarea.component';
-export * from './lib/verbena-textarea/verbena-textarea.module';
+// export * from './lib/verbena-textarea/verbena-textarea.component';
+// export * from './lib/verbena-textarea/verbena-textarea.module';
 
-export * from './lib/verbena-switch/verbena-switch.component';
-export * from './lib/verbena-switch/verbena-switch.module';
+// export * from './lib/verbena-switch/verbena-switch.component';
+// export * from './lib/verbena-switch/verbena-switch.module';
 
-export * from './lib/components/verben-mail/verben-mail.module';
-export * from './lib/components/verben-mail/verben-mail.component';
+// export * from './lib/components/verben-mail/verben-mail.module';
+// export * from './lib/components/verben-mail/verben-mail.component';
 
-export * from './lib/components/verben-dialogue/verben-dialogue.module';
-export * from './lib/components/verben-dialogue/verben-dialogue.component';
+// export * from './lib/components/verben-dialogue/verben-dialogue.module';
+// export * from './lib/components/verben-dialogue/verben-dialogue.component';
 
-export * from './lib/components/verben-time-picker/verben-time-picker.module';
-export * from './lib/components/verben-time-picker/verben-time-picker.component';
+// export * from './lib/components/verben-time-picker/verben-time-picker.module';
+// export * from './lib/components/verben-time-picker/verben-time-picker.component';
 
-//notification service
-export * from './lib/services/notification.services';
+// //notification service
+// export * from './lib/services/notification.services';
 
-export * from './lib/components/pop-up/pop-up.module';
-export * from './lib/components/pop-up/pop-up.component';
+// export * from './lib/components/pop-up/pop-up.module';
+// export * from './lib/components/pop-up/pop-up.component';
 
-export * from './lib/tokens';
+// export * from './lib/tokens';
 
+// export * from './lib/components/icons/icons.module'; // Export IconModule
+// export * from './lib/components/icons/icons.component'; // Export IconComponent
+// export * from './lib/services/icon.service'; // Export IconService
 
-export * from './lib/components/icons/icons.module'; // Export IconModule
-export * from './lib/components/icons/icons.component'; // Export IconComponent
-export * from './lib/services/icon.service'; // Export IconService
+// export * from './lib/components/verbena-icon/verbena-icon.component'; // Export IconComponent
+// export * from './lib/components/verbena-icon/verbena-icon.module'; // Export IconService
 
-export * from './lib/components/verbena-icon/verbena-icon.component'; // Export IconComponent
-export * from './lib/components/verbena-icon/verbena-icon.module'; // Export IconService
+// export * from './lib/components/verbena-tab/verbena-tab.module';
+// export * from './lib/components/verbena-tab/verbena-tab.component';
+// export * from './lib/components/verbena-tab/tab-item.component';
 
-
-
-
-export * from './lib/components/verbena-tab/verbena-tab.module'; 
-export * from './lib/components/verbena-tab/verbena-tab.component'; 
-export * from './lib/components/verbena-tab/tab-item.component'; 
-
-
-export * from './lib/components/number-input/number-input.component'
-export * from './lib/components/number-input/number-input.module'
+// export * from './lib/components/number-input/number-input.component';
+// export * from './lib/components/number-input/number-input.module';

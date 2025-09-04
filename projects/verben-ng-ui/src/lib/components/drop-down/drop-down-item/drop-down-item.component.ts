@@ -8,13 +8,13 @@ import {
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
-import { TemplateDirective } from '../../TemplateDirective.directive';
-import { DropdownMenuItemWrapper } from '../drop-down.component';
+import { TemplateDirective } from 'verben-ng-ui/src/lib/components/shared';
 import { CommonModule } from '@angular/common';
 import { isEqual } from 'lodash';
 import { FormsModule } from '@angular/forms';
 // import { SvgModule } from 'verben-ng-ui/src/public-api';
-import { SvgModule } from '../../../components/svg/svg.module';
+import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
+import { DropdownMenuItemWrapper } from '../DropdownMenuItem';
 
 @Component({
   selector: 'drop-down-item',

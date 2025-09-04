@@ -2,15 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableFilterComponent } from './table-filter.component';
 import { FormsModule } from '@angular/forms';
-import { DropDownModule } from '../drop-down/drop-down.module';
-import { VerbenaInputModule } from '../../Verbena-input/verbena-input.module';
-import { TooltipModule } from '../tooltip/tooltip.module';
-import { ValidationModule } from '../../validate/validate.module';
-import { SvgModule } from '../svg/svg.module';
-
+import { DropDownModule } from 'verben-ng-ui/src/lib/components/drop-down';
+import { VerbenaInputModule } from 'verben-ng-ui/src/lib/verbena-input';
+import { TooltipModule } from 'verben-ng-ui/src/lib/components/tooltip';
+import { ValidationModule } from 'verben-ng-ui/src/lib/validate';
+import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
 
 @NgModule({
-  declarations:[TableFilterComponent],
+  declarations: [TableFilterComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -18,8 +17,8 @@ import { SvgModule } from '../svg/svg.module';
     VerbenaInputModule,
     ValidationModule,
     TooltipModule,
-    SvgModule
+    SvgModule,
   ],
-  exports: [TableFilterComponent]
+  exports: [TableFilterComponent],
 })
 export class TableFilterModule {}

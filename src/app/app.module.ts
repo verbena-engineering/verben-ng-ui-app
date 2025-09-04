@@ -32,7 +32,7 @@ import {
   VerbenTimePickerModule,
   DatePickerModule,
   VerbenDialogueModule,
-} from '../../projects/verben-ng-ui/src/public-api';
+} from 'verben-ng-ui';
 import { CDVModule } from './views/card-data-view/cdv.module';
 import { CommonModule } from '@angular/common';
 import { CardViewModule } from './views/card-view/card-view.module';
@@ -71,7 +71,7 @@ import { CardViewModule } from './views/card-view/card-view.module';
     CDVModule,
     CardViewModule,
     DatePickerModule,
-    VerbenDialogueModule
+    VerbenDialogueModule,
   ],
   providers: [provideHttpClient(withFetch())],
   bootstrap: [AppComponent],

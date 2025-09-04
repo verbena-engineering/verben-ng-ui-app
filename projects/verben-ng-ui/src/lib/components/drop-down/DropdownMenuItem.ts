@@ -40,3 +40,12 @@ export interface DropdownMenuItem {
   ) => Promise<DropdownMenuItem[]>;
   loadMore?: (context: DropdownLoadEvent) => Promise<DropdownMenuItem[]>;
 }
+
+export interface DropdownMenuItemWrapper extends DropdownMenuItem {
+  expanded: boolean;
+  items?: DropdownMenuItemWrapper[];
+  isLoading: boolean;
+  copy: DropdownMenuItemWrapper[];
+  loadTimes?: DropdownLoadEvent;
+  loadTimesCopy?: DropdownLoadEvent;
+}

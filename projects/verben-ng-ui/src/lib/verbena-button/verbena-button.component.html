@@ -1,44 +1,85 @@
-<button [ngStyle]="{
-  'background-color': buttonStyles.bgColor,
-  'color': buttonStyles.textColor,
-  'border': buttonStyles.border,
-  'border-radius': buttonStyles.borderRadius,
-  'padding': buttonStyles.pd,
-  'width': width,
-  'height': height,
-  'font-size': fontSize,
-  'display': 'flex',
-  'align-items': 'center',
-  'justify-content': 'center',
-  'cursor': isLoading ? 'not-allowed' : 'pointer',
-  'gap': '6px'
-}"
-[disabled]="disable || isLoading"
-class="verbena-button {{ buttonClass }}"
+<button
+  [ngStyle]="{
+    'background-color': buttonStyles.bgColor,
+    color: buttonStyles.textColor,
+    border: buttonStyles.border,
+    'border-radius': buttonStyles.borderRadius,
+    padding: buttonStyles.pd,
+    width: width,
+    height: height,
+    'font-size': fontSize,
+    display: 'flex',
+    'align-items': 'center',
+    'justify-content': 'center',
+    cursor: isLoading ? 'not-allowed' : 'pointer',
+    gap: '6px'
+  }"
+  [disabled]="disable || isLoading"
+  class="verbena-button {{ buttonClass }}"
 >
   <!-- Loading Spinner -->
   <ng-container *ngIf="isLoading">
-    <div class="loading-spinner" [ngStyle]="{'width': spinnerSize, 'height': spinnerSize, 'border-color': spinnerColor, 'border-top-color': 'transparent'}"></div>
-    <span *ngIf="text" class="{{ buttonTextClass }}" [ngStyle]="{'font-size': fontSize, 'font-weight': fontWeight}">{{ text }}</span>
-
+    <div
+      class="loading-spinner"
+      [ngStyle]="{
+        width: spinnerSize,
+        height: spinnerSize,
+        'border-color': spinnerColor,
+        'border-top-color': 'transparent'
+      }"
+    ></div>
+    <span
+      *ngIf="text"
+      class="{{ buttonTextClass }}"
+      [ngStyle]="{ 'font-size': fontSize, 'font-weight': fontWeight }"
+      >{{ text }}</span
+    >
   </ng-container>
 
   <ng-container *ngIf="!isLoading">
     <ng-container *ngIf="!useIcon && svg && svgPosition === 'left'">
-      <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight" [size]="svgSize" [stroke]="svgColor"></verben-svg>
+      <verben-svg
+        [icon]="svg"
+        [width]="svgWidth"
+        [height]="svgHeight"
+        [size]="svgSize"
+        [stroke]="svgColor"
+      ></verben-svg>
     </ng-container>
     <ng-container *ngIf="useIcon && icon && iconPosition === 'left'">
-      <verbena-icon [icon]="icon" [variant]="variant" [size]="svgSize" [weight]="weight" [color]="svgColor"></verbena-icon>
+      <verbena-icon
+        [icon]="icon"
+        [variant]="variant"
+        [size]="svgSize"
+        [weight]="weight"
+        [color]="svgColor"
+      ></verbena-icon>
     </ng-container>
-  
-    <span *ngIf="text" class="{{ buttonTextClass }}" [ngStyle]="{'font-size': fontSize, 'font-weight': fontWeight}">{{ text }}</span>
-  
+
+    <span
+      *ngIf="text"
+      class="{{ buttonTextClass }}"
+      [ngStyle]="{ 'font-size': fontSize, 'font-weight': fontWeight }"
+      >{{ text }}</span
+    >
+
     <ng-container *ngIf="!useIcon && svg && svgPosition === 'right'">
-      <verben-svg [icon]="svg" [width]="svgWidth" [height]="svgHeight" [size]="svgSize" [stroke]="svgColor"></verben-svg>
+      <verben-svg
+        [icon]="svg"
+        [width]="svgWidth"
+        [height]="svgHeight"
+        [size]="svgSize"
+        [stroke]="svgColor"
+      ></verben-svg>
     </ng-container>
     <ng-container *ngIf="useIcon && icon && iconPosition === 'right'">
-      <verbena-icon [icon]="icon" [variant]="variant" [size]="svgSize" [weight]="weight" [color]="svgColor"></verbena-icon>
+      <verbena-icon
+        [icon]="icon"
+        [variant]="variant"
+        [size]="svgSize"
+        [weight]="weight"
+        [color]="svgColor"
+      ></verbena-icon>
     </ng-container>
   </ng-container>
-  
 </button>

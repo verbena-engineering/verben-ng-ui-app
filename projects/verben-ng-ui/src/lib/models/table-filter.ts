@@ -1,20 +1,4 @@
-export enum DataFilterType {
-  String = 'String',
-  Integer = 'Integer',
-  Decimal = 'Decimal',
-  Credit= 'Credit',
-  Date = 'Date',
-  Bool = "Bool",
-  Number="Number"
-}
-
-export interface IDataFilter {
-  name:string,
-  type: DataFilterType;
-  value?:any; 
-  checked: boolean;
-  condition?:string;
-}
+import { DataFilterType } from './DataFilterType';
 
 export enum ConditionalOptions {
   GreaterThanAndEqual = 'GTE',
@@ -25,7 +9,7 @@ export enum ConditionalOptions {
   After = 'After',
   Yes = 'Yes',
   No = 'No',
- }
+}
 
 export interface ITypeOption {
   type: DataFilterType;

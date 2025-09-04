@@ -1,17 +1,11 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
-import { DataFilterType } from '../../models/table-filter';
-import { IDataFilter } from '../../models/data-filter';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DataFilterType } from 'verben-ng-ui/src/lib/models';
+import { IDataFilter } from 'verben-ng-ui/src/lib/models';
 
 @Component({
   selector: 'verben-sort-table',
   templateUrl: './sort-table.component.html',
   styleUrls: ['./sort-table.component.css'],
-
 })
 export class SortTableComponent {
   @Input() enableDragAndDrop: boolean = false;
@@ -31,14 +25,14 @@ export class SortTableComponent {
   @Input() primaryColor?: string;
   @Input() secondaryColor?: string;
   @Input() tertiaryColor?: string;
-  @Input() border?: string="";
+  @Input() border?: string = '';
   @Input() borderRadius?: string;
   @Input() selectWidth?: string;
-  @Input() containerHeight?:string="400px"
+  @Input() containerHeight?: string = '400px';
   @Output() selectedOptions = new EventEmitter<IDataFilter[]>();
   @Output() resetSortData = new EventEmitter();
   draggedIndex: number | null = null;
-  visibleSortOptions: IDataFilter[]= [];
+  visibleSortOptions: IDataFilter[] = [];
   hiddenSortOptions: IDataFilter[] = [];
   showMore: boolean = false;
   disableSortButton: boolean = false;
@@ -78,7 +72,7 @@ export class SortTableComponent {
     const selectedSorts = this.sortOptions.filter((option) => option.checked);
     const selectedSortDetails = selectedSorts.map((sort, index) => {
       return {
-        name:sort.name,
+        name: sort.name,
         type: sort.type || 'String',
         value:
           this.getSortOrder(
@@ -106,11 +100,11 @@ export class SortTableComponent {
     const option = this.sortOptions[index];
     option.checked = !option.checked;
     if (!option.checked) {
-      this.checkAll = false; 
-    } else if (this.sortOptions.every(option => option.checked)) {
-      this.checkAll = true; 
+      this.checkAll = false;
+    } else if (this.sortOptions.every((option) => option.checked)) {
+      this.checkAll = true;
     }
-    
+
     if (option.checked) {
       this.selectedOrders.set(index, 'asc');
     } else {
@@ -119,12 +113,12 @@ export class SortTableComponent {
     this.updateSortButtonState();
   }
   toggleSelectAll() {
-    this.checkAll = !this.checkAll;  // Toggle checkAll state
-  
+    this.checkAll = !this.checkAll; // Toggle checkAll state
+
     // Set all options to checked/unchecked and assign default sort order when checked
     this.sortOptions.forEach((option, index) => {
       option.checked = this.checkAll;
-      
+
       if (this.checkAll) {
         // If checked, set the default sort order to 'asc' for all
         this.selectedOrders.set(index, 'asc');
@@ -133,21 +127,21 @@ export class SortTableComponent {
         this.selectedOrders.delete(index);
       }
     });
-  
+
     this.updateSortButtonState(); // Update the state of the sort button
   }
-  
+
   resetSort() {
     this.sortOptions.forEach((option, index) => {
       option.checked = false;
       this.selectedOrders.delete(index);
     });
-  
+
     this.sortOptions = [...this.defaultSortOptions];
     this.updateVisibleOptions();
     this.updateSortButtonState();
-    this.checkAll=false
-    this.resetSortData.emit()
+    this.checkAll = false;
+    this.resetSortData.emit();
   }
 
   updateSortButtonState() {

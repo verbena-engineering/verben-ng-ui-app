@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { IconService } from '../../services/icon.service';
+import { IconService } from 'verben-ng-ui/src/lib/services';
 
 @Component({
   selector: 'lib-icon',

@@ -6,7 +6,7 @@ import {
   ExportProfile,
   Operation,
   Operators,
-} from 'verben-ng-ui/src/public-api';
+} from 'verben-ng-ui';
 
 @Component({
   selector: 'app-table-export',

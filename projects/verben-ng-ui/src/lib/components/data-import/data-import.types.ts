@@ -1,4 +1,4 @@
-import { ColumnDefinition } from '../data-table/data-table.types';
+import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table';
 
 export interface FieldDefinition<T, K extends keyof T = keyof T>
   extends Omit<

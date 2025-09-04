@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { IDataFilter } from 'verben-ng-ui/src/lib/models/data-filter';
-import { DataFilterType} from 'verben-ng-ui/src/public-api';
+import { IDataFilter } from 'verben-ng-ui';
+import { DataFilterType } from 'verben-ng-ui';
 
 @Component({
   selector: 'app-sort-table',
@@ -32,5 +32,4 @@ export class SortTableComponent {
   onSelectOptions(updatedOptions: IDataFilter[]) {
     console.log('Updated Options:', updatedOptions);
   }
-
 }

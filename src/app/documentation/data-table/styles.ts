@@ -1,5 +1,4 @@
-import { TableStyles } from "verben-ng-ui/src/public-api";
-
+import { TableStyles } from 'verben-ng-ui';
 
 // Default styles
 export const white360Style: TableStyles = {

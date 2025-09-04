@@ -4,11 +4,15 @@ import { FormsModule } from '@angular/forms';
 
 import { VerbenMailRoutingModule } from './verben-mail-routing.module';
 import { VerbenMailComponent } from './verben-mail.component';
-import { VerbenaMailTemplateModule } from 'verben-ng-ui/src/public-api';
-
+import { VerbenaMailTemplateModule } from 'verben-ng-ui';
 
 @NgModule({
   declarations: [VerbenMailComponent],
-  imports: [CommonModule,VerbenMailRoutingModule,VerbenaMailTemplateModule , FormsModule],
+  imports: [
+    CommonModule,
+    VerbenMailRoutingModule,
+    VerbenaMailTemplateModule,
+    FormsModule,
+  ],
 })
 export class VerbenMailModule {}

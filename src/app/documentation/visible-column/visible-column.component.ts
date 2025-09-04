@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { IDataFilter } from 'verben-ng-ui/src/lib/models/data-filter';
-import { DataFilterType} from 'verben-ng-ui/src/public-api';
+import { IDataFilter } from 'verben-ng-ui';
+import { DataFilterType } from 'verben-ng-ui';
 
 @Component({
   selector: 'app-visible-column',
@@ -18,7 +18,7 @@ export class VisibleColumnComponent {
     { checked: false, name: 'Column 5', type: DataFilterType.Bool },
     { checked: false, name: 'Column 6', type: DataFilterType.Bool },
     { checked: false, name: 'Column 7', type: DataFilterType.Bool },
-    { checked: false, name: 'Column 8', type: DataFilterType.Bool}
+    { checked: false, name: 'Column 8', type: DataFilterType.Bool },
   ];
 
   onColumnsUpdated(updatedColumns: IDataFilter[]) {

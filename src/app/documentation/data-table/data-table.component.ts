@@ -8,16 +8,15 @@ import {
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   ColumnDefinition,
-  FormControlOf,
-} from 'verben-ng-ui/src/lib/components/data-table/data-table.types';
-import { TableStyles } from 'verben-ng-ui/src/lib/components/data-table/style.types';
-import {
+  ColumnDirective,
   DataExportService,
-  SortCondition,
-  FilterCondition,
   DataExtendItem,
-} from 'verben-ng-ui/src/public-api';
-import { ColumnDirective, FormGroupConfig } from 'verben-ng-ui/src/public-api';
+  FilterCondition,
+  FormControlOf,
+  FormGroupConfig,
+  SortCondition,
+  TableStyles,
+} from 'verben-ng-ui';
 import { read, utils, writeFile } from 'xlsx';
 import { OperationAccount } from './sample-models';
 

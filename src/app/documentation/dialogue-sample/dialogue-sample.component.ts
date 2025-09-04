@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { DataFilterType, IDataFilter } from 'verben-ng-ui/src/public-api';
+import { DataFilterType, IDataFilter } from 'verben-ng-ui';
 
 @Component({
   selector: 'app-dialogue-sample',
   templateUrl: './dialogue-sample.component.html',
-  styleUrl: './dialogue-sample.component.scss'
+  styleUrl: './dialogue-sample.component.scss',
 })
 export class DialogueSampleComponent {
   isModalVisible: boolean = false;

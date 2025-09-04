@@ -1,10 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Model } from '../../views/card-data-view/cdv.component';
-import {
-  CardData,
-  DataFilterType,
-  IDataFilter,
-} from 'verben-ng-ui/src/public-api';
+import { CardData, DataFilterType, IDataFilter } from 'verben-ng-ui';
 
 @Component({
   selector: 'app-data-view',
@@ -22,15 +18,14 @@ export class DataViewComponent {
   showColumn: boolean = false;
   showSort: boolean = false;
   showExport: boolean = false;
-  selectedAll:boolean=false
-  searchValue:string=''
+  selectedAll: boolean = false;
+  searchValue: string = '';
   columns: IDataFilter[] = [
     { checked: false, name: 'Column 1', type: DataFilterType.Bool },
     { checked: false, name: 'Column 2', type: DataFilterType.Bool },
     { checked: false, name: 'Column 3', type: DataFilterType.Bool },
     { checked: false, name: 'Column 4', type: DataFilterType.Bool },
     { checked: false, name: 'Column 5', type: DataFilterType.Bool },
-
   ];
   filterArray: IDataFilter[] = [
     {
@@ -59,10 +54,10 @@ export class DataViewComponent {
       checked: false,
     },
   ];
-  currentChildData!:CardData
+  currentChildData!: CardData;
   cardData: CardData[] = [
     {
-      children:[],
+      children: [],
       selected: true,
       title: 'Title1',
       data: { name: 'Ade', mailAddress: 'ademail@yahoo.com' } as Model,
@@ -73,7 +68,7 @@ export class DataViewComponent {
       ],
     },
     {
-      children:[],
+      children: [],
       selected: false,
       title: 'Title2',
       data: { name: 'wale', mailAddress: 'walemail@yahoo.com' } as Model,
@@ -84,7 +79,7 @@ export class DataViewComponent {
       ],
     },
     {
-      children:[],
+      children: [],
       data: { name: 'kunle', mailAddress: 'kunlemail@yahoo.com' } as Model,
       selected: false,
       title: 'Title3',
@@ -121,21 +116,19 @@ export class DataViewComponent {
   loadMore() {
     this.cardData = this.cardData.concat(this.cardData);
   }
-  onColumnChange(event:any) {
-  console.log(event);
-  
+  onColumnChange(event: any) {
+    console.log(event);
   }
   onSortChange(event: boolean) {
     this.showSort = event;
     console.log(event);
-    
   }
   onColumnsUpdated(updatedColumns: IDataFilter[]) {
-    this.showColumn=false
+    this.showColumn = false;
     this.selectedColumnCount = updatedColumns.length;
   }
   onSortUpdated(updatedSorts: IDataFilter[]) {
-    this.showSort=false
+    this.showSort = false;
     this.selectedSortCount = updatedSorts.length;
     console.log(updatedSorts);
   }
@@ -143,24 +136,22 @@ export class DataViewComponent {
   onViewChange(isGridView: boolean): void {
     console.log('View changed to:', isGridView ? 'Grid View' : 'List View');
   }
-onSearch(event:{key:string; value:string}){
-this.searchValue=event.value
- 
-}
+  onSearch(event: { key: string; value: string }) {
+    this.searchValue = event.value;
+  }
   onStateChange(event: { key: string; value: boolean }): void {
-      switch (event.key) {
-        case 'column':
-          this.showColumn=event.value
-          break;
-          case 'sort':
-            this.showSort=event.value
-            break;
-            case 'export':
-              this.showExport=event.value
-              break;
-        default:
-          break;
-      }
-
+    switch (event.key) {
+      case 'column':
+        this.showColumn = event.value;
+        break;
+      case 'sort':
+        this.showSort = event.value;
+        break;
+      case 'export':
+        this.showExport = event.value;
+        break;
+      default:
+        break;
+    }
   }
 }

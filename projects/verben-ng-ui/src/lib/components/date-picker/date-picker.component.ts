@@ -1,12 +1,20 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
 import { DropdownChangeEvent } from 'verben-ng-ui/src/lib/components/drop-down';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-date-picker',
   templateUrl: './date-picker.component.html',
   styleUrls: ['./date-picker.component.css'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DatePickerComponent),
+      multi: true,
+    },
+  ],
 })
-export class DatePickerComponent {
+export class DatePickerComponent implements ControlValueAccessor {
   @Input() placeholder = 'Select date';
   @Input() format = 'MM/DD/YYYY';
   @Input() minDate?: Date;
@@ -18,7 +26,8 @@ export class DatePickerComponent {
   @Input() yearPlaceholder: string = 'Select a year';
   @Input() monthPlaceholder: string = 'Select a month';
   @Input() date: Date | null | string = null; // Two-way binding support
-  @Output() dateChange = new EventEmitter<Date>(); // Emit date changes
+  @Output() dateChange = new EventEmitter<Date>();
+
   yearRange: number[] = [];
   filteredYearRange: number[] = [];
   selectedDate: Date = new Date();
@@ -27,23 +36,40 @@ export class DatePickerComponent {
 
   weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December',
   ];
 
   selectedMonth: number = 1;
   selectedMonthString: string = '';
   selectedYear: number = new Date().getFullYear();
+
+  // ControlValueAccessor bindings
+  private onChange: any = () => {};
+  private onTouched: any = () => {};
+
+  writeValue(value: Date | string | null): void {
+    if (value) {
+      this.date = value;
+      const parsedDate = typeof value === 'string' ? new Date(value) : value;
+      this.selectedDate = new Date(parsedDate);
+      this.tempSelectedDate = new Date(parsedDate);
+      this.selectedMonth = this.selectedDate.getMonth();
+      this.selectedYear = this.selectedDate.getFullYear();
+    }
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
 
   ngOnChanges() {
     if (this.date) {
@@ -55,6 +81,7 @@ export class DatePickerComponent {
       this.selectedYear = this.selectedDate.getFullYear();
     }
   }
+
   ngOnInit() {
     const currentYear = new Date().getFullYear();
     const endYear = currentYear + 10;
@@ -64,6 +91,7 @@ export class DatePickerComponent {
     );
     this.yearRange.sort((a, b) => b - a);
   }
+
   get displayDate(): string {
     const parsedDate =
       typeof this.date === 'string' ? new Date(this.date) : this.date;
@@ -124,12 +152,9 @@ export class DatePickerComponent {
     }
 
     const totalDays = new Date(year, month + 1, 0).getDate();
-
-    // Add the actual days of the month
     for (let i = 1; i <= totalDays; i++) {
       days.push(new Date(year, month, i));
     }
-
     return days;
   }
 
@@ -162,7 +187,13 @@ export class DatePickerComponent {
   confirm() {
     this.tempSelectedDate.setHours(12, 0, 0, 0);
     this.selectedDate = new Date(this.tempSelectedDate);
+    this.date = this.selectedDate;
+
+    // emit both ways
     this.dateChange.emit(this.selectedDate);
+    this.onChange(this.selectedDate);
+    this.onTouched();
+
     this.showCalendar = false;
   }
 

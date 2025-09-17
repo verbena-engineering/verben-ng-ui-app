@@ -1,2 +1,3 @@
-<app-date-picker (dateChange)="onDateChange($event)" [(date)]="selectedDate" ></app-date-picker>
+<app-date-picker (ngModelChange)="onDateChange($event)" [(ngModel)]="selectedDate"></app-date-picker>
+{{selectedDate}}
 <app-date-picker (dateChange)="onDateChange($event)" [(date)]="endDate" ></app-date-picker>

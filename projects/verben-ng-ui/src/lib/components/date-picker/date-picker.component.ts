@@ -158,16 +158,25 @@ export class DatePickerComponent implements ControlValueAccessor {
     return days;
   }
 
-  isDisabled(day: Date): boolean {
-    if (this.minDate && day < this.stripTime(this.minDate)) return true;
-    if (this.maxDate && day > this.stripTime(this.maxDate)) return true;
-    return false;
-  }
+isDisabled(day: Date | string): boolean {
+  const dayDate = this.toDate(day);
 
+  if (this.minDate && dayDate < this.stripTime(this.toDate(this.minDate))) return true;
+  if (this.maxDate && dayDate > this.stripTime(this.toDate(this.maxDate))) return true;
 
-  private stripTime(date: Date): Date {
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  }
+  return false;
+}
+
+private stripTime(date: Date | string): Date {
+  const d = this.toDate(date);
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+private toDate(value: Date | string): Date {
+  if (value instanceof Date) return value;
+  return new Date(value);
+}
+
 
   selectTemporaryDate(day: Date) {
     if (this.isDisabled(day)) return;

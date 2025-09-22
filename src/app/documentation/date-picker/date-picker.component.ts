@@ -11,8 +11,10 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 export class SampleDatePickerComponent {
  selectedDate:Date=new Date()
  endDate:Date=new Date()
+  minDate: Date = new Date(2025, 8, 1);  
+  maxDate: Date = new Date(Date.now()); 
  onDateChange(date:Date){
-  
+  console.log('cool');
   
   
  }

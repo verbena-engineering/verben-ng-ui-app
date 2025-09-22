@@ -70,5 +70,9 @@
   }
   .calendar-footer button{
     color: #000;
-  }
+  }.disabled-day {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
  

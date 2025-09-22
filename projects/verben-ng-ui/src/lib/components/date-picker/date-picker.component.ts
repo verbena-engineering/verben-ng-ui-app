@@ -25,7 +25,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   @Input() useDropdowns: boolean = true;
   @Input() yearPlaceholder: string = 'Select a year';
   @Input() monthPlaceholder: string = 'Select a month';
-  @Input() date: Date | null | string = null; // Two-way binding support
+  @Input() date: Date | null | string = null;
   @Output() dateChange = new EventEmitter<Date>();
 
   yearRange: number[] = [];
@@ -44,7 +44,6 @@ export class DatePickerComponent implements ControlValueAccessor {
   selectedMonthString: string = '';
   selectedYear: number = new Date().getFullYear();
 
-  // ControlValueAccessor bindings
   private onChange: any = () => {};
   private onTouched: any = () => {};
 
@@ -153,12 +152,25 @@ export class DatePickerComponent implements ControlValueAccessor {
 
     const totalDays = new Date(year, month + 1, 0).getDate();
     for (let i = 1; i <= totalDays; i++) {
-      days.push(new Date(year, month, i));
+      const day = new Date(year, month, i);
+      days.push(day);
     }
     return days;
   }
 
+  isDisabled(day: Date): boolean {
+    if (this.minDate && day < this.stripTime(this.minDate)) return true;
+    if (this.maxDate && day > this.stripTime(this.maxDate)) return true;
+    return false;
+  }
+
+
+  private stripTime(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
   selectTemporaryDate(day: Date) {
+    if (this.isDisabled(day)) return;
     this.tempSelectedDate = day;
   }
 
@@ -185,11 +197,12 @@ export class DatePickerComponent implements ControlValueAccessor {
   }
 
   confirm() {
+    if (this.isDisabled(this.tempSelectedDate)) return;
+
     this.tempSelectedDate.setHours(12, 0, 0, 0);
     this.selectedDate = new Date(this.tempSelectedDate);
     this.date = this.selectedDate;
 
-    // emit both ways
     this.dateChange.emit(this.selectedDate);
     this.onChange(this.selectedDate);
     this.onTouched();

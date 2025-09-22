@@ -1,3 +1,9 @@
-<app-date-picker (ngModelChange)="onDateChange($event)" [(ngModel)]="selectedDate"></app-date-picker>
-{{selectedDate}}
-<app-date-picker (dateChange)="onDateChange($event)" [(date)]="endDate" ></app-date-picker>
+<app-date-picker
+  [(ngModel)]="selectedDate"
+  (ngModelChange)="onDateChange($event)"
+  [minDate]="minDate"
+  [maxDate]="maxDate"
+  placeholder="Pick a date"
+></app-date-picker>
+
+<p>Chosen Date: {{ selectedDate | date:'fullDate' }}</p>

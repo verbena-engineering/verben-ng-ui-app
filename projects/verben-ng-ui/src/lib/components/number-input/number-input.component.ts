@@ -3,12 +3,9 @@ import {
   Input,
   Output,
   EventEmitter,
-  forwardRef
+  forwardRef,
 } from '@angular/core';
-import {
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR
-} from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 const NUMBER_INPUT_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -51,7 +48,7 @@ export class NumberInputComponent implements ControlValueAccessor {
   }
 
   decrease() {
-    if (this.disabled) return; 
+    if (this.disabled) return;
     if (this.min === undefined || this.value - this.step >= this.min) {
       this.value -= this.step;
       this.validateValue();
@@ -61,12 +58,24 @@ export class NumberInputComponent implements ControlValueAccessor {
   }
 
   onInput(event: Event) {
-    if (this.disabled) return; 
-    const inputValue = (event.target as HTMLInputElement).value;
-    let newValue = Number(inputValue);
+    if (this.disabled) return;
+
+    const input = event.target as HTMLInputElement;
+    let newValue = Number(input.value);
+
+    // Clamp immediately
+    if (this.max !== undefined && newValue > this.max) {
+      newValue = this.max;
+      input.value = String(this.max); // visually correct it
+    } else if (this.min !== undefined && newValue < this.min) {
+      newValue = this.min;
+      input.value = String(this.min);
+    }
+
+    // Assign & emit after correction
     this.value = newValue;
-    this.validateValue();
-    this.notifyValueChange();
+    this.errorMessage = ''; // clear existing errors since input is valid now
+    this.notifyValueChange(); // your method that emits this.valueChange
   }
 
   validateValue() {

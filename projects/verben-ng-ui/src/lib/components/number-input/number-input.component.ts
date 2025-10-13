@@ -29,6 +29,7 @@ export class NumberInputComponent implements ControlValueAccessor {
   @Input() disabled: boolean = false; // ✅ New input
 
   @Output() valueChange = new EventEmitter<number>();
+  @Output() keyUp = new EventEmitter<{ event: KeyboardEvent; value: number }>();
 
   private onChange = (value: number) => {};
   private onTouched = () => {};
@@ -55,6 +56,12 @@ export class NumberInputComponent implements ControlValueAccessor {
       this.valueChange.emit(this.value);
       this.notifyValueChange();
     }
+  }
+
+  onKeyUp(event: KeyboardEvent) {
+    const input = event.target as HTMLInputElement;
+    const currentValue = Number(input.value);
+    this.keyUp.emit({ event, value: currentValue });
   }
 
   onInput(event: Event) {

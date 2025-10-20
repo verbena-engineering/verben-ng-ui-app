@@ -17,7 +17,6 @@
   display: grid;
   grid-template-columns: 100%;
   justify-content: center;
-
 }
 
 .paginator-text {
@@ -40,7 +39,21 @@
   padding: 15px 20px 20px 20px;
 }
 
-::ng-deep .master-detail-container>div>verben-left-card-data-view>verben-left-card-data {
+::ng-deep
+  .master-detail-container
+  > div
+  > verben-left-card-data-view
+  > verben-left-card-data {
+  display: flex !important;
+  flex-direction: column;
+}
+
+::ng-deep
+  .master-detail-container
+  > div
+  .cdk-virtual-scroll-content-wrapper
+  > verben-left-card-data-view
+  > verben-left-card-data {
   display: flex !important;
   flex-direction: column;
 }

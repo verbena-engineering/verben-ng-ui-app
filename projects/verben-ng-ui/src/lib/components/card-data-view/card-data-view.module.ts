@@ -7,7 +7,7 @@ import { RightCardDataViewComponent } from './right-card-data-view/right-card-da
 import { CardDataViewFooterComponent } from './card-data-view-footer/card-data-view-footer.component';
 import { CardDataViewHeaderComponent } from './card-data-view-header/card-data-view-header.component';
 import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
 @NgModule({
   declarations: [
     CardDataViewComponent,
@@ -17,7 +17,7 @@ import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
     CardDataViewFooterComponent,
     CardDataViewHeaderComponent,
   ],
-  imports: [CommonModule, SvgModule],
+  imports: [CommonModule, SvgModule, ScrollingModule],
   exports: [
     CardDataViewComponent,
     LeftCardDataComponent,

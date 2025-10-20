@@ -17,7 +17,17 @@
     >
       <!-- Card section -->
       <ng-container ngProjectAs="verben-left-card-data-view">
+        @if (useVirtualScroll) {
+        <cdk-virtual-scroll-viewport
+          [itemSize]="virtualScrollItemSize"
+          class="virtual-scroll-viewport"
+          [style.height.px]="virtualScrollItemSize * 50"
+        >
+          <ng-content select="verben-left-card-data-view"></ng-content>
+        </cdk-virtual-scroll-viewport>
+        } @else {
         <ng-content select="verben-left-card-data-view"></ng-content>
+        }
       </ng-container>
 
       <!-- Footer-->

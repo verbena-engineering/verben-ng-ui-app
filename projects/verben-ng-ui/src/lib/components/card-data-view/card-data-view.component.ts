@@ -44,6 +44,8 @@ export class CardDataViewComponent {
   @Input() footer: boolean = false;
   @Input() noOfVisibleChildren: number = 3;
   @Input() showEditIcon: boolean = false;
+  @Input() useVirtualScroll: boolean = false;
+  @Input() virtualScrollItemSize: number = 48;
   @Output() editClicked: EventEmitter<void> = new EventEmitter();
   @ContentChild(RightCardDataViewComponent)
   rightContent!: RightCardDataViewComponent;

@@ -38,3 +38,9 @@ box-sizing: border-box;
 .false-padding {
   padding-left: calc(100% - 85%);
 }
+
+::ng-deep .childrenPadding .cdk-virtual-scroll-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

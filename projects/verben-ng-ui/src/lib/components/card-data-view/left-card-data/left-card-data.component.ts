@@ -18,6 +18,8 @@ export class LeftCardDataComponent {
   @Input() iconCollapse: string = 'plus';
   @Input() iconExpanded: string = 'minus';
   @Input() parent!: CardDataViewComponent;
+  @Input() useVirtualScroll: boolean = false;
+  @Input() virtualScrollItemSize: number = 5;
   @ContentChild('card') card!: TemplateRef<any>;
   @ContentChild('cardChild') cardChild!: TemplateRef<any>;
   @ContentChild('cardFooter') cardFooter!: TemplateRef<any>;

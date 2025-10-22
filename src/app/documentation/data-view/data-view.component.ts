@@ -157,11 +157,30 @@ export class DataViewComponent implements OnInit {
 
   dataSize: number = 2000;
 
+  getChildren(): CardData[] {
+    var result: CardData[] = [];
+    for (let i = 0; i < this.dataSize; i++) {
+      result.push({
+        children: [],
+        selected: false,
+        title: 'Title1',
+        data: { name: 'Ade', mailAddress: `ademail@yahoo.com${i}` } as Model,
+        body: [
+          { title: 'Code', value: 'code1' },
+          { title: 'Name', value: 'name1' },
+          { title: 'Description', value: 'description1' },
+        ],
+      });
+    }
+    return result;
+  }
+
   ngOnInit(): void {
     for (let i = 0; i < this.dataSize; i++) {
       this.cardData.push({
-        children: [],
-        selected: true,
+        children: this.getChildren(),
+        selected: false,
+        isChildrenExpanded: i == 0,
         title: 'Title1',
         data: { name: 'Ade', mailAddress: `ademail@yahoo.com${i}` } as Model,
         body: [

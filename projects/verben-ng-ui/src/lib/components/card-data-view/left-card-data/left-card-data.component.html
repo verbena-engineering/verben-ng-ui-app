@@ -5,17 +5,30 @@
       *ngTemplateOutlet="card; context: { $implicit: item }"
     ></ng-content>
     <!-- children -->
-    <div
-      class="childrenPadding flex-col flex"
-      *ngIf="item.children.length > 0 && item.isChildrenExpanded"
-    >
+    <ng-template #childrenList>
       @for (child of item.children; track $index) {
-      <ng-content
+      <ng-container
         *ngTemplateOutlet="
           cardChild;
           context: { index: $index, $implicit: child }
         "
-      ></ng-content>
+      ></ng-container>
+      }
+    </ng-template>
+    <div
+      class="childrenPadding flex-col flex"
+      *ngIf="item.children.length > 0 && item.isChildrenExpanded"
+    >
+      @if (useVirtualScroll) {
+      <cdk-virtual-scroll-viewport
+        [itemSize]="virtualScrollItemSize"
+        class="virtual-scroll-viewport"
+        [style.height.px]="virtualScrollItemSize * 50"
+      >
+        <ng-container *ngTemplateOutlet="childrenList"></ng-container>
+      </cdk-virtual-scroll-viewport>
+      } @else {
+      <ng-container *ngTemplateOutlet="childrenList"></ng-container>
       }
     </div>
     <div *ngIf="item.isChildrenExpanded" class="false-padding">

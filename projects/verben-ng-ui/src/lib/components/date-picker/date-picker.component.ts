@@ -26,6 +26,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   @Input() yearPlaceholder: string = 'Select a year';
   @Input() monthPlaceholder: string = 'Select a month';
   @Input() date: Date | null | string = null;
+@Input() showTime: boolean = false;
   @Output() dateChange = new EventEmitter<Date>();
 
   yearRange: number[] = [];
@@ -97,13 +98,52 @@ export class DatePickerComponent implements ControlValueAccessor {
     return parsedDate ? this.formatDate(parsedDate, this.format) : '';
   }
 
-  toggleCalendar() {
-    this.showCalendar = !this.showCalendar;
-    this.tempSelectedDate = new Date(this.date || new Date());
-    this.selectedMonth = this.tempSelectedDate.getMonth();
-    this.selectedMonthString = this.months[this.selectedMonth];
-    this.selectedYear = this.tempSelectedDate.getFullYear();
+tempTime: string = '';
+
+toggleCalendar() {
+  this.showCalendar = !this.showCalendar;
+  this.tempSelectedDate = new Date(this.date || new Date());
+  this.selectedMonth = this.tempSelectedDate.getMonth();
+  this.selectedMonthString = this.months[this.selectedMonth];
+  this.selectedYear = this.tempSelectedDate.getFullYear();
+
+  if (this.showTime) {
+    const today = new Date();
+    const isToday =
+      this.tempSelectedDate.getFullYear() === today.getFullYear() &&
+      this.tempSelectedDate.getMonth() === today.getMonth() &&
+      this.tempSelectedDate.getDate() === today.getDate();
+
+    const hours = isToday ? today.getHours() : 0;
+    const minutes = isToday ? today.getMinutes() : 0;
+    this.tempTime = `${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}`;
   }
+}
+
+
+confirm() {
+  if (this.isDisabled(this.tempSelectedDate)) return;
+
+  if (this.showTime && this.tempTime) {
+    const [hours, minutes] = this.tempTime.split(':').map(Number);
+    this.tempSelectedDate.setHours(hours, minutes, 0, 0);
+  } else {
+    this.tempSelectedDate.setHours(0, 0, 0, 0);
+  }
+
+  this.selectedDate = new Date(this.tempSelectedDate);
+  this.date = this.selectedDate;
+
+  this.dateChange.emit(this.selectedDate);
+  this.onChange(this.selectedDate);
+  this.onTouched();
+
+  this.showCalendar = false;
+}
+
+
 
   previousMonth() {
     this.selectedMonth--;
@@ -177,11 +217,24 @@ private toDate(value: Date | string): Date {
   return new Date(value);
 }
 
+selectTemporaryDate(day: Date) {
+  if (this.isDisabled(day)) return;
 
-  selectTemporaryDate(day: Date) {
-    if (this.isDisabled(day)) return;
-    this.tempSelectedDate = day;
-  }
+  this.tempSelectedDate = new Date(day);
+
+  const today = new Date();
+  const isToday =
+    day.getFullYear() === today.getFullYear() &&
+    day.getMonth() === today.getMonth() &&
+    day.getDate() === today.getDate();
+
+  const hours = isToday ? today.getHours() : 0;
+  const minutes = isToday ? today.getMinutes() : 0;
+  this.tempTime = `${hours.toString().padStart(2, '0')}:${minutes
+    .toString()
+    .padStart(2, '0')}`;
+}
+
 
   isSelected(day: Date): boolean {
     return (
@@ -205,19 +258,7 @@ private toDate(value: Date | string): Date {
     }
   }
 
-  confirm() {
-    if (this.isDisabled(this.tempSelectedDate)) return;
 
-    this.tempSelectedDate.setHours(12, 0, 0, 0);
-    this.selectedDate = new Date(this.tempSelectedDate);
-    this.date = this.selectedDate;
-
-    this.dateChange.emit(this.selectedDate);
-    this.onChange(this.selectedDate);
-    this.onTouched();
-
-    this.showCalendar = false;
-  }
 
   cancel() {
     this.showCalendar = false;

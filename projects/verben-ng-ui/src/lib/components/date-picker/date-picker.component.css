@@ -75,4 +75,20 @@
   cursor: not-allowed;
 }
 
- 
+ .time-picker {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.time-picker input {
+  width: 100px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px;
+    background-color: transparent;
+    cursor: pointer;
+    color: rgb(60, 59, 59);
+    outline: none;
+    
+}

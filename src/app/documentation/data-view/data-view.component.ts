@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Model } from '../../views/card-data-view/cdv.component';
 import { CardData, DataFilterType, IDataFilter } from 'verben-ng-ui';
 
@@ -8,7 +8,7 @@ import { CardData, DataFilterType, IDataFilter } from 'verben-ng-ui';
   styleUrl: './data-view.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DataViewComponent {
+export class DataViewComponent implements OnInit {
   isGridView: boolean = true;
   currentData!: CardData;
   selectedColumnCount: number = 0;
@@ -56,39 +56,39 @@ export class DataViewComponent {
   ];
   currentChildData!: CardData;
   cardData: CardData[] = [
-    {
-      children: [],
-      selected: true,
-      title: 'Title1',
-      data: { name: 'Ade', mailAddress: 'ademail@yahoo.com' } as Model,
-      body: [
-        { title: 'Code', value: 'code1' },
-        { title: 'Name', value: 'name1' },
-        { title: 'Description', value: 'description1' },
-      ],
-    },
-    {
-      children: [],
-      selected: false,
-      title: 'Title2',
-      data: { name: 'wale', mailAddress: 'walemail@yahoo.com' } as Model,
-      body: [
-        { title: 'Code', value: 'code2' },
-        { title: 'Name', value: 'name2' },
-        { title: 'Description', value: 'description2' },
-      ],
-    },
-    {
-      children: [],
-      data: { name: 'kunle', mailAddress: 'kunlemail@yahoo.com' } as Model,
-      selected: false,
-      title: 'Title3',
-      body: [
-        { title: 'Code', value: 'code3' },
-        { title: 'Name', value: 'name3' },
-        { title: 'Description', value: 'description3' },
-      ],
-    },
+    // {
+    //   children: [],
+    //   selected: true,
+    //   title: 'Title1',
+    //   data: { name: 'Ade', mailAddress: 'ademail@yahoo.com' } as Model,
+    //   body: [
+    //     { title: 'Code', value: 'code1' },
+    //     { title: 'Name', value: 'name1' },
+    //     { title: 'Description', value: 'description1' },
+    //   ],
+    // },
+    // {
+    //   children: [],
+    //   selected: false,
+    //   title: 'Title2',
+    //   data: { name: 'wale', mailAddress: 'walemail@yahoo.com' } as Model,
+    //   body: [
+    //     { title: 'Code', value: 'code2' },
+    //     { title: 'Name', value: 'name2' },
+    //     { title: 'Description', value: 'description2' },
+    //   ],
+    // },
+    // {
+    //   children: [],
+    //   data: { name: 'kunle', mailAddress: 'kunlemail@yahoo.com' } as Model,
+    //   selected: false,
+    //   title: 'Title3',
+    //   body: [
+    //     { title: 'Code', value: 'code3' },
+    //     { title: 'Name', value: 'name3' },
+    //     { title: 'Description', value: 'description3' },
+    //   ],
+    // },
   ];
   sortOptions: IDataFilter[] = [
     {
@@ -152,6 +152,43 @@ export class DataViewComponent {
         break;
       default:
         break;
+    }
+  }
+
+  dataSize: number = 2000;
+
+  getChildren(): CardData[] {
+    var result: CardData[] = [];
+    for (let i = 0; i < this.dataSize; i++) {
+      result.push({
+        children: [],
+        selected: false,
+        title: 'Title1',
+        data: { name: 'Ade', mailAddress: `ademail@yahoo.com${i}` } as Model,
+        body: [
+          { title: 'Code', value: 'code1' },
+          { title: 'Name', value: 'name1' },
+          { title: 'Description', value: 'description1' },
+        ],
+      });
+    }
+    return result;
+  }
+
+  ngOnInit(): void {
+    for (let i = 0; i < this.dataSize; i++) {
+      this.cardData.push({
+        children: this.getChildren(),
+        selected: false,
+        isChildrenExpanded: i == 0,
+        title: 'Title1',
+        data: { name: 'Ade', mailAddress: `ademail@yahoo.com${i}` } as Model,
+        body: [
+          { title: 'Code', value: 'code1' },
+          { title: 'Name', value: 'name1' },
+          { title: 'Description', value: 'description1' },
+        ],
+      });
     }
   }
 }

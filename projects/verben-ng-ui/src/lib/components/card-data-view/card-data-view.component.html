@@ -16,9 +16,22 @@
       class="flex-col"
     >
       <!-- Card section -->
-      <ng-container ngProjectAs="verben-left-card-data-view">
+      <ng-template #content>
         <ng-content select="verben-left-card-data-view"></ng-content>
-      </ng-container>
+      </ng-template>
+
+      <cdk-virtual-scroll-viewport
+        *ngIf="useVirtualScroll; else normalView"
+        [itemSize]="virtualScrollItemSize"
+        class="virtual-scroll-viewport"
+        [style.height.px]="virtualScrollItemSize * 50"
+      >
+        <ng-container *ngTemplateOutlet="content"></ng-container>
+      </cdk-virtual-scroll-viewport>
+
+      <ng-template #normalView>
+        <ng-container *ngTemplateOutlet="content"></ng-container>
+      </ng-template>
 
       <!-- Footer-->
       <ng-container ngProjectAs="verben-card-data-view-footer">

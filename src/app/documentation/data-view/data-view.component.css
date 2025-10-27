@@ -1,0 +1,4 @@
+::ng-deep verben-left-card-data {
+  height: calc(100vh - 178px);
+  overflow-y: auto;
+}

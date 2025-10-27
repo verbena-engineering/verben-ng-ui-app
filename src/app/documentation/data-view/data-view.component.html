@@ -18,8 +18,6 @@
   [showColumnChild]="showColumn"
   [showSortChild]="showSort"
   [showExportChild]="showExport"
-  [isTableView]="true"
-  
   (onSearchChange)="onSearch($event)"
   [selectedColumnCount]="selectedColumnCount"
   [selectedSortCount]="selectedSortCount"
@@ -38,40 +36,89 @@
       dataId="mailAddress"
       [border]="'5px'"
       pd="5px 10px"
+      [useVirtualScroll]="true"
       [showEditIcon]="true"
       [cardDataList]="cardData"
       mg="20px"
     >
-      <ng-template #card let-item card-body>
-        <div
-          (click)="currentData = vdcv.onItemClick(item)"
-          class="flex cursor-pointer bg-secondary rounded-xl my-2"
+      <verben-left-card-data-view class="space-y-7">
+        <verben-left-card-data
+          #vlcd
+          [parent]="vdcv"
+          dataId="Id"
+          class="bg-secondary-100 rounded-xl border-primary border-[1px]"
+          [cardDataList]="cardData"
+          [useVirtualScroll]="true"
         >
-          <div
-            class="w-3 rounded-xl rounded-tr-none rounded-br-none"
-            [ngClass]="item.selected ? 'bg-primary' : 'bg-secondary-200'"
-          ></div>
-          <div class="flex flex-col py-2 px-4 w-full">
-            <div class="flex">
-              <span class="font-normal text-sm">{{ item.title }}</span>
-              <!-- <verben-svg class="ml-auto" icon="close" [width]="20" [height]="20" color="black"></verben-svg>  -->
+          <ng-template #card let-item>
+            <div
+              (click)="currentData = vdcv.onItemClick(item)"
+              class="flex cursor-pointer bg-secondary rounded-xl my-2"
+            >
+              <div
+                class="w-3 rounded-xl rounded-tr-none rounded-br-none"
+                [ngClass]="item.selected ? 'bg-primary' : 'bg-secondary-200'"
+              ></div>
+              <div class="flex flex-col py-2 px-4 w-full">
+                <div class="flex">
+                  <span class="font-normal text-sm">{{ item.title }}</span>
+                  <!-- <verben-svg class="ml-auto" icon="close" [width]="20" [height]="20" color="black"></verben-svg>  -->
+                </div>
+                @for (ciItem of item.body; track ciItem.value) {
+                <div class="gap-2">
+                  <span class="text-muted font-light text-xs"
+                    >{{ ciItem.title }}:</span
+                  >
+                  <span class="text-black">{{ ciItem.value }}</span>
+                </div>
+                }
+              </div>
             </div>
-            @for (ciItem of item.body; track ciItem.value) {
-            <div class="gap-2">
-              <span class="text-muted font-light text-xs"
-                >{{ ciItem.title }}:</span
-              >
-              <span class="text-black">{{ ciItem.value }}</span>
+          </ng-template>
+          <ng-template #cardChild let-item let-index="index">
+            <div
+              (click)="currentData = vdcv.onItemClick(item)"
+              class="flex cursor-pointer bg-secondary rounded-xl my-2"
+            >
+              <div
+                class="w-3 rounded-xl rounded-tr-none rounded-br-none"
+                [ngClass]="item.selected ? 'bg-primary' : 'bg-secondary-200'"
+              ></div>
+              <div class="flex flex-col py-2 px-4 w-full">
+                <div class="flex">
+                  <span class="font-normal text-sm">{{ item.title }}</span>
+                  <!-- <verben-svg class="ml-auto" icon="close" [width]="20" [height]="20" color="black"></verben-svg>  -->
+                </div>
+                @for (ciItem of item.body; track ciItem.value) {
+                <div class="gap-2">
+                  <span class="text-muted font-light text-xs"
+                    >{{ ciItem.title }}:</span
+                  >
+                  <span class="text-black">{{ ciItem.value }}</span>
+                </div>
+                }
+              </div>
             </div>
-            }
-          </div>
-        </div>
-      </ng-template>
+          </ng-template>
+          <ng-template #cardFooter let-item let-index="index">
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between gap-2">
+                <div></div>
+              </div>
+              <verbena-button
+                [width]="'100%'"
+                class="verben-primary-button"
+                text="Save All"
+              ></verbena-button>
+            </div>
+          </ng-template>
+        </verben-left-card-data>
+      </verben-left-card-data-view>
 
-      <ng-template #cardFooter>
+      <!-- <ng-template #cardFooter>
         <div>Test card footer</div>
-      </ng-template>
-      <div detail *ngIf="currentData && currentData.title">
+      </ng-template> -->
+      <!-- <div detail *ngIf="currentData && currentData.title">
         <form class="flex flex-col bg-secondary p-3 rounded-xl h-full w-full">
           <verben-svg
             (click)="clearData()"
@@ -108,7 +155,7 @@
             />
           </div>
         </form>
-      </div>
+      </div> -->
     </verben-card-data-view>
   </div>
   <div column-content>

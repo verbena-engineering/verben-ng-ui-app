@@ -1,14 +1,14 @@
 <div
   class="input-container {{ inputContainerClass }}"
   [ngStyle]="{
-    'display': 'flex',
+    display: 'flex',
     'flex-direction': 'column'
   }"
 >
   <div
     [ngStyle]="{
-      'width': '100%',
-      'display': 'flex',
+      width: '100%',
+      display: 'flex',
       'justify-content': 'space-between'
     }"
   >
@@ -19,10 +19,11 @@
     type="number"
     [value]="value"
     (input)="onInput($event)"
+    (keyup)="onKeyUp($event)"
     [min]="min"
     [max]="max"
     [step]="step"
-    [disabled]="disabled" 
+    [disabled]="disabled"
     (blur)="validateValue()"
     class="input-field verben-input {{ inputWrapperClass }}"
   />

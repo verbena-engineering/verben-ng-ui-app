@@ -1,5 +1,6 @@
 <div class="date-picker">
-  <input
+<div class="calendar-container">
+    <input
     type="text"
     [placeholder]="placeholder"
     [value]="displayDate"
@@ -8,9 +9,12 @@
     class="w-full block"
     [style.background-color]="bgColor"
     [style.border]="border"
+    
     [ngClass]="{'cursor-not-allowed':disabled===true, 'cursor-pointer':disabled===false}"
     readonly
-  />
+  /> 
+<verben-svg     (click)="!disabled && toggleCalendar()" class="icon" [icon]="'calendar'"></verben-svg>
+</div>
 
   <div *ngIf="showCalendar" [appOutSideClick]="showCalendar" (outSideClick)="showCalendar=false" class="calendar">
     <div class="calendar-header">
@@ -30,27 +34,72 @@
           (onChange)="onDropdownYearChange($event)"
           [options]="yearRange"
           [(ngModel)]="selectedYear"
+          [width]="'90px'"
         ></verben-drop-down>
 
         <verben-drop-down
           [placeholder]="monthPlaceholder"
           (onChange)="onDropdownMonthChange($event)"
           [options]="months"
+          class="drop-down"
           [(ngModel)]="selectedMonthString"
+            [width]="'90px'"
         ></verben-drop-down>
       </ng-template>
-      <div class="time-picker" *ngIf="showTime">
-    <input 
-      type="time"
-      [(ngModel)]="tempTime"
-      class="w-28 text-center"
-    />
+<div class="time-picker flex items-center gap-2" *ngIf="showTime">
+  <div class="relative">
+    <div class="flex items-center box rounded px-2 py-1 cursor-pointer"
+         (click)="toggleHourDropdown()">
+      {{ selectedHour }}
+    </div>
+
+    <div *ngIf="showHourOptions" class="dropdown">
+      <div
+        class="dropdown-item"
+        *ngFor="let h of hours"
+        [class.active]="h === selectedHour"
+        (click)="selectHour(h)"
+      >
+        {{ h }}
+      </div>
+    </div>
   </div>
+
+  <span>:</span>
+
+  <div class="relative">
+    <div class="flex items-center box rounded px-2 py-1 cursor-pointer"
+         (click)="toggleMinuteDropdown()">
+      {{ selectedMinute }}
+    </div>
+
+    <div *ngIf="showMinuteOptions" class="dropdown">
+      <div
+        class="dropdown-item"
+        *ngFor="let m of minutes"
+        [class.active]="m === selectedMinute"
+        (click)="selectMinute(m)"
+      >
+      {{m}}
+      </div>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    (click)="toggleAmPm()"
+    class="amPm"
+  >
+    {{ amPm }}
+  </button>
+</div>
+
+
     </div>
 
     <div class="calendar-body">
       <div class="weekdays">
-        <span *ngFor="let day of weekDays">{{ day }}</span>
+        <span  *ngFor="let day of weekDays">{{ day }}</span>
       </div>
       <div class="dates">
         <ng-container *ngFor="let day of getDaysInMonth()">

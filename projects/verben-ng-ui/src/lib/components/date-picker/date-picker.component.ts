@@ -252,6 +252,18 @@ confirm() {
 
 
 
+setToStartOfDay() {
+
+  this.selectedHour = this.is24Hour ? '00' : '12';
+  this.selectedMinute = '00';
+  this.amPm = 'AM';
+
+
+  this.tempSelectedDate.setHours(0, 0, 0, 0);
+  this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
+
+  this.selectedDate = new Date(this.tempSelectedDate);
+}
 
 
 

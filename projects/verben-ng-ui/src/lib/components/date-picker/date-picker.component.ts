@@ -93,15 +93,35 @@ isSameDate(d1: Date, d2: Date): boolean {
     d1.getDate() === d2.getDate()
   );
 }
-  ngOnInit() {
-    const currentYear = new Date().getFullYear();
-    const endYear = currentYear + 10;
-    this.yearRange = Array.from(
-      { length: endYear - 1960 + 1 },
-      (_, i) => 1960 + i
-    );
-    this.yearRange.sort((a, b) => b - a);
+ngOnInit() {
+  const currentYear = new Date().getFullYear();
+  const endYear = currentYear + 10;
+  this.yearRange = Array.from(
+    { length: endYear - 1960 + 1 },
+    (_, i) => 1960 + i
+  );
+  this.yearRange.sort((a, b) => b - a);
+
+  if (!this.date) {
+    const now = new Date();
+    this.tempSelectedDate = new Date(now);
+    this.selectedDate = new Date(now);
+    this.date = this.selectedDate;
+
+    if (this.showTime) {
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+
+      this.selectedHour = (!this.is24Hour && hours > 12 ? hours - 12 : hours)
+        .toString()
+        .padStart(2, "0");
+      this.selectedMinute = minutes.toString().padStart(2, "0");
+      this.amPm = !this.is24Hour && hours >= 12 ? "PM" : "AM";
+      this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
+    }
   }
+}
+
 
   get displayDate(): string {
     const parsedDate =

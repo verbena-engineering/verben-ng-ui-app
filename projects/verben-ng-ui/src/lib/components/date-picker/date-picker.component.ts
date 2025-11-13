@@ -104,8 +104,13 @@ ngOnInit() {
 
   if (!this.date) {
     const now = new Date();
-    this.tempSelectedDate = new Date(now);
-    this.selectedDate = new Date(now);
+    const pad = (n: number) => n.toString().padStart(2, '0');
+
+
+    const localDateString = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+    this.selectedDate = new Date(localDateString);
+    this.tempSelectedDate = new Date(localDateString);
     this.date = this.selectedDate;
 
     if (this.showTime) {
@@ -119,8 +124,13 @@ ngOnInit() {
       this.amPm = !this.is24Hour && hours >= 12 ? "PM" : "AM";
       this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
     }
+
+
+    this.dateChange.emit(this.selectedDate);
+    this.onChange(localDateString);
   }
 }
+
 
 
   get displayDate(): string {

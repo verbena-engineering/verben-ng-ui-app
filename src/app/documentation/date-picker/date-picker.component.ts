@@ -9,7 +9,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SampleDatePickerComponent {
- selectedDate: Date = new Date('2025-11-10T14:30:00'); 
+ selectedDate: Date = new Date(); 
  endDate:Date=new Date()
   minDate: Date = new Date(2025, 8, 1);  
   maxDate: Date = new Date(Date.now()); 

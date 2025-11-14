@@ -47,21 +47,26 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   private onChange: any = () => {};
   private onTouched: any = () => {};
+writeValue(value: Date | string | null): void {
+  if (value) {
+    if (typeof value === 'string') {
+      value = this.sanitizeDateString(value);
+    }
 
-  writeValue(value: Date | string | null): void {
-    if (value) {
-      this.date = value;
-      const parsedDate = typeof value === 'string' ? new Date(value) : value;
-      this.selectedDate = new Date(parsedDate);
-      this.tempSelectedDate = new Date(parsedDate);
-      this.selectedMonth = this.selectedDate.getMonth();
-      this.selectedYear = this.selectedDate.getFullYear();
+    const parsedDate = typeof value === 'string' ? new Date(value) : value;
+    this.date = parsedDate;
 
-      if (this.showTime) {
-        this.initTimeFromDate(this.selectedDate);
-      }
+    this.selectedDate = new Date(parsedDate);
+    this.tempSelectedDate = new Date(parsedDate);
+    this.selectedMonth = this.selectedDate.getMonth();
+    this.selectedYear = this.selectedDate.getFullYear();
+
+    if (this.showTime) {
+      this.initTimeFromDate(this.selectedDate);
     }
   }
+}
+
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -75,16 +80,21 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  ngOnChanges() {
-    if (this.date) {
-      const parsedDate =
-        typeof this.date === 'string' ? new Date(this.date) : this.date;
-      this.selectedDate = new Date(parsedDate);
-      this.tempSelectedDate = new Date(parsedDate);
-      this.selectedMonth = this.selectedDate.getMonth();
-      this.selectedYear = this.selectedDate.getFullYear();
-    }
+ngOnChanges() {
+  if (this.date) {
+    let d = this.date;
+    if (typeof d === 'string') d = this.sanitizeDateString(d);
+
+    const parsedDate = new Date(d);
+    this.selectedDate = new Date(parsedDate);
+    this.tempSelectedDate = new Date(parsedDate);
+    this.selectedMonth = this.selectedDate.getMonth();
+    this.selectedYear = this.selectedDate.getFullYear();
+  
+    
   }
+}
+
 
   isSameDate(d1: Date, d2: Date): boolean {
     return (
@@ -238,7 +248,7 @@ export class DatePickerComponent implements ControlValueAccessor {
       this.selectedDate.getSeconds()
     )}`;
 
-    console.log(localDateString);
+    
 
     this.dateChange.emit(this.selectedDate);
     this.onChange(localDateString);
@@ -318,6 +328,9 @@ setToEndOfDay() {
     }
     return days;
   }
+ sanitizeDateString(value: string): string {
+  return value?.endsWith('Z') ? value.slice(0, -1) : value;
+}
 
   isDisabled(day: Date | string): boolean {
     const dayDate = this.toDate(day);
@@ -335,10 +348,11 @@ setToEndOfDay() {
     return new Date(d.getFullYear(), d.getMonth(), d.getDate());
   }
 
-  private toDate(value: Date | string): Date {
-    if (value instanceof Date) return value;
-    return new Date(value);
-  }
+ toDate(value: Date | string): Date {
+  if (value instanceof Date) return value;
+  return new Date(this.sanitizeDateString(value));
+}
+
 
   is24Hour: boolean = true;
 

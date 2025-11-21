@@ -27,14 +27,21 @@ export class DatePickerComponent implements ControlValueAccessor {
   @Input() monthPlaceholder: string = 'Select a month';
   @Input() date: Date | null | string = null;
   @Input() showTime: boolean = false;
-  @Output() dateChange = new EventEmitter<Date>();
+
+  @Input() datePickerWidth: string = '400px';
+  @Input() useDefaultDate: boolean = false; 
+
+  @Output() dateChange = new EventEmitter<Date|null>();
 
   yearRange: number[] = [];
   filteredYearRange: number[] = [];
-  selectedDate: Date = new Date();
-  tempSelectedDate: Date = new Date();
+
+
+  selectedDate: Date | null = null;
+  tempSelectedDate: Date | null = null;
+
   showCalendar = false;
- @Input() datePickerWidth:string='400px'
+
   weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   months = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -47,26 +54,26 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   private onChange: any = () => {};
   private onTouched: any = () => {};
-writeValue(value: Date | string | null): void {
-  if (value) {
-    if (typeof value === 'string') {
-      value = this.sanitizeDateString(value);
-    }
 
-    const parsedDate = typeof value === 'string' ? new Date(value) : value;
-    this.date = parsedDate;
+  writeValue(value: Date | string | null): void {
+    if (value) {
+      if (typeof value === 'string') {
+        value = this.sanitizeDateString(value);
+      }
 
-    this.selectedDate = new Date(parsedDate);
-    this.tempSelectedDate = new Date(parsedDate);
-    this.selectedMonth = this.selectedDate.getMonth();
-    this.selectedYear = this.selectedDate.getFullYear();
+      const parsedDate = typeof value === 'string' ? new Date(value) : value;
+      this.date = parsedDate;
 
-    if (this.showTime) {
-      this.initTimeFromDate(this.selectedDate);
+      this.selectedDate = new Date(parsedDate);
+      this.tempSelectedDate = new Date(parsedDate);
+      this.selectedMonth = this.selectedDate.getMonth();
+      this.selectedYear = this.selectedDate.getFullYear();
+
+      if (this.showTime) {
+        this.initTimeFromDate(this.selectedDate);
+      }
     }
   }
-}
-
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -80,21 +87,18 @@ writeValue(value: Date | string | null): void {
     this.disabled = isDisabled;
   }
 
-ngOnChanges() {
-  if (this.date) {
-    let d = this.date;
-    if (typeof d === 'string') d = this.sanitizeDateString(d);
+  ngOnChanges() {
+    if (this.date) {
+      let d = this.date;
+      if (typeof d === 'string') d = this.sanitizeDateString(d);
 
-    const parsedDate = new Date(d);
-    this.selectedDate = new Date(parsedDate);
-    this.tempSelectedDate = new Date(parsedDate);
-    this.selectedMonth = this.selectedDate.getMonth();
-    this.selectedYear = this.selectedDate.getFullYear();
-  
-    
+      const parsedDate = new Date(d);
+      this.selectedDate = new Date(parsedDate);
+      this.tempSelectedDate = new Date(parsedDate);
+      this.selectedMonth = this.selectedDate.getMonth();
+      this.selectedYear = this.selectedDate.getFullYear();
+    }
   }
-}
-
 
   isSameDate(d1: Date, d2: Date): boolean {
     return (
@@ -113,7 +117,8 @@ ngOnChanges() {
     );
     this.yearRange.sort((a, b) => b - a);
 
-    if (!this.date) {
+  
+    if (!this.date && this.useDefaultDate) {
       const now = new Date();
       const pad = (n: number) => n.toString().padStart(2, '0');
 
@@ -180,19 +185,31 @@ ngOnChanges() {
   toggleCalendar() {
     this.showCalendar = !this.showCalendar;
 
-    this.tempSelectedDate = new Date(this.date || new Date());
-    this.selectedMonth = this.tempSelectedDate.getMonth();
-    this.selectedMonthString = this.months[this.selectedMonth];
-    this.selectedYear = this.tempSelectedDate.getFullYear();
+
+    if (this.date) {
+      this.tempSelectedDate = new Date(this.date);
+    } else {
+      this.tempSelectedDate = this.useDefaultDate ? new Date() : null;
+    }
+
+    if (this.tempSelectedDate) {
+      this.selectedMonth = this.tempSelectedDate.getMonth();
+      this.selectedMonthString = this.months[this.selectedMonth];
+      this.selectedYear = this.tempSelectedDate.getFullYear();
+    }
 
     if (this.showTime && !this.tempTime) {
       const today = new Date();
-      const isToday = this.isSameDate(this.tempSelectedDate, today);
+      const isToday =
+        this.tempSelectedDate &&
+        this.isSameDate(this.tempSelectedDate, today);
 
       const hours = isToday ? today.getHours() : 0;
       const minutes = isToday ? today.getMinutes() : 0;
 
-      this.tempSelectedDate.setHours(hours, minutes, 0, 0);
+      if (this.tempSelectedDate) {
+        this.tempSelectedDate.setHours(hours, minutes, 0, 0);
+      }
       this.selectedHour = hours.toString().padStart(2, '0');
       this.selectedMinute = minutes.toString().padStart(2, '0');
       this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
@@ -206,8 +223,26 @@ ngOnChanges() {
     this.selectedHour = hours.toString().padStart(2, '0');
     this.selectedMinute = minutes.toString().padStart(2, '0');
     this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
-    this.tempSelectedDate.setHours(hours, minutes, 0, 0);
+    this.tempSelectedDate?.setHours(hours, minutes, 0, 0);
   }
+clearDate() {
+  this.date = null;
+  this.selectedDate = null;
+  this.tempSelectedDate = null;
+  this.tempTime = '';
+  this.selectedHour = '00';
+  this.selectedMinute = '00';
+
+
+  this.dateChange.emit(null);
+
+ 
+  this.onChange(null);
+  this.onTouched();
+
+
+  this.showCalendar = false;
+}
 
   fixToUTC(dateValue: any) {
     if (!dateValue) return null;
@@ -229,6 +264,7 @@ ngOnChanges() {
   }
 
   confirm() {
+    if (!this.tempSelectedDate) return;
     if (this.isDisabled(this.tempSelectedDate)) return;
 
     const hours = Number(this.selectedHour);
@@ -248,8 +284,6 @@ ngOnChanges() {
       this.selectedDate.getSeconds()
     )}`;
 
-    
-
     this.dateChange.emit(this.selectedDate);
     this.onChange(localDateString);
     this.onTouched();
@@ -258,6 +292,8 @@ ngOnChanges() {
   }
 
   setToStartOfDay() {
+    if (!this.tempSelectedDate) return;
+
     this.selectedHour = '00';
     this.selectedMinute = '00';
 
@@ -266,15 +302,18 @@ ngOnChanges() {
 
     this.selectedDate = new Date(this.tempSelectedDate);
   }
-setToEndOfDay() {
-  this.selectedHour = '23';
-  this.selectedMinute = '59';
 
-  this.tempSelectedDate.setHours(23, 59, 59, 999);
-  this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
+  setToEndOfDay() {
+    if (!this.tempSelectedDate) return;
 
-  this.selectedDate = new Date(this.tempSelectedDate);
-}
+    this.selectedHour = '23';
+    this.selectedMinute = '59';
+
+    this.tempSelectedDate.setHours(23, 59, 59, 999);
+    this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
+
+    this.selectedDate = new Date(this.tempSelectedDate);
+  }
 
   previousMonth() {
     this.selectedMonth--;
@@ -305,6 +344,7 @@ setToEndOfDay() {
   }
 
   updateTempSelectedDate() {
+    if (!this.tempSelectedDate) return;
     this.tempSelectedDate.setMonth(this.selectedMonth);
     this.tempSelectedDate.setFullYear(this.selectedYear);
   }
@@ -328,9 +368,10 @@ setToEndOfDay() {
     }
     return days;
   }
- sanitizeDateString(value: string): string {
-  return value?.endsWith('Z') ? value.slice(0, -1) : value;
-}
+
+  sanitizeDateString(value: string): string {
+    return value?.endsWith('Z') ? value.slice(0, -1) : value;
+  }
 
   isDisabled(day: Date | string): boolean {
     const dayDate = this.toDate(day);
@@ -348,15 +389,15 @@ setToEndOfDay() {
     return new Date(d.getFullYear(), d.getMonth(), d.getDate());
   }
 
- toDate(value: Date | string): Date {
-  if (value instanceof Date) return value;
-  return new Date(this.sanitizeDateString(value));
-}
-
+  toDate(value: Date | string): Date {
+    if (value instanceof Date) return value;
+    return new Date(this.sanitizeDateString(value));
+  }
 
   is24Hour: boolean = true;
 
   selectTemporaryDate(day: Date) {
+    if (!this.tempSelectedDate) this.tempSelectedDate = new Date(day);
     if (this.isDisabled(day)) return;
 
     const isNewDate = !this.isSameDate(this.tempSelectedDate, day);
@@ -387,6 +428,8 @@ setToEndOfDay() {
   }
 
   isSelected(day: Date): boolean {
+    if (!this.tempSelectedDate) return false;
+
     return (
       day.getDate() === this.tempSelectedDate.getDate() &&
       day.getMonth() === this.tempSelectedDate.getMonth() &&

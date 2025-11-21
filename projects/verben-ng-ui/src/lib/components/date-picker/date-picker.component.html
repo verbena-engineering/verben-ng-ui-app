@@ -143,6 +143,7 @@
       [height]="14"
       [icon]="'moon'"
     ></verben-svg>
+   
   </verben-tooltip>
 
   <ng-template #endOfDayTooltip>
@@ -150,8 +151,32 @@
       <p class="text-xs">Set end of day</p>
     </div>
   </ng-template>
-</div>
 
+</div>
+    <verben-tooltip
+    [top]="'-40px'"
+    [textColor]="'#000'"
+    [backgroundColor]="'#D3D3D3'"
+    [left]="'0'"
+    [width]="'100px'"
+    [tooltipContent]="clearTooltip"
+    #clearDateTip
+  >
+    <verben-svg
+      (click)="clearDate()"
+      class="cursor-pointer"
+      [width]="14"
+      [height]="14"
+      [icon]="'close'"
+    ></verben-svg>
+   
+  </verben-tooltip>
+
+  <ng-template #clearTooltip>
+    <div>
+      <p class="text-xs">clear date</p>
+    </div>
+  </ng-template>
       </div>
 
     </div>

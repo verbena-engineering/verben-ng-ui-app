@@ -1,27 +1,44 @@
-<div
-  [ngStyle]="{
-    margin: '40px'
-  }"
->
-  <!-- Text area for typing longer content -->
-  <h2
-    [ngStyle]="{
-      'font-size': '35px',
-      'font-weight': '700',
-      'padding-bottom': '20px'
-    }"
-  >
-    Text Area Example
-  </h2>
-  <div
-    [ngStyle]="{
-      display: 'flex',
-      gap: '10px',
-      'padding-bottom': '50px'
-    }"
-  >
+<div [ngStyle]="{ margin: '40px', 'background': '#f0f7ff', 'padding': '30px', 'border-radius': '10px', 'border': '2px solid #0066cc' }">
+  
+  <h1 [ngStyle]="{ 'font-size': '40px', 'color': '#0066cc', 'margin-bottom': '10px' }">
+    🧪 DISABLED FUNCTIONALITY TESTS
+  </h1>
+  <p [ngStyle]="{ 'font-size': '16px', 'color': '#666', 'margin-bottom': '30px' }">
+    Click the buttons to test if disabled state works correctly. Open DevTools Console (F12) to see logs.
+  </p>
+
+  <!-- ========================================== -->
+  <!-- TEST 1: Template-Driven Textarea -->
+  <!-- ========================================== -->
+  <div [ngStyle]="{ 'background': 'white', 'padding': '20px', 'border-radius': '8px', 'margin-bottom': '20px' }">
+    <h2 [ngStyle]="{ 'font-size': '24px', 'margin-bottom': '15px' }">
+      Test 1: Template-Driven Textarea
+    </h2>
+    
+    <div [ngStyle]="{ 'display': 'flex', 'gap': '10px', 'margin-bottom': '15px', 'align-items': 'center' }">
+      <button 
+        (click)="toggleTextareaDisabled()"
+        [ngStyle]="{ 
+          'padding': '10px 20px', 
+          'cursor': 'pointer',
+          'background': isDisabled ? '#22c55e' : '#ef4444',
+          'color': 'white',
+          'border': 'none',
+          'border-radius': '5px',
+          'font-weight': 'bold'
+        }">
+        {{ isDisabled ? '✅ Enable' : '🚫 Disable' }} Textarea
+      </button>
+      
+      <span [ngStyle]="{ 'font-weight': 'bold', 'color': isDisabled ? '#ef4444' : '#22c55e' }">
+        Status: {{ isDisabled ? 'DISABLED ❌' : 'ENABLED ✅' }}
+      </span>
+    </div>
+
     <verbena-textarea
-      label="Text Area"
+      [(ngModel)]="testMail"
+      name="testTextarea"
+      label="Template-Driven Textarea (Toggle Me!)"
       bgColor="#f8f8f8"
       textColor="#333"
       border="1px solid #ccc"
@@ -29,279 +46,236 @@
       pd="8px"
       width="100%"
       height="100px"
+      [disabled]="isDisabled"
     ></verbena-textarea>
+    
+    <p [ngStyle]="{ 'margin-top': '10px', 'color': '#666' }">
+      <strong>Value:</strong> {{ testMail || '(empty)' }}
+    </p>
+    
+    <div [ngStyle]="{ 'background': '#fef3c7', 'padding': '10px', 'border-radius': '5px', 'margin-top': '10px' }">
+      <strong>💡 Test:</strong> Click the button, then try typing in the textarea. When disabled, you should NOT be able to type.
+    </div>
   </div>
 
-  <verben-number-input
-    [(ngModel)]="quantity"
-    [min]="0"
-    [max]="10"
-    [step]="1"
-    label="Quantity"
-  ></verben-number-input>
-
-  <verben-number-input
-    [(ngModel)]="quantity"
-    [min]="0"
-    [max]="10"
-    [step]="1"
-    label="Quantity"
-    [disabled]="true"
-  ></verben-number-input>
-
-  <verben-number-input
-    [label]="'value:'"
-    [(ngModel)]="value"
-  ></verben-number-input>
-
-  <!-- <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <label>Quantity:</label>
-  <verben-number-input formControlName="quantity" [min]="1" [max]="20" [step]="1" [controlButton]="true"></verben-number-input>
-
-  <button type="submit">Submit</button>
-</form> -->
-
-  <form (ngSubmit)="submit()">
-    <label>Quantity:</label>
-    <verben-number-input
-      [(ngModel)]="quantity"
-      name="quantity"
-      [min]="1"
-      [max]="20"
-      [step]="1"
-    ></verben-number-input>
-
-    <button type="submit">Submit</button>
-  </form>
-
-  <p>Selected Quantity: {{ value }}</p>
-
-  <!-- Customizable input field for email with error display at the top -->
-  <h2
-    [ngStyle]="{
-      'font-size': '35px',
-      'font-weight': '700',
-      'padding-bottom': '20px'
-    }"
-  >
-    Customizable Input Example <br />
-    with Validation
-  </h2>
-  <div
-    [ngStyle]="{
-      display: 'grid',
-      'grid-template-columns': '1fr 1fr',
-      gap: '20px',
-      'padding-bottom': '50px'
-    }"
-  >
-    <verbena-input
-      [(ngModel)]="testMail"
-      [ngModelOptions]="{ updateOn: 'change' }"
-      label="test mail"
-      [type]="'email'"
-    ></verbena-input>
-    <verbena-input label="test mail" type="email"> </verbena-input>
-    <verbena-input
-      [label]="'Email'"
-      [placeHolder]="'Enter your email'"
-      [type]="'email'"
-      [(value)]="email"
-      svg="backward"
-      [showBorder]="true"
-      [errorMessageColor]="'orange'"
-      [errorBorderColor]="'orange'"
-      [errorPosition]="'top'"
-    ></verbena-input>
-
-    <!-- Input field for age with a blue error message displayed on the right -->
-    <verbena-input
-      [label]="'Age'"
-      [placeHolder]="'Enter your age'"
-      [required]="true"
-      [type]="'integer'"
-      appValidate="number"
-      [(value)]="age"
-      svg="backward"
-      [svgPosition]="'right'"
-      [showBorder]="true"
-      [showErrorMessage]="true"
-      [errorMessageColor]="'blue'"
-      [errorBorderColor]="'blue'"
-      [errorPosition]="'left'"
-    ></verbena-input>
-    <verbena-input
-      [label]="'tel'"
-      [type]="'tel'"
-      [showBorder]="true"
-      [showErrorMessage]="true"
-      [errorMessageColor]="'orange'"
-      [errorBorderColor]="'green'"
-      [errorPosition]="'left'"
-    ></verbena-input>
-    <verbena-input
-      [label]="'password'"
-      [type]="'password'"
-      [passwordToggle]="true"
-      [passLength]="5"
-    ></verbena-input>
-
-    <verbena-input [label]="'file'" [type]="'file'"></verbena-input>
-    <verbena-input
-      [placeHolder]="'search'"
-      [label]="'search'"
-      [type]="'search'"
-    ></verbena-input>
-
-    <verbena-input [label]="'color'" [type]="'color'"></verbena-input>
-    <verbena-input [label]="'date'" [type]="'date'"></verbena-input>
-
-    <!-- Input for entering a decimal value with green error messages shown below -->
-    <verbena-input
-      [label]="'Decimal Value'"
-      [labelPosition]="'center'"
-      [labelColor]="'#796fab'"
-      [placeHolder]="'Enter a decimal value'"
-      [required]="true"
-      [type]="'decimal'"
-      [(value)]="decimalValue"
-      [showBorder]="false"
-      [showErrorMessage]="true"
-      [errorMessageColor]="'green'"
-      [errorBorderColor]="'green'"
-      [errorPosition]="'bottom'"
-    ></verbena-input>
+  <!-- ========================================== -->
+  <!-- TEST 2: Template-Driven Input -->
+  <!-- ========================================== -->
+  <div [ngStyle]="{ 'background': 'white', 'padding': '20px', 'border-radius': '8px', 'margin-bottom': '20px' }">
+    <h2 [ngStyle]="{ 'font-size': '24px', 'margin-bottom': '15px' }">
+      Test 2: Template-Driven Input
+    </h2>
+    
+    <div [ngStyle]="{ 'display': 'flex', 'gap': '10px', 'margin-bottom': '15px', 'align-items': 'center' }">
+      <button 
+        (click)="toggleInputDisabled()"
+        [ngStyle]="{ 
+          'padding': '10px 20px', 
+          'cursor': 'pointer',
+          'background': isInputDisabled ? '#22c55e' : '#ef4444',
+          'color': 'white',
+          'border': 'none',
+          'border-radius': '5px',
+          'font-weight': 'bold'
+        }">
+        {{ isInputDisabled ? '✅ Enable' : '🚫 Disable' }} Input
+      </button>
+      
+      <span [ngStyle]="{ 'font-weight': 'bold', 'color': isInputDisabled ? '#ef4444' : '#22c55e' }">
+        Status: {{ isInputDisabled ? 'DISABLED ❌' : 'ENABLED ✅' }}
+      </span>
+    </div>
 
     <verbena-input
-      [label]="'integer Value'"
-      [placeHolder]="'Enter a integer value'"
-      [required]="true"
-      [type]="'integer'"
-      appValidate="integer"
-      [showBorder]="false"
-      [showErrorMessage]="true"
-      [errorMessageColor]="'green'"
-      [errorBorderColor]="'green'"
-      [errorPosition]="'bottom'"
+      [(ngModel)]="email"
+      name="testInput"
+      label="Template-Driven Email Input (Toggle Me!)"
+      type="email"
+      placeHolder="Enter your email"
+      [disabled]="isInputDisabled"
     ></verbena-input>
-
-    <verbena-input
-      [label]="'number Value'"
-      [placeHolder]="'Enter a number value'"
-      [required]="true"
-      [type]="'number'"
-      appValidate="number"
-      [showBorder]="false"
-      [showErrorMessage]="true"
-      [errorMessageColor]="'green'"
-      [errorBorderColor]="'green'"
-      [errorPosition]="'right'"
-    ></verbena-input>
-
-    <verbena-input
-      [label]="'email Value'"
-      [placeHolder]="'Enter a email value'"
-      [required]="true"
-      [type]="'email'"
-      [showBorder]="false"
-      [showErrorMessage]="true"
-      [errorMessageColor]="'green'"
-      [errorBorderColor]="'green'"
-      [errorPosition]="'bottom'"
-    ></verbena-input>
-    <!-- A submit button to trigger form submission -->
-    <button (click)="submit()">Submit</button>
+    
+    <p [ngStyle]="{ 'margin-top': '10px', 'color': '#666' }">
+      <strong>Value:</strong> {{ email || '(empty)' }}
+    </p>
+    
+    <div [ngStyle]="{ 'background': '#fef3c7', 'padding': '10px', 'border-radius': '5px', 'margin-top': '10px' }">
+      <strong>💡 Test:</strong> Click the button, then try typing in the input. When disabled, you should NOT be able to type.
+    </div>
   </div>
 
-  <h2
-    [ngStyle]="{
-      'font-size': '35px',
-      'font-weight': '700',
-      'padding-bottom': '20px'
-    }"
-  >
-    Number Range
-  </h2>
-  <div
-    [ngStyle]="{
-      display: 'grid',
-      'grid-template-columns': '1fr 1fr',
-      gap: '20px',
-      'padding-bottom': '50px'
-    }"
-  >
-    <verbena-input
-      [label]="'Max Number'"
-      [placeHolder]="'100 is the maximum number'"
-      [required]="true"
-      [type]="'number'"
-      [icon]="'chevron'"
-      appNumberRange
-      [max]="100"
-      [showBorder]="true"
-      [showErrorMessage]="true"
-      [errorMessageColor]="'orange'"
-      [errorBorderColor]="'orange'"
-      [errorPosition]="'top'"
-    ></verbena-input>
+  <!-- ========================================== -->
+  <!-- TEST 3: Reactive Form Controls -->
+  <!-- ========================================== -->
+  <div [ngStyle]="{ 'background': 'white', 'padding': '20px', 'border-radius': '8px', 'margin-bottom': '20px' }">
+    <h2 [ngStyle]="{ 'font-size': '24px', 'margin-bottom': '15px' }">
+      Test 3: Reactive Form Controls
+    </h2>
 
-    <!-- Input field for age with a blue error message displayed on the right -->
-    <verbena-input
-      [label]="'Min Number'"
-      [placeHolder]="'minimum number is 10'"
-      [required]="true"
-      [type]="'integer'"
-      appValidate="number"
-      [min]="10"
-      [showBorder]="true"
-      [showErrorMessage]="true"
-      [errorMessageColor]="'blue'"
-      [errorBorderColor]="'blue'"
-      [errorPosition]="'right'"
-      [customErrorMessages]="{
-        required: 'Please fill this out!',
-        minLength: 'Input is too short!',
-        integer: 'Please enter a number'
-      }"
-    ></verbena-input>
+    <div [ngStyle]="{ 'display': 'flex', 'flex-wrap': 'wrap', 'gap': '10px', 'margin-bottom': '20px' }">
+      <button 
+        (click)="toggleFormControl('textarea')"
+        [ngStyle]="{ 'padding': '10px 15px', 'cursor': 'pointer', 'border-radius': '5px', 'border': '2px solid #3b82f6', 'background': 'white' }">
+        Toggle Textarea
+      </button>
+      
+      <button 
+        (click)="toggleFormControl('email')"
+        [ngStyle]="{ 'padding': '10px 15px', 'cursor': 'pointer', 'border-radius': '5px', 'border': '2px solid #3b82f6', 'background': 'white' }">
+        Toggle Email
+      </button>
+      
+      <button 
+        (click)="toggleFormControl('password')"
+        [ngStyle]="{ 'padding': '10px 15px', 'cursor': 'pointer', 'border-radius': '5px', 'border': '2px solid #3b82f6', 'background': 'white' }">
+        Toggle Password
+      </button>
+      
+      <button 
+        (click)="disableAllFormControls()"
+        [ngStyle]="{ 'padding': '10px 15px', 'cursor': 'pointer', 'border-radius': '5px', 'border': 'none', 'background': '#ef4444', 'color': 'white', 'font-weight': 'bold' }">
+        🚫 Disable All
+      </button>
+      
+      <button 
+        (click)="enableAllFormControls()"
+        [ngStyle]="{ 'padding': '10px 15px', 'cursor': 'pointer', 'border-radius': '5px', 'border': 'none', 'background': '#22c55e', 'color': 'white', 'font-weight': 'bold' }">
+        ✅ Enable All
+      </button>
 
-    <!-- Input for entering a decimal value with green error messages shown below -->
-    <verbena-input
-      [label]="'Min and Max'"
-      [placeHolder]="'max number is 10 and min is 5'"
-      [min]="18"
-      [max]="60"
-      [required]="true"
-      [type]="'number'"
-      [svg]="'chevron'"
-      [svgHeight]="18"
-      [svgWidth]="18"
-      [svgColor]="'black'"
-      [showBorder]="false"
-      [showErrorMessage]="true"
-      [errorMessageColor]="'green'"
-      [errorBorderColor]="'green'"
-      [errorPosition]="'right'"
-    ></verbena-input>
+      <button 
+        (click)="logFormState()"
+        [ngStyle]="{ 'padding': '10px 15px', 'cursor': 'pointer', 'border-radius': '5px', 'border': 'none', 'background': '#8b5cf6', 'color': 'white', 'font-weight': 'bold' }">
+        📋 Log Form State
+      </button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      
+      <div [ngStyle]="{ 'margin-bottom': '20px' }">
+        <p [ngStyle]="{ 'margin-bottom': '10px' }">
+          <strong>Textarea Status:</strong> 
+          <span [ngStyle]="{ 'color': isControlDisabled('textarea') ? '#ef4444' : '#22c55e', 'font-weight': 'bold' }">
+            {{ getControlStatus('textarea') }}
+          </span>
+        </p>
+        <verbena-textarea
+          formControlName="textarea"
+          label="Reactive Form Textarea"
+          bgColor="#f8f8f8"
+          textColor="#333"
+          border="1px solid #ccc"
+          borderRadius="5px"
+          pd="8px"
+          width="100%"
+          height="100px"
+        ></verbena-textarea>
+      </div>
+
+      <div [ngStyle]="{ 'margin-bottom': '20px' }">
+        <p [ngStyle]="{ 'margin-bottom': '10px' }">
+          <strong>Email Status:</strong> 
+          <span [ngStyle]="{ 'color': isControlDisabled('email') ? '#ef4444' : '#22c55e', 'font-weight': 'bold' }">
+            {{ getControlStatus('email') }}
+          </span>
+        </p>
+        <verbena-input
+          formControlName="email"
+          label="Reactive Form Email"
+          type="email"
+          placeHolder="Enter your email"
+        ></verbena-input>
+      </div>
+
+      <div [ngStyle]="{ 'margin-bottom': '20px' }">
+        <p [ngStyle]="{ 'margin-bottom': '10px' }">
+          <strong>Password Status:</strong> 
+          <span [ngStyle]="{ 'color': isControlDisabled('password') ? '#ef4444' : '#22c55e', 'font-weight': 'bold' }">
+            {{ getControlStatus('password') }}
+          </span>
+        </p>
+        <verbena-input
+          formControlName="password"
+          label="Reactive Form Password"
+          type="password"
+          [passwordToggle]="true"
+          placeHolder="Enter your password"
+        ></verbena-input>
+      </div>
+
+      <button 
+        type="submit"
+        [ngStyle]="{ 'padding': '15px 30px', 'cursor': 'pointer', 'background': '#3b82f6', 'color': 'white', 'border': 'none', 'border-radius': '5px', 'font-size': '16px', 'font-weight': 'bold' }">
+        Submit Form (Check Console)
+      </button>
+    </form>
+
+    <div [ngStyle]="{ 'background': '#fef3c7', 'padding': '10px', 'border-radius': '5px', 'margin-top': '15px' }">
+      <strong>💡 Test:</strong> Click individual toggle buttons or "Disable All". Try typing in the fields. Check the console for logs.
+    </div>
   </div>
 
-  <verbena-input
-    label="Enter your name"
-    placeholder="Name"
-    capitalization="uppercase"
-    [required]="true"
-    [minLength]="3"
-    [maxLength]="20"
-  >
-  </verbena-input>
+  <!-- ========================================== -->
+  <!-- TEST 4: Hard-Coded Disabled State -->
+  <!-- ========================================== -->
+  <div [ngStyle]="{ 'background': 'white', 'padding': '20px', 'border-radius': '8px' }">
+    <h2 [ngStyle]="{ 'font-size': '24px', 'margin-bottom': '15px' }">
+      Test 4: Hard-Coded Disabled (Always Disabled)
+    </h2>
 
-  <verbena-input
-    label="Enter your name"
-    placeholder="Name"
-    capitalization="pascalcase"
-    [required]="true"
-    [minLength]="3"
-    [maxLength]="20"
-  >
-  </verbena-input>
+    <div [ngStyle]="{ 'display': 'grid', 'grid-template-columns': '1fr 1fr', 'gap': '20px' }">
+      <div>
+        <h3 [ngStyle]="{ 'color': '#ef4444' }">❌ Always Disabled</h3>
+        <verbena-input
+          label="Hard-coded Disabled Input"
+          type="text"
+          placeHolder="This should always be disabled"
+          [disabled]="true"
+        ></verbena-input>
+      </div>
+
+      <div>
+        <h3 [ngStyle]="{ 'color': '#22c55e' }">✅ Always Enabled</h3>
+        <verbena-input
+          label="Hard-coded Enabled Input"
+          type="text"
+          placeHolder="This should always be enabled"
+          [disabled]="false"
+        ></verbena-input>
+      </div>
+    </div>
+
+    <div [ngStyle]="{ 'background': '#fef3c7', 'padding': '10px', 'border-radius': '5px', 'margin-top': '15px' }">
+      <strong>💡 Test:</strong> The left input should NEVER be editable. The right input should ALWAYS be editable.
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- DEBUGGING TIPS -->
+  <!-- ========================================== -->
+  <div [ngStyle]="{ 'background': '#dcfce7', 'padding': '20px', 'border-radius': '8px', 'margin-top': '20px', 'border': '2px solid #22c55e' }">
+    <h2 [ngStyle]="{ 'font-size': '24px', 'margin-bottom': '15px', 'color': '#15803d' }">
+      ✅ How to Verify It's Working
+    </h2>
+    
+    <ol [ngStyle]="{ 'line-height': '2', 'margin-left': '20px' }">
+      <li><strong>Visual Check:</strong> Disabled fields should look grayed out</li>
+      <li><strong>Typing Test:</strong> You should NOT be able to type in disabled fields</li>
+      <li><strong>Console Logs:</strong> Press F12 to open console and watch for log messages when clicking buttons</li>
+      <li><strong>DevTools Inspect:</strong>
+        <ul>
+          <li>Right-click on an input/textarea → "Inspect"</li>
+          <li>Look for <code>disabled</code> attribute in the HTML</li>
+          <li>Example: <code>&lt;input disabled&gt;</code> means it's working!</li>
+        </ul>
+      </li>
+      <li><strong>Toggle Test:</strong> Click buttons and watch the status text change color (red = disabled, green = enabled)</li>
+    </ol>
+  </div>
+
 </div>
+
+<!-- 
+  END OF TEST SECTION
+  Your existing template content continues below...
+-->

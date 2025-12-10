@@ -17,6 +17,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   styleUrls: ['./verbena-textarea.component.css']
 })
 export class VerbenaTextareaComponent implements ControlValueAccessor, OnInit {
+  @Input() disabled: boolean = false;
   @Input() label: string = '';
   @Input() required: boolean = false;
   @Input() rows: number = 5;
@@ -36,6 +37,9 @@ export class VerbenaTextareaComponent implements ControlValueAccessor, OnInit {
   errorMessage: string | undefined;
   textareaId: string = '';
   isInvalid: boolean = false;
+  
+  // NEW: Track disabled state from form control
+  isDisabled: boolean = false;
 
   onChange: any = () => {};
   onTouch: any = () => {};
@@ -59,9 +63,9 @@ export class VerbenaTextareaComponent implements ControlValueAccessor, OnInit {
     const target = event.target as HTMLTextAreaElement;
     this.value = target.value.trim();
     this.validate();
-    this.onChange(this.value); // Notify form control of value change
-    this.onTouch(); // Mark as touched
-    this.valueChange.emit(this.value); // Emit the value change
+    this.onChange(this.value);
+    this.onTouch();
+    this.valueChange.emit(this.value);
   }
 
   validate() {
@@ -86,17 +90,14 @@ export class VerbenaTextareaComponent implements ControlValueAccessor, OnInit {
     this.onTouch = fn;
   }
 
+  // FIXED: Store disabled state in component property instead of DOM manipulation
   setDisabledState(isDisabled: boolean): void {
-    const textarea = document.getElementById(this.textareaId) as HTMLTextAreaElement | null;
-    if (textarea) {
-      textarea.disabled = isDisabled;
-    }
+    this.isDisabled = isDisabled;
   }
 
-  //newly added
   onValueChange(newValue: string) {
     this.value = newValue;
-    this.valueChange.emit(this.value);  // Emit the value when it changes
-    this.validate();  // Optional: Re-validate on each change
+    this.valueChange.emit(this.value);
+    this.validate();
   }
 }

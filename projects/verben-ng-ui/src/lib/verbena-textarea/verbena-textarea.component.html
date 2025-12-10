@@ -1,9 +1,11 @@
 <label [for]="textareaId">{{ label }}</label>
+
 <textarea
   [id]="textareaId"
   [required]="required"
   [attr.rows]="rows"
   [attr.cols]="cols"
+  [disabled]="disabled || isDisabled"
   [ngStyle]="{
     'background-color': bgColor,
     'color': textColor,
@@ -16,4 +18,7 @@
   [ngModel]="value"
   (ngModelChange)="onValueChange($event)"  
 ></textarea>
-<span *ngIf="errorMessage" class="error">{{ errorMessage }}</span>
+
+<span *ngIf="errorMessage" class="error" [ngStyle]="{ color: errorMessageColor }">
+  {{ errorMessage }}
+</span>

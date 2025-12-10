@@ -8,6 +8,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   styleUrls: ['./verbena-input.component.css']
 })
 export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
+  @Input() disabled: boolean = false;
   @Input() label: string = '';
   @Input() placeHolder: string = '';
   @Input() required: boolean = false;
@@ -64,7 +65,9 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   onChange: any = () => {};
   onTouch: any = () => {};
   isInvalid: boolean = false;
-
+  
+  // NEW: Track disabled state from form control
+  isDisabled: boolean = false;
 
   @Input() icon: string = 'eye';
   @Input() textPass: string = 'Show';
@@ -74,7 +77,6 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
     this.icon = this.icon === 'eye' ? 'eye-closed' : 'eye';
     this.textPass = this.textPass === 'Show' ? 'Hide' : 'Show';
     this.type = this.type === 'password' ? 'text' : 'password';
-
   }
 
   constructor(@Optional() @Self() @Inject(forwardRef(() => NgControl)) private ngControl: NgControl) {
@@ -109,7 +111,6 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
     }
 
     this.validate();
-    
   }
 
   applyCapitalization(value: string, format: string): string {
@@ -224,12 +225,15 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
     this.onTouch = fn;
   }
 
+  // FIXED: Properly implement setDisabledState
   setDisabledState(isDisabled: boolean): void {
+    this.isDisabled = isDisabled;
+    // Also update the @Input disable property for consistency
     this.disable = isDisabled;
   }
 
   onBlur() {
-    this.onTouch();  // for ControlValueAccessor
-    this.validate(); // for manual validation
+    this.onTouch();
+    this.validate();
   }
 }

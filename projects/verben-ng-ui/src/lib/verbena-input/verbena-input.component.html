@@ -76,7 +76,7 @@
     </div>
     <input
       [ngClass]="{ 'ng-invalid': isInvalid }"
-      [disabled]="disabled"
+      [disabled]="disabled || disable"
       (blur)="onBlur()"
       [id]="label"
       [attr.type]="type"

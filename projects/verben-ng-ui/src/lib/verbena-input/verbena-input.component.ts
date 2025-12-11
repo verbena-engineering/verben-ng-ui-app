@@ -23,7 +23,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() value: string = '';
   @Input() labelPosition: string = 'start';
   @Input() labelColor: string = 'black';
-  @Input() disable: boolean = false; // Disable input
+  // @Input() disable: boolean = false; // Disable input
   @Input() readOnly: boolean = false; // Read-only input
   @Input() min?: number;
   @Input() max?: number;
@@ -67,7 +67,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   isInvalid: boolean = false;
   
   // NEW: Track disabled state from form control
-  isDisabled: boolean = false;
+  // isDisabled: boolean = false;
 
   @Input() icon: string = 'eye';
   @Input() textPass: string = 'Show';
@@ -227,9 +227,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
 
   // FIXED: Properly implement setDisabledState
   setDisabledState(isDisabled: boolean): void {
-    this.isDisabled = isDisabled;
-    // Also update the @Input disable property for consistency
-    this.disable = isDisabled;
+    this.disabled = isDisabled;
   }
 
   onBlur() {

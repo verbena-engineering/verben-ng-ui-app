@@ -76,14 +76,15 @@
     </div>
     <input
       [ngClass]="{ 'ng-invalid': isInvalid }"
+      [disabled]="disabled || disable"
       (blur)="onBlur()"
       [id]="label"
       [attr.type]="type"
       [attr.placeholder]="placeHolder"
       [attr.minlength]="minLength?.toString()"
       [attr.maxlength]="maxLength?.toString()"
-      [attr.disabled]="disable ? true : null"
-      [attr.readOnly]="readOnly ? true : null"
+      [attr.disabled]="disabled ? true : false"
+      [attr.readOnly]="readOnly ? true : false"
       (input)="onInput($event)"
       [(ngModel)]="value"
       [ngStyle]="{

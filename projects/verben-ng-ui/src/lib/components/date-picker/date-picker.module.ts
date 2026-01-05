@@ -7,6 +7,7 @@ import { DropDownModule } from 'verben-ng-ui/src/lib/components/drop-down';
 import { VerbenPopUpModule } from 'verben-ng-ui/src/lib/components/pop-up';
 import { OutSideClickDirective } from 'verben-ng-ui/src/lib/components/data-view';
 import { TooltipModule } from 'verben-ng-ui/src/lib/components/tooltip';
+import { OverlayModule } from '@angular/cdk/overlay';
 @NgModule({
   declarations: [DatePickerComponent],
   imports: [
@@ -16,7 +17,8 @@ import { TooltipModule } from 'verben-ng-ui/src/lib/components/tooltip';
     DropDownModule,
     VerbenPopUpModule,
     OutSideClickDirective,
-    TooltipModule
+    TooltipModule,
+    OverlayModule,
   ],
   exports: [DatePickerComponent],
 })

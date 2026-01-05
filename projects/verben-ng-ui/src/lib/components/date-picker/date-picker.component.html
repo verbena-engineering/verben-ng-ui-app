@@ -1,6 +1,8 @@
-<div class="date-picker">
+<div #datePickerContainer class="date-picker">
   <div class="calendar-container">
     <input
+      cdkOverlayOrigin
+      #trigger="cdkOverlayOrigin"
       type="text"
       [placeholder]="placeholder"
       [value]="displayDate"
@@ -22,191 +24,204 @@
     ></verben-svg>
   </div>
 
-  <div
-    *ngIf="showCalendar"
-    [appOutSideClick]="showCalendar"
-    (outSideClick)="showCalendar = false"
-    class="calendar"
-    [style.width]="datePickerWidth"
+  <ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayWidth]="datePickerContainer.offsetWidth"
+    [cdkConnectedOverlayLockPosition]="false"
+    [cdkConnectedOverlayOrigin]="trigger"
+    [cdkConnectedOverlayPositions]="[
+      {
+        originX: 'start',
+        originY: 'bottom',
+        overlayX: 'start',
+        overlayY: 'top'
+      },
+      {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'bottom'
+      }
+    ]"
+    [cdkConnectedOverlayOpen]="showCalendar"
+    (detach)="showCalendar = false"
   >
-    <div class="calendar-header">
-      <ng-container *ngIf="!useDropdowns; else dropdowns">
-        <button (click)="previousMonth()">
-          <verben-svg [width]="20" [icon]="'chevron-left'"></verben-svg>
-        </button>
-        <span>{{ months[selectedMonth] }} {{ selectedYear }}</span>
-        <button (click)="nextMonth()">
-          <verben-svg [width]="20" [icon]="'chevron-right'"></verben-svg>
-        </button>
-      </ng-container>
-
-      <ng-template #dropdowns>
-        <verben-drop-down
-          [placeholder]="yearPlaceholder"
-          (onChange)="onDropdownYearChange($event)"
-          [options]="yearRange"
-          [(ngModel)]="selectedYear"
-          [width]="'90px'"
-        ></verben-drop-down>
-
-        <verben-drop-down
-          [placeholder]="monthPlaceholder"
-          (onChange)="onDropdownMonthChange($event)"
-          [options]="months"
-          class="drop-down"
-          [(ngModel)]="selectedMonthString"
-          [width]="'90px'"
-        ></verben-drop-down>
-      </ng-template>
-
- 
-      <div class="time-picker flex items-center gap-2" *ngIf="showTime">
-        <div class="relative">
-          <div
-            class="flex items-center box rounded px-2 py-1 cursor-pointer"
-            (click)="toggleHourDropdown()"
-          >
-            {{ selectedHour }}
-          </div>
-
-          <div *ngIf="showHourOptions" class="dropdown">
-            <div
-              class="dropdown-item"
-              *ngFor="let h of hours"
-              [class.active]="h === selectedHour"
-              (click)="selectHour(h)"
-            >
-              {{ h }}
-            </div>
-          </div>
-        </div>
-
-        <span>:</span>
-
-        <div class="relative">
-          <div
-            class="flex items-center box rounded px-2 py-1 cursor-pointer"
-            (click)="toggleMinuteDropdown()"
-          >
-            {{ selectedMinute }}
-          </div>
-
-          <div *ngIf="showMinuteOptions" class="dropdown">
-            <div
-              class="dropdown-item"
-              *ngFor="let m of minutes"
-              [class.active]="m === selectedMinute"
-              (click)="selectMinute(m)"
-            >
-              {{ m }}
-            </div>
-          </div>
-        </div>
-            
-     <div>
-        <verben-tooltip
-        [top]="'-40px'"
-        [textColor]="'#000'"
-        [backgroundColor]="'#D3D3D3'"
-        [left]="'0'"
-        [width]="'100px'"
-        [tooltipContent]="tooltipTemplate"
-        #tooltip>
-    <verben-svg
-        (click)="setToStartOfDay()"
-        class="cursor-pointer"
-        [width]="14"
-        [height]="14"
-        [icon]="'sun'"
-      ></verben-svg>
-      </verben-tooltip>
-           <ng-template #tooltipTemplate>
-        <div>
-          <p class="text-xs">Set start of day</p>
-        </div>
-      </ng-template>
-     </div>
-     <div>
-  <verben-tooltip
-    [top]="'-40px'"
-    [textColor]="'#000'"
-    [backgroundColor]="'#D3D3D3'"
-    [left]="'0'"
-    [width]="'100px'"
-    [tooltipContent]="endOfDayTooltip"
-    #endOfDayTip
-  >
-    <verben-svg
-      (click)="setToEndOfDay()"
-      class="cursor-pointer"
-      [width]="14"
-      [height]="14"
-      [icon]="'moon'"
-    ></verben-svg>
-   
-  </verben-tooltip>
-
-  <ng-template #endOfDayTooltip>
-    <div>
-      <p class="text-xs">Set end of day</p>
-    </div>
-  </ng-template>
-
-</div>
-    <verben-tooltip
-    [top]="'-40px'"
-    [textColor]="'#000'"
-    [backgroundColor]="'#D3D3D3'"
-    [left]="'0'"
-    [width]="'100px'"
-    [tooltipContent]="clearTooltip"
-    #clearDateTip
-  >
-    <verben-svg
-      (click)="clearDate()"
-      class="cursor-pointer"
-      [width]="14"
-      [height]="14"
-      [icon]="'close'"
-    ></verben-svg>
-   
-  </verben-tooltip>
-
-  <ng-template #clearTooltip>
-    <div>
-      <p class="text-xs">clear date</p>
-    </div>
-  </ng-template>
-      </div>
-
-    </div>
-
-    <div class="calendar-body">
-      <div class="weekdays">
-        <span *ngFor="let day of weekDays">{{ day }}</span>
-      </div>
-
-      <div class="dates">
-        <ng-container *ngFor="let day of getDaysInMonth()">
-          <button
-            *ngIf="day; else empty"
-            [class.selected]="isSelected(day)"
-            [disabled]="isDisabled(day)"
-            [ngClass]="{ 'disabled-day': isDisabled(day) }"
-            (click)="selectTemporaryDate(day)"
-          >
-            {{ day.getDate() }}
+    <div class="calendar" [style.width]="datePickerWidth" #datePickerExpansion>
+      <div class="calendar-header">
+        <ng-container *ngIf="!useDropdowns; else dropdowns">
+          <button (click)="previousMonth()">
+            <verben-svg [width]="20" [icon]="'chevron-left'"></verben-svg>
           </button>
-          <ng-template #empty>
-            <span class="empty-date"></span>
-          </ng-template>
+          <span>{{ months[selectedMonth] }} {{ selectedYear }}</span>
+          <button (click)="nextMonth()">
+            <verben-svg [width]="20" [icon]="'chevron-right'"></verben-svg>
+          </button>
         </ng-container>
+
+        <ng-template #dropdowns>
+          <verben-drop-down
+            [placeholder]="yearPlaceholder"
+            (onChange)="onDropdownYearChange($event)"
+            [options]="yearRange"
+            [(ngModel)]="selectedYear"
+            [width]="'90px'"
+          ></verben-drop-down>
+
+          <verben-drop-down
+            [placeholder]="monthPlaceholder"
+            (onChange)="onDropdownMonthChange($event)"
+            [options]="months"
+            class="drop-down"
+            [(ngModel)]="selectedMonthString"
+            [width]="'90px'"
+          ></verben-drop-down>
+        </ng-template>
+
+        <div class="time-picker flex items-center gap-2" *ngIf="showTime">
+          <div class="relative">
+            <div
+              class="flex items-center box rounded px-2 py-1 cursor-pointer"
+              (click)="toggleHourDropdown()"
+            >
+              {{ selectedHour }}
+            </div>
+
+            <div *ngIf="showHourOptions" class="dropdown">
+              <div
+                class="dropdown-item"
+                *ngFor="let h of hours"
+                [class.active]="h === selectedHour"
+                (click)="selectHour(h)"
+              >
+                {{ h }}
+              </div>
+            </div>
+          </div>
+
+          <span>:</span>
+
+          <div class="relative">
+            <div
+              class="flex items-center box rounded px-2 py-1 cursor-pointer"
+              (click)="toggleMinuteDropdown()"
+            >
+              {{ selectedMinute }}
+            </div>
+
+            <div *ngIf="showMinuteOptions" class="dropdown">
+              <div
+                class="dropdown-item"
+                *ngFor="let m of minutes"
+                [class.active]="m === selectedMinute"
+                (click)="selectMinute(m)"
+              >
+                {{ m }}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <verben-tooltip
+              [top]="'-40px'"
+              [textColor]="'#000'"
+              [backgroundColor]="'#D3D3D3'"
+              [left]="'0'"
+              [width]="'100px'"
+              [tooltipContent]="tooltipTemplate"
+              #tooltip
+            >
+              <verben-svg
+                (click)="setToStartOfDay()"
+                class="cursor-pointer"
+                [width]="14"
+                [height]="14"
+                [icon]="'sun'"
+              ></verben-svg>
+            </verben-tooltip>
+            <ng-template #tooltipTemplate>
+              <div>
+                <p class="text-xs">Set start of day</p>
+              </div>
+            </ng-template>
+          </div>
+          <div>
+            <verben-tooltip
+              [top]="'-40px'"
+              [textColor]="'#000'"
+              [backgroundColor]="'#D3D3D3'"
+              [left]="'0'"
+              [width]="'100px'"
+              [tooltipContent]="endOfDayTooltip"
+              #endOfDayTip
+            >
+              <verben-svg
+                (click)="setToEndOfDay()"
+                class="cursor-pointer"
+                [width]="14"
+                [height]="14"
+                [icon]="'moon'"
+              ></verben-svg>
+            </verben-tooltip>
+
+            <ng-template #endOfDayTooltip>
+              <div>
+                <p class="text-xs">Set end of day</p>
+              </div>
+            </ng-template>
+          </div>
+          <verben-tooltip
+            [top]="'-40px'"
+            [textColor]="'#000'"
+            [backgroundColor]="'#D3D3D3'"
+            [left]="'0'"
+            [width]="'100px'"
+            [tooltipContent]="clearTooltip"
+            #clearDateTip
+          >
+            <verben-svg
+              (click)="clearDate()"
+              class="cursor-pointer"
+              [width]="14"
+              [height]="14"
+              [icon]="'close'"
+            ></verben-svg>
+          </verben-tooltip>
+
+          <ng-template #clearTooltip>
+            <div>
+              <p class="text-xs">clear date</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="calendar-body">
+        <div class="weekdays">
+          <span *ngFor="let day of weekDays">{{ day }}</span>
+        </div>
+
+        <div class="dates">
+          <ng-container *ngFor="let day of getDaysInMonth()">
+            <button
+              *ngIf="day; else empty"
+              [class.selected]="isSelected(day)"
+              [disabled]="isDisabled(day)"
+              [ngClass]="{ 'disabled-day': isDisabled(day) }"
+              (click)="selectTemporaryDate(day)"
+            >
+              {{ day.getDate() }}
+            </button>
+            <ng-template #empty>
+              <span class="empty-date"></span>
+            </ng-template>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="calendar-footer">
+        <button (click)="cancel()">Cancel</button>
+        <button (click)="confirm()">OK</button>
       </div>
     </div>
-
-    <div class="calendar-footer">
-      <button (click)="cancel()">Cancel</button>
-      <button (click)="confirm()">OK</button>
-    </div>
-  </div>
+  </ng-template>
 </div>

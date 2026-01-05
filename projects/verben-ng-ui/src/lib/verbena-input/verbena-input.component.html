@@ -75,17 +75,19 @@
       ></verben-svg>
     </div>
     <input
-      [ngClass]="{ 'ng-invalid': isInvalid }"
-      (blur)="onBlur()"
-      [id]="label"
-      [attr.type]="type"
-      [attr.placeholder]="placeHolder"
-      [attr.minlength]="minLength?.toString()"
-      [attr.maxlength]="maxLength?.toString()"
-      [attr.disabled]="disable ? true : null"
-      [attr.readOnly]="readOnly ? true : null"
-      (input)="onInput($event)"
-      [(ngModel)]="value"
+        [disabled]="disabled || disable"
+        [readonly]="readOnly"
+        [type]="type"
+        [placeholder]="placeHolder"
+        [id]="label"
+        [attr.minlength]="minLength"
+        [attr.maxlength]="maxLength"
+        [attr.aria-invalid]="isInvalid"
+        [attr.aria-describedby]="isInvalid ? label + '-error' : null"
+        (input)="onInput($event)"
+        (blur)="onBlur()"
+        [(ngModel)]="value"
+  
       [ngStyle]="{
         'background-color': bgColor,
         'border': isInvalid && errorBorderColor ? '1px solid ' + errorBorderColor : border,
@@ -93,6 +95,7 @@
         'color': textColor,
         'font-size': fontSize,
       }"
+      [ngClass]="{ 'ng-invalid': isInvalid }"
       class="input-field verben-input {{ inputWrapperClass }}"
     />
   </div>

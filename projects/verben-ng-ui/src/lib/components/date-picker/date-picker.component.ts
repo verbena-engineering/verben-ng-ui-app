@@ -26,12 +26,20 @@ export class DatePickerComponent implements ControlValueAccessor {
   @Input() yearPlaceholder: string = 'Select a year';
   @Input() monthPlaceholder: string = 'Select a month';
   @Input() date: Date | null | string = null;
-  @Output() dateChange = new EventEmitter<Date>();
+  @Input() showTime: boolean = false;
+
+  @Input() datePickerWidth: string = '400px';
+  @Input() useDefaultDate: boolean = false; 
+
+  @Output() dateChange = new EventEmitter<Date|null>();
 
   yearRange: number[] = [];
   filteredYearRange: number[] = [];
-  selectedDate: Date = new Date();
-  tempSelectedDate: Date = new Date();
+
+
+  selectedDate: Date | null = null;
+  tempSelectedDate: Date | null = null;
+
   showCalendar = false;
 
   weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -49,12 +57,21 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   writeValue(value: Date | string | null): void {
     if (value) {
-      this.date = value;
+      if (typeof value === 'string') {
+        value = this.sanitizeDateString(value);
+      }
+
       const parsedDate = typeof value === 'string' ? new Date(value) : value;
+      this.date = parsedDate;
+
       this.selectedDate = new Date(parsedDate);
       this.tempSelectedDate = new Date(parsedDate);
       this.selectedMonth = this.selectedDate.getMonth();
       this.selectedYear = this.selectedDate.getFullYear();
+
+      if (this.showTime) {
+        this.initTimeFromDate(this.selectedDate);
+      }
     }
   }
 
@@ -72,13 +89,23 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   ngOnChanges() {
     if (this.date) {
-      const parsedDate =
-        typeof this.date === 'string' ? new Date(this.date) : this.date;
+      let d = this.date;
+      if (typeof d === 'string') d = this.sanitizeDateString(d);
+
+      const parsedDate = new Date(d);
       this.selectedDate = new Date(parsedDate);
       this.tempSelectedDate = new Date(parsedDate);
       this.selectedMonth = this.selectedDate.getMonth();
       this.selectedYear = this.selectedDate.getFullYear();
     }
+  }
+
+  isSameDate(d1: Date, d2: Date): boolean {
+    return (
+      d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate()
+    );
   }
 
   ngOnInit() {
@@ -89,6 +116,34 @@ export class DatePickerComponent implements ControlValueAccessor {
       (_, i) => 1960 + i
     );
     this.yearRange.sort((a, b) => b - a);
+
+  
+    if (!this.date && this.useDefaultDate) {
+      const now = new Date();
+      const pad = (n: number) => n.toString().padStart(2, '0');
+
+      const localDateString = `${now.getFullYear()}-${pad(
+        now.getMonth() + 1
+      )}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(
+        now.getMinutes()
+      )}:${pad(now.getSeconds())}`;
+
+      this.selectedDate = new Date(localDateString);
+      this.tempSelectedDate = new Date(localDateString);
+      this.date = this.selectedDate;
+
+      if (this.showTime) {
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+
+        this.selectedHour = hours.toString().padStart(2, '0');
+        this.selectedMinute = minutes.toString().padStart(2, '0');
+        this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
+      }
+
+      this.dateChange.emit(this.selectedDate);
+      this.onChange(localDateString);
+    }
   }
 
   get displayDate(): string {
@@ -97,12 +152,167 @@ export class DatePickerComponent implements ControlValueAccessor {
     return parsedDate ? this.formatDate(parsedDate, this.format) : '';
   }
 
+  tempTime: string = '';
+  selectedHour = '00';
+  selectedMinute = '00';
+
+  showHourOptions = false;
+  showMinuteOptions = false;
+
+  hours = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0'));
+  minutes = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'));
+
+  toggleHourDropdown() {
+    this.showHourOptions = !this.showHourOptions;
+    this.showMinuteOptions = false;
+  }
+
+  toggleMinuteDropdown() {
+    this.showMinuteOptions = !this.showMinuteOptions;
+    this.showHourOptions = false;
+  }
+
+  selectHour(h: string) {
+    this.selectedHour = h;
+    this.showHourOptions = false;
+  }
+
+  selectMinute(m: string) {
+    this.selectedMinute = m;
+    this.showMinuteOptions = false;
+  }
+
   toggleCalendar() {
     this.showCalendar = !this.showCalendar;
-    this.tempSelectedDate = new Date(this.date || new Date());
-    this.selectedMonth = this.tempSelectedDate.getMonth();
-    this.selectedMonthString = this.months[this.selectedMonth];
-    this.selectedYear = this.tempSelectedDate.getFullYear();
+
+
+    if (this.date) {
+      this.tempSelectedDate = new Date(this.date);
+    } else {
+      this.tempSelectedDate = this.useDefaultDate ? new Date() : null;
+    }
+
+    if (this.tempSelectedDate) {
+      this.selectedMonth = this.tempSelectedDate.getMonth();
+      this.selectedMonthString = this.months[this.selectedMonth];
+      this.selectedYear = this.tempSelectedDate.getFullYear();
+    }
+
+    if (this.showTime && !this.tempTime) {
+      const today = new Date();
+      const isToday =
+        this.tempSelectedDate &&
+        this.isSameDate(this.tempSelectedDate, today);
+
+      const hours = isToday ? today.getHours() : 0;
+      const minutes = isToday ? today.getMinutes() : 0;
+
+      if (this.tempSelectedDate) {
+        this.tempSelectedDate.setHours(hours, minutes, 0, 0);
+      }
+      this.selectedHour = hours.toString().padStart(2, '0');
+      this.selectedMinute = minutes.toString().padStart(2, '0');
+      this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
+    }
+  }
+
+  initTimeFromDate(date: Date) {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    this.selectedHour = hours.toString().padStart(2, '0');
+    this.selectedMinute = minutes.toString().padStart(2, '0');
+    this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
+    this.tempSelectedDate?.setHours(hours, minutes, 0, 0);
+  }
+clearDate() {
+  this.date = null;
+  this.selectedDate = null;
+  this.tempSelectedDate = null;
+  this.tempTime = '';
+  this.selectedHour = '00';
+  this.selectedMinute = '00';
+
+
+  this.dateChange.emit(null);
+
+ 
+  this.onChange(null);
+  this.onTouched();
+
+
+  this.showCalendar = false;
+}
+
+  fixToUTC(dateValue: any) {
+    if (!dateValue) return null;
+
+    const date = dateValue instanceof Date ? dateValue : new Date(dateValue);
+    if (isNaN(date.getTime())) return null;
+
+    return new Date(
+      Date.UTC(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds(),
+        date.getMilliseconds()
+      )
+    );
+  }
+
+  confirm() {
+    if (!this.tempSelectedDate) return;
+    if (this.isDisabled(this.tempSelectedDate)) return;
+
+    const hours = Number(this.selectedHour);
+    const minutes = Number(this.selectedMinute);
+
+    this.tempSelectedDate.setHours(hours, minutes, 0, 0);
+
+    this.selectedDate = new Date(this.tempSelectedDate);
+    this.date = this.selectedDate;
+
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    const localDateString = `${this.selectedDate.getFullYear()}-${pad(
+      this.selectedDate.getMonth() + 1
+    )}-${pad(this.selectedDate.getDate())}T${pad(
+      this.selectedDate.getHours()
+    )}:${pad(this.selectedDate.getMinutes())}:${pad(
+      this.selectedDate.getSeconds()
+    )}`;
+
+    this.dateChange.emit(this.selectedDate);
+    this.onChange(localDateString);
+    this.onTouched();
+
+    this.showCalendar = false;
+  }
+
+  setToStartOfDay() {
+    if (!this.tempSelectedDate) return;
+
+    this.selectedHour = '00';
+    this.selectedMinute = '00';
+
+    this.tempSelectedDate.setHours(0, 0, 0, 0);
+    this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
+
+    this.selectedDate = new Date(this.tempSelectedDate);
+  }
+
+  setToEndOfDay() {
+    if (!this.tempSelectedDate) return;
+
+    this.selectedHour = '23';
+    this.selectedMinute = '59';
+
+    this.tempSelectedDate.setHours(23, 59, 59, 999);
+    this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
+
+    this.selectedDate = new Date(this.tempSelectedDate);
   }
 
   previousMonth() {
@@ -134,6 +344,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   }
 
   updateTempSelectedDate() {
+    if (!this.tempSelectedDate) return;
     this.tempSelectedDate.setMonth(this.selectedMonth);
     this.tempSelectedDate.setFullYear(this.selectedYear);
   }
@@ -158,32 +369,67 @@ export class DatePickerComponent implements ControlValueAccessor {
     return days;
   }
 
-isDisabled(day: Date | string): boolean {
-  const dayDate = this.toDate(day);
+  sanitizeDateString(value: string): string {
+    return value?.endsWith('Z') ? value.slice(0, -1) : value;
+  }
 
-  if (this.minDate && dayDate < this.stripTime(this.toDate(this.minDate))) return true;
-  if (this.maxDate && dayDate > this.stripTime(this.toDate(this.maxDate))) return true;
+  isDisabled(day: Date | string): boolean {
+    const dayDate = this.toDate(day);
 
-  return false;
-}
+    if (this.minDate && dayDate < this.stripTime(this.toDate(this.minDate)))
+      return true;
+    if (this.maxDate && dayDate > this.stripTime(this.toDate(this.maxDate)))
+      return true;
 
-private stripTime(date: Date | string): Date {
-  const d = this.toDate(date);
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-}
+    return false;
+  }
 
-private toDate(value: Date | string): Date {
-  if (value instanceof Date) return value;
-  return new Date(value);
-}
+  private stripTime(date: Date | string): Date {
+    const d = this.toDate(date);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  }
 
+  toDate(value: Date | string): Date {
+    if (value instanceof Date) return value;
+    return new Date(this.sanitizeDateString(value));
+  }
+
+  is24Hour: boolean = true;
 
   selectTemporaryDate(day: Date) {
+    if (!this.tempSelectedDate) this.tempSelectedDate = new Date(day);
     if (this.isDisabled(day)) return;
-    this.tempSelectedDate = day;
+
+    const isNewDate = !this.isSameDate(this.tempSelectedDate, day);
+    this.tempSelectedDate = new Date(day);
+
+    if (this.showTime) {
+      if (isNewDate) {
+        const today = new Date();
+        const isToday =
+          day.getFullYear() === today.getFullYear() &&
+          day.getMonth() === today.getMonth() &&
+          day.getDate() === today.getDate();
+
+        const hours = isToday ? today.getHours() : 0;
+        const minutes = isToday ? today.getMinutes() : 0;
+
+        this.tempSelectedDate.setHours(hours, minutes, 0, 0);
+
+        this.selectedHour = hours.toString().padStart(2, '0');
+        this.selectedMinute = minutes.toString().padStart(2, '0');
+        this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
+      } else {
+        const [h, m] = this.tempTime.split(':');
+        this.selectedHour = h;
+        this.selectedMinute = m;
+      }
+    }
   }
 
   isSelected(day: Date): boolean {
+    if (!this.tempSelectedDate) return false;
+
     return (
       day.getDate() === this.tempSelectedDate.getDate() &&
       day.getMonth() === this.tempSelectedDate.getMonth() &&
@@ -203,20 +449,6 @@ private toDate(value: Date | string): Date {
       default:
         return `${month}/${day}/${year}`;
     }
-  }
-
-  confirm() {
-    if (this.isDisabled(this.tempSelectedDate)) return;
-
-    this.tempSelectedDate.setHours(12, 0, 0, 0);
-    this.selectedDate = new Date(this.tempSelectedDate);
-    this.date = this.selectedDate;
-
-    this.dateChange.emit(this.selectedDate);
-    this.onChange(this.selectedDate);
-    this.onTouched();
-
-    this.showCalendar = false;
   }
 
   cancel() {

@@ -6,6 +6,7 @@ import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
 import { DropDownModule } from 'verben-ng-ui/src/lib/components/drop-down';
 import { VerbenPopUpModule } from 'verben-ng-ui/src/lib/components/pop-up';
 import { OutSideClickDirective } from 'verben-ng-ui/src/lib/components/data-view';
+import { TooltipModule } from 'verben-ng-ui/src/lib/components/tooltip';
 @NgModule({
   declarations: [DatePickerComponent],
   imports: [
@@ -15,6 +16,7 @@ import { OutSideClickDirective } from 'verben-ng-ui/src/lib/components/data-view
     DropDownModule,
     VerbenPopUpModule,
     OutSideClickDirective,
+    TooltipModule
   ],
   exports: [DatePickerComponent],
 })

@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  ViewChild,
+  forwardRef,
+} from '@angular/core';
 import { DropdownChangeEvent } from 'verben-ng-ui/src/lib/components/drop-down';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -29,13 +38,16 @@ export class DatePickerComponent implements ControlValueAccessor {
   @Input() showTime: boolean = false;
 
   @Input() datePickerWidth: string = '400px';
-  @Input() useDefaultDate: boolean = false; 
+  @Input() useDefaultDate: boolean = false;
 
-  @Output() dateChange = new EventEmitter<Date|null>();
+  @Output() dateChange = new EventEmitter<Date | null>();
+  @ViewChild('datePickerContainer', { static: true })
+  datePickerContainer!: ElementRef;
+  @ViewChild('datePickerExpansion', { static: false })
+  datePickerExpansion!: ElementRef;
 
   yearRange: number[] = [];
   filteredYearRange: number[] = [];
-
 
   selectedDate: Date | null = null;
   tempSelectedDate: Date | null = null;
@@ -44,8 +56,18 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
 
   selectedMonth: number = 1;
@@ -117,7 +139,6 @@ export class DatePickerComponent implements ControlValueAccessor {
     );
     this.yearRange.sort((a, b) => b - a);
 
-  
     if (!this.date && this.useDefaultDate) {
       const now = new Date();
       const pad = (n: number) => n.toString().padStart(2, '0');
@@ -185,7 +206,6 @@ export class DatePickerComponent implements ControlValueAccessor {
   toggleCalendar() {
     this.showCalendar = !this.showCalendar;
 
-
     if (this.date) {
       this.tempSelectedDate = new Date(this.date);
     } else {
@@ -201,8 +221,7 @@ export class DatePickerComponent implements ControlValueAccessor {
     if (this.showTime && !this.tempTime) {
       const today = new Date();
       const isToday =
-        this.tempSelectedDate &&
-        this.isSameDate(this.tempSelectedDate, today);
+        this.tempSelectedDate && this.isSameDate(this.tempSelectedDate, today);
 
       const hours = isToday ? today.getHours() : 0;
       const minutes = isToday ? today.getMinutes() : 0;
@@ -225,24 +244,21 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
     this.tempSelectedDate?.setHours(hours, minutes, 0, 0);
   }
-clearDate() {
-  this.date = null;
-  this.selectedDate = null;
-  this.tempSelectedDate = null;
-  this.tempTime = '';
-  this.selectedHour = '00';
-  this.selectedMinute = '00';
+  clearDate() {
+    this.date = null;
+    this.selectedDate = null;
+    this.tempSelectedDate = null;
+    this.tempTime = '';
+    this.selectedHour = '00';
+    this.selectedMinute = '00';
 
+    this.dateChange.emit(null);
 
-  this.dateChange.emit(null);
+    this.onChange(null);
+    this.onTouched();
 
- 
-  this.onChange(null);
-  this.onTouched();
-
-
-  this.showCalendar = false;
-}
+    this.showCalendar = false;
+  }
 
   fixToUTC(dateValue: any) {
     if (!dateValue) return null;
@@ -453,5 +469,22 @@ clearDate() {
 
   cancel() {
     this.showCalendar = false;
+  }
+
+  @HostListener('document:click', ['$event.target'])
+  onClickOutside(targetElement: any) {
+    if (!this.showCalendar) {
+      return;
+    }
+    const isInsidePane = targetElement.closest('.cdk-overlay-pane') !== null;
+    if (
+      !this.datePickerContainer.nativeElement.contains(targetElement) &&
+      this.showCalendar &&
+      this.datePickerExpansion &&
+      !this.datePickerExpansion.nativeElement.contains(targetElement) &&
+      !isInsidePane
+    ) {
+      this.showCalendar = false;
+    }
   }
 }

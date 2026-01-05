@@ -258,6 +258,7 @@ export class DataTableComponent {
       id: 'Name',
       header: 'Name',
       accessorKey: 'Name',
+      isHidden: true,
     },
     {
       id: 'Friend',

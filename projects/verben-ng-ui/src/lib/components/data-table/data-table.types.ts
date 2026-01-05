@@ -25,6 +25,7 @@ export interface ColumnDefinition<T> {
   canExport?: boolean;
   importBy?: keyof T | ((importedRow: any) => T[keyof T]);
   exportBy?: keyof T | ((row: T) => any);
+  isHidden?: boolean;
 }
 
 // Define a type that extends T with a _key property

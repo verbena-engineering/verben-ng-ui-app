@@ -103,7 +103,7 @@ export class VerbenPopUpComponent implements AfterViewChecked {
   }
 
   @HostListener('document:click', ['$event.target'])
-  onClickOutside(targetElement: HTMLElement) {
+  onClickOutside(targetElement: any) {
     const clickedInside = this.elementRef.nativeElement.contains(targetElement);
     const isInsidePane = targetElement.closest('.cdk-overlay-pane') !== null;
     if (

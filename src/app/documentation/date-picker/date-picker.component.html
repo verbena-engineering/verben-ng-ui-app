@@ -1,9 +1,10 @@
-<app-date-picker
-  [(ngModel)]="selectedDate"
-  (ngModelChange)="onDateChange($event)"
-   
-  [showTime]="true"
-  placeholder="Pick a date"
-></app-date-picker>
+<div class="date-page-container">
+  <app-date-picker
+    [(ngModel)]="selectedDate"
+    (ngModelChange)="onDateChange($event)"
+    [showTime]="true"
+    placeholder="Pick a date"
+  ></app-date-picker>
+</div>
 
-<p>Chosen Date: {{ selectedDate}}</p>
+<p>Chosen Date: {{ selectedDate }}</p>

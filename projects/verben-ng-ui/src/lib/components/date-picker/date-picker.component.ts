@@ -477,8 +477,9 @@ export class DatePickerComponent implements ControlValueAccessor {
       return;
     }
     const isInsidePane = targetElement.closest('.cdk-overlay-pane') !== null;
+
+    // !this.datePickerContainer.nativeElement.contains(targetElement)
     if (
-      !this.datePickerContainer.nativeElement.contains(targetElement) &&
       this.showCalendar &&
       this.datePickerExpansion &&
       !this.datePickerExpansion.nativeElement.contains(targetElement) &&

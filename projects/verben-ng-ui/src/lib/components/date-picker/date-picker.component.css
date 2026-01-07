@@ -1,5 +1,5 @@
 .date-picker {
-  /* position: relative; */
+  position: relative;
   width: 100%;
 }
 .calendar-container {
@@ -34,6 +34,9 @@ input {
   background-color: white;
   /* z-index: 10; */
   border-radius: 4px;
+  height: 45vh;
+  max-height: 370px;
+  overflow-y: auto;
 }
 
 .calendar-header {

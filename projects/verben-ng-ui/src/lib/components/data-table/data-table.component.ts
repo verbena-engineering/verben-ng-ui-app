@@ -80,7 +80,7 @@ export class DataTableComponent<T> {
 
   constructor() {
     this.displayColumns = computed(() => {
-      return this.columns().filter(({ isHidden }) => !isHidden).map((column) => {
+      return this.columns()?.filter(({ isHidden }) => !isHidden).map((column) => {
         const matchingTemplate = this.columnTemplates().find(
           (t) => t.columnId === column.id
         );

@@ -100,7 +100,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
       this.onChange(files);
       this.valueChange.emit(files);
     } else {
-      this.value = target.value.trim();
+      this.value = target.value?.trim();
       this.value = this.applyCapitalization(this.value, this.capitalization);
       this.validate();
       const sanitizedValue = this.sanitizeValue(this.value);
@@ -213,7 +213,7 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: any): void {
-    this.value = value ? this.applyCapitalization(value.trim(), this.capitalization) : '';
+    this.value = value ? this.applyCapitalization(value?.trim(), this.capitalization) : '';
   }
 
   registerOnChange(fn: any): void {

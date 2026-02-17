@@ -10,16 +10,15 @@ import {
   WritableSignal,
 } from '@angular/core';
 import {
-  ColumnDefinition,
-  FormGroupConfig,
-} from 'verben-ng-ui/src/lib/components/data-table';
-import {
   AbstractControl,
   FormArray,
-  FormControl,
-  FormGroup,
+  FormGroup
 } from '@angular/forms';
-import { ColumnDirective } from 'verben-ng-ui/src/lib/components/data-table';
+import {
+  ColumnDefinition,
+  ColumnDirective,
+  FormGroupConfig,
+} from 'verben-ng-ui/src/lib/components/data-table';
 import { DataImportService } from './data-import.service';
 
 @Component({
@@ -125,7 +124,7 @@ export class DataImportComponent<T extends {}> {
 
     this.previewColumnsList = computed(() => {
       return this.previewColumns()
-        .filter((col) => col.importKey || col.formControlName)
+        .filter((col) => col.importKey || col.importBy || col.formControlName)
         .map((column) => {
           const matchingTemplate = this.columnTemplates().find(
             (t) => t.columnId === column.id
@@ -154,7 +153,7 @@ export class DataImportComponent<T extends {}> {
       return (
         this.fields() ??
         this.previewColumnsList()
-          .filter((col) => col.importKey)
+          .filter((col) => col.importKey || col.importBy)
           .map((col) => col.header.toString())
       );
     });

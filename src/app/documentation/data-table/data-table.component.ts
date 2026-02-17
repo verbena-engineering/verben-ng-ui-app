@@ -1,21 +1,20 @@
 import {
-  Component,
-  signal,
   ChangeDetectionStrategy,
+  Component,
   WritableSignal,
+  signal,
   viewChildren,
 } from '@angular/core';
-import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   ColumnDefinition,
   ColumnDirective,
   DataExportService,
   DataExtendItem,
   FilterCondition,
-  FormControlOf,
   FormGroupConfig,
   SortCondition,
-  TableStyles,
+  TableStyles
 } from 'verben-ng-ui';
 import { read, utils, writeFile } from 'xlsx';
 import { OperationAccount } from './sample-models';
@@ -97,7 +96,7 @@ export class DataTableComponent {
       id: 'money',
       header: 'Money',
       // accessorKey: 'money',
-      accessorFn: (row) => row,
+      accessorFn: (row) => row.money,
       importKey: 'money',
     },
     {
@@ -250,6 +249,65 @@ export class DataTableComponent {
       header: 'Actions',
     },
   ]);
+
+  // Example demonstrating importBy for nested field handling
+  smallColsIII = signal<ColumnDefinition<YourDataType>[]>([
+    {
+      id: 'names',
+      header: 'Full Name',
+      accessorFn: (row) => `${row.names?.firstName} ${row.names?.lastName}`,
+      importKey: 'names',
+      // importBy allows us to transform a flattened "Full Name" import field
+      // into the nested names structure { firstName, lastName }
+      importBy: (importedRow: any) => {
+        const fullName = importedRow['Full Name'] || '';
+        const [firstName, ...lastNameParts] = fullName.split(' ');
+        const lastName = lastNameParts.join(' ');
+        return {
+          firstName: firstName || '',
+          lastName: lastName || '',
+        };
+      },
+      canExport: true,
+      canImport: true,
+      isHidden: true,
+    },
+    {
+      id: 'firstName',
+      header: 'First Name',
+      accessorFn: (row) => row.names?.firstName,
+      isHidden: true,
+    },
+    {
+      id: 'lastName',
+      header: 'Last Name',
+      accessorFn: (row) => row.names?.lastName,
+      isHidden: true,
+    },
+    {
+      id: 'role',
+      header: 'Role',
+      accessorKey: 'role',
+      importKey: 'role',
+    },
+    {
+      id: 'age',
+      header: 'Age',
+      accessorKey: 'age',
+      importKey: 'age',
+    },
+    {
+      id: 'money',
+      header: 'Money',
+      accessorKey: 'money',
+      importKey: 'money',
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+    },
+  ]);
+
 
   smallCols2 = signal<
     ColumnDefinition<{ Name: string; Friend: string; Date: Date }>[]

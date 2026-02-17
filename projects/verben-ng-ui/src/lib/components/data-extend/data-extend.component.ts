@@ -1,15 +1,14 @@
 import {
   Component,
   computed,
-  effect,
   input,
   output,
   Signal,
   signal,
-  WritableSignal,
+  WritableSignal
 } from '@angular/core';
-import { DataExtendItem, DataType } from './data-extend.types';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DataExtendItem, DataType } from './data-extend.types';
 
 @Component({
   selector: 'lib-data-extend',
@@ -20,7 +19,7 @@ export class DataExtendComponent {
   properties = input<DataExtendItem[]>([]);
   extendDataEvent = output<DataExtendItem[]>();
 
-  items: WritableSignal<DataExtendItem[]> = signal<DataExtendItem[]>([]);
+  items: WritableSignal<DataExtendItem[]>;
   showAll: WritableSignal<boolean> = signal<boolean>(false);
   visibleItems: Signal<DataExtendItem[]>;
   form: FormGroup;
@@ -32,9 +31,11 @@ export class DataExtendComponent {
     this.visibleItems = computed(() =>
       this.showAll() ? this.items() : this.items().slice(0, 3)
     );
-    effect(() => {
-      this.items.set(this.properties());
-    });
+    // effect(() => {
+    //   this.items.set(this.properties());
+    // });
+
+    this.items = signal<DataExtendItem[]>([]);
 
     this.form = this.fb.group({
       Name: ['', Validators.required],

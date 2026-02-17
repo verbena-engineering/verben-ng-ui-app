@@ -1,30 +1,41 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { read, utils, writeFile } from 'xlsx';
 import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table';
+import { read, utils, writeFile } from 'xlsx';
 
 @Injectable()
 export class DataImportService<T> {
   importedData: WritableSignal<T[]> = signal([]);
 
-  constructor() {}
+  constructor() { }
 
   // Function to transform imported data to match your model structure
   transformImportData<T>(
     importedData: Record<string, any>[],
     columnDefinitions: ColumnDefinition<T>[]
   ): Partial<T>[] {
-    // Create a mapping from header to importKey
+    // Create mappings from header to importKey and importBy
     const headerToImportKeyMap = new Map<string, keyof T>();
+    const headerToImportByMap = new Map<
+      string,
+      keyof T | ((importedRow: any) => T[keyof T])
+    >();
 
-    // Filter column definitions to only those with importKey and populate the map
+    // Filter column definitions to only those with importKey or importBy and populate the maps
     columnDefinitions
-      .filter((col) => col.importKey)
+      .filter((col) => col.importKey || col.importBy)
       .forEach((col) => {
         const header =
           typeof col.header === 'string'
             ? col.header
             : col.header({}).toString();
-        headerToImportKeyMap.set(header, col.importKey as keyof T);
+
+        if (col.importKey) {
+          headerToImportKeyMap.set(header, col.importKey as keyof T);
+        }
+
+        if (col.importBy) {
+          headerToImportByMap.set(header, col.importBy);
+        }
       });
 
     // Transform each row in the imported data
@@ -33,12 +44,26 @@ export class DataImportService<T> {
 
       // Process each key in the row
       Object.entries(row).forEach(([key, value]) => {
-        // Find the corresponding import key for this header/key
-        const importKey = headerToImportKeyMap.get(key);
+        // Check if there's an importBy transformation first (takes priority)
+        const importBy = headerToImportByMap.get(key);
 
-        // Only add the field if there's a matching import key
-        if (importKey) {
-          transformedRow[importKey] = value;
+        if (importBy) {
+          if (typeof importBy === 'function') {
+            // Use the importBy function to transform the entire imported row
+            const importKey = headerToImportKeyMap.get(key);
+            if (importKey) {
+              transformedRow[importKey] = importBy(row);
+            }
+          } else {
+            // importBy is a direct key reference
+            transformedRow[importBy] = value;
+          }
+        } else {
+          // Fall back to importKey if no importBy is defined
+          const importKey = headerToImportKeyMap.get(key);
+          if (importKey) {
+            transformedRow[importKey] = value;
+          }
         }
       });
 

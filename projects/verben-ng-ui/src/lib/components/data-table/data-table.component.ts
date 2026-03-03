@@ -1,3 +1,4 @@
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,16 +13,15 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { ColumnDirective } from './column.directive';
 import {
   ColumnDefinition,
   DataWithKey,
   FormGroupConfig,
   GroupedDataRow,
 } from './data-table.types';
-import { ColumnDirective } from './column.directive';
 import { TableStyles } from './style.types';
-import { AbstractControl, FormGroup } from '@angular/forms';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'lib-data-table',
@@ -258,8 +258,17 @@ export class DataTableComponent<T> {
     });
     const formGroupConfig = this.formGroupConfig();
     if (formGroupConfig) {
+      // Clone controls so each row gets its own independent AbstractControl instances
+      const clonedControls: { [key: string]: AbstractControl } = {};
+      for (const [key, control] of Object.entries(formGroupConfig.controls) as [string, AbstractControl][]) {
+        clonedControls[key] = new FormControl(
+          control.value,
+          control.validator,
+          control.asyncValidator
+        );
+      }
       const formGroup = new FormGroup(
-        formGroupConfig.controls,
+        clonedControls,
         formGroupConfig.validatorOrOpts,
         formGroupConfig.asyncValidator
       );
@@ -465,7 +474,9 @@ export class DataTableComponent<T> {
     const isEditing = this.isRowEditing(row._key);
     // const editedData = this.editedDataSignal().get(rowId);
     const editedForm = this.formGroupsSignal().get(rowId);
-    const formControl = editedForm?.get(column.formControlName || '');
+    const formControl = column.formControlName
+      ? editedForm?.get(column.formControlName)
+      : undefined;
 
     let value: any;
     if (isEditing) {
@@ -499,6 +510,7 @@ export class DataTableComponent<T> {
       rowId,
       isEditing,
       formControl,
+      control: formControl,
       isSelected: this.isRowSelected(rowId),
       toggleRowSelection: () => this.toggleRowSelection(rowId),
       toggleRowEdit: () => this.toggleRowEditInternal(row, rowIndex),

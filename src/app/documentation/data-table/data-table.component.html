@@ -24,20 +24,22 @@
   </tbody>
 </table> -->
 
-<!-- <lib-data-table
-  [data]="smallData()"
-  [columns]="smallCols()"
-  [formGroupConfig]="this.formGroupConfig()"
-  [styleConfig]="table2Styles"
-  (rowSave)="addRow($event)"
->
-  <ng-container libColumn="actions">
-    <ng-template
-      #cell
-      let-isEditing="isEditing"
-      let-toggleRowEdit="toggleRowEdit"
-      let-deleteRow="deleteRow"
-    >
+<h1 class="text-lg font-semibold my-2">Form Control</h1>
+
+<lib-data-table [data]="smallData()" [columns]="smallCols()" [formGroupConfig]="this.formGroupConfig()"
+  [styleConfig]="table2Styles" (rowSave)="addRow($event)">
+
+
+  <ng-container libColumn="Name">
+    <ng-template #cellEdit let-value="value" let-row="row" let-control="control">
+      <div class="width-max">
+        <verbena-input [formControl]="control"></verbena-input>
+      </div>
+    </ng-template>
+  </ng-container>
+
+  <ng-container libColumn="Actions">
+    <ng-template #cell let-isEditing="isEditing" let-toggleRowEdit="toggleRowEdit" let-deleteRow="deleteRow">
       <div class="flex gap-4 items-center">
         <button (click)="toggleRowEdit()">
           {{ isEditing ? "Save" : "Edit" }}
@@ -50,7 +52,7 @@
       <strong>Actions</strong>
     </ng-template>
   </ng-container>
-</lib-data-table> -->
+</lib-data-table>
 
 <!-- <lib-data-import
   [formGroupConfig]="this.formGroupConfig()"

@@ -276,13 +276,13 @@ export class DataTableComponent {
       id: 'firstName',
       header: 'First Name',
       accessorFn: (row) => row.names?.firstName,
-      isHidden: true,
+      isHidden: false,
     },
     {
       id: 'lastName',
       header: 'Last Name',
       accessorFn: (row) => row.names?.lastName,
-      isHidden: true,
+      isHidden: false,
     },
     {
       id: 'role',

@@ -36,7 +36,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   @Input() monthPlaceholder: string = 'Select a month';
   @Input() date: Date | null | string = null;
   @Input() showTime: boolean = false;
-  @Input() overlayWidth: number | null = null;
+  @Input() overlayWidth: number | null = 400;
 
   @Input() datePickerWidth: string = '400px';
   @Input() useDefaultDate: boolean = false;

@@ -203,7 +203,7 @@
         </div>
 
         <div class="dates">
-          <ng-container *ngFor="let day of getDaysInMonth()">
+          <ng-container *ngFor="let day of daysInMonth">
             <button
               *ngIf="day; else empty"
               [class.selected]="isSelected(day)"

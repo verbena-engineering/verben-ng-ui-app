@@ -75,6 +75,8 @@ export class DatePickerComponent implements ControlValueAccessor {
   selectedMonthString: string = '';
   selectedYear: number = new Date().getFullYear();
 
+  daysInMonth: (Date | null)[] = [];
+
   private onChange: any = () => {};
   private onTouched: any = () => {};
 
@@ -166,6 +168,7 @@ export class DatePickerComponent implements ControlValueAccessor {
       this.dateChange.emit(this.selectedDate);
       this.onChange(localDateString);
     }
+    this.generateDaysInMonth();
   }
 
   get displayDate(): string {
@@ -218,6 +221,8 @@ export class DatePickerComponent implements ControlValueAccessor {
       this.selectedMonthString = this.months[this.selectedMonth];
       this.selectedYear = this.tempSelectedDate.getFullYear();
     }
+
+    this.generateDaysInMonth();
 
     if (this.showTime && !this.tempTime) {
       const today = new Date();
@@ -339,6 +344,7 @@ export class DatePickerComponent implements ControlValueAccessor {
       this.selectedYear--;
     }
     this.updateTempSelectedDate();
+    this.generateDaysInMonth();
   }
 
   nextMonth() {
@@ -348,16 +354,19 @@ export class DatePickerComponent implements ControlValueAccessor {
       this.selectedYear++;
     }
     this.updateTempSelectedDate();
+    this.generateDaysInMonth();
   }
 
   onDropdownYearChange(event: DropdownChangeEvent): void {
     this.selectedYear = event.value;
     this.updateTempSelectedDate();
+    this.generateDaysInMonth();
   }
 
   onDropdownMonthChange(event: DropdownChangeEvent): void {
     this.selectedMonth = this.months.indexOf(event.value);
     this.updateTempSelectedDate();
+    this.generateDaysInMonth();
   }
 
   updateTempSelectedDate() {
@@ -366,7 +375,7 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.tempSelectedDate.setFullYear(this.selectedYear);
   }
 
-  getDaysInMonth(): (Date | null)[] {
+  generateDaysInMonth() {
     const days: (Date | null)[] = [];
     const year = this.selectedYear;
     const month = this.selectedMonth;
@@ -380,11 +389,31 @@ export class DatePickerComponent implements ControlValueAccessor {
 
     const totalDays = new Date(year, month + 1, 0).getDate();
     for (let i = 1; i <= totalDays; i++) {
-      const day = new Date(year, month, i);
-      days.push(day);
+      days.push(new Date(year, month, i));
     }
-    return days;
+
+    this.daysInMonth = days;
   }
+
+  // getDaysInMonth(): (Date | null)[] {
+  //   const days: (Date | null)[] = [];
+  //   const year = this.selectedYear;
+  //   const month = this.selectedMonth;
+
+  //   const firstDayOfMonth = new Date(year, month, 1).getDay();
+  //   const offset = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
+
+  //   for (let i = 0; i < offset; i++) {
+  //     days.push(null);
+  //   }
+
+  //   const totalDays = new Date(year, month + 1, 0).getDate();
+  //   for (let i = 1; i <= totalDays; i++) {
+  //     const day = new Date(year, month, i);
+  //     days.push(day);
+  //   }
+  //   return days;
+  // }
 
   sanitizeDateString(value: string): string {
     return value?.endsWith('Z') ? value.slice(0, -1) : value;

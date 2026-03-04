@@ -5,10 +5,11 @@
 
 .example-section {
   gap: 10px;
+  width: 200px;
 }
 
-.example-section>h1 {
-  font-weight: bold
+.example-section > h1 {
+  font-weight: bold;
 }
 
 .verben-input {
@@ -16,7 +17,12 @@
   outline: none;
   border-radius: 5px;
   color: #334155;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, outline-color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s,
+    outline-color 0.2s;
 }
 
 .verben-input::placeholder {
@@ -24,7 +30,7 @@
 }
 
 .verben-input:hover {
-  border: 1px solid #697e97
+  border: 1px solid #697e97;
 }
 
 .verben-input.disabled {

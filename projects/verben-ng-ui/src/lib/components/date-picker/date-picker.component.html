@@ -13,7 +13,7 @@
       [style.border]="border"
       [ngClass]="{
         'cursor-not-allowed': disabled === true,
-        'cursor-pointer': disabled === false
+        'cursor-pointer': disabled === false,
       }"
       readonly
     />
@@ -26,7 +26,9 @@
 
   <ng-template
     cdkConnectedOverlay
-    [cdkConnectedOverlayWidth]="datePickerContainer.offsetWidth"
+    [cdkConnectedOverlayWidth]="
+      overlayWidth ? overlayWidth : datePickerContainer.offsetWidth
+    "
     [cdkConnectedOverlayLockPosition]="false"
     [cdkConnectedOverlayOrigin]="trigger"
     [cdkConnectedOverlayPositions]="[
@@ -34,14 +36,14 @@
         originX: 'start',
         originY: 'bottom',
         overlayX: 'start',
-        overlayY: 'top'
+        overlayY: 'top',
       },
       {
         originX: 'start',
         originY: 'top',
         overlayX: 'start',
-        overlayY: 'bottom'
-      }
+        overlayY: 'bottom',
+      },
     ]"
     [cdkConnectedOverlayOpen]="showCalendar"
     (detach)="showCalendar = false"

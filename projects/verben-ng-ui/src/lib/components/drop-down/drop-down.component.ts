@@ -73,6 +73,7 @@ export class DropDownComponent
   }
 
   @Input() width: string = '12rem';
+  @Input() overlayWidth: number | null = null;
   @Input() showHorizontalLine: boolean = true;
   @Input() horizontalLineColor: string = 'rgba(255, 230, 129, 1)';
   @Input() optionLabel?: string;
@@ -282,7 +283,7 @@ export class DropDownComponent
           item.items = item.items.filter(
             (x) =>
               typeof x.value[item.filterBy!] == 'string' &&
-              new RegExp(searchTerm, 'i').test(x.value[item.filterBy!])
+              new RegExp(searchTerm, 'i').test(x.value[item.filterBy!]),
           );
           this.group
             ? this.optionsChange.emit(this.options as DropdownMenuItem[])
@@ -294,7 +295,7 @@ export class DropDownComponent
           item.items = item.copy.filter(
             (x) =>
               typeof x.value == 'string' &&
-              new RegExp(searchTerm, 'i').test(x.value)
+              new RegExp(searchTerm, 'i').test(x.value),
           );
           this.group
             ? this.optionsChange.emit(this.options as DropdownMenuItem[])
@@ -322,14 +323,14 @@ export class DropDownComponent
           this._options = this.optionsCopy.filter(
             (x) =>
               typeof x[this.filterBy!] == 'string' &&
-              new RegExp(searchTerm, 'i').test(x[this.filterBy!])
+              new RegExp(searchTerm, 'i').test(x[this.filterBy!]),
           );
           this.group
             ? this.optionsChange.emit(this.options as DropdownMenuItem[])
             : this.optionsChange.emit(this.options);
         } else {
           this._options = this.optionsCopy.filter(
-            (x) => typeof x == 'string' && new RegExp(searchTerm, 'i').test(x)
+            (x) => typeof x == 'string' && new RegExp(searchTerm, 'i').test(x),
           );
           this.group
             ? this.optionsChange.emit(this.options as DropdownMenuItem[])
@@ -363,7 +364,7 @@ export class DropDownComponent
 
   async expandMenu(
     item: DropdownMenuItemWrapper,
-    siblings: DropdownMenuItemWrapper[]
+    siblings: DropdownMenuItemWrapper[],
   ) {
     if (item.items) {
       if (this.filter) {
@@ -382,7 +383,7 @@ export class DropDownComponent
             const contextsLength = this.selectedContexts.length;
             this.selectedContexts.splice(
               siblingCheck,
-              contextsLength - siblingCheck
+              contextsLength - siblingCheck,
             );
           }
           this.selectedContexts.push(item);
@@ -681,7 +682,7 @@ export class DropDownComponent
           const equalityCheck = this.selectKey
             ? isEqual(
                 this.getValue(option)[this.selectKey],
-                (obj && obj[this.selectKey]) || null
+                (obj && obj[this.selectKey]) || null,
               )
             : isEqual(this.getValue(option), obj);
           if (equalityCheck) {
@@ -707,9 +708,9 @@ export class DropDownComponent
           this.selectKey
             ? isEqual(
                 this.getValue(option)[this.selectKey],
-                (obj && obj[this.selectKey]) || null
+                (obj && obj[this.selectKey]) || null,
               )
-            : isEqual(this.getValue(option), obj)
+            : isEqual(this.getValue(option), obj),
         );
         if (item) {
           this.selectedOptionLabel = this.getOptionLabel(item);
@@ -736,7 +737,7 @@ export class DropDownComponent
             const equalityCheck = this.selectKey
               ? isEqual(
                   this.getValue(option)[this.selectKey],
-                  object[this.selectKey]
+                  object[this.selectKey],
                 )
               : isEqual(this.getValue(option), object);
             if (equalityCheck) {
@@ -744,7 +745,7 @@ export class DropDownComponent
               this.selectedOptionLabels.push(
                 this.asyncLabel
                   ? await this.asyncLabel(object)
-                  : this.getOptionLabel(option)
+                  : this.getOptionLabel(option),
               );
               break;
             }
@@ -762,7 +763,7 @@ export class DropDownComponent
         this.selectedOptionLabels.push(
           this.asyncLabel
             ? await this.asyncLabel(object)
-            : this.getOptionLabel(object)
+            : this.getOptionLabel(object),
         );
       }
       this.onTouched();
@@ -780,10 +781,10 @@ export class DropDownComponent
     const index = this.group
       ? this.options.findIndex(
           (x) =>
-            x.value[this.optionValue!] && x.value[this.optionValue!] == value
+            x.value[this.optionValue!] && x.value[this.optionValue!] == value,
         )
       : this.options.findIndex(
-          (x) => x[this.optionValue!] && x[this.optionValue!] == value
+          (x) => x[this.optionValue!] && x[this.optionValue!] == value,
         );
     if (index < 0) {
       return this.group ? value.value : value;

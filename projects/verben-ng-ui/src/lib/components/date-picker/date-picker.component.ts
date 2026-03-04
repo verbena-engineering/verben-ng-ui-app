@@ -36,6 +36,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   @Input() monthPlaceholder: string = 'Select a month';
   @Input() date: Date | null | string = null;
   @Input() showTime: boolean = false;
+  @Input() overlayWidth: number | null = null;
 
   @Input() datePickerWidth: string = '400px';
   @Input() useDefaultDate: boolean = false;
@@ -135,7 +136,7 @@ export class DatePickerComponent implements ControlValueAccessor {
     const endYear = currentYear + 10;
     this.yearRange = Array.from(
       { length: endYear - 1960 + 1 },
-      (_, i) => 1960 + i
+      (_, i) => 1960 + i,
     );
     this.yearRange.sort((a, b) => b - a);
 
@@ -144,9 +145,9 @@ export class DatePickerComponent implements ControlValueAccessor {
       const pad = (n: number) => n.toString().padStart(2, '0');
 
       const localDateString = `${now.getFullYear()}-${pad(
-        now.getMonth() + 1
+        now.getMonth() + 1,
       )}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(
-        now.getMinutes()
+        now.getMinutes(),
       )}:${pad(now.getSeconds())}`;
 
       this.selectedDate = new Date(localDateString);
@@ -274,8 +275,8 @@ export class DatePickerComponent implements ControlValueAccessor {
         date.getHours(),
         date.getMinutes(),
         date.getSeconds(),
-        date.getMilliseconds()
-      )
+        date.getMilliseconds(),
+      ),
     );
   }
 
@@ -293,11 +294,11 @@ export class DatePickerComponent implements ControlValueAccessor {
 
     const pad = (n: number) => n.toString().padStart(2, '0');
     const localDateString = `${this.selectedDate.getFullYear()}-${pad(
-      this.selectedDate.getMonth() + 1
+      this.selectedDate.getMonth() + 1,
     )}-${pad(this.selectedDate.getDate())}T${pad(
-      this.selectedDate.getHours()
+      this.selectedDate.getHours(),
     )}:${pad(this.selectedDate.getMinutes())}:${pad(
-      this.selectedDate.getSeconds()
+      this.selectedDate.getSeconds(),
     )}`;
 
     this.dateChange.emit(this.selectedDate);

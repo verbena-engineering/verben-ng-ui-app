@@ -29,7 +29,6 @@
 <lib-data-table [data]="smallData()" [columns]="smallCols()" [formGroupConfig]="this.formGroupConfig()"
   [styleConfig]="table2Styles" (rowSave)="addRow($event)">
 
-
   <ng-container libColumn="Name">
     <ng-template #cellEdit let-value="value" let-row="row" let-control="control">
       <div class="width-max">

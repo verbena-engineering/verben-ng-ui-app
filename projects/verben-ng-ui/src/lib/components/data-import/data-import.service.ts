@@ -88,14 +88,11 @@ export class DataImportService<T> {
       // });
       // console.time('Begin');
       let imported: any[] = [];
-      const wb = read(event.target.result, { raw: true });
+      const wb = read(event.target.result, { cellDates: true });
       const sheets = wb.SheetNames;
       if (sheets.length) {
         const rows = utils.sheet_to_json(wb.Sheets[sheets[0]], {
-          raw: false,
-          // defval: '',
-          // rawNumbers: true,
-          // dateNF: 'dd/mm/yyyy',
+          defval: null,
         }) as Record<string, any>[];
 
         imported = this.transformImportData(rows, columnDefinitions) as T[];

@@ -95,6 +95,7 @@ export class DropDownComponent
   @Input() filterBy?: string;
   @Input() debounceTime: number = 500;
   @Input() minChar: number = 0;
+  @Input() refPageSize: number = 0;
   @Input() disabled: boolean = false;
   @Input() required: boolean = false;
   @Input() load?: (context: DropdownLoadEvent) => Promise<any[]>;
@@ -461,14 +462,36 @@ export class DropDownComponent
     }
   }
 
+  private normalizeLoadTimes() {
+    if (this.refPageSize <= 0) return;
+
+    const optionLength = this.options?.length || 0;
+
+    const calculatedLoadTimes = Math.max(
+      Math.ceil(optionLength / this.refPageSize),
+      0,
+    );
+
+    this.loadTimes.setLoadTimes(calculatedLoadTimes);
+  }
+
   async loadMore() {
     if (this.load) {
-      if (this.options.length > 0 && !this.initialIncrement) {
-        this.loadTimes.increaseLoadTime();
+      const shouldSyncLoadTimes =
+        this.refPageSize > 0 ||
+        (this.options.length > 0 && !this.initialIncrement);
+
+      if (shouldSyncLoadTimes) {
+        if (this.refPageSize > 0) {
+          this.normalizeLoadTimes();
+        } else {
+          this.loadTimes.increaseLoadTime();
+          this.initialIncrement = true;
+        }
+
         if (this.filter) {
           this.loadTimesCopy = cloneDeep(this.loadTimes);
         }
-        this.initialIncrement = true;
       }
       const searchContext = this.searchContext.trim();
       this.isLoading = true;

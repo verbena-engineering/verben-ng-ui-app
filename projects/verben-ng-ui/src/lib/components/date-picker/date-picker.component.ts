@@ -287,17 +287,21 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   confirm() {
     if (!this.tempSelectedDate) return;
-    if (this.isDisabled(this.tempSelectedDate)) return;
 
     const hours = Number(this.selectedHour);
     const minutes = Number(this.selectedMinute);
 
+    // Apply selected time FIRST
     this.tempSelectedDate.setHours(hours, minutes, 0, 0);
+
+    // THEN validate
+    if (this.isDisabled(this.tempSelectedDate)) return;
 
     this.selectedDate = new Date(this.tempSelectedDate);
     this.date = this.selectedDate;
 
     const pad = (n: number) => n.toString().padStart(2, '0');
+
     const localDateString = `${this.selectedDate.getFullYear()}-${pad(
       this.selectedDate.getMonth() + 1,
     )}-${pad(this.selectedDate.getDate())}T${pad(
@@ -419,13 +423,23 @@ export class DatePickerComponent implements ControlValueAccessor {
     return value?.endsWith('Z') ? value.slice(0, -1) : value;
   }
 
-  isDisabled(day: Date | string): boolean {
-    const dayDate = this.toDate(day);
+  // isDisabled(day: Date | string): boolean {
+  //   const dayDate = this.toDate(day);
 
-    if (this.minDate && dayDate < this.stripTime(this.toDate(this.minDate)))
-      return true;
-    if (this.maxDate && dayDate > this.stripTime(this.toDate(this.maxDate)))
-      return true;
+  //   if (this.minDate && dayDate < this.stripTime(this.toDate(this.minDate)))
+  //     return true;
+  //   if (this.maxDate && dayDate > this.stripTime(this.toDate(this.maxDate)))
+  //     return true;
+
+  //   return false;
+  // }
+
+  isDisabled(day: Date | string): boolean {
+    const dayDate = this.stripTime(day);
+
+    if (this.minDate && dayDate < this.stripTime(this.minDate)) return true;
+
+    if (this.maxDate && dayDate > this.stripTime(this.maxDate)) return true;
 
     return false;
   }
@@ -439,6 +453,30 @@ export class DatePickerComponent implements ControlValueAccessor {
     if (value instanceof Date) return value;
     return new Date(this.sanitizeDateString(value));
   }
+
+  // toDate(value: Date | string): Date {
+  //   if (value instanceof Date) return value;
+
+  //   const sanitized = this.sanitizeDateString(value);
+
+  //   const [datePart, timePart] = sanitized.split('T');
+  //   const [year, month, day] = datePart.split('-').map(Number);
+
+  //   if (!timePart) {
+  //     return new Date(year, month - 1, day);
+  //   }
+
+  //   const [hours, minutes, seconds] = timePart.split(':').map(Number);
+
+  //   return new Date(
+  //     year,
+  //     month - 1,
+  //     day,
+  //     hours || 0,
+  //     minutes || 0,
+  //     seconds || 0,
+  //   );
+  // }
 
   is24Hour: boolean = true;
 

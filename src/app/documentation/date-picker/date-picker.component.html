@@ -1,9 +1,9 @@
 <div class="date-page-container">
   <app-date-picker
     [(ngModel)]="selectedDate"
-    (ngModelChange)="onDateChange($event)"
     [showTime]="true"
     placeholder="Pick a date"
+    [maxDate]="maxDate"
     [overlayWidth]="400"
   ></app-date-picker>
 </div>

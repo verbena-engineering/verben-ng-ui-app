@@ -16,4 +16,8 @@ export class DropdownLoadEvent {
   reset() {
     this._loadTimes = 0;
   }
+
+  setLoadTimes(value: number) {
+    this._loadTimes = value;
+  }
 }

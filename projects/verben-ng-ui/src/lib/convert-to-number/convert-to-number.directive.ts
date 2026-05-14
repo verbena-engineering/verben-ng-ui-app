@@ -1,13 +1,22 @@
-import { Directive, ElementRef, HostListener, Renderer2, Output, EventEmitter } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  Renderer2,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 
 @Directive({
-  selector: '[appConvertToNumber]'
+  selector: '[appConvertToNumber]',
 })
 export class ConvertToNumberDirective {
-
   @Output() numberValue = new EventEmitter<number | null>();
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+  ) {}
 
   @HostListener('input', ['$event.target.value']) onInput(value: string) {
     const num = Number(value);
@@ -17,6 +26,6 @@ export class ConvertToNumberDirective {
     } else {
       this.numberValue.emit(null);
     }
-    console.log(`this is ${num}`)
+    //   console.log(`this is ${num}`)
   }
 }

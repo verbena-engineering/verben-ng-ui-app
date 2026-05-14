@@ -80,25 +80,28 @@ export class DataTableComponent<T> {
 
   constructor() {
     this.displayColumns = computed(() => {
-      return this.columns()?.filter(({ isHidden }) => !isHidden).map((column) => {
-        const matchingTemplate = this.columnTemplates().find(
-          (t) => t.columnId === column.id
-        );
-        if (matchingTemplate) {
-          console.log('Found matching template:', matchingTemplate);
-          return {
-            ...column,
-            cellTemplate: matchingTemplate.cellTemplate ?? column.cellTemplate,
-            cellEditTemplate:
-              matchingTemplate.cellEditTemplate ?? column.cellEditTemplate,
-            headerTemplate:
-              matchingTemplate.headerTemplate ?? column.headerTemplate,
-            footerTemplate:
-              matchingTemplate.footerTemplate ?? column.footerTemplate,
-          };
-        }
-        return column;
-      });
+      return this.columns()
+        ?.filter(({ isHidden }) => !isHidden)
+        .map((column) => {
+          const matchingTemplate = this.columnTemplates().find(
+            (t) => t.columnId === column.id,
+          );
+          if (matchingTemplate) {
+            // console.log('Found matching template:', matchingTemplate);
+            return {
+              ...column,
+              cellTemplate:
+                matchingTemplate.cellTemplate ?? column.cellTemplate,
+              cellEditTemplate:
+                matchingTemplate.cellEditTemplate ?? column.cellEditTemplate,
+              headerTemplate:
+                matchingTemplate.headerTemplate ?? column.headerTemplate,
+              footerTemplate:
+                matchingTemplate.footerTemplate ?? column.footerTemplate,
+            };
+          }
+          return column;
+        });
     });
 
     this.tableData = computed(() => {
@@ -135,7 +138,7 @@ export class DataTableComponent<T> {
   }
 
   hasFooter = computed(() =>
-    this.displayColumns().some((col) => col.footerTemplate !== undefined)
+    this.displayColumns().some((col) => col.footerTemplate !== undefined),
   );
 
   // Helper method to get unique identifier for a row
@@ -260,17 +263,20 @@ export class DataTableComponent<T> {
     if (formGroupConfig) {
       // Clone controls so each row gets its own independent AbstractControl instances
       const clonedControls: { [key: string]: AbstractControl } = {};
-      for (const [key, control] of Object.entries(formGroupConfig.controls) as [string, AbstractControl][]) {
+      for (const [key, control] of Object.entries(formGroupConfig.controls) as [
+        string,
+        AbstractControl,
+      ][]) {
         clonedControls[key] = new FormControl(
           control.value,
           control.validator,
-          control.asyncValidator
+          control.asyncValidator,
         );
       }
       const formGroup = new FormGroup(
         clonedControls,
         formGroupConfig.validatorOrOpts,
-        formGroupConfig.asyncValidator
+        formGroupConfig.asyncValidator,
       );
       formGroup.patchValue(row.originalData as any);
       this.formGroupsSignal.update((map) => {
@@ -369,7 +375,7 @@ export class DataTableComponent<T> {
       this.selectedRowsSignal.set(new Set());
     } else {
       const nonGroupRows = this.tableData().filter(
-        (row) => !this.isGroupRow(row.originalData)
+        (row) => !this.isGroupRow(row.originalData),
       );
       this.selectedRowsSignal.set(new Set(nonGroupRows.map((row) => row._key)));
     }
@@ -378,10 +384,10 @@ export class DataTableComponent<T> {
 
   private emitSelectionChange() {
     const selectedRows = this.tableData().filter((row) =>
-      this.selectedRowsSignal().has(row._key)
+      this.selectedRowsSignal().has(row._key),
     );
     this.selectionChange.emit(
-      selectedRows.map(({ originalData }) => originalData)
+      selectedRows.map(({ originalData }) => originalData),
     );
   }
 
@@ -398,7 +404,7 @@ export class DataTableComponent<T> {
   updateEditedValue(
     rowId: string | number,
     column: ColumnDefinition<T>,
-    value: any
+    value: any,
   ) {
     // this.editedDataSignal.update((map) => {
     //   const newMap = new Map(map);
@@ -418,7 +424,7 @@ export class DataTableComponent<T> {
   updateEditedValueFn(
     rowId: string | number,
     valueFn: (value: any) => T,
-    value: any
+    value: any,
   ) {
     // this.editedDataSignal.update((map) => {
     //   const newMap = new Map(map);
@@ -441,7 +447,7 @@ export class DataTableComponent<T> {
     rowId: string | number,
     column: ColumnDefinition<T>,
     nestedField: string,
-    value: any
+    value: any,
   ) {
     // this.editedDataSignal.update((map) => {
     //   const newMap = new Map(map);
@@ -468,7 +474,7 @@ export class DataTableComponent<T> {
   getCellContext(
     row: DataWithKey<T>,
     column: ColumnDefinition<T>,
-    rowIndex: number
+    rowIndex: number,
   ) {
     const rowId = row._key;
     const isEditing = this.isRowEditing(row._key);

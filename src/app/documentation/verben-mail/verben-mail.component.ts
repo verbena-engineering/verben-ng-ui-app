@@ -9,6 +9,6 @@ import { MailPayload } from 'verben-ng-ui';
 })
 export class VerbenMailComponent {
   onSubmitMail(mailPayload: MailPayload) {
-    console.log('payload:', mailPayload);
+    //console.log('payload:', mailPayload);
   }
 }

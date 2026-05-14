@@ -6,12 +6,12 @@ import { read, utils, writeFile } from 'xlsx';
 export class DataImportService<T> {
   importedData: WritableSignal<T[]> = signal([]);
 
-  constructor() { }
+  constructor() {}
 
   // Function to transform imported data to match your model structure
   transformImportData<T>(
     importedData: Record<string, any>[],
-    columnDefinitions: ColumnDefinition<T>[]
+    columnDefinitions: ColumnDefinition<T>[],
   ): Partial<T>[] {
     // Create mappings from header to importKey and importBy
     const headerToImportKeyMap = new Map<string, keyof T>();
@@ -75,7 +75,7 @@ export class DataImportService<T> {
     file: File,
     // previewer?: (data: any[]) => void,
     columnDefinitions: ColumnDefinition<T>[],
-    parseImport?: (data: any) => Partial<T>[]
+    parseImport?: (data: any) => Partial<T>[],
   ) {
     const reader = new FileReader();
     reader.onload = (event: any) => {
@@ -114,7 +114,7 @@ export class DataImportService<T> {
   }
 
   handleTemplateExport(fields: string[], title: string) {
-    console.log(fields);
+    // console.log(fields);
     const wb = utils.book_new();
     const ws: any = utils.json_to_sheet([]);
     utils.sheet_add_aoa(ws, [fields]);
@@ -145,8 +145,8 @@ export class DataImportService<T> {
           identifiers.every(
             (identifier) =>
               datum[identifier as keyof T] &&
-              datum[identifier as keyof T] === dat[identifier as keyof T]
-          )
+              datum[identifier as keyof T] === dat[identifier as keyof T],
+          ),
       ).length > 1
     );
   }

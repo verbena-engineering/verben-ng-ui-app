@@ -121,7 +121,7 @@ export class DropdownSampleComponent implements OnInit {
   constructor() {}
 
   async getParentLabel(context: any): Promise<string> {
-    console.log({ MissingObj: this.missingObject });
+    // console.log({ MissingObj: this.missingObject });
     return this.missingObject.Name;
   }
 
@@ -158,18 +158,18 @@ export class DropdownSampleComponent implements OnInit {
   }
 
   onChipChange(event: ChipChangeEvent) {
-    console.log({
-      'Basic Chip': this.basicChip,
-      'Chip. Max 10. Templated item': this.chipValues,
-    });
+    // console.log({
+    //   'Basic Chip': this.basicChip,
+    //   'Chip. Max 10. Templated item': this.chipValues,
+    // });
   }
 
   onDropdownChangeTest(event: DropdownChangeEvent): void {
-    console.log({ SingleNoPagination: event.value });
+    //  console.log({ SingleNoPagination: event.value });
   }
 
   onDropdownChangeTestTwo(event: DropdownChangeEvent): void {
-    console.log({ NewEvent: event });
+    // console.log({ NewEvent: event });
   }
   onDropdownChange(event: DropdownChangeEvent): void {
     // console.log({ SingleNoPagination: event.value });
@@ -193,14 +193,14 @@ export class DropdownSampleComponent implements OnInit {
   }
 
   async mockAsyncFunction(event: DropdownLoadEvent): Promise<string[]> {
-    console.log({ LoadEvent: event });
+    // console.log({ LoadEvent: event });
     return await new Promise((resolve) =>
-      setTimeout(() => resolve(['Option 1', 'Option 2', 'Option 3']), 3000)
+      setTimeout(() => resolve(['Option 1', 'Option 2', 'Option 3']), 3000),
     );
   }
 
   async loadMoreParents(event: DropdownLoadEvent): Promise<TestParentObject[]> {
-    console.log({ ParentLoadEvent: JSON.parse(JSON.stringify(event)) });
+    // console.log({ ParentLoadEvent: JSON.parse(JSON.stringify(event)) });
     return await new Promise((resolve) =>
       setTimeout(
         () =>
@@ -211,19 +211,19 @@ export class DropdownSampleComponent implements OnInit {
             { Id: '4', Name: 'Jemima' },
             { Id: '5', Name: 'Akintunde' },
           ]),
-        3000
-      )
+        3000,
+      ),
     );
   }
 
   async searchParents(
     param: string,
-    event: DropdownLoadEvent
+    event: DropdownLoadEvent,
   ): Promise<TestParentObject[]> {
-    console.log({
-      Param: param,
-      ParentLoadEvent: JSON.parse(JSON.stringify(event)),
-    });
+    // console.log({
+    //   Param: param,
+    //   ParentLoadEvent: JSON.parse(JSON.stringify(event)),
+    // });
     return await new Promise((resolve) =>
       setTimeout(
         () =>
@@ -231,15 +231,15 @@ export class DropdownSampleComponent implements OnInit {
             { Id: '3', Name: 'Jelom' },
             { Id: '4', Name: 'Jemima' },
           ]),
-        3000
-      )
+        3000,
+      ),
     );
   }
 
   async mockAsyncFunctionTwo(
-    event: DropdownLoadEvent
+    event: DropdownLoadEvent,
   ): Promise<TestDropdownObject[]> {
-    console.log({ LoadEvent: event });
+    // console.log({ LoadEvent: event });
     return await new Promise((resolve) =>
       setTimeout(
         () =>
@@ -249,15 +249,15 @@ export class DropdownSampleComponent implements OnInit {
             { Id: '3', Name: 'Three' },
             { Id: '4', Name: 'Four' },
           ]),
-        3000
-      )
+        3000,
+      ),
     );
   }
 
   async mockAsyncFunctionThree(
-    event: DropdownLoadEvent
+    event: DropdownLoadEvent,
   ): Promise<DropdownMenuItem[]> {
-    console.log({ LoadEvent: event });
+    //  console.log({ LoadEvent: event });
     return await new Promise((resolve) =>
       setTimeout(
         () =>
@@ -274,18 +274,18 @@ export class DropdownSampleComponent implements OnInit {
                 },
                 loadTimes: new DropdownLoadEvent(),
               };
-            })
+            }),
           ),
-        3000
-      )
+        3000,
+      ),
     );
   }
 
   async mockAsyncFunctionFour(
-    event: DropdownLoadEvent
+    event: DropdownLoadEvent,
   ): Promise<DropdownMenuItem[]> {
-    console.log('Parent load more called');
-    console.log({ LoadEvent: event });
+    // console.log('Parent load more called');
+    // console.log({ LoadEvent: event });
     return await new Promise((resolve) =>
       setTimeout(
         () =>
@@ -302,18 +302,18 @@ export class DropdownSampleComponent implements OnInit {
                 },
                 loadTimes: new DropdownLoadEvent(),
               };
-            })
+            }),
           ),
-        3000
-      )
+        3000,
+      ),
     );
   }
 
   async loadChildren(
     event: DropdownLoadEvent,
-    id: string
+    id: string,
   ): Promise<DropdownMenuItem[]> {
-    console.log({ LoadEventNested: event });
+    // console.log({ LoadEventNested: event });
     return await new Promise((resolve) =>
       setTimeout(
         () =>
@@ -326,19 +326,19 @@ export class DropdownSampleComponent implements OnInit {
                   // subLabel: 'Other Names',
                   value: y,
                 };
-              })
+              }),
           ),
-        3000
-      )
+        3000,
+      ),
     );
   }
 
   async loadChildrenTwo(
     event: DropdownLoadEvent,
-    id: string
+    id: string,
   ): Promise<DropdownMenuItem[]> {
-    console.log('Child Load More called');
-    console.log({ LoadEventNested: event });
+    // console.log('Child Load More called');
+    // console.log({ LoadEventNested: event });
     return await new Promise((resolve) =>
       setTimeout(
         () =>
@@ -360,20 +360,20 @@ export class DropdownSampleComponent implements OnInit {
                       };
                     }),
                 };
-              })
+              }),
           ),
-        3000
-      )
+        3000,
+      ),
     );
   }
 
   async searchItems(
     param: string,
-    event: DropdownLoadEvent
+    event: DropdownLoadEvent,
   ): Promise<DropdownMenuItem[]> {
-    console.log('Parent search called');
-    console.log({ LoadEventNested: event });
-    console.log({ Param: param });
+    // console.log('Parent search called');
+    // console.log({ LoadEventNested: event });
+    // console.log({ Param: param });
     return await new Promise((resolve) =>
       setTimeout(
         () =>
@@ -392,20 +392,20 @@ export class DropdownSampleComponent implements OnInit {
                   return await this.loadChildrenTwo(context, x.Id);
                 },
               };
-            })
+            }),
           ),
-        3000
-      )
+        3000,
+      ),
     );
   }
   async searchItemsChild(
     param: string,
     event: DropdownLoadEvent,
-    id: string
+    id: string,
   ): Promise<DropdownMenuItem[]> {
-    console.log('Child search called');
-    console.log({ LoadEventNestedChild: event });
-    console.log({ ParamChild: param });
+    // console.log('Child search called');
+    // console.log({ LoadEventNestedChild: event });
+    // console.log({ ParamChild: param });
     return await new Promise((resolve) =>
       setTimeout(
         () =>
@@ -427,10 +427,10 @@ export class DropdownSampleComponent implements OnInit {
                       };
                     }),
                 };
-              })
+              }),
           ),
-        3000
-      )
+        3000,
+      ),
     );
   }
 

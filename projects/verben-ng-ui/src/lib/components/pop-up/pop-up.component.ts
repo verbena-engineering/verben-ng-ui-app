@@ -62,7 +62,7 @@ export class VerbenPopUpComponent implements AfterViewChecked {
   constructor(
     private elementRef: ElementRef,
     private renderer: Renderer2,
-    private overlay: Overlay
+    private overlay: Overlay,
   ) {
     this.scrollStrategy = this.overlay.scrollStrategies.reposition();
   }
@@ -164,7 +164,7 @@ export class VerbenPopUpComponent implements AfterViewChecked {
 
   private setDropdownPosition(): void {
     const dropdown = this.elementRef.nativeElement.querySelector(
-      '.dropdown-container > div'
+      '.dropdown-container > div',
     );
     // const triggerElement = this.elementRef.nativeElement.querySelector('dropdown-menu')
 
@@ -178,21 +178,21 @@ export class VerbenPopUpComponent implements AfterViewChecked {
     const viewportHeight = window.innerHeight;
     const viewportWidth = window.innerWidth;
 
-    console.log('Dropdown Rect:', dropdownRect);
-    console.log('Parent Rect:', parentRect);
-    console.log('Viewport:', { width: viewportWidth, height: viewportHeight });
+    // console.log('Dropdown Rect:', dropdownRect);
+    // console.log('Parent Rect:', parentRect);
+    // console.log('Viewport:', { width: viewportWidth, height: viewportHeight });
 
     // Vertical Positioning
     if (viewportHeight - parentRect.bottom < dropdownRect.height) {
       // Not enough space below, position above
-      console.log('not enough space below');
+      //  console.log('not enough space below');
       const topPosition = parentRect.top - dropdownRect.height;
-      console.log('top pos:', topPosition);
+      //  console.log('top pos:', topPosition);
       this.renderer.setStyle(dropdown, 'top', `auto`);
       this.renderer.setStyle(dropdown, 'bottom', '15px');
     } else {
       // Enough space below, position below
-      console.log('Enough space below');
+      //  console.log('Enough space below');
       const topPosition = parentRect.bottom;
       this.renderer.setStyle(dropdown, 'top', `20px`);
       this.renderer.setStyle(dropdown, 'bottom', 'auto');
@@ -200,13 +200,13 @@ export class VerbenPopUpComponent implements AfterViewChecked {
 
     // Horizontal Positioning
     if (parentRect.left + dropdownRect.width > viewportWidth) {
-      console.log('not Enough space right');
+      //  console.log('not Enough space right');
       const leftPosition = viewportWidth - dropdownRect.width - 10;
       this.renderer.setStyle(dropdown, 'left', `auto`);
       // this.renderer.setStyle(dropdown, 'left', `${Math.max(leftPosition, 0)}px`);
       this.renderer.setStyle(dropdown, 'right', '10px');
     } else {
-      console.log('Enough space right');
+      //  console.log('Enough space right');
       const leftPosition = parentRect.left;
       this.renderer.setStyle(dropdown, 'left', `${10}px`);
       this.renderer.setStyle(dropdown, 'right', 'auto');

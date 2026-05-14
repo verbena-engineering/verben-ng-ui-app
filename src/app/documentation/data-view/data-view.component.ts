@@ -117,11 +117,11 @@ export class DataViewComponent implements OnInit {
     this.cardData = this.cardData.concat(this.cardData);
   }
   onColumnChange(event: any) {
-    console.log(event);
+    // console.log(event);
   }
   onSortChange(event: boolean) {
     this.showSort = event;
-    console.log(event);
+    // console.log(event);
   }
   onColumnsUpdated(updatedColumns: IDataFilter[]) {
     this.showColumn = false;
@@ -130,11 +130,11 @@ export class DataViewComponent implements OnInit {
   onSortUpdated(updatedSorts: IDataFilter[]) {
     this.showSort = false;
     this.selectedSortCount = updatedSorts.length;
-    console.log(updatedSorts);
+    // console.log(updatedSorts);
   }
 
   onViewChange(isGridView: boolean): void {
-    console.log('View changed to:', isGridView ? 'Grid View' : 'List View');
+    // console.log('View changed to:', isGridView ? 'Grid View' : 'List View');
   }
   onSearch(event: { key: string; value: string }) {
     this.searchValue = event.value;

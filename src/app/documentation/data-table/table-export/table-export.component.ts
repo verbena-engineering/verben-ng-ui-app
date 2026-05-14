@@ -47,7 +47,7 @@ export class TableExportComponent {
 
   constructor(
     private exportService: DataExportService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {
     this.newGroupForm = this.fb.group({
       name: ['', Validators.required],
@@ -78,10 +78,10 @@ export class TableExportComponent {
       const properties = Object.keys(this.data[0]);
       this.exportService.setBaseProperties(properties);
       this.numericProperties = properties.filter(
-        (prop) => typeof this.data[0][prop] === 'number'
+        (prop) => typeof this.data[0][prop] === 'number',
       );
       this.stringProperties = properties.filter(
-        (prop) => typeof this.data[0][prop] === 'string'
+        (prop) => typeof this.data[0][prop] === 'string',
       );
       this.updateGroupItems();
     }
@@ -102,7 +102,7 @@ export class TableExportComponent {
   }
 
   addGroup() {
-    console.log('in');
+    // console.log('in');
     if (this.newGroupForm.valid) {
       const selectedItems = this.groupItems.filter((item) => item.selected);
       if (selectedItems.length > 0) {
@@ -115,16 +115,16 @@ export class TableExportComponent {
         this.updateProfiles();
         this.groupItems.forEach((item) => (item.selected = false));
         this.newGroupForm.reset();
-        console.log('SELECTED');
+        // console.log('SELECTED');
       }
-      console.log('VALID');
+      // console.log('VALID');
     }
   }
 
   editProfile(profile: ExportProfile & { selected: boolean }) {
     this.groupItems.forEach((item) => {
       item.selected = profile.items.some(
-        (profileItem) => profileItem.id === item.id
+        (profileItem) => profileItem.id === item.id,
       );
     });
     this.removeProfile(profile);
@@ -144,7 +144,7 @@ export class TableExportComponent {
       if (this.isEditingOperation) {
         this.exportService.updateOperation(
           this.newOperation.id,
-          this.newOperation
+          this.newOperation,
         );
       } else {
         const operation: Operation = {
@@ -189,16 +189,16 @@ export class TableExportComponent {
 
   exportData() {
     const selectedProfiles = this.profiles.filter(
-      (profile) => profile.selected
+      (profile) => profile.selected,
     );
     if (selectedProfiles.length > 0) {
       const exportedData = this.exportService.exportData(
         this.data,
-        selectedProfiles
+        selectedProfiles,
       );
       this.exportDataEvent.emit(exportedData);
     } else {
-      console.log('No profiles selected for export');
+      //  console.log('No profiles selected for export');
     }
   }
 

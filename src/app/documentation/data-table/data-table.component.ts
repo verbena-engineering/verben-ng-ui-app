@@ -14,7 +14,7 @@ import {
   FilterCondition,
   FormGroupConfig,
   SortCondition,
-  TableStyles
+  TableStyles,
 } from 'verben-ng-ui';
 import { read, utils, writeFile } from 'xlsx';
 import { OperationAccount } from './sample-models';
@@ -308,7 +308,6 @@ export class DataTableComponent {
     },
   ]);
 
-
   smallCols2 = signal<
     ColumnDefinition<{ Name: string; Friend: string; Date: Date }>[]
   >([
@@ -391,7 +390,7 @@ export class DataTableComponent {
 
   constructor(
     private fb: FormBuilder,
-    private exportService: DataExportService
+    private exportService: DataExportService,
   ) {
     this.controls = {
       customer: this.fb.control(''),
@@ -428,7 +427,7 @@ export class DataTableComponent {
           id: `ACTIVITY-${index + 1}`,
           activityDetails: Array.from(
             { length: Math.floor(Math.random() * 5) + 1 },
-            () => generateRandomName()
+            () => generateRandomName(),
           ),
           numberOfParticipants: Math.floor(Math.random() * 20) + 1,
           role: 'Tester',
@@ -437,7 +436,7 @@ export class DataTableComponent {
           money: Math.floor(Math.random() * 500) + 1,
           message:
             'Dark seas and dark towers. Night sky and wry smile. Loneliness, nonetheless.',
-        }))
+        })),
       );
 
       this.tableDataMax.set(
@@ -446,7 +445,7 @@ export class DataTableComponent {
           id: `ACTIVITY-${index + 1}`,
           activityDetails: Array.from(
             { length: Math.floor(Math.random() * 5) + 1 },
-            () => generateRandomName()
+            () => generateRandomName(),
           ),
           numberOfParticipants: Math.floor(Math.random() * 20) + 1,
           role: 'Tester',
@@ -455,7 +454,7 @@ export class DataTableComponent {
           money: Math.floor(Math.random() * 500) + 1,
           message:
             'Dark seas and dark towers. Night sky and wry smile. Loneliness, nonetheless.',
-        }))
+        })),
       );
     }, 500);
   }
@@ -465,7 +464,7 @@ export class DataTableComponent {
     key: string | number;
     data: Partial<{ Name: string; Friend: string }>;
   }) {
-    console.log(event);
+    // console.log(event);
     this.smallData.update((dat) => {
       // dat[event.index] = { ...dat[event.index], ...event.data };
       return dat.map((d, i) => {
@@ -475,22 +474,22 @@ export class DataTableComponent {
         return d;
       });
     });
-    console.log(this.smallData());
+    // console.log(this.smallData());
   }
 
   changeCols() {
     this.controlledCols.set(pickRandomSubset(this.tableColumns2));
     this.tableData.update((d) => d.slice(1));
-    console.log(this.controlledCols);
+    //  console.log(this.controlledCols);
   }
 
   onRowEdit(editedRow: YourDataType) {
-    console.log('Row edited:', editedRow);
+    //  console.log('Row edited:', editedRow);
     // Handle the edited row
   }
 
   onSelectionChange(selectedRows: YourDataType[]) {
-    console.log('Selection changed:', selectedRows);
+    //   console.log('Selection changed:', selectedRows);
     // Handle the selection change
   }
 
@@ -503,13 +502,13 @@ export class DataTableComponent {
         }
         return [...data];
       });
-      console.log('Saved row:', row);
+      //  console.log('Saved row:', row);
     }
   }
 
   onRowDelete(row: YourDataType) {
     this.tableData.update((data) => data.filter((item) => item.id !== row.id));
-    console.log('Deleted row:', row);
+    //  console.log('Deleted row:', row);
   }
 
   getDataProperties(): string[] {
@@ -521,30 +520,30 @@ export class DataTableComponent {
 
   handleExport(exportedData: Partial<any>[]) {
     // Here you would implement the actual download functionality
-    console.log('Exported data:', exportedData);
+    // console.log('Exported data:', exportedData);
     // For example, you could convert to CSV and trigger a download
     this.downloadCSV(exportedData);
   }
 
   handleExtend(extendedProperties: DataExtendItem[]) {
-    console.log('Extended properties:', extendedProperties);
+    // console.log('Extended properties:', extendedProperties);
   }
 
   onFiltersApplied(filters: FilterCondition[]) {
     // Apply filters to your data
-    console.log('Applying filters:', filters);
+    //  console.log('Applying filters:', filters);
   }
 
   onSortApplied(sorts: SortCondition[]) {
-    console.log('Applying sorts:', sorts);
+    // console.log('Applying sorts:', sorts);
     // Apply sorts to your data
   }
 
   onColumnsUpdated(columns: ColumnDefinition<YourDataType>[]) {
-    console.log('Applying columns:', columns);
+    // console.log('Applying columns:', columns);
     this.controlledCols.set(columns);
     // Apply columns to your data
-    console.log(this.controlledCols());
+    // console.log(this.controlledCols());
   }
 
   private downloadCSV(data: Partial<any>[]) {
@@ -555,7 +554,7 @@ export class DataTableComponent {
         headers
           .map((header) => row[header])
           .map((datum) => `"${datum}"`)
-          .join(',')
+          .join(','),
       ),
     ].join('\n');
 
@@ -631,7 +630,7 @@ export class DataTableComponent {
   handleImport(
     file: File,
     previewer?: (data: any[]) => void,
-    parseImport?: (data: any) => any[]
+    parseImport?: (data: any) => any[],
   ) {
     const reader = new FileReader();
     reader.onload = (event: any) => {
@@ -674,7 +673,7 @@ export class DataTableComponent {
   }
 
   log(data: any[]) {
-    console.log('Data:', data);
+    // console.log('Data:', data);
   }
 }
 

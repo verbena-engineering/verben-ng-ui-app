@@ -47,6 +47,6 @@ export class NotificationsSampleComponent {
   }
 
   handleButtonClick(event: any) {
-    console.log('events is here', event);
+    // console.log('events is here', event);
   }
 }

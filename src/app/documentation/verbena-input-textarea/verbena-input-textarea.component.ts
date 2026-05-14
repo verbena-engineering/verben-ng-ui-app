@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-verbena-input-textarea',
   templateUrl: './verbena-input-textarea.component.html',
-  styleUrl: './verbena-input-textarea.component.scss'
+  styleUrl: './verbena-input-textarea.component.scss',
 })
 export class VerbenaInputTextareaComponent {
   // Your existing properties
@@ -19,17 +19,17 @@ export class VerbenaInputTextareaComponent {
   // ====================================
   // NEW: Properties for testing disabled
   // ====================================
-  
+
   // For template-driven forms (using [(ngModel)] with [disabled] binding)
   isDisabled: boolean = false;
   isInputDisabled: boolean = false;
-  
+
   // For reactive forms - add more controls to test
   form = new FormGroup({
     quantity: new FormControl(5),
     email: new FormControl(''),
     textarea: new FormControl(''),
-    password: new FormControl('')
+    password: new FormControl(''),
   });
 
   // ====================================
@@ -39,13 +39,13 @@ export class VerbenaInputTextareaComponent {
   // Toggle textarea disabled state (for template-driven)
   toggleTextareaDisabled() {
     this.isDisabled = !this.isDisabled;
-    console.log('📝 Textarea disabled:', this.isDisabled);
+    //console.log('📝 Textarea disabled:', this.isDisabled);
   }
 
   // Toggle input disabled state (for template-driven)
   toggleInputDisabled() {
     this.isInputDisabled = !this.isInputDisabled;
-    console.log('📝 Input disabled:', this.isInputDisabled);
+    //console.log('📝 Input disabled:', this.isInputDisabled);
   }
 
   // Toggle specific form control (for reactive forms)
@@ -54,27 +54,27 @@ export class VerbenaInputTextareaComponent {
     if (control) {
       if (control.disabled) {
         control.enable();
-        console.log(`✅ ${controlName} ENABLED`);
+        //console.log(`✅ ${controlName} ENABLED`);
       } else {
         control.disable();
-        console.log(`🚫 ${controlName} DISABLED`);
+        //console.log(`🚫 ${controlName} DISABLED`);
       }
-      console.log(`   Status: ${control.status}`);
+      //console.log(`   Status: ${control.status}`);
     }
   }
 
   // Disable all form controls at once
   disableAllFormControls() {
     this.form.disable();
-    console.log('🚫 ALL form controls DISABLED');
-    console.log('   Form status:', this.form.status);
+    //console.log('🚫 ALL form controls DISABLED');
+    //console.log('   Form status:', this.form.status);
   }
 
   // Enable all form controls at once
   enableAllFormControls() {
     this.form.enable();
-    console.log('✅ ALL form controls ENABLED');
-    console.log('   Form status:', this.form.status);
+    //console.log('✅ ALL form controls ENABLED');
+    //console.log('   Form status:', this.form.status);
   }
 
   // Programmatically set specific control disabled state
@@ -86,7 +86,7 @@ export class VerbenaInputTextareaComponent {
       } else {
         control.enable();
       }
-      console.log(`${controlName} is now ${disabled ? 'DISABLED' : 'ENABLED'}`);
+      //console.log(`${controlName} is now ${disabled ? 'DISABLED' : 'ENABLED'}`);
     }
   }
 
@@ -95,29 +95,28 @@ export class VerbenaInputTextareaComponent {
   // ====================================
 
   onSubmit() {
-    console.log('📋 Form Value (excludes disabled):', this.form.value);
-    console.log('📋 Form Raw Value (includes disabled):', this.form.getRawValue());
-    console.log('📋 Form Status:', this.form.status);
-    console.log('📋 Form Valid:', this.form.valid);
+    //console.log('📋 Form Value (excludes disabled):', this.form.value);
+    //console.log('📋 Form Raw Value (includes disabled):', this.form.getRawValue());
+    //console.log('📋 Form Status:', this.form.status);
+    //console.log('📋 Form Valid:', this.form.valid);
   }
 
   onValueChange(newValue: number) {
-    console.log('Updated Value:', newValue, this.quantity);
+    //console.log('Updated Value:', newValue, this.quantity);
   }
 
   submit() {
-    console.log('Submitted Values:', {
-      quantity: this.quantity,
-      email: this.email,
-      age: this.age,
-      decimalValue: this.decimalValue,
-      isDisabled: this.isDisabled,
-      isInputDisabled: this.isInputDisabled
-    });
-    
+    // console.log('Submitted Values:', {
+    //   quantity: this.quantity,
+    //   email: this.email,
+    //   age: this.age,
+    //   decimalValue: this.decimalValue,
+    //   isDisabled: this.isDisabled,
+    //   isInputDisabled: this.isInputDisabled
+    // });
     // Also log form values
-    console.log('Form Values:', this.form.value);
-    console.log('Form Raw Values (includes disabled):', this.form.getRawValue());
+    //console.log('Form Values:', this.form.value);
+    //console.log('Form Raw Values (includes disabled):', this.form.getRawValue());
   }
 
   // ====================================
@@ -126,16 +125,16 @@ export class VerbenaInputTextareaComponent {
 
   // Log current state of all controls
   logFormState() {
-    console.log('=== FORM STATE ===');
-    Object.keys(this.form.controls).forEach(key => {
+    //console.log('=== FORM STATE ===');
+    Object.keys(this.form.controls).forEach((key) => {
       const control = this.form.get(key);
-      console.log(`${key}:`, {
-        value: control?.value,
-        disabled: control?.disabled,
-        status: control?.status
-      });
+      // console.log(`${key}:`, {
+      //   value: control?.value,
+      //   disabled: control?.disabled,
+      //   status: control?.status
+      // });
     });
-    console.log('==================');
+    //console.log('==================');
   }
 
   // Check if a specific control is disabled

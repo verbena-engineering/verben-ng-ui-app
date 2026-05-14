@@ -30,6 +30,6 @@ export class SortTableComponent {
     },
   ];
   onSelectOptions(updatedOptions: IDataFilter[]) {
-    console.log('Updated Options:', updatedOptions);
+    //  console.log('Updated Options:', updatedOptions);
   }
 }

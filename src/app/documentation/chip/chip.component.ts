@@ -11,9 +11,9 @@ export class ChipComponent {
   basicChip: string[] = [];
 
   onChipChange(event: ChipChangeEvent) {
-    console.log({
-      'Basic Chip': this.basicChip,
-      'Chip. Max 10. Templated item': this.chipValues,
-    });
+    // console.log({
+    //   'Basic Chip': this.basicChip,
+    //   'Chip. Max 10. Templated item': this.chipValues,
+    // });
   }
 }

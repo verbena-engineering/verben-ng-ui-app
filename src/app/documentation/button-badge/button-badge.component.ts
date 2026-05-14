@@ -15,7 +15,7 @@ export class ButtonBadgeComponent {
   decimalValue: string = '';
 
   onTabChange(tab: TabItemComponent) {
-    console.log('Active tab changed:', tab.title, 'with ID:', tab.id);
+    // console.log('Active tab changed:', tab.title, 'with ID:', tab.id);
   }
 
   submit() {

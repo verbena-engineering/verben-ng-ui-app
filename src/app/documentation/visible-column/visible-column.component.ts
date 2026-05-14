@@ -22,6 +22,6 @@ export class VisibleColumnComponent {
   ];
 
   onColumnsUpdated(updatedColumns: IDataFilter[]) {
-    console.log('Updated columns:', updatedColumns);
+    // console.log('Updated columns:', updatedColumns);
   }
 }

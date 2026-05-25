@@ -3,9 +3,10 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'verbena-button',
   templateUrl: './verbena-button.component.html',
-  styleUrls: ['./verbena-button.component.css']
+  styleUrls: ['./verbena-button.component.css'],
 })
 export class VerbenaButtonComponent {
+  @Input() type: string | undefined;
   @Input() text: string = '';
   @Input() icon: string = '';
   @Input() useIcon: boolean = false;
@@ -22,17 +23,23 @@ export class VerbenaButtonComponent {
   @Input() fontSize: string = '14px';
   @Input() fontWeight: string = '500';
   @Input() disable: boolean = false;
-  @Input() svgSize: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'  = 'md';
+  @Input() svgSize: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' = 'md';
   @Input() weight: number = 400;
   @Input() variant: 'outlined' | 'rounded' | 'sharp' = 'outlined';
-  @Input() styleType: 'primary' | 'secondary' | 'danger' | 'small' | 'outline' | 'grey' | 'ylw-outline' = 'primary';  // Predefined styles
+  @Input() styleType:
+    | 'primary'
+    | 'secondary'
+    | 'danger'
+    | 'small'
+    | 'outline'
+    | 'grey'
+    | 'ylw-outline' = 'primary'; // Predefined styles
 
   @Input() svg: string = '';
   @Input() svgWidth: number = 20;
   @Input() svgHeight: number = 20;
   @Input() iconColor: string = '';
   @Input() svgColor: string = '';
-
 
   @Input() buttonClass: string = ''; // Custom class for button
   @Input() buttonTextClass: string = ''; // Custom class for button
@@ -48,7 +55,7 @@ export class VerbenaButtonComponent {
           textColor: this.textColor || '#000000',
           border: this.border || 'none',
           borderRadius: this.borderRadius || '4px',
-          pd: this.pd || '10px 15px'
+          pd: this.pd || '10px 15px',
         };
       case 'secondary':
         return {
@@ -56,7 +63,7 @@ export class VerbenaButtonComponent {
           textColor: this.textColor || '#404040',
           border: this.border || 'none',
           borderRadius: this.borderRadius || '4px',
-          pd: this.pd || '10px 15px'
+          pd: this.pd || '10px 15px',
         };
       case 'danger':
         return {
@@ -64,7 +71,7 @@ export class VerbenaButtonComponent {
           textColor: this.textColor || '#ffffff',
           border: this.border || 'none',
           borderRadius: this.borderRadius || '4px',
-          pd: this.pd || '8px 10px'
+          pd: this.pd || '8px 10px',
         };
       case 'small':
         return {
@@ -72,7 +79,7 @@ export class VerbenaButtonComponent {
           textColor: this.textColor || '#000',
           border: this.border || '1px solid grey',
           borderRadius: this.borderRadius || '7px',
-          pd: this.pd || '0px 10px'
+          pd: this.pd || '0px 10px',
         };
 
       case 'outline':
@@ -81,7 +88,7 @@ export class VerbenaButtonComponent {
           textColor: this.textColor || '#000',
           border: this.border || '1px solid #404040',
           borderRadius: this.borderRadius || '5px',
-          pd: this.pd || '0px 8px'
+          pd: this.pd || '0px 8px',
         };
       case 'ylw-outline':
         return {
@@ -89,7 +96,7 @@ export class VerbenaButtonComponent {
           textColor: this.textColor || '#404040',
           border: this.border || '1px solid #FFE681',
           borderRadius: this.borderRadius || '5px',
-          pd: this.pd || '10px 15px'
+          pd: this.pd || '10px 15px',
         };
       case 'grey':
         return {
@@ -97,7 +104,7 @@ export class VerbenaButtonComponent {
           textColor: this.textColor || '#D9D9D940',
           border: this.border || '2px solid grey',
           borderRadius: this.borderRadius || '4px',
-          pd: this.pd || '10px 15px'
+          pd: this.pd || '10px 15px',
         };
       default:
         return {};

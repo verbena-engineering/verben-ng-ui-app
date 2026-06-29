@@ -8,17 +8,21 @@
   [disabled]="disabled || isDisabled"
   [ngStyle]="{
     'background-color': bgColor,
-    'color': textColor,
-    'border': border,
+    color: textColor,
+    border: border,
     'border-radius': borderRadius,
-    'padding': pd,
-    'width': width,
-    'height': height
+    padding: pd,
+    width: width,
+    height: height,
   }"
   [ngModel]="value"
-  (ngModelChange)="onValueChange($event)"  
+  (input)="onInput($event)"
 ></textarea>
 
-<span *ngIf="errorMessage" class="error" [ngStyle]="{ color: errorMessageColor }">
+<span
+  *ngIf="errorMessage"
+  class="error"
+  [ngStyle]="{ color: errorMessageColor }"
+>
   {{ errorMessage }}
 </span>

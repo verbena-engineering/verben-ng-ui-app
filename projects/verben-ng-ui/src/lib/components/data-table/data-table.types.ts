@@ -7,6 +7,33 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 
+/** Built-in aggregations that can be computed over a column's values. */
+export type FooterAggregation = 'sum' | 'avg' | 'min' | 'max' | 'count';
+
+/**
+ * Richer declarative footer configuration for a column. Overrides the simple
+ * `footerFn` when set. Drives both the table's `<tfoot>` and exports.
+ *
+ * Value precedence (highest → lowest): `valueFn` → `aggregation` → label-only.
+ * For full control over the rendered markup use `ColumnDefinition.footerTemplate`,
+ * which takes precedence in the table (but is ignored by exports).
+ */
+export interface ColumnFooterConfig<T> {
+  /** Built-in aggregation computed over the column's values across all rows. */
+  aggregation?: FooterAggregation;
+  /**
+   * Custom reducer receiving every (non-group) row and the column.
+   * Takes precedence over `aggregation`.
+   */
+  valueFn?: (rows: T[], column: ColumnDefinition<T>) => any;
+  /** Static label rendered alongside / instead of the computed value (e.g. "Total"). */
+  label?: string;
+  /** Formats the computed value for display and string-based exports. */
+  formatter?: (value: any) => string;
+  /** Set to `false` to keep this column's footer out of exports. Defaults to `true`. */
+  includeInExport?: boolean;
+}
+
 export interface ColumnDefinition<T> {
   id: string;
   header: string | ((context: any) => any);
@@ -16,6 +43,14 @@ export interface ColumnDefinition<T> {
   cellEditTemplate?: TemplateRef<any>;
   headerTemplate?: TemplateRef<any>;
   footerTemplate?: TemplateRef<any>;
+  /**
+   * Simple footer reducer — analogous to `accessorFn`. Receives the column's
+   * extracted values (and the non-group rows) and returns the footer value used
+   * by the table footer and exports. Overridden by `footer` when that is set.
+   */
+  footerFn?: (values: any[], rows: T[]) => any;
+  /** Richer declarative footer; overrides `footerFn` when set. */
+  footer?: ColumnFooterConfig<T>;
   sortAction?: 'ASC' | 'DESC';
   formControlName?: string;
   groupName?: string;

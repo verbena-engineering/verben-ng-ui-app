@@ -21,6 +21,7 @@ import {
   FormGroupConfig,
   GroupedDataRow,
 } from './data-table.types';
+import { computeColumnFooter, formatColumnFooter } from './footer.util';
 import { TableStyles } from './style.types';
 
 @Component({
@@ -138,7 +139,12 @@ export class DataTableComponent<T> {
   }
 
   hasFooter = computed(() =>
-    this.displayColumns().some((col) => col.footerTemplate !== undefined),
+    this.displayColumns().some(
+      (col) =>
+        col.footerTemplate !== undefined ||
+        col.footer !== undefined ||
+        col.footerFn !== undefined,
+    ),
   );
 
   // Helper method to get unique identifier for a row
@@ -539,9 +545,21 @@ export class DataTableComponent<T> {
     }
   };
 
+  // Computes the declarative footer value for a column from the current data.
+  getFooterValue = (column: ColumnDefinition<T>): any => {
+    return computeColumnFooter(column, this.data());
+  };
+
+  // Renders the declarative footer value to a display string (label + value).
+  getFooterDisplay = (column: ColumnDefinition<T>): string => {
+    return formatColumnFooter(column, this.getFooterValue(column));
+  };
+
   getFooterContext(column: ColumnDefinition<T>) {
+    const value = this.getFooterValue(column);
     return {
-      $implicit: column,
+      $implicit: value,
+      value,
       column,
       data: this.data,
     };

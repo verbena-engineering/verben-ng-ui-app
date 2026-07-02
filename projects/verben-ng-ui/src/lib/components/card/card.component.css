@@ -1,20 +1,20 @@
   .card {
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 1px solid var(--vbn-color-border);
+    border-radius: var(--vbn-radius-sm);
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: var(--vbn-shadow-sm);
   }
   .card-header {
-    background-color: #f8f9fa;
+    background-color: var(--vbn-color-surface-alt);
     padding: 10px 15px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--vbn-color-border);
   }
   .card-body {
     padding: 15px;
   }
   .card-footer {
-    background-color: #f8f9fa;
+    background-color: var(--vbn-color-surface-alt);
     padding: 10px 15px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--vbn-color-border);
   }
   

@@ -1,70 +1,85 @@
-import { Directive, ElementRef, Input, Renderer2, HostListener } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 
+type ThemeMode = 'light' | 'dark';
+
+const MODE_ATTR = 'data-vbn-theme';
+const STORAGE_KEY = 'vbn-theme';
+
+/**
+ * Click-to-toggle light/dark mode. Sets `data-vbn-theme="dark"` on the document
+ * root (the same hook used by `ThemeService` and `styles/theme.css`), so the
+ * whole token system flips. The chosen mode is persisted to localStorage and
+ * restored on init.
+ *
+ * For programmatic control, inject `ThemeService` and call `setMode()` instead.
+ */
 @Directive({
-  selector: '[appThemeSwitcher]'
+  selector: '[appThemeSwitcher]',
 })
-export class ThemeSwitcherDirective {
-  @Input() switchColor: string = 'black'; // Custom color for dark mode
-  @Input() switchClass: string = ''; // Additional classes provided by the user
+export class ThemeSwitcherDirective implements OnInit {
+  /** Optional class toggled on the host element while dark mode is active. */
+  @Input() switchClass: string = '';
 
-  private isDarkMode: boolean = false;
-  private originalColor: string = ''; // Store the original color of the element
+  /**
+   * @deprecated No longer used — color now comes from theme tokens. Kept so
+   * existing `[switchColor]` bindings don't break.
+   */
+  @Input() switchColor: string = '';
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {
-    this.loadTheme();
-    this.storeOriginalColor(); // Store the computed color of the element
+  private isDarkMode = false;
+
+  constructor(private el: ElementRef, private renderer: Renderer2) {}
+
+  ngOnInit(): void {
+    const saved = this.readSavedMode();
+    this.applyMode(saved === 'dark' ? 'dark' : 'light');
   }
 
-  @HostListener('click') onClick() {
-    this.toggleTheme();
+  @HostListener('click') onClick(): void {
+    this.applyMode(this.isDarkMode ? 'light' : 'dark');
   }
 
-  private toggleTheme(): void {
-    const themeClass = 'dark';
+  private applyMode(mode: ThemeMode): void {
+    this.isDarkMode = mode === 'dark';
 
+    const root = document.documentElement;
     if (this.isDarkMode) {
-      // Switch to light mode for the whole page
-      this.renderer.removeClass(document.documentElement, themeClass);
-      this.applyElementStyles(this.originalColor); // Reset the element's original color
-      localStorage.setItem('theme', 'light');
+      this.renderer.setAttribute(root, MODE_ATTR, 'dark');
     } else {
-      // Switch to dark mode for the whole page
-      this.renderer.addClass(document.documentElement, themeClass);
-      this.applyElementStyles(this.switchColor); // Apply dark mode color for the element
-      localStorage.setItem('theme', 'dark');
+      this.renderer.removeAttribute(root, MODE_ATTR);
     }
 
-    this.isDarkMode = !this.isDarkMode; // Toggle the mode state
-  }
-
-  private applyElementStyles(color: string): void {
-    // Apply inline color to the element
-    this.el.nativeElement.style.color = color;
-
-    // Apply user-provided custom class if available
     if (this.switchClass) {
-      this.renderer.addClass(this.el.nativeElement, this.switchClass);
+      if (this.isDarkMode) {
+        this.renderer.addClass(this.el.nativeElement, this.switchClass);
+      } else {
+        this.renderer.removeClass(this.el.nativeElement, this.switchClass);
+      }
+    }
+
+    this.saveMode(mode);
+  }
+
+  private readSavedMode(): ThemeMode | null {
+    try {
+      return localStorage.getItem(STORAGE_KEY) as ThemeMode | null;
+    } catch {
+      return null;
     }
   }
 
-  private storeOriginalColor(): void {
-    // Get the computed style of the element to find its original color
-    const computedStyle = window.getComputedStyle(this.el.nativeElement);
-    this.originalColor = computedStyle.color;
-  }
-
-  private loadTheme(): void {
-    const savedTheme = localStorage.getItem('theme');
-
-    if (savedTheme === 'dark') {
-      // If dark mode was previously set, apply it to the page and element
-      this.renderer.addClass(document.documentElement, 'dark');
-      this.isDarkMode = true;
-      this.applyElementStyles(this.switchColor);
-    } else {
-      // Apply the original color if the light theme is active
-      this.isDarkMode = false;
-      this.applyElementStyles(this.originalColor);
+  private saveMode(mode: ThemeMode): void {
+    try {
+      localStorage.setItem(STORAGE_KEY, mode);
+    } catch {
+      /* localStorage unavailable (SSR/private mode) — ignore */
     }
   }
 }

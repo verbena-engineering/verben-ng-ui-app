@@ -1,6 +1,6 @@
 
 hr{
-  border: 1px solid rgba(232, 234, 241, 1);
+  border: 1px solid var(--vbn-color-border);
    margin:0.8rem 0rem;
  }
 .flex{
@@ -56,12 +56,12 @@ hr{
 }
 
 .column-title sup {
-  color: #3479e9;
+  color: var(--vbn-color-border-focus);
   font-weight: 600;
 }
 
 .column-reset {
-  color: #3479e9;
+  color: var(--vbn-color-border-focus);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -84,5 +84,5 @@ hr{
   display: flex;
   align-items: center;
   gap: 2px;
-  color: gray;
+  color: var(--vbn-color-text-muted);
 }

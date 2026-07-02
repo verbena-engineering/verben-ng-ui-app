@@ -92,7 +92,7 @@
             for="attachment"
             class="flex items-center gap cursor-pointer"
           >
-            <verben-svg [width]="20" fill="black" icon="attach"></verben-svg
+            <verben-svg [width]="20" fill="var(--vbn-color-text)" icon="attach"></verben-svg
             >Attach file
           </label>
           <input
@@ -105,7 +105,7 @@
           <div *ngIf="uploadedFileName" class="flex items-center gap">
             <span>{{ uploadedFileName }}</span>
             <button
-              [style.color]="'black'"
+              [style.color]="'var(--vbn-color-text)'"
               type="button"
               (click)="removeFile()"
             >
@@ -117,7 +117,7 @@
 
         <!-- Email Body -->
 
-        <hr [style.color]="'#00000066'" />
+        <hr [style.color]="'var(--vbn-color-border)'" />
         <div class="form-element quill" [style.margin-top]="'30px'">
           <div *ngIf="isRichText; else textArea">
             <ng-content select="[rich-text]">widget should appear here </ng-content>

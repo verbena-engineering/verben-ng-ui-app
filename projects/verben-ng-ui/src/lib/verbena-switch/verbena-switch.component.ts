@@ -17,8 +17,8 @@ export class VerbenaSwitchComponent implements ControlValueAccessor {
   @Input() label: string = '';
   @Input() checked: boolean = false;
   @Input() disabled: boolean = false;
-  @Input() offColor: string = '#ccc'; // Default off color
-  @Input() onColor: string = '#4caf50'; // Default on color
+  @Input() offColor: string = 'var(--vbn-color-border)'; // Default off color
+  @Input() onColor: string = 'var(--vbn-state-on)'; // Default on color
   @Input() onText: string = 'On'; // Text for ON state
   @Input() offText: string = 'Off'; // Text for OFF state
   @Input() width: string = '80px'; // Width of the switch

@@ -12,11 +12,11 @@
 }
 
 .header-title sup {
-  color: #3479e9;
+  color: var(--vbn-color-border-focus);
 }
 
 .reset-button {
-  color: #3479e9;
+  color: var(--vbn-color-border-focus);
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -69,20 +69,20 @@
   display: flex;
   gap: 0.5em;
   align-items: center;
-  color: #6b7280;
+  color: var(--vbn-color-text-muted);
   cursor: pointer;
 }
 
 .divider {
   border: none;
-  border-top: 1px solid #e8eaf1;
+  border-top: 1px solid var(--vbn-color-border);
   margin: 0.8rem 0;
 }
 
 .sort-option {
   margin: 0 -1.5rem;
   /* padding-left: 0.5rem; */
-  color: #404040;
+  color: var(--vbn-color-text);
 }
 
 .sort-option-header {
@@ -104,7 +104,7 @@
   align-items: center;
   gap: 0.25rem;
   font-size: 0.75rem;
-  color: #4b5563;
+  color: var(--vbn-color-text-muted);
   cursor: pointer;
 }
 
@@ -119,8 +119,8 @@
   outline: none;
   border: none;
   padding: 0.2rem 1.6rem;
-  background-color: #ffe681;
-  color: #404040;
+  background-color: var(--vbn-color-primary);
+  color: var(--vbn-color-on-primary);
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
@@ -130,7 +130,7 @@
   display: flex;
   gap: 0.5em;
   align-items: center;
-  color: #6b7280;
+  color: var(--vbn-color-text-muted);
   cursor: pointer;
   font-size: 12px;
 }

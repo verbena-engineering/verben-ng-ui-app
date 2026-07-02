@@ -10,8 +10,8 @@ export class ValidateDirective {
   @Input() showBorder: boolean = true;  // The controlling factor for the error icon
   @Input() showErrorMessage: boolean = true;
 
-  @Input() errorBorderColor: string = 'red';  // Border color for errors
-  @Input() errorMessageColor: string = 'red';  // Color for error message
+  @Input() errorBorderColor: string = 'var(--vbn-color-error)';  // Border color for errors
+  @Input() errorMessageColor: string = 'var(--vbn-color-error)';  // Color for error message
   @Input() errorIconTooltipPosition: 'top' | 'bottom' | 'left' | 'right' = 'top'; // Tooltip position for error dot
   @Input() showErrorIcon: boolean = true;
 

@@ -47,37 +47,39 @@ export class VerbenaButtonComponent {
   @Input() spinnerSize: any;
   @Input() spinnerColor: any;
 
+  // Defaults resolve to theme tokens (see styles/theme.css). The color @Inputs
+  // remain optional per-instance overrides that take precedence over the token.
   get buttonStyles() {
     switch (this.styleType) {
       case 'primary':
         return {
-          bgColor: this.bgColor || 'lightgrey',
-          textColor: this.textColor || '#000000',
+          bgColor: this.bgColor || 'var(--vbn-btn-primary-bg)',
+          textColor: this.textColor || 'var(--vbn-btn-primary-fg)',
           border: this.border || 'none',
-          borderRadius: this.borderRadius || '4px',
+          borderRadius: this.borderRadius || 'var(--vbn-radius-sm)',
           pd: this.pd || '10px 15px',
         };
       case 'secondary':
         return {
-          bgColor: this.bgColor || '#FFE681',
-          textColor: this.textColor || '#404040',
+          bgColor: this.bgColor || 'var(--vbn-btn-secondary-bg)',
+          textColor: this.textColor || 'var(--vbn-btn-secondary-fg)',
           border: this.border || 'none',
-          borderRadius: this.borderRadius || '4px',
+          borderRadius: this.borderRadius || 'var(--vbn-radius-sm)',
           pd: this.pd || '10px 15px',
         };
       case 'danger':
         return {
-          bgColor: this.bgColor || '#dc3545',
-          textColor: this.textColor || '#ffffff',
+          bgColor: this.bgColor || 'var(--vbn-btn-danger-bg)',
+          textColor: this.textColor || 'var(--vbn-btn-danger-fg)',
           border: this.border || 'none',
-          borderRadius: this.borderRadius || '4px',
+          borderRadius: this.borderRadius || 'var(--vbn-radius-sm)',
           pd: this.pd || '8px 10px',
         };
       case 'small':
         return {
-          bgColor: this.bgColor || '#fff',
-          textColor: this.textColor || '#000',
-          border: this.border || '1px solid grey',
+          bgColor: this.bgColor || 'var(--vbn-btn-small-bg)',
+          textColor: this.textColor || 'var(--vbn-btn-small-fg)',
+          border: this.border || '1px solid var(--vbn-color-border)',
           borderRadius: this.borderRadius || '7px',
           pd: this.pd || '0px 10px',
         };
@@ -85,25 +87,25 @@ export class VerbenaButtonComponent {
       case 'outline':
         return {
           bgColor: this.bgColor || 'none',
-          textColor: this.textColor || '#000',
-          border: this.border || '1px solid #404040',
-          borderRadius: this.borderRadius || '5px',
+          textColor: this.textColor || 'var(--vbn-btn-outline-fg)',
+          border: this.border || '1px solid var(--vbn-btn-outline-border)',
+          borderRadius: this.borderRadius || 'var(--vbn-radius)',
           pd: this.pd || '0px 8px',
         };
       case 'ylw-outline':
         return {
-          bgColor: this.bgColor || '#FFFBEB',
-          textColor: this.textColor || '#404040',
-          border: this.border || '1px solid #FFE681',
-          borderRadius: this.borderRadius || '5px',
+          bgColor: this.bgColor || 'var(--vbn-btn-ylw-outline-bg)',
+          textColor: this.textColor || 'var(--vbn-btn-ylw-outline-fg)',
+          border: this.border || '1px solid var(--vbn-btn-ylw-outline-border)',
+          borderRadius: this.borderRadius || 'var(--vbn-radius)',
           pd: this.pd || '10px 15px',
         };
       case 'grey':
         return {
           bgColor: this.bgColor || 'none',
-          textColor: this.textColor || '#D9D9D940',
-          border: this.border || '2px solid grey',
-          borderRadius: this.borderRadius || '4px',
+          textColor: this.textColor || 'var(--vbn-btn-grey-fg)',
+          border: this.border || '2px solid var(--vbn-color-border)',
+          borderRadius: this.borderRadius || 'var(--vbn-radius-sm)',
           pd: this.pd || '10px 15px',
         };
       default:

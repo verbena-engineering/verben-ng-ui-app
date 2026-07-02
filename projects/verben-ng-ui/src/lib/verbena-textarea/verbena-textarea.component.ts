@@ -22,15 +22,15 @@ export class VerbenaTextareaComponent implements ControlValueAccessor, OnInit {
   @Input() required: boolean = false;
   @Input() rows: number = 5;
   @Input() cols: number = 40;
-  @Input() bgColor: string = '#fff';
-  @Input() textColor: string = '#000';
-  @Input() border: string = '1px solid #ccc';
+  @Input() bgColor: string = 'var(--vbn-input-bg)';
+  @Input() textColor: string = 'var(--vbn-input-text)';
+  @Input() border: string = '1px solid var(--vbn-color-border)';
   @Input() borderRadius: string = '4px';
   @Input() pd: string = '10px';
   @Input() width: string = '100%';
   @Input() height: string = 'auto';
   @Input() value: string = '';
-  @Input() errorMessageColor: string = 'red';
+  @Input() errorMessageColor: string = 'var(--vbn-color-error)';
 
   @Output() valueChange = new EventEmitter<string>();
 

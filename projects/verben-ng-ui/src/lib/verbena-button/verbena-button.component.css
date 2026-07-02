@@ -20,8 +20,8 @@
 }
 
 .loading-spinner {
-  border: 2px solid #ddd;
-  border-top-color: #555;
+  border: 2px solid var(--vbn-color-border);
+  border-top-color: var(--vbn-color-text-muted);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

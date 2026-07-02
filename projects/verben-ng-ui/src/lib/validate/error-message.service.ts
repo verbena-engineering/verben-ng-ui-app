@@ -34,7 +34,7 @@ export class ErrorMessageService {
       const errorDot = document.createElement('div');
       errorDot.style.width = '8px';
       errorDot.style.height = '8px';
-      errorDot.style.backgroundColor = 'red';
+      errorDot.style.backgroundColor = 'var(--vbn-color-error)';
       errorDot.style.borderRadius = '50%';
       errorDot.style.position = 'absolute';
       errorDot.style.top = '50%';
@@ -48,8 +48,8 @@ export class ErrorMessageService {
       tooltip.textContent = message;
       tooltip.style.position = 'absolute';
       tooltip.style.padding = '5px';
-      tooltip.style.backgroundColor = 'red';
-      tooltip.style.color = 'white';
+      tooltip.style.backgroundColor = 'var(--vbn-color-error)';
+      tooltip.style.color = 'var(--vbn-color-surface)';
       tooltip.style.borderRadius = '4px';
       tooltip.style.fontSize = '10px';
       tooltip.style.whiteSpace = 'nowrap';

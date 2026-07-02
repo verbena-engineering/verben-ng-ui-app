@@ -1,8 +1,8 @@
 <verben-card
   width="24rem"
   borderRadius="1rem"
-  [border]="'1px solid #D4A007'"
-  bgColor="#FFFFFF"
+  [border]="'1px solid var(--vbn-color-primary)'"
+  bgColor="var(--vbn-color-surface)"
 >
   <div card-header class="card-header">
     <h4 class="header-title">
@@ -10,7 +10,7 @@
     </h4>
     <button
       class="reset-button"
-      [style.color]="'#3479E9'"
+      [style.color]="'var(--vbn-color-border-focus)'"
       [style.background-color]="'transparent'"
       [style.border]="'none'"
       [style.cursor]="'pointer'"
@@ -30,7 +30,7 @@
           icon="info"
           [width]="15"
           [height]="15"
-          fill="grey"
+          fill="var(--vbn-color-text-muted)"
         ></verben-svg>
       </div>
 
@@ -60,7 +60,7 @@
           icon="info"
           [width]="15"
           [height]="15"
-          fill="grey"
+          fill="var(--vbn-color-text-muted)"
         ></verben-svg>
       </div>
 
@@ -95,9 +95,9 @@
             *ngSwitchCase="'date'"
             type="date"
             placeholder="Select date"
-            border="1px solid #ccc"
+            border="1px solid var(--vbn-color-border)"
             borderRadius="5px"
-            textColor="black"
+            textColor="var(--vbn-color-text)"
             width="100%"
             height="1.025rem"
             pd="2px 6px"
@@ -109,9 +109,9 @@
             *ngSwitchCase="'number'"
             type="number"
             placeholder="Enter number"
-            border="1px solid #ccc"
+            border="1px solid var(--vbn-color-border)"
             borderRadius="5px"
-            textColor="black"
+            textColor="var(--vbn-color-text)"
             width="100%"
             height="1.025rem"
             pd="2px 6px"
@@ -123,9 +123,9 @@
             *ngSwitchCase="'string'"
             type="text"
             placeholder="Enter text"
-            border="1px solid #ccc"
+            border="1px solid var(--vbn-color-border)"
             borderRadius="5px"
-            textColor="black"
+            textColor="var(--vbn-color-text)"
             width="100%"
             height="1.025rem"
             pd="2px 6px"

@@ -8,7 +8,7 @@
   right: 0;
   bottom: 0;
   z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--vbn-color-scrim);
   transition: 0.3s ease-in-out;
 }
 .modal-wrapper.visible {
@@ -54,7 +54,7 @@
   top: 0;
   height: 100%;
   width: 100%;
-  background-color: #fff;
+  background-color: var(--vbn-color-surface);
   overflow-y: auto;
   transition:0.4s ease;
 }

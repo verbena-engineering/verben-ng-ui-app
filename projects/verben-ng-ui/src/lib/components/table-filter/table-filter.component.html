@@ -36,7 +36,7 @@
         icon="info"
         [width]="15"
         [height]="15"
-        fill="grey"
+        fill="var(--vbn-color-text-muted)"
       ></verben-svg>
     </div>
     <div class="selectAllWrapper" *ngIf="savedFilters.length">
@@ -71,15 +71,15 @@
           icon="pencil"
           [width]="15"
           [height]="15"
-          stroke="#3479E9"
-          fill="white"
+          stroke="var(--vbn-color-border-focus)"
+          fill="var(--vbn-color-surface)"
           (click)="editFilter(i)"
         ></verben-svg>
         <verben-svg
           icon="trash"
           [width]="15"
           [height]="15"
-          stroke="#E20000"
+          stroke="var(--vbn-color-error)"
           (click)="deleteFilter(i)"
         ></verben-svg>
       </div>
@@ -101,8 +101,8 @@
         icon="chevron"
         [width]="8"
         [height]="6"
-        fill="black"
-        stroke="black"
+        fill="var(--vbn-color-text)"
+        stroke="var(--vbn-color-text)"
       ></verben-svg>
     </div>
   </div>
@@ -116,7 +116,7 @@
         
         <verben-tooltip 
         [tooltipContent]="tooltipTemplate"
-        [backgroundColor]="'grey'"
+        [backgroundColor]="'var(--vbn-color-surface-alt)'"
         width="200px" 
         [top]="'20px'"                 
         [right]="'0px'"  
@@ -126,7 +126,7 @@
         [width]="15" 
         [height]="15"   
         *ngIf="isDuplicateFilter"
-        fill="red"
+        fill="var(--vbn-color-error)"
         >
         </verben-svg>
         </verben-tooltip>
@@ -135,8 +135,8 @@
        {{duplicateMessage}}
       </ng-template>
         <!-- <verben-tooltip
-         [backgroundColor]="'grey'"
-         [textColor]="'white'"
+         [backgroundColor]="'var(--vbn-color-surface-alt)'"
+         [textColor]="'var(--vbn-color-surface)'"
          [padding]="'10px'"
          [borderRadius]="'8px'"
          [top]="'20px'"                 
@@ -152,7 +152,7 @@
         icon="info"
         [width]="15"
         [height]="15"
-        fill="grey"
+        fill="var(--vbn-color-text-muted)"
         *ngIf="!isDuplicateFilter"
       ></verben-svg>
     </div>
@@ -178,9 +178,9 @@
 
       <verbena-input
       *ngIf="selectedFilterType === 'Date'"
-      border="1px solid #ccc"
+      border="1px solid var(--vbn-color-border)"
       borderRadius="5px"
-      textColor="black"
+      textColor="var(--vbn-color-text)"
       width="80px"
       height="25px"
       pd="6px"
@@ -193,9 +193,9 @@
 
       <verbena-input
       *ngIf="selectedFilterType === 'Credit' || selectedFilterType === 'Integer'"
-      border="1px solid #ccc"
+      border="1px solid var(--vbn-color-border)"
       borderRadius="5px"
-      textColor="black"
+      textColor="var(--vbn-color-text)"
       width="100px"
       height="25px"
       pd="6px"
@@ -211,9 +211,9 @@
 
       <verbena-input
       *ngIf="selectedFilterType === 'Decimal'"
-      border="1px solid #ccc"
+      border="1px solid var(--vbn-color-border)"
       borderRadius="5px"
-      textColor="black"
+      textColor="var(--vbn-color-text)"
       width="100px"
       height="25px"
       pd="6px"
@@ -227,10 +227,10 @@
 
       <verbena-input
       *ngIf="selectedFilterType !== 'Credit' && selectedFilterType !== 'Date'  && selectedFilterType !== 'Integer'  && selectedFilterType !== 'Decimal'"
-      border="1px solid #ccc"
+      border="1px solid var(--vbn-color-border)"
       placeHolder="input value"
       borderRadius="5px"
-      textColor="black"
+      textColor="var(--vbn-color-text)"
       width="100px"
       height="25px"
       pd="6px"

@@ -50,7 +50,7 @@
         <div class="flex items-center gap-md">
           <verben-svg
             *ngIf="enableDragAndDrop"
-            fill="black"
+            fill="var(--vbn-color-text)"
             [width]="25"
             class="svg"
             icon="square-dot"
@@ -131,7 +131,7 @@
     <div *ngIf="showMore && hiddenSortOptions.length > 0">
       <span
         [style.padding]="'20px 10px 0px 10px'"
-        [style.color]="'black'"
+        [style.color]="'var(--vbn-color-text)'"
         class="cursor-pointer block"
         (click)="toggleShowMore()"
       >

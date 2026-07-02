@@ -5,6 +5,19 @@ Run the project( npm start)
 Use ng build --watch to watching and listen to change in  library 
 
 
+## Theming
+
+The library is fully themeable from the consuming project via CSS custom
+properties (`--vbn-*`), configured once and obeyed by every component. Load
+`node_modules/verben-ng-ui/styles/theme.css`, then either override `--vbn-*`
+tokens in your own CSS or call `VerbenUiModule.forRoot({...})`. Built-in light/dark
+mode is available via `ThemeService.setMode()` or the `[appThemeSwitcher]`
+directive. For consuming projects, start with
+**[projects/verben-ng-ui/INTEGRATION.md](projects/verben-ng-ui/INTEGRATION.md)** (setup
+playbook, incl. multi-layer peer-dependency projects); see
+**[projects/verben-ng-ui/THEMING.md](projects/verben-ng-ui/THEMING.md)** for the full
+design guide and token reference.
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.3.
 
 ## Development server

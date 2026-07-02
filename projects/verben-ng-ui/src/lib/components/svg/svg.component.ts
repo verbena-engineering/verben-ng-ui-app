@@ -197,11 +197,16 @@ export class SvgComponent implements OnInit, OnChanges {
         //       Fill: element.getAttribute('fill'),
         //     });
         //   }
+        // Set as inline style (not just the presentation attribute) so theme
+        // tokens like `var(--vbn-color-error)` resolve — CSS custom properties
+        // are not honored in SVG presentation attributes.
         if (this.color && hasFill) {
           element.setAttribute('fill', this.color);
+          (element as HTMLElement).style.fill = this.color;
         }
         if (this.color && hasStroke) {
           element.setAttribute('stroke', this.color);
+          (element as HTMLElement).style.stroke = this.color;
         }
       });
     });

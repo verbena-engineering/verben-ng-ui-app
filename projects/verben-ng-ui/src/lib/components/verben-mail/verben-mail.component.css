@@ -1,12 +1,12 @@
 .container{
-    background-color: #fff;
+    background-color: var(--vbn-color-surface);
 }
 .verben-mail-container{
-    background-color: #80808013;
+    background-color: var(--vbn-color-surface-alt);
 
 }
 .verben-mail-form{
-    background-color: white;
+    background-color: var(--vbn-color-surface);
 }
 .verben-mail-form label {
     font-weight:500;
@@ -24,12 +24,12 @@
     padding: 0;
     display:inline-block;
     padding:2px 4px;
-    border: 1px solid #9A9FBF80;
+    border: 1px solid var(--vbn-color-border);
     outline: none;
     min-width: 200px;
 }
 .verben-mail-form .form-element.subject input{
-    border-color: #0000003b;
+    border-color: var(--vbn-color-border);
     min-width: 300px;
     font-weight: 600;
 }
@@ -41,9 +41,9 @@
 }
 
 .button-container :nth-child(1){
-    border:1px solid #D4A007;
+    border:1px solid var(--vbn-color-primary);
     border-radius: 3px;
-    color: #D4A007;
+    color: var(--vbn-color-primary);
     padding: 4px 15px;
     font-weight: 500;
 

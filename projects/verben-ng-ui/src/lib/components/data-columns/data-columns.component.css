@@ -12,11 +12,11 @@
   }
   
   .header-title sup {
-    color: #3479E9;
+    color: var(--vbn-color-border-focus);
   }
   
   .reset-button {
-    color: #3479E9;
+    color: var(--vbn-color-border-focus);
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -80,7 +80,7 @@
     display: flex;
     gap: 0.5em;
     align-items: center;
-    color: #6b7280;
+    color: var(--vbn-color-text-muted);
     cursor: pointer;
     font-size: 12px;
   }
@@ -96,8 +96,8 @@
     outline: none;
     border: none;
     padding: 0.2rem 1.6rem;
-    background-color: #ffe681;
-    color: #404040;
+    background-color: var(--vbn-color-primary);
+    color: var(--vbn-color-on-primary);
     font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;

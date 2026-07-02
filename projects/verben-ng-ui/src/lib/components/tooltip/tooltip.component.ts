@@ -8,8 +8,8 @@ import { Component, Input, HostListener, TemplateRef, ElementRef, Renderer2 } fr
 export class TooltipComponent {
   @Input() tooltipContent!: TemplateRef<any>;
   @Input() customClass: string = '';   
-  @Input() backgroundColor: string = 'black'; 
-  @Input() textColor: string = 'white'; 
+  @Input() backgroundColor: string = 'var(--vbn-color-text)'; 
+  @Input() textColor: string = 'var(--vbn-color-surface)'; 
   @Input() padding: string = '5px 10px'; 
   @Input() borderRadius: string = '4px'; 
   @Input() zIndex: string = ''; 

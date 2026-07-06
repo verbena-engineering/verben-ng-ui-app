@@ -10,7 +10,7 @@ import { MailPayload } from 'verben-ng-ui/src/lib/models';
 export class VerbenMailTemplate {
   @Input() containerWidth: string = '500px';
   @Input() borderRadius: string = '10px';
-  @Input() primaryColor: string = '#FFE681';
+  @Input() primaryColor: string = 'var(--vbn-color-primary)';
   @Input() secondaryColor: string = '';
   @Input() tetiaryColor: string = '';
   @Input() border: string = '1px solid gray';

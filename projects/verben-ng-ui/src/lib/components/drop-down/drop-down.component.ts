@@ -75,7 +75,7 @@ export class DropDownComponent
   @Input() width: string = '12rem';
   @Input() overlayWidth: number | null = null;
   @Input() showHorizontalLine: boolean = true;
-  @Input() horizontalLineColor: string = 'rgba(255, 230, 129, 1)';
+  @Input() horizontalLineColor: string = 'var(--vbn-color-primary)';
   @Input() optionLabel?: string;
   @Input() optionSubLabel?: string;
   @Input() optionValue?: string;

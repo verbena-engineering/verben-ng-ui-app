@@ -21,7 +21,7 @@ export class VerbenPopUpComponent implements AfterViewChecked {
   @Output() dropdownOpenChange: EventEmitter<boolean> =
     new EventEmitter<boolean>();
   @Input() dropdownWidth: string = '';
-  @Input() color: string = 'black';
+  @Input() color: string = 'var(--vbn-color-text)';
   @Input() customStyles: { [key: string]: string } = {};
   @Input() popUpClass: string = '';
   @Input() border: string = '';

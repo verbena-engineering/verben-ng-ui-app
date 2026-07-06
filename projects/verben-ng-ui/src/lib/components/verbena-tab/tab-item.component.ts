@@ -30,7 +30,7 @@ export class TabItemComponent {
   @Input() textColor: string = ''; // Tab text color
   @Input() hoverColor: string = ''; // Hover color
   @Input() badgeCount: number | null = null;
-  @Input() badgeColor: string = '#ff4081'; // Badge background color
+  @Input() badgeColor: string = 'var(--vbn-color-error)'; // Badge background color
 
   @ViewChild('content', { static: true }) content!: TemplateRef<any>;
 

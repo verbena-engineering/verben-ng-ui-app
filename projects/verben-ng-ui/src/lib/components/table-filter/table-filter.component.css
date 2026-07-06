@@ -10,7 +10,7 @@ h3,p{
 }
 
 hr{
- border: 1px solid rgba(232, 234, 241, 1);
+ border: 1px solid var(--vbn-color-border);
   margin:0.8rem 0rem;
 }
 
@@ -75,7 +75,7 @@ hr{
 }
 
 input[type="checkbox"].checked {
-    accent-color: #3479E9
+    accent-color: var(--vbn-color-border-focus)
 }
 
 .selectAllWrapper{ 

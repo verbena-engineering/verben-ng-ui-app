@@ -16,20 +16,20 @@ export class VerbenaInputComponent implements ControlValueAccessor, OnInit {
   @Input() minLength?: number;
   @Input() maxLength?: number;
   @Input() type: 'text' | 'password' | 'integer' | 'number' | 'decimal' | 'email' | 'date' | 'tel' | 'url' | 'file' | 'color' | 'search' = 'text';
-  @Input() bgColor: string = '#f9f9f9';
+  @Input() bgColor: string = 'var(--vbn-input-bg)';
   @Input() border: string = '';
   @Input() borderRadius: string = '5px';
-  @Input() textColor: string = '#333';
+  @Input() textColor: string = 'var(--vbn-input-text)';
   @Input() value: string = '';
   @Input() labelPosition: string = 'start';
-  @Input() labelColor: string = 'black';
+  @Input() labelColor: string = 'var(--vbn-color-text)';
   @Input() disable: boolean = false; // Disable input
   @Input() readOnly: boolean = false; // Read-only input
   @Input() min?: number;
   @Input() max?: number;
   @Input() showBorder: boolean = true;
   @Input() showErrorMessage: boolean = true;
-  @Input() errorMessageColor: string = 'red';
+  @Input() errorMessageColor: string = 'var(--vbn-color-error)';
   @Input() errorBorderColor?: string;
   @Input() errorPosition: 'left' | 'right' | 'top' | 'bottom' = 'bottom';
   @Input() svg: string = '';

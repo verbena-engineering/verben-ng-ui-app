@@ -8,8 +8,8 @@ import { Component, Input } from '@angular/core';
 export class VerbenaBadgeComponent {
   // Badge text and customization properties
   @Input() text: string = '';                 // Text or number inside the badge
-  @Input() bgColor: string = '#ff4757';       // Background color (default red)
-  @Input() textColor: string = '#fff';        // Text color (default white)
+  @Input() bgColor: string = 'var(--vbn-color-error)';       // Background color (default red)
+  @Input() textColor: string = 'var(--vbn-color-surface)';        // Text color (default white)
   @Input() borderRadius: string = '12px';     // Border radius (default round)
   @Input() pd: string = '5px 10px';           // Padding inside the badge
   @Input() fontSize: string = '14px';         // Font size for the badge text

@@ -6,23 +6,23 @@
 }
 .verben-input{
     width: 100%;
-    background-color: rgb(249, 249, 249);
+    background-color: var(--vbn-input-bg);
     border-radius: 5px;
-    color: rgb(51, 51, 51);
+    color: var(--vbn-input-text);
     font-size: 14px;
     padding: 8px;
 }
 .number-input {
     display: flex;
     align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid var(--vbn-color-border);
+    border-radius: var(--vbn-radius-sm);
     overflow: hidden;
     width: max-content;
   }
   
   .number-input button {
-    background-color: #f0f0f0;
+    background-color: var(--vbn-color-surface-alt);
     border: none;
     padding: 5px 10px;
     cursor: pointer;
@@ -43,7 +43,7 @@
   }
   
   .error-message {
-    color: red;
+    color: var(--vbn-color-error);
     font-size: 12px;
     margin-top: 5px;
   }

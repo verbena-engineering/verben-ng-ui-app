@@ -5,7 +5,7 @@
   border: none;
   background-color: transparent;
   cursor: pointer;
-  border: 1px solid gray;
+  border: 1px solid var(--vbn-color-border);
   padding: 0;
   border-radius: 6px;
   overflow: hidden;
@@ -24,7 +24,7 @@
 }
 
 .toggle-button-container verben-svg.active {
-  background-color: #d3d3d3;
+  background-color: var(--vbn-color-surface-alt);
 }
 .justify-end{
   justify-self: end;
@@ -82,7 +82,7 @@
   display: flex;
   align-items: center;
   padding: 8px 30px 8px 10px;
-  background-color: rgba(128, 128, 128, 0.096);
+  background-color: var(--vbn-color-surface-alt);
   gap: 10px;
 }
 .search-input input{
@@ -93,11 +93,11 @@
   background-color: transparent;
 }
 .search-input input::placeholder{
-  color: #424242;
+  color: var(--vbn-color-text-muted);
   font-size: 14px;
 }
 sup {
-  color: #3479E9;
+  color: var(--vbn-color-border-focus);
   font-weight: 500;
 }
 

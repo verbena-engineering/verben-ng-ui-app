@@ -58,7 +58,7 @@
            'flex gap text-xs items-center pd rounded cursor-pointer',
            columnCustomClass ? columnCustomClass : ''
          ]"
-         [style.background-color]="'#D9D9D940'"
+         [style.background-color]="'var(--vbn-color-surface-alt)'"
          (click)="toggleChildView('column')"
        >
          <verben-svg [width]="15" [icon]="'column'"></verben-svg>
@@ -87,7 +87,7 @@
            'flex gap text-xs items-center pd rounded cursor-pointer',
            filterCustomClass ? filterCustomClass : ''
          ]"
-         [style.background-color]="'#D9D9D940'"
+         [style.background-color]="'var(--vbn-color-surface-alt)'"
          (click)="toggleChildView('filter')"
        >
          <verben-svg [width]="15" [icon]="'filter'"></verben-svg>
@@ -117,7 +117,7 @@
            'flex gap text-xs items-center pd rounded cursor-pointer',
           importCustomClass ? importCustomClass : ''
          ]"
-         [style.background-color]="'#D9D9D940'"
+         [style.background-color]="'var(--vbn-color-surface-alt)'"
          (click)="toggleChildView('import')"
        >
          <verben-svg [width]="15" [icon]="'file'"></verben-svg>
@@ -146,7 +146,7 @@
            'flex gap text-xs items-center pd rounded cursor-pointer',
            sortCustomClass ? sortCustomClass : ''
          ]"
-         [style.background-color]="'#D9D9D940'"
+         [style.background-color]="'var(--vbn-color-surface-alt)'"
          (click)="toggleChildView('sort')"
        >
          <verben-svg [width]="15" [icon]="'sort'"></verben-svg>
@@ -176,7 +176,7 @@
       'flex gap text-xs items-center pd rounded cursor-pointer',
      importCustomClass ? extendCustomClass : ''
     ]"
-    [style.background-color]="'#D9D9D940'"
+    [style.background-color]="'var(--vbn-color-surface-alt)'"
     (click)="toggleChildView('extend')"
   >
     <verben-svg [width]="15" [icon]="'extend'"></verben-svg>
@@ -205,7 +205,7 @@
            'flex gap text-xs items-center pd rounded cursor-pointer',
            exportCustomClass ? exportCustomClass : ''
          ]"
-         [style.background-color]="'#D9D9D940'"
+         [style.background-color]="'var(--vbn-color-surface-alt)'"
          (click)="toggleChildView('export')"
        >
          <verben-svg [width]="15" [icon]="'export'"></verben-svg>
@@ -227,7 +227,7 @@
          'flex gap text-xs items-center pd rounded cursor-pointer',
          selectCustomClass ? selectCustomClass : ''
        ]"
-       [style.background-color]="'#D9D9D940'"
+       [style.background-color]="'var(--vbn-color-surface-alt)'"
        (click)="toggleChildView('select')"
      >
        <verben-svg [width]="15" [icon]="'select'"></verben-svg>
@@ -245,11 +245,11 @@
    >
      <verbena-button
        class="text-sm font-semibold"
-       [bgColor]="'#FFE681'"
+       [bgColor]="'var(--vbn-color-primary)'"
        [buttonClass]="createCustomClass"
        [pd]="'6px'"
        [borderRadius]="'4px'"
-       [textColor]="'#000'"
+       [textColor]="'var(--vbn-color-text)'"
        [svg]="'add'"
        [svgPosition]="'right'"
        [text]="'Create New'"

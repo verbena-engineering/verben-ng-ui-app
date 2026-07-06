@@ -34,8 +34,8 @@ export class NotificationService {
     const typeStyles: Record<NotificationOptions['type'], NotificationStyles> =
       {
         success: {
-          backgroundColor: '#D6F3E6',
-          textColor: '#2DB76F',
+          backgroundColor: 'var(--vbn-status-success-bg)',
+          textColor: 'var(--vbn-status-success-fg)',
           iconName: 'success',
           iconWidth: 20,
           iconHeight: 20,
@@ -43,38 +43,38 @@ export class NotificationService {
           fill: '',
         },
         error: {
-          backgroundColor: '#FFE681',
-          textColor: '#E20000',
+          backgroundColor: 'var(--vbn-status-error-bg)',
+          textColor: 'var(--vbn-status-error-fg)',
           iconName: 'warning',
           iconWidth: 20,
           iconHeight: 20,
-          stroke: '#E20000',
-          fill: '#E20000',
+          stroke: 'var(--vbn-status-error-fg)',
+          fill: 'var(--vbn-status-error-fg)',
         },
         warning: {
-          backgroundColor: '#eda73f1a',
-          textColor: '#EDA73F',
+          backgroundColor: 'var(--vbn-status-warning-bg)',
+          textColor: 'var(--vbn-status-warning-fg)',
           iconName: 'dangerInfo',
           iconWidth: 20,
           iconHeight: 20,
-          stroke: '#EDA73F',
-          fill: '#EDA73F',
+          stroke: 'var(--vbn-status-warning-fg)',
+          fill: 'var(--vbn-status-warning-fg)',
         },
         info: {
-          backgroundColor: '#E7F1FF',
-          textColor: '#0552B5',
+          backgroundColor: 'var(--vbn-status-info-bg)',
+          textColor: 'var(--vbn-status-info-fg)',
           iconName: 'dangerInfo',
           iconWidth: 20,
           iconHeight: 20,
-          stroke: '#0552B5',
-          fill: '#0552B5',
+          stroke: 'var(--vbn-status-info-fg)',
+          fill: 'var(--vbn-status-info-fg)',
         },
       };
 
     return (
       typeStyles[type] || {
-        backgroundColor: '#333',
-        textColor: '#fff',
+        backgroundColor: 'var(--vbn-color-text)',
+        textColor: 'var(--vbn-color-surface)',
         iconName: '',
         iconWidth: 20,
         iconHeight: 20,

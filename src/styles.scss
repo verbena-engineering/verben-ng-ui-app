@@ -1,6 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap");
 @import '@angular/cdk/overlay-prebuilt.css';
+/* verben-ng-ui theme tokens (single source of truth for component defaults).
+   In a published consumer this is "node_modules/verben-ng-ui/styles/theme.css". */
+@import 'verben-ng-ui/styles/theme.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

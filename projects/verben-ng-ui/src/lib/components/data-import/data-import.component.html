@@ -1,15 +1,15 @@
 <verben-card
   width="24rem"
   borderRadius="1rem"
-  [border]="'1px solid #D4A007'"
-  bgColor="#FFFFFF"
+  [border]="'1px solid var(--vbn-color-primary)'"
+  bgColor="var(--vbn-color-surface)"
   class="export-card"
 >
   <div card-header class="card-header">
     <h4 class="header-title">Import</h4>
     <button
       class="reset-button"
-      [style.color]="'#3479E9'"
+      [style.color]="'var(--vbn-color-border-focus)'"
       [style.background-color]="'transparent'"
       [style.border]="'none'"
       [style.cursor]="'pointer'"
@@ -36,7 +36,7 @@
       >
         <p>
           Drag and drop files here or
-          <label for="fileInput" [style.color]="'#3479E9'"
+          <label for="fileInput" [style.color]="'var(--vbn-color-border-focus)'"
             >click to browse</label
           >
         </p>

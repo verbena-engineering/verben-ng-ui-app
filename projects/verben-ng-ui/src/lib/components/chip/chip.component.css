@@ -13,7 +13,7 @@
 }
 
 .chip-content-input.disabled .chips-container {
-  color: #64748b;
+  color: var(--vbn-color-text-muted);
 }
 
 .chip-main-content {
@@ -23,7 +23,7 @@
 .chips-container {
   width: 100%;
   gap: 5px;
-  color: #334155;
+  color: var(--vbn-color-text);
   flex-wrap: wrap;
 }
 
@@ -33,7 +33,7 @@
   gap: 5px;
   border-radius: 5px;
   padding: 1px 5px;
-  background-color: rgba(52, 121, 233, 0.5);
+  background-color: var(--vbn-chip-bg);
 }
 
 .item-chip>span {
@@ -61,7 +61,7 @@
 }
 
 .chip-input::placeholder {
-  color: #64748b;
+  color: var(--vbn-color-text-muted);
 }
 
 .error-message {

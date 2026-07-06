@@ -1,0 +1,156 @@
+/*
+ * verben-ng-ui — Theme token contract
+ * ------------------------------------
+ * Single source of truth for every default color, font, radius and shadow used
+ * by the library. CSS custom properties inherit through the DOM regardless of
+ * Angular's emulated view encapsulation, so a value set here on :root reaches
+ * every component's scoped styles and every [ngStyle] binding.
+ *
+ * Two layers keep configuration lean:
+ *   1. Core tokens     — the small set a consumer normally overrides.
+ *   2. Component tokens — semantic per-component vars that default to core
+ *                         tokens via var() fallback, so they cascade
+ *                         automatically unless explicitly overridden.
+ *
+ * Consume this file by adding it to your app's `angular.json` styles array
+ * (e.g. "node_modules/verben-ng-ui/styles/theme.css") or @import-ing it from
+ * your global stylesheet. Override tokens in your own :root, or programmatically
+ * via VerbenUiModule.forRoot({...}) / ThemeService.
+ */
+
+:root {
+  /* ---- Core: brand ---- */
+  --vbn-color-primary: #ffe681;
+  --vbn-color-on-primary: #404040;
+  --vbn-color-secondary: #e8eaf1;
+  --vbn-color-on-secondary: #404040;
+
+  /* ---- Core: surfaces & text ---- */
+  --vbn-color-surface: #ffffff;
+  --vbn-color-surface-alt: #f9f9f9;
+  --vbn-color-background: #ffffff;
+  --vbn-color-text: #334155;
+  --vbn-color-text-muted: #64748b;
+
+  /* ---- Core: borders & focus ---- */
+  --vbn-color-border: #cbd5e1;
+  --vbn-color-border-focus: #3b82f6;
+
+  /* ---- Core: semantic status ---- */
+  --vbn-color-success: #2db76f;
+  --vbn-color-success-bg: #d6f3e6;
+  --vbn-color-success-contrast: #2db76f;
+  --vbn-color-warning: #eda73f;
+  --vbn-color-warning-bg: #eda73f1a;
+  --vbn-color-warning-contrast: #eda73f;
+  --vbn-color-error: #e20000;
+  --vbn-color-error-bg: #ffe681;
+  --vbn-color-error-contrast: #e20000;
+  --vbn-color-info: #0552b5;
+  --vbn-color-info-bg: #e7f1ff;
+  --vbn-color-info-contrast: #0552b5;
+
+  /* ---- Core: overlay ---- */
+  --vbn-color-scrim: rgba(0, 0, 0, 0.5);
+
+  /* ---- Core: typography ---- */
+  --vbn-font-family: sans-serif;
+  --vbn-font-size-base: 0.9rem;
+  --vbn-font-size-sm: 0.8rem;
+  --vbn-font-size-lg: 1.1rem;
+  --vbn-font-weight-normal: 400;
+  --vbn-font-weight-bold: 700;
+
+  /* ---- Core: shape & elevation ---- */
+  --vbn-radius: 5px;
+  --vbn-radius-sm: 4px;
+  --vbn-radius-lg: 8px;
+  --vbn-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --vbn-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+  /* ---- Core: spacing ---- */
+  --vbn-space-xs: 4px;
+  --vbn-space-sm: 8px;
+  --vbn-space-md: 12px;
+  --vbn-space-lg: 16px;
+
+  /* ==== Component tokens (default to core; override for fine control) ==== */
+
+  /* Button variants */
+  --vbn-btn-primary-bg: lightgrey;
+  --vbn-btn-primary-fg: #000000;
+  --vbn-btn-secondary-bg: var(--vbn-color-primary);
+  --vbn-btn-secondary-fg: var(--vbn-color-on-primary);
+  --vbn-btn-danger-bg: #dc3545;
+  --vbn-btn-danger-fg: #ffffff;
+  --vbn-btn-small-bg: #ffffff;
+  --vbn-btn-small-fg: #000000;
+  --vbn-btn-outline-fg: #000000;
+  --vbn-btn-outline-border: #404040;
+  --vbn-btn-ylw-outline-bg: #fffbeb;
+  --vbn-btn-ylw-outline-fg: var(--vbn-color-on-primary);
+  --vbn-btn-ylw-outline-border: var(--vbn-color-primary);
+  --vbn-btn-grey-fg: #d9d9d940;
+
+  /* Inputs */
+  --vbn-input-bg: #f9f9f9;
+  --vbn-input-text: var(--vbn-color-text);
+  --vbn-input-border: var(--vbn-color-border);
+  --vbn-input-border-hover: #697e97;
+  --vbn-input-border-focus: var(--vbn-color-border-focus);
+  --vbn-input-placeholder: var(--vbn-color-text-muted);
+  --vbn-input-disabled-bg: rgba(239, 239, 239, 0.3);
+
+  /* Chips / multiselect pills */
+  --vbn-chip-bg: rgba(52, 121, 233, 0.5);
+
+  /* Interactive states (dropdown item, date day, tab, switch) */
+  --vbn-state-hover-bg: rgba(180, 205, 245, 0.24);
+  --vbn-state-selected-bg: rgba(59, 130, 246, 0.24);
+  --vbn-state-selected-fg: #1d4ed8;
+  --vbn-state-on: #4caf50;
+
+  /* Data table */
+  --vbn-table-header-bg: #f5f5f5;
+  --vbn-table-header-fg: #333333;
+  --vbn-table-row-even-bg: #ffffff;
+  --vbn-table-row-odd-bg: #f9f9f9;
+  --vbn-table-row-hover-bg: #f0f0f0;
+  --vbn-table-footer-bg: #f5f5f5;
+  --vbn-table-border: #e0e0e0;
+
+  /* Status (notifications) — default to semantic core tokens */
+  --vbn-status-success-bg: var(--vbn-color-success-bg);
+  --vbn-status-success-fg: var(--vbn-color-success-contrast);
+  --vbn-status-error-bg: var(--vbn-color-error-bg);
+  --vbn-status-error-fg: var(--vbn-color-error-contrast);
+  --vbn-status-warning-bg: var(--vbn-color-warning-bg);
+  --vbn-status-warning-fg: var(--vbn-color-warning-contrast);
+  --vbn-status-info-bg: var(--vbn-color-info-bg);
+  --vbn-status-info-fg: var(--vbn-color-info-contrast);
+}
+
+/* ============================ Dark mode ============================ */
+/* Activated by ThemeService.setMode('dark') / [appThemeSwitcher], which set
+ * data-vbn-theme="dark" on <html>. Core tokens flip here; component tokens that
+ * reference core flip automatically, plus a few explicit overrides. */
+[data-vbn-theme='dark'] {
+  --vbn-color-surface: #1e1e1e;
+  --vbn-color-surface-alt: #2a2a2a;
+  --vbn-color-background: #121212;
+  --vbn-color-text: #e5e7eb;
+  --vbn-color-text-muted: #9ca3af;
+  --vbn-color-border: #3f3f46;
+  --vbn-color-scrim: rgba(0, 0, 0, 0.7);
+
+  --vbn-input-bg: #2a2a2a;
+  --vbn-input-disabled-bg: rgba(59, 59, 59, 0.3);
+
+  --vbn-table-header-bg: #2a2a2a;
+  --vbn-table-header-fg: #e5e7eb;
+  --vbn-table-row-even-bg: #1e1e1e;
+  --vbn-table-row-odd-bg: #242424;
+  --vbn-table-row-hover-bg: #333333;
+  --vbn-table-footer-bg: #2a2a2a;
+  --vbn-table-border: #3f3f46;
+}

@@ -88,16 +88,25 @@ export class DataTableComponent {
     {
       id: 'age',
       header: 'Age',
-      // accessorKey: 'age',
-      accessorFn: (row) => row,
+      accessorKey: 'age',
+      // accessorFn: (row) => row,
       importKey: 'age',
+      footerFn: (values, rows) => {
+        const totalAge = values.reduce((sum, value) => sum + (value || 0), 0);
+        const averageAge = totalAge / rows.length;
+        return `Average Age: ${averageAge.toFixed(2)}`;
+      }
     },
     {
       id: 'money',
       header: 'Money',
-      // accessorKey: 'money',
-      accessorFn: (row) => row.money,
+      accessorKey: 'money',
+      // accessorFn: (row) => row.money,
       importKey: 'money',
+      footerFn: (values, rows) => {
+        const totalMoney = values.reduce((sum, value) => sum + (value || 0), 0);
+        return `Total Money: ${totalMoney.toFixed(2)}`;
+      }
     },
     {
       id: 'message',

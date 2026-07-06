@@ -24,6 +24,8 @@ export class DataXportComponent<T> {
    * @deprecated will be removed in the near future
    */
   @Input() useImportKey: boolean = false;
+  /** Append a footer/summary row (from each column's `footer`/`footerFn`) to the export. */
+  @Input() includeFooterInExport: boolean = true;
   dataFetchUrl = input<string>();
   dataQueryParameters = input<SearchPropertyValue[]>();
   dataQueryFunction =
@@ -313,7 +315,8 @@ export class DataXportComponent<T> {
               this.exportService.exportData(
                 data,
                 selectedProfiles,
-                this.useImportKey
+                this.useImportKey,
+                this.includeFooterInExport
               );
             }
           }
@@ -322,7 +325,8 @@ export class DataXportComponent<T> {
         this.exportService.exportData(
           this.data,
           selectedProfiles,
-          this.useImportKey
+          this.useImportKey,
+          this.includeFooterInExport
         );
       }
     }

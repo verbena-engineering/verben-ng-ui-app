@@ -6,6 +6,8 @@
 // export * from './lib/verben-ng-ui.component';
 //New Exports
 
+export * from 'verben-ng-ui/src/lib/theme';
+export * from 'verben-ng-ui/src/lib/theme-switcher';
 export * from 'verben-ng-ui/src/lib/models';
 export * from 'verben-ng-ui/src/lib/services';
 export * from 'verben-ng-ui/src/lib/components/shared';

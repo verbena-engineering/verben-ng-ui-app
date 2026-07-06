@@ -2,6 +2,23 @@
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
 
+## Theming
+
+All components are themed through CSS custom properties (`--vbn-*`), configurable
+once from the consuming app and obeyed everywhere — with reasonable defaults and
+built-in light/dark mode.
+
+1. Load the token stylesheet: add `node_modules/verben-ng-ui/styles/theme.css` to
+   your `angular.json` `styles` (or `@import` it in your global stylesheet).
+2. Configure with plain CSS (override `--vbn-*` in `:root`) **or**
+   `VerbenUiModule.forRoot({ color: { primary: '#d4a007' } })`.
+3. Dark mode: `ThemeService.setMode('dark')` or the `[appThemeSwitcher]` directive.
+
+Guides:
+- **[INTEGRATION.md](./INTEGRATION.md)** — step-by-step consumer setup (leaf apps,
+  intermediate libraries, and multi-layer / peer-dependency projects). Agent-friendly.
+- **[THEMING.md](./THEMING.md)** — full design guide and `--vbn-*` token reference.
+
 ## Code scaffolding
 
 Run `ng generate component component-name --project verben-ng-ui` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project verben-ng-ui`.

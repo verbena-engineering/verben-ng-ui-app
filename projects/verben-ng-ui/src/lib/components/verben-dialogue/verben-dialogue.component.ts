@@ -22,16 +22,16 @@ export class VerbenDialogueComponent {
   @Input() closeOnEscape: boolean = true;
   @Input() isVisible: boolean = false;
   @Input() size: 'small' | 'medium' | 'large'|'any' = 'small';
-  @Input() backdropColor: string = '#0000005d';
+  @Input() backdropColor: string = 'var(--vbn-color-scrim)';
   @Input() customClass: string = '';
   @Input() disableFooter: boolean = false;
   @Input() margin: string = '';
   @Input() padding: string = '10px';
   @Input() borderRadius: string = '10px';
-  @Input() dialogueBgColor: string = '#fff';
+  @Input() dialogueBgColor: string = 'var(--vbn-color-surface)';
   @Input() width: string = 'max-w-[100px]';
   @Input() closeIconClass: string = 'closeIconClass';
-  @Input() boxShadow: string = 'box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1)';
+  @Input() boxShadow: string = 'var(--vbn-shadow-md)';
   @Input() enableTransition: boolean = true;
   @Input() modalData: any;
 

@@ -1,5 +1,5 @@
 .boxShadow {
-  box-shadow: 4px 4px 4px 0px #00000040;
+  box-shadow: var(--vbn-shadow-md);
 }
 
 .dropdown-content {

@@ -66,6 +66,8 @@
             [ngTemplateOutlet]="column.footerTemplate"
             [ngTemplateOutletContext]="getFooterContext(column)"
           ></ng-container>
+          } @else if (column.footer || column.footerFn) {
+          {{ getFooterDisplay(column) }}
           }
         </td>
         }

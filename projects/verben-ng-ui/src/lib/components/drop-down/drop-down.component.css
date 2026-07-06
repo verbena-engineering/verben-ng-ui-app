@@ -41,11 +41,11 @@
   /* left: 0;
   right: 0;
   z-index: 1; */
-  background: #ffffff;
-  color: #334155;
-  border: 1px solid #e2e8f0;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  background: var(--vbn-color-surface);
+  color: var(--vbn-color-text);
+  border: 1px solid var(--vbn-color-border);
+  border-radius: var(--vbn-radius);
+  box-shadow: var(--vbn-shadow-md);
 }
 
 .drop-down-menu-item {
@@ -65,7 +65,7 @@
 }
 
 .drop-down-input.disabled .dropdown-label {
-  color: #64748b;
+  color: var(--vbn-color-text-muted);
 }
 
 .drop-down-main-content {
@@ -85,7 +85,7 @@
 }
 
 .drop-down-icon-item.drop-down-clear-button>svg {
-  color: #94a3b8;
+  color: var(--vbn-color-text-muted);
 }
 
 .drop-down-icon-item.drop-down-expand-button {
@@ -93,22 +93,22 @@
 }
 
 .drop-down-icon-item.drop-down-expand-button>svg {
-  color: #94a3b8;
+  color: var(--vbn-color-text-muted);
 }
 
 .drop-down-input.disabled .drop-down-icon-item>svg {
-  color: #64748b;
+  color: var(--vbn-color-text-muted);
 }
 
 .dropdown-label {
-  color: #334155;
+  color: var(--vbn-color-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .dropdown-label.place-holder {
-  color: #64748b;
+  color: var(--vbn-color-text-muted);
 }
 
 .default-item {
@@ -126,7 +126,7 @@
 
 .see-more-caption {
   font-size: 12px;
-  color: #3b82f6;
+  color: var(--vbn-color-border-focus);
 }
 
 .actions-section {
@@ -145,17 +145,17 @@
   padding: 2px 10px;
   border-radius: 24px;
   gap: 3px;
-  background-color: rgba(217, 217, 217, 0.25);
+  background-color: var(--vbn-color-surface-alt);
   align-items: center;
 }
 
 .search-section.focused {
-  border-color: #3b82f6;
+  border-color: var(--vbn-color-border-focus);
   outline: none;
 }
 
 .search-icon>svg {
-  color: #64748b;
+  color: var(--vbn-color-text-muted);
   width: 0.8rem;
   height: 0.8rem;
 }
@@ -175,7 +175,7 @@
   max-width: 45px;
   border-radius: 5px;
   padding: 3px 5px;
-  background-color: rgba(52, 121, 233, 0.5);
+  background-color: var(--vbn-chip-bg);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -247,7 +247,7 @@
   gap: 5px;
   border-radius: 5px;
   padding: 1px 5px;
-  background-color: rgba(52, 121, 233, 0.5);
+  background-color: var(--vbn-chip-bg);
 }
 
 .multiselect-item-chip.multi-select {
@@ -283,7 +283,7 @@ verben-tooltip {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(77, 75, 75, 0.5);
+  background-color: var(--vbn-color-scrim);
   /* Semi-transparent shade */
   z-index: 10;
   /* Make sure it's on top */
@@ -299,7 +299,7 @@ verben-tooltip {
   padding: 8px;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: #3b82f6;
+  background: var(--vbn-color-border-focus);
   --_m:
     conic-gradient(#0000 10%, #000),
     linear-gradient(#000 0 0) content-box;

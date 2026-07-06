@@ -7,7 +7,10 @@ import {
   ArithmeticOperation,
   StringOperation,
 } from './data-xport.types';
-import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table';
+import {
+  ColumnDefinition,
+  computeColumnFooter,
+} from 'verben-ng-ui/src/lib/components/data-table';
 import { isPrintableValue } from './data-xport.utils';
 
 @Injectable()
@@ -110,7 +113,8 @@ export class DataXportService<T> {
   exportData(
     data: T[],
     selectedProfiles: ExportProfile[],
-    useImportKey: boolean = false
+    useImportKey: boolean = false,
+    includeFooter: boolean = true
   ): Record<string, any>[] {
     const uniqueItems = new Set<ExportItem>();
     selectedProfiles.forEach((profile) => {
@@ -149,7 +153,8 @@ export class DataXportService<T> {
             ) {
               exportedItem[exportItem.name] = item[column.importKey];
             } else {
-              exportedItem[exportItem.name] = null;
+              // Export null/undefined cells as empty rather than literal null.
+              exportedItem[exportItem.name] = '';
             }
           }
         } else {
@@ -165,8 +170,50 @@ export class DataXportService<T> {
       return exportedItem;
     });
 
+    if (includeFooter) {
+      const footerRow = this.getFooterRow(data, uniqueItems);
+      if (footerRow) {
+        records.push(footerRow);
+      }
+    }
+
     this.downloadCSV(records);
     return records;
+  }
+
+  /**
+   * Builds a single footer/summary row aligned with the exported columns. Each
+   * exported item gets a key (blank by default) so the CSV stays column-aligned;
+   * property columns that define a simple `footerFn` or a richer `footer` config
+   * receive the computed value. A `footer` config can opt out via
+   * `includeInExport: false`; `footerFn`-only columns are always included.
+   * Returns `null` when no column contributes a footer.
+   */
+  getFooterRow(
+    data: T[],
+    items: Set<ExportItem> | ExportItem[]
+  ): Record<string, any> | null {
+    const uniqueItems = new Set<ExportItem>(items);
+
+    const footerRow: Record<string, any> = {};
+    let hasFooter = false;
+
+    uniqueItems.forEach((item) => {
+      footerRow[item.name] = '';
+
+      if (item.type !== 'property') return;
+
+      const column = this.columns.find((col) => col.id === item.id);
+      if (!column || (!column.footer && !column.footerFn)) return;
+      if (column.footer?.includeInExport === false) return;
+
+      const value = computeColumnFooter(column, data);
+      // Fall back to the label (or empty) so footer cells never carry null.
+      footerRow[item.name] = value ?? column.footer?.label ?? '';
+      hasFooter = true;
+    });
+
+    return hasFooter ? footerRow : null;
   }
 
   downloadCSV(data: Partial<any>[]) {

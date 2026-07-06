@@ -1,12 +1,12 @@
 .drop-area {
-  border: 2px dashed #ccc;
+  border: 2px dashed var(--vbn-color-border);
   padding: 20px;
   text-align: center;
   cursor: pointer;
 }
 
 .drop-area.drag-active {
-  background-color: #eee;
+  background-color: var(--vbn-color-surface-alt);
 }
 
 .export-card {
@@ -76,13 +76,13 @@
   display: flex;
   gap: 0.5em;
   align-items: center;
-  color: #6b7280;
+  color: var(--vbn-color-text-muted);
   cursor: pointer;
 }
 
 .divider {
   border: none;
-  border-top: 1px solid #e8eaf1;
+  border-top: 1px solid var(--vbn-color-border);
 }
 
 .operation-grid {
@@ -98,7 +98,7 @@
   outline: none;
   border: none;
   background-color: transparent;
-  color: #3479e9;
+  color: var(--vbn-color-border-focus);
   font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
@@ -123,13 +123,13 @@
 }
 
 .cancel-button {
-  background-color: #404040;
-  color: #fff;
+  background-color: var(--vbn-color-on-primary);
+  color: var(--vbn-color-surface);
 }
 
 .export-button {
-  background-color: #ffe681;
-  color: #404040;
+  background-color: var(--vbn-color-primary);
+  color: var(--vbn-color-on-primary);
 }
 
 .value-range {

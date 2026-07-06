@@ -21,6 +21,7 @@ import {
   FormGroupConfig,
   GroupedDataRow,
 } from './data-table.types';
+import { computeColumnFooter, formatColumnFooter } from './footer.util';
 import { TableStyles } from './style.types';
 
 @Component({
@@ -138,7 +139,12 @@ export class DataTableComponent<T> {
   }
 
   hasFooter = computed(() =>
-    this.displayColumns().some((col) => col.footerTemplate !== undefined),
+    this.displayColumns().some(
+      (col) =>
+        col.footerTemplate !== undefined ||
+        col.footer !== undefined ||
+        col.footerFn !== undefined,
+    ),
   );
 
   // Helper method to get unique identifier for a row
@@ -539,9 +545,21 @@ export class DataTableComponent<T> {
     }
   };
 
+  // Computes the declarative footer value for a column from the current data.
+  getFooterValue = (column: ColumnDefinition<T>): any => {
+    return computeColumnFooter(column, this.data());
+  };
+
+  // Renders the declarative footer value to a display string (label + value).
+  getFooterDisplay = (column: ColumnDefinition<T>): string => {
+    return formatColumnFooter(column, this.getFooterValue(column));
+  };
+
   getFooterContext(column: ColumnDefinition<T>) {
+    const value = this.getFooterValue(column);
     return {
-      $implicit: column,
+      $implicit: value,
+      value,
       column,
       data: this.data,
     };
@@ -632,44 +650,46 @@ export class DataTableComponent<T> {
 }
 
 // Default styles
+// Defaults resolve to theme tokens (see styles/theme.css). Consumers can still
+// override any of these per-instance via the [styleConfig] input.
 const defaultTableStyles: TableStyles = {
-  border: '1px solid #e0e0e0',
-  borderRadius: '4px',
+  border: '1px solid var(--vbn-table-border)',
+  borderRadius: 'var(--vbn-radius-sm)',
   overflow: 'hidden',
-  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+  boxShadow: 'var(--vbn-shadow-sm)',
   width: '100%',
   header: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'var(--vbn-table-header-bg)',
     fontWeight: 'bold',
-    color: '#333',
+    color: 'var(--vbn-table-header-fg)',
     textAlign: 'left',
     padding: '12px 16px',
-    borderBottom: '2px solid #e0e0e0',
+    borderBottom: '2px solid var(--vbn-table-border)',
   },
   rows: {
     even: {
-      backgroundColor: '#ffffff',
+      backgroundColor: 'var(--vbn-table-row-even-bg)',
     },
     odd: {
-      backgroundColor: '#f9f9f9',
+      backgroundColor: 'var(--vbn-table-row-odd-bg)',
     },
     nth: {
       interval: 5,
       style: {
-        backgroundColor: '#f0f0f0',
+        backgroundColor: 'var(--vbn-table-row-hover-bg)',
       },
     },
   },
   cells: {
     padding: '12px 16px',
-    borderBottom: '1px solid #e0e0e0',
+    borderBottom: '1px solid var(--vbn-table-border)',
   },
   footer: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'var(--vbn-table-footer-bg)',
     fontWeight: 'bold',
-    color: '#333',
+    color: 'var(--vbn-table-header-fg)',
     textAlign: 'left',
     padding: '12px 16px',
-    borderTop: '2px solid #e0e0e0',
+    borderTop: '2px solid var(--vbn-table-border)',
   },
 };

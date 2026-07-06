@@ -37,7 +37,7 @@
       [style.margin-top]="'14px'"
       class="flex gap-sm items-center"
     >
-      <verben-svg *ngIf="enableDragAndDrop" fill="black" class="svg" icon="square-dot"></verben-svg>
+      <verben-svg *ngIf="enableDragAndDrop" fill="var(--vbn-color-text)" class="svg" icon="square-dot"></verben-svg>
       <label class="flex gap-md items-center">
         <input type="checkbox" [(ngModel)]="visibleColumns[i]" (ngModelChange)="updateSelectAllStatus()" />
         {{ column.name }}

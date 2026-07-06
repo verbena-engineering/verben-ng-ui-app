@@ -63,13 +63,13 @@
   display: flex;
   gap: 0.5em;
   align-items: center;
-  color: #6b7280;
+  color: var(--vbn-color-text-muted);
   cursor: pointer;
 }
 
 .divider {
   border: none;
-  border-top: 1px solid #e8eaf1;
+  border-top: 1px solid var(--vbn-color-border);
 }
 
 .operation-grid {
@@ -84,7 +84,7 @@
   outline: none;
   border: none;
   background-color: transparent;
-  color: #3479e9;
+  color: var(--vbn-color-border-focus);
   font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
@@ -101,8 +101,8 @@
   outline: none;
   border: none;
   padding: 0.2rem 1.6rem;
-  background-color: #ffe681;
-  color: #404040;
+  background-color: var(--vbn-color-primary);
+  color: var(--vbn-color-on-primary);
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;

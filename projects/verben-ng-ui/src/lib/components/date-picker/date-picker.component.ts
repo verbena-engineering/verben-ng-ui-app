@@ -29,7 +29,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   @Input() minDate?: Date;
   @Input() maxDate?: Date;
   @Input() disabled?: boolean = false;
-  @Input() bgColor?: string = '#fff';
+  @Input() bgColor?: string = 'var(--vbn-color-surface)';
   @Input() border?: string = '';
   @Input() useDropdowns: boolean = true;
   @Input() yearPlaceholder: string = 'Select a year';

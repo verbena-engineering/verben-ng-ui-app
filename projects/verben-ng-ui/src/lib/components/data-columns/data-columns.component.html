@@ -1,4 +1,4 @@
-<verben-card width="24rem" borderRadius="1rem" [border]="'1px solid #D4A007'" bgColor="#FFFFFF">
+<verben-card width="24rem" borderRadius="1rem" [border]="'1px solid var(--vbn-color-primary)'" bgColor="var(--vbn-color-surface)">
     <div card-header class="card-header">
       <h4 class="header-title">Column <sup>({{ activeColumnCount }})</sup></h4>
       <button class="reset-button" (click)="resetColumns()">Reset</button>
@@ -9,7 +9,7 @@
       <section class="section">
         <div class="section-header">
           <h3 class="section-title">Properties</h3>
-          <verben-svg icon="info" [width]="15" [height]="15" fill="grey"></verben-svg>
+          <verben-svg icon="info" [width]="15" [height]="15" fill="var(--vbn-color-text-muted)"></verben-svg>
         </div>
   
         <!-- Select All -->
@@ -38,7 +38,7 @@
                   icon="square-dot"
                   [width]="15"
                   [height]="15"
-                  fill="black"
+                  fill="var(--vbn-color-text)"
                   class="drag-handle"
                 ></verben-svg>
               }
@@ -62,8 +62,8 @@
             icon="chevron"
             [width]="8"
             [height]="6"
-            fill="black"
-            stroke="black"
+            fill="var(--vbn-color-text)"
+            stroke="var(--vbn-color-text)"
           ></verben-svg>
         </button>
         }

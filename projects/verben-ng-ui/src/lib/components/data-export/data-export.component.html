@@ -1,15 +1,15 @@
 <verben-card
   width="24rem"
   borderRadius="1rem"
-  [border]="'1px solid #D4A007'"
-  bgColor="#FFFFFF"
+  [border]="'1px solid var(--vbn-color-primary)'"
+  bgColor="var(--vbn-color-surface)"
   class="export-card"
 >
   <div card-header class="card-header">
     <h4 class="header-title">Export</h4>
     <button
       class="reset-button"
-      [style.color]="'#3479E9'"
+      [style.color]="'var(--vbn-color-border-focus)'"
       [style.background-color]="'transparent'"
       [style.border]="'none'"
       [style.cursor]="'pointer'"
@@ -27,7 +27,7 @@
           icon="info"
           [width]="15"
           [height]="15"
-          fill="grey"
+          fill="var(--vbn-color-text-muted)"
         ></verben-svg>
       </div>
       <div *ngFor="let profile of visibleProfiles; let i = index" class="item">
@@ -46,15 +46,15 @@
             icon="edit"
             [width]="15"
             [height]="15"
-            stroke="#3479E9"
-            fill="white"
+            stroke="var(--vbn-color-border-focus)"
+            fill="var(--vbn-color-surface)"
             (click)="editProfile(profile)"
           ></verben-svg>
           <verben-svg
             icon="delete"
             [width]="15"
             [height]="15"
-            stroke="#E20000"
+            stroke="var(--vbn-color-error)"
             (click)="removeProfile(profile)"
           ></verben-svg>
         </div>
@@ -69,8 +69,8 @@
           icon="chevron"
           [width]="8"
           [height]="6"
-          fill="black"
-          stroke="black"
+          fill="var(--vbn-color-text)"
+          stroke="var(--vbn-color-text)"
         ></verben-svg>
       </div>
     </section>
@@ -82,15 +82,15 @@
           icon="info"
           [width]="15"
           [height]="15"
-          fill="grey"
+          fill="var(--vbn-color-text-muted)"
         ></verben-svg>
       </div>
       <form [formGroup]="newGroupForm" (ngSubmit)="addGroup()">
         <verbena-input
           placeholder="Group name"
-          border="1px solid #ccc"
+          border="1px solid var(--vbn-color-border)"
           borderRadius="5px"
-          textColor="black"
+          textColor="var(--vbn-color-text)"
           width="100%"
           fontSize="11px"
           height="20px"
@@ -118,15 +118,15 @@
             icon="edit"
             [width]="15"
             [height]="15"
-            stroke="#3479E9"
-            fill="white"
+            stroke="var(--vbn-color-border-focus)"
+            fill="var(--vbn-color-surface)"
             (click)="editOperation(item)"
           ></verben-svg>
           <verben-svg
             icon="delete"
             [width]="15"
             [height]="15"
-            stroke="#E20000"
+            stroke="var(--vbn-color-error)"
             (click)="removeOperation(item)"
           ></verben-svg>
         </div>
@@ -143,8 +143,8 @@
             icon="chevron"
             [width]="8"
             [height]="6"
-            fill="black"
-            stroke="black"
+            fill="var(--vbn-color-text)"
+            stroke="var(--vbn-color-text)"
           ></verben-svg>
         </button>
         <button class="add-button" (click)="addGroup()">+ Add</button>
@@ -158,14 +158,14 @@
           icon="info"
           [width]="15"
           [height]="15"
-          fill="grey"
+          fill="var(--vbn-color-text-muted)"
         ></verben-svg>
       </div>
       <verbena-input
         placeholder="Operation name"
-        border="1px solid #ccc"
+        border="1px solid var(--vbn-color-border)"
         borderRadius="5px"
-        textColor="black"
+        textColor="var(--vbn-color-text)"
         fontSize="11px"
         width="100%"
         height="20px"

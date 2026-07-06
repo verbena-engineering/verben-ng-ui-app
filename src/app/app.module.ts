@@ -32,6 +32,7 @@ import {
   VerbenTimePickerModule,
   DatePickerModule,
   VerbenDialogueModule,
+  VerbenUiModule,
 } from 'verben-ng-ui';
 import { CDVModule } from './views/card-data-view/cdv.module';
 import { CommonModule } from '@angular/common';
@@ -45,6 +46,13 @@ import { CardViewModule } from './views/card-view/card-view.module';
     BrowserModule,
     CommonModule,
     AppRoutingModule,
+    // Configure the verben-ng-ui theme once. Every component obeys these tokens;
+    // omit forRoot entirely to use the shipped defaults, or override --vbn-*
+    // tokens directly in styles. (Also load styles/theme.css — see styles.scss.)
+    VerbenUiModule.forRoot({
+      color: { primary: '#FFE681' },
+      typography: { fontFamily: 'Montserrat, sans-serif' },
+    }),
     NumberRangeModule,
     RequiredInputModule,
     VerbenTimePickerModule,

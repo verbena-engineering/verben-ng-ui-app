@@ -8,6 +8,27 @@ export class DataImportService<T> {
 
   constructor() {}
 
+  /**
+   * A value carries no information if it is nullish, an empty/whitespace string,
+   * an invalid date, or a collection whose every member is itself blank.
+   * Numbers (including 0) and booleans (including false) are never blank.
+   */
+  private isBlankValue(value: unknown): boolean {
+    if (value === null || value === undefined) return true;
+    if (typeof value === 'string') return value.trim() === '';
+    if (value instanceof Date) return Number.isNaN(value.getTime());
+    if (Array.isArray(value)) return value.every((v) => this.isBlankValue(v));
+    if (typeof value === 'object') {
+      return Object.values(value as object).every((v) => this.isBlankValue(v));
+    }
+    return false;
+  }
+
+  private isBlankRow(row: object): boolean {
+    const values = Object.values(row);
+    return values.length === 0 || values.every((v) => this.isBlankValue(v));
+  }
+
   // Function to transform imported data to match your model structure
   transformImportData<T>(
     importedData: Record<string, any>[],
@@ -38,37 +59,44 @@ export class DataImportService<T> {
         }
       });
 
-    // Transform each row in the imported data
-    return importedData.map((row) => {
-      const transformedRow: Partial<T> = {};
+    // Transform each row in the imported data. Rows the sheet still reports but
+    // that hold nothing (whitespace, leftover formatting) are dropped up front so
+    // importBy never fabricates values out of them.
+    return importedData
+      .filter((row) => !this.isBlankRow(row))
+      .map((row) => {
+        const transformedRow: Partial<T> = {};
 
-      // Process each key in the row
-      Object.entries(row).forEach(([key, value]) => {
-        // Check if there's an importBy transformation first (takes priority)
-        const importBy = headerToImportByMap.get(key);
+        // Process each key in the row
+        Object.entries(row).forEach(([key, value]) => {
+          // Check if there's an importBy transformation first (takes priority)
+          const importBy = headerToImportByMap.get(key);
 
-        if (importBy) {
-          if (typeof importBy === 'function') {
-            // Use the importBy function to transform the entire imported row
-            const importKey = headerToImportKeyMap.get(key);
-            if (importKey) {
-              transformedRow[importKey] = importBy(row);
+          if (importBy) {
+            if (typeof importBy === 'function') {
+              // Use the importBy function to transform the entire imported row
+              const importKey = headerToImportKeyMap.get(key);
+              if (importKey) {
+                transformedRow[importKey] = importBy(row);
+              }
+            } else {
+              // importBy is a direct key reference
+              transformedRow[importBy] = value;
             }
           } else {
-            // importBy is a direct key reference
-            transformedRow[importBy] = value;
+            // Fall back to importKey if no importBy is defined
+            const importKey = headerToImportKeyMap.get(key);
+            if (importKey) {
+              transformedRow[importKey] = value;
+            }
           }
-        } else {
-          // Fall back to importKey if no importBy is defined
-          const importKey = headerToImportKeyMap.get(key);
-          if (importKey) {
-            transformedRow[importKey] = value;
-          }
-        }
-      });
+        });
 
-      return transformedRow;
-    });
+        return transformedRow;
+      })
+      // A row can still end up empty here when none of its populated cells map to
+      // an importable column.
+      .filter((row) => !this.isBlankRow(row));
   }
 
   handleImport(
@@ -93,6 +121,7 @@ export class DataImportService<T> {
       if (sheets.length) {
         const rows = utils.sheet_to_json(wb.Sheets[sheets[0]], {
           defval: null,
+          blankrows: false,
         }) as Record<string, any>[];
 
         imported = this.transformImportData(rows, columnDefinitions) as T[];

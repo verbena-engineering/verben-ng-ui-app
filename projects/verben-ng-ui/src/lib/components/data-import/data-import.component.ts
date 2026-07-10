@@ -84,6 +84,10 @@ export class DataImportComponent<T extends {}> {
 
   private _ext: 'xlsx' | 'xls' | 'csv' = 'xlsx';
 
+  private static nextFileInputId = 0;
+  /** Unique per instance so several import cards can coexist on one page. */
+  readonly fileInputId = `vbn-data-import-file-${DataImportComponent.nextFileInputId++}`;
+
   files: File[] = [];
   isDragging = false;
   showPreview = false;

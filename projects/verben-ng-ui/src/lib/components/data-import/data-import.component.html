@@ -24,7 +24,7 @@
       <button class="export-button" (click)="handleTemplateExport()">
         Download Template
       </button>
-      <label for="fileInput" class="export-button">Upload File</label>
+      <label [attr.for]="fileInputId" class="export-button">Upload File</label>
     </div>
     <hr class="divider" />
     <section class="section">
@@ -36,13 +36,15 @@
       >
         <p>
           Drag and drop files here or
-          <label for="fileInput" [style.color]="'var(--vbn-color-border-focus)'"
+          <label
+            [attr.for]="fileInputId"
+            [style.color]="'var(--vbn-color-border-focus)'"
             >click to browse</label
           >
         </p>
         <input
           type="file"
-          id="fileInput"
+          [attr.id]="fileInputId"
           (change)="onFileSelected($event)"
           style="display: none"
           accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"

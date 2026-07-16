@@ -69,19 +69,24 @@ export class SortTableComponent {
     }
   }
   applySort() {
-    const selectedSorts = this.sortOptions.filter((option) => option.checked);
-    const selectedSortDetails = selectedSorts.map((sort, index) => {
-      return {
-        name: sort.name,
-        type: sort.type || 'String',
-        value:
-          this.getSortOrder(
-            sort.type,
-            this.selectedOrders.get(index) || 'asc'
-          ) || '',
-        checked: sort.checked || false,
-      };
-    });
+    const selectedSortDetails = this.sortOptions.reduce<IDataFilter[]>(
+      (acc, sort, index) => {
+        if (sort.checked) {
+          acc.push({
+            name: sort.name,
+            type: sort.type || 'String',
+            value:
+              this.getSortOrder(
+                sort.type,
+                this.selectedOrders.get(index) || 'asc'
+              ) || '',
+            checked: sort.checked || false,
+          });
+        }
+        return acc;
+      },
+      []
+    );
     this.selectedOptions.emit(selectedSortDetails);
     return selectedSortDetails;
   }

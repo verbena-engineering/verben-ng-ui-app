@@ -30,7 +30,7 @@ export class TableFilterComponent implements OnInit {
   @Output() resetSortData = new EventEmitter<any>();
   filterArray: string[] = [];
   selectedFilterValue: string = '';
-  selectedFilterType?: any;
+  selectedFilterType: DataFilterType | null = null;
   conditionOptions: string[] = [];
   selectedCondition: string | undefined = '';
   inputValue?: string | number;
@@ -103,7 +103,7 @@ export class TableFilterComponent implements OnInit {
     ) {
       const leftFilter: IDataFilter = {
         name: this.selectedFilterValue,
-        type: this.selectedFilterType,
+        type: this.selectedFilterType || DataFilterType.String,
         condition: 'After',
         value: (this.inputValue as string).concat(' 00:00'),
         checked: true,
@@ -111,7 +111,7 @@ export class TableFilterComponent implements OnInit {
 
       const rightFilter: IDataFilter = {
         name: this.selectedFilterValue,
-        type: this.selectedFilterType,
+        type: this.selectedFilterType || DataFilterType.String,
         condition: 'Before',
         value: (this.inputValue as string).concat(' 23:59'),
         checked: true,
@@ -152,7 +152,7 @@ export class TableFilterComponent implements OnInit {
     } else {
       const newFilter: IDataFilter = {
         name: this.selectedFilterValue,
-        type: this.selectedFilterType,
+        type: this.selectedFilterType || DataFilterType.String,
         condition: this.selectedCondition,
         value: this.inputValue,
         checked: true,

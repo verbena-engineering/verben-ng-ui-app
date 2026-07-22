@@ -37,8 +37,10 @@ export class VisibleColumnComponent {
   @Input() borderRadius?: string;
   @Input() selectWidth?: string;
   @Input() closeColumn?: boolean;
+  @Input() saveCallback?: (items: IDataFilter[]) => Promise<void>;
   @Output() columnsUpdated = new EventEmitter<IDataFilter[]>();
   @Output() resetFilter = new EventEmitter();
+
   originalColumnOrder: IDataFilter[] = [];
   visibleColumns: boolean[] = [];
   draggedIndex: number | null = null;
@@ -72,6 +74,9 @@ export class VisibleColumnComponent {
     });
 
     const selectedColumns = this.columns.filter((column) => column.checked);
+    if (this.saveCallback) {
+      this.saveCallback(selectedColumns);
+    }
     this.columnsUpdated.emit(selectedColumns);
   }
 

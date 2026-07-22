@@ -23,7 +23,9 @@ export class TableFilterComponent implements OnInit {
   @Input() borderRadius?: string;
   @Input() selectWidth?: string;
   @Input() maxFilterLength: number = 3;
+  @Input() savedFilters: IDataFilter[] = [];
   @Input() tooltip: boolean = false;
+  @Input() saveCallback?: (items: IDataFilter[]) => Promise<void>;
   @Output() filtersApplied = new EventEmitter<any>();
   @Output() resetSortData = new EventEmitter<any>();
   filterArray: string[] = [];
@@ -32,7 +34,6 @@ export class TableFilterComponent implements OnInit {
   conditionOptions: string[] = [];
   selectedCondition: string | undefined = '';
   inputValue?: string | number;
-  savedFilters: IDataFilter[] = [];
   selectedFilters: IDataFilter[] = [];
   showAllFilters: boolean = false;
   editIndex: number | null = null;
@@ -55,7 +56,7 @@ export class TableFilterComponent implements OnInit {
 
   onFilterNameChange(selectedFilterValue: string) {
     const selectedFilter = this.filterOptions.find(
-      (option) => option.name === selectedFilterValue
+      (option) => option.name === selectedFilterValue,
     );
 
     if (selectedFilter) {
@@ -78,7 +79,7 @@ export class TableFilterComponent implements OnInit {
     this.duplicateMessage = '';
     localStorage.removeItem(this.storageKey);
     this.filterCount = this.savedFilters.filter(
-      (item) => item.checked === true
+      (item) => item.checked === true,
     ).length;
     this.resetSortData.emit();
   }
@@ -124,7 +125,7 @@ export class TableFilterComponent implements OnInit {
             (filter, index) =>
               filter.name === newFilter.name &&
               filter.condition === newFilter.condition &&
-              index !== this.editIndex
+              index !== this.editIndex,
           );
 
           if (isDuplicate) {
@@ -137,14 +138,14 @@ export class TableFilterComponent implements OnInit {
             this.savedFilters.some(
               (filter) =>
                 filter.name === newFilter.name &&
-                filter.condition === newFilter.condition
+                filter.condition === newFilter.condition,
             )
           ) {
             continue;
           }
           this.savedFilters.push(newFilter);
           this.filterCount = this.savedFilters.filter(
-            (item) => item.checked === true
+            (item) => item.checked === true,
           ).length;
         }
       }
@@ -162,7 +163,7 @@ export class TableFilterComponent implements OnInit {
           (filter, index) =>
             filter.name === newFilter.name &&
             filter.condition === newFilter.condition &&
-            index !== this.editIndex
+            index !== this.editIndex,
         );
 
         if (isDuplicate) {
@@ -175,14 +176,14 @@ export class TableFilterComponent implements OnInit {
           this.savedFilters.some(
             (filter) =>
               filter.name === newFilter.name &&
-              filter.condition === newFilter.condition
+              filter.condition === newFilter.condition,
           )
         ) {
           return;
         }
         this.savedFilters.push(newFilter);
         this.filterCount = this.savedFilters.filter(
-          (item) => item.checked === true
+          (item) => item.checked === true,
         ).length;
       }
     }
@@ -195,7 +196,7 @@ export class TableFilterComponent implements OnInit {
     this.savedFilters[index].checked = !this.savedFilters[index].checked;
     this.checkAll = this.savedFilters.every((item) => item.checked);
     this.filterCount = this.savedFilters.filter(
-      (item) => item.checked === true
+      (item) => item.checked === true,
     ).length;
   }
 
@@ -204,10 +205,13 @@ export class TableFilterComponent implements OnInit {
     this.checkDuplicateFilter();
     this.checkFilterButton();
     this.filterCount = this.savedFilters.filter(
-      (item) => item.checked === true
+      (item) => item.checked === true,
     ).length;
     if (this.savedFilters.length === 0) {
       this.checkAll = false;
+    }
+    if (this.saveCallback) {
+      this.saveCallback(this.savedFilters);
     }
   }
 
@@ -223,6 +227,9 @@ export class TableFilterComponent implements OnInit {
 
   applyFilters() {
     this.selectedFilters = this.savedFilters.filter((filter) => filter.checked);
+    if (this.saveCallback) {
+      this.saveCallback(this.savedFilters);
+    }
     this.filtersApplied.emit(this.selectedFilters);
     this.filtersApplied.emit(this.storageKey);
   }
@@ -251,7 +258,7 @@ export class TableFilterComponent implements OnInit {
     this.checkAll = !this.checkAll;
     this.savedFilters.forEach((filter) => (filter.checked = this.checkAll));
     this.filterCount = this.savedFilters.filter(
-      (item) => item.checked === true
+      (item) => item.checked === true,
     ).length;
   }
 
@@ -261,7 +268,7 @@ export class TableFilterComponent implements OnInit {
         (filter, index) =>
           filter.name === this.selectedFilterValue &&
           filter.condition === this.selectedCondition &&
-          index !== this.editIndex
+          index !== this.editIndex,
       );
       this.disableAddFilterBtn = exists;
       this.isDuplicateFilter = exists;
@@ -272,7 +279,7 @@ export class TableFilterComponent implements OnInit {
       const exists = this.savedFilters.some(
         (filter) =>
           filter.name === this.selectedFilterValue &&
-          filter.condition === this.selectedCondition
+          filter.condition === this.selectedCondition,
       );
       this.disableAddFilterBtn = exists;
       this.isDuplicateFilter = exists;

@@ -33,7 +33,11 @@
 
     <div class="flex items-center gap" [style.padding]="'4px 10px'">
       <label [style.font-size]="'13px'" [style.font-weight]="'500'">
-        <input type="checkbox" [checked]="checkAll" (change)="toggleSelectAll()" />
+        <input
+          type="checkbox"
+          [checked]="checkAll"
+          (change)="toggleSelectAll()"
+        />
         Select All
       </label>
     </div>
@@ -152,11 +156,6 @@
       [style.color]="tertiaryColor"
       [style.font-size]="'12px'"
       [style.font-weight]="'600'"
-      [disabled]="countSelectedSorts() === 0"
-      [ngClass]="{
-        disabledBtn: countSelectedSorts() === 0,
-        enableBtn: countSelectedSorts() !== 0
-      }"
       (click)="applySort()"
     >
       {{ sortButtonText }}

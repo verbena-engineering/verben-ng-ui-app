@@ -14,7 +14,7 @@ export class SortTableComponent {
   @Input() displayedOptions: number = 4;
   @Input() propertyText: string = 'Property';
   @Input() showMoreText: string = 'Show more';
-  @Input() sortButtonText: string = 'Sort';
+  @Input() sortButtonText: string = 'Confirm';
   @Input() pd?: string;
   @Input() mg?: string;
   @Input() height?: string;
@@ -49,7 +49,7 @@ export class SortTableComponent {
     if (this.sortOptions.length > this.displayedOptions) {
       this.visibleSortOptions = this.sortOptions.slice(
         0,
-        this.displayedOptions
+        this.displayedOptions,
       );
       this.hiddenSortOptions = this.sortOptions.slice(this.displayedOptions);
       this.showMore = true;
@@ -78,14 +78,14 @@ export class SortTableComponent {
             value:
               this.getSortOrder(
                 sort.type,
-                this.selectedOrders.get(index) || 'asc'
+                this.selectedOrders.get(index) || 'asc',
               ) || '',
             checked: sort.checked || false,
           });
         }
         return acc;
       },
-      []
+      [],
     );
     this.selectedOptions.emit(selectedSortDetails);
     return selectedSortDetails;
@@ -147,6 +147,7 @@ export class SortTableComponent {
     this.updateSortButtonState();
     this.checkAll = false;
     this.resetSortData.emit();
+    this.applySort();
   }
 
   updateSortButtonState() {
@@ -191,7 +192,7 @@ export class SortTableComponent {
 
       const globalFromIndex = this.sortOptions.indexOf(temp);
       const globalToIndex = this.sortOptions.indexOf(
-        this.visibleSortOptions[fromIndex]
+        this.visibleSortOptions[fromIndex],
       );
 
       if (globalFromIndex !== -1 && globalToIndex !== -1) {

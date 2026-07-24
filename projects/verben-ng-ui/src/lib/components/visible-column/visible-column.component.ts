@@ -18,7 +18,18 @@ interface Item {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VisibleColumnComponent {
-  @Input() columns: IDataFilter[] = [];
+  private _columns: IDataFilter[] = [];
+
+  @Input()
+  set columns(value: IDataFilter[] | null | undefined) {
+    this._columns = value ?? [];
+    this.visibleColumns = this._columns.map((column) => !!column.checked);
+    this.updateSelectAllStatus();
+  }
+
+  get columns(): IDataFilter[] {
+    return this._columns;
+  }
   @Input() items: Item[] = [];
   @Input() enableDragAndDrop: boolean = true;
   @Input() displayedColumns: number = 5;

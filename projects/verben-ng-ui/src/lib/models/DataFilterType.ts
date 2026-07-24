@@ -6,4 +6,5 @@ export enum DataFilterType {
   Date = 'Date',
   Bool = 'Bool',
   Number = 'Number',
+  Enum = 'Enum',
 }

@@ -30,7 +30,7 @@ export class TableFilterComponent implements OnInit {
   @Output() resetSortData = new EventEmitter<any>();
   filterArray: string[] = [];
   selectedFilterValue: string = '';
-  selectedFilterType?: any;
+  selectedFilterType: DataFilterType | null = null;
   conditionOptions: string[] = [];
   selectedCondition: string | undefined = '';
   inputValue?: string | number;
@@ -40,7 +40,7 @@ export class TableFilterComponent implements OnInit {
   checkAll: boolean = false;
   isDuplicateFilter: boolean = false;
   disableAddFilterBtn: boolean = false;
-  disableApplyFilterBtn: boolean = true;
+  //disableApplyFilterBtn: boolean = true;
   duplicateMessage?: string = '';
   configInstance: Config;
   storageKey: string = 'savedFilters';
@@ -71,17 +71,21 @@ export class TableFilterComponent implements OnInit {
     this.selectedFilterType = null;
     this.selectedCondition = '';
     this.inputValue = '';
-    this.savedFilters = [];
+    // this.savedFilters = [];
+    this.savedFilters.forEach((x) => {
+      x.checked = false;
+    });
     this.editIndex = null;
     this.checkAll = false;
     this.isDuplicateFilter = false;
-    this.disableApplyFilterBtn = true;
+    // this.disableApplyFilterBtn = true;
     this.duplicateMessage = '';
     localStorage.removeItem(this.storageKey);
     this.filterCount = this.savedFilters.filter(
       (item) => item.checked === true,
     ).length;
     this.resetSortData.emit();
+    this.applyFilters(true);
   }
 
   addFilter() {
@@ -103,7 +107,7 @@ export class TableFilterComponent implements OnInit {
     ) {
       const leftFilter: IDataFilter = {
         name: this.selectedFilterValue,
-        type: this.selectedFilterType,
+        type: this.selectedFilterType || DataFilterType.String,
         condition: 'After',
         value: (this.inputValue as string).concat(' 00:00'),
         checked: true,
@@ -111,7 +115,7 @@ export class TableFilterComponent implements OnInit {
 
       const rightFilter: IDataFilter = {
         name: this.selectedFilterValue,
-        type: this.selectedFilterType,
+        type: this.selectedFilterType || DataFilterType.String,
         condition: 'Before',
         value: (this.inputValue as string).concat(' 23:59'),
         checked: true,
@@ -152,7 +156,7 @@ export class TableFilterComponent implements OnInit {
     } else {
       const newFilter: IDataFilter = {
         name: this.selectedFilterValue,
-        type: this.selectedFilterType,
+        type: this.selectedFilterType || DataFilterType.String,
         condition: this.selectedCondition,
         value: this.inputValue,
         checked: true,
@@ -189,7 +193,7 @@ export class TableFilterComponent implements OnInit {
     }
 
     this.clearOperationSection();
-    this.checkFilterButton();
+    // this.checkFilterButton();
   }
 
   toggleCheckbox(index: number) {
@@ -203,7 +207,7 @@ export class TableFilterComponent implements OnInit {
   deleteFilter(index: number) {
     this.savedFilters.splice(index, 1);
     this.checkDuplicateFilter();
-    this.checkFilterButton();
+    //  this.checkFilterButton();
     this.filterCount = this.savedFilters.filter(
       (item) => item.checked === true,
     ).length;
@@ -225,9 +229,9 @@ export class TableFilterComponent implements OnInit {
     this.editIndex = index;
   }
 
-  applyFilters() {
+  applyFilters(skipSave: boolean = false) {
     this.selectedFilters = this.savedFilters.filter((filter) => filter.checked);
-    if (this.saveCallback) {
+    if (this.saveCallback && !skipSave) {
       this.saveCallback(this.savedFilters);
     }
     this.filtersApplied.emit(this.selectedFilters);
@@ -250,9 +254,9 @@ export class TableFilterComponent implements OnInit {
     this.inputValue = '';
   }
 
-  checkFilterButton() {
-    this.disableApplyFilterBtn = this.savedFilters.length === 0;
-  }
+  // checkFilterButton() {
+  //   this.disableApplyFilterBtn = this.savedFilters.length === 0;
+  // }
 
   toggleSelectAll(): void {
     this.checkAll = !this.checkAll;

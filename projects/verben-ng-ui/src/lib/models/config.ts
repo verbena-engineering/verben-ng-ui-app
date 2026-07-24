@@ -8,7 +8,21 @@ export class Config {
       options: [ConditionalOptions.On, ConditionalOptions.NotEqual],
     },
     {
+      type: DataFilterType.Enum,
+      options: [ConditionalOptions.On, ConditionalOptions.NotEqual],
+    },
+    {
       type: DataFilterType.Integer,
+      options: [
+        ConditionalOptions.On,
+        ConditionalOptions.Before,
+        ConditionalOptions.LessThanAndEqual,
+        ConditionalOptions.After,
+        ConditionalOptions.GreaterThanAndEqual,
+      ],
+    },
+    {
+      type: DataFilterType.Number,
       options: [
         ConditionalOptions.On,
         ConditionalOptions.Before,
@@ -53,7 +67,7 @@ export class Config {
 
   getConditionOptions(filterType: DataFilterType): string[] | null {
     const typeOption = this.typeOptions.find(
-      (option) => option.type === filterType
+      (option) => option.type === filterType,
     );
     return typeOption ? typeOption.options : null;
   }

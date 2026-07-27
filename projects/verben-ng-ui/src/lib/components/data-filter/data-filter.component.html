@@ -90,25 +90,19 @@
 
         <!-- Value Input based on type -->
         <ng-container [ngSwitch]="currentColumnType">
-          <!-- Date Input -->
-          <verbena-input
+          <!-- Date Picker -->
+          <app-date-picker
             *ngSwitchCase="'date'"
-            type="date"
             placeholder="Select date"
             border="1px solid var(--vbn-color-border)"
-            borderRadius="5px"
-            textColor="var(--vbn-color-text)"
-            width="100%"
-            height="1.025rem"
-            pd="2px 6px"
             [(ngModel)]="currentFilter.value"
-          ></verbena-input>
+          ></app-date-picker>
 
           <!-- Number Input -->
           <verbena-input
             *ngSwitchCase="'number'"
             type="number"
-            placeholder="Enter number"
+            placeHolder="Enter number"
             border="1px solid var(--vbn-color-border)"
             borderRadius="5px"
             textColor="var(--vbn-color-text)"
@@ -118,11 +112,35 @@
             [(ngModel)]="currentFilter.value"
           ></verbena-input>
 
+          <!-- Yes / No Selection -->
+          <verben-drop-down
+            *ngSwitchCase="'bool'"
+            width="100%"
+            height="1.025rem"
+            placeholder="Select value"
+            [options]="valueOptions"
+            optionLabel="label"
+            optionValue="value"
+            [(ngModel)]="currentFilter.value"
+          ></verben-drop-down>
+
+          <!-- Enum Member Selection -->
+          <verben-drop-down
+            *ngSwitchCase="'enum'"
+            width="100%"
+            height="1.025rem"
+            placeholder="Select value"
+            [options]="valueOptions"
+            optionLabel="label"
+            optionValue="value"
+            [(ngModel)]="currentFilter.value"
+          ></verben-drop-down>
+
           <!-- Text Input (default) -->
           <verbena-input
-            *ngSwitchCase="'string'"
+            *ngSwitchDefault
             type="text"
-            placeholder="Enter text"
+            placeHolder="Enter text"
             border="1px solid var(--vbn-color-border)"
             borderRadius="5px"
             textColor="var(--vbn-color-text)"

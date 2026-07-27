@@ -7,14 +7,21 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table';
+import {
+  ColumnDefinition,
+  ColumnValueOption,
+  ColumnValueType,
+} from 'verben-ng-ui/src/lib/components/data-table';
 import {
   FilterOperator,
+  FilterOperatorType,
   FilterCondition,
   FilterGroup,
   STRING_OPERATORS,
   NUMBER_OPERATORS,
   DATE_OPERATORS,
+  BOOL_OPERATORS,
+  ENUM_OPERATORS,
 } from './data-filter.types';
 
 @Component({
@@ -39,7 +46,21 @@ export class DataFilterComponent<T> implements OnInit, OnChanges {
   currentFilter: Partial<FilterCondition> = {};
   showAllFilters = false;
   maxVisibleItems = 3;
-  currentColumnType: 'string' | 'number' | 'date' | null = null;
+  currentColumnType: FilterOperatorType | null = null;
+  /**
+   * Options for the value dropdown when the selected column is bool or enum.
+   * Always normalised to `{ label, value }` so the template binds one shape.
+   */
+  valueOptions: ColumnValueOption[] = [];
+  /**
+   * Held as strings rather than booleans: `verben-drop-down` gates its selected
+   * label on a truthiness check, so an option valued `false` would render as
+   * though nothing were picked. Coerced back to a boolean in `addFilter`.
+   */
+  private readonly boolOptions: ColumnValueOption[] = [
+    { label: 'Yes', value: 'true' },
+    { label: 'No', value: 'false' },
+  ];
   // Set once the user edits the panel, so restored/host filters no longer
   // overwrite their in-progress work.
   private userTouched = false;
@@ -88,7 +109,13 @@ export class DataFilterComponent<T> implements OnInit, OnChanges {
     this.currentFilter.value = undefined;
 
     // Determine column type and set available operators
-    this.currentColumnType = this.determineColumnType(column);
+    this.currentColumnType = this.resolveColumnType(column);
+    this.valueOptions =
+      this.currentColumnType === 'bool'
+        ? this.boolOptions
+        : this.currentColumnType === 'enum'
+        ? this.normalizeValueOptions(column.valueOptions)
+        : [];
 
     switch (this.currentColumnType) {
       case 'string':
@@ -100,24 +127,33 @@ export class DataFilterComponent<T> implements OnInit, OnChanges {
       case 'date':
         this.availableOperators = DATE_OPERATORS;
         break;
+      case 'bool':
+        this.availableOperators = BOOL_OPERATORS;
+        break;
+      case 'enum':
+        this.availableOperators = ENUM_OPERATORS;
+        break;
       default:
         this.availableOperators = [];
     }
   }
 
   addFilter() {
-    if (
-      !this.currentFilter.columnId ||
-      !this.currentFilter.operator ||
-      !this.currentFilter.value
-    ) {
+    const value = this.currentFilter.value;
+    // Checked explicitly rather than for falsiness: `false` is a valid bool
+    // filter and `0` a valid number one.
+    const hasValue = value !== undefined && value !== null && value !== '';
+
+    if (!this.currentFilter.columnId || !this.currentFilter.operator || !hasValue) {
       return;
     }
 
     const newFilter: FilterCondition & { selected: boolean } = {
       columnId: this.currentFilter.columnId!,
       operator: this.currentFilter.operator,
-      value: this.currentFilter.value,
+      // Bool values round-trip through the dropdown as strings; hosts receive
+      // a real boolean.
+      value: this.currentColumnType === 'bool' ? value === 'true' : value!,
       selected: true,
     };
 
@@ -137,12 +173,21 @@ export class DataFilterComponent<T> implements OnInit, OnChanges {
 
     const operator = this.getOperatorLabel(filter.operator);
 
-    let value = filter.value;
-    if (value instanceof Date) {
-      value = (value as Date).toLocaleDateString();
-    }
+    return `${columnName} ${operator} ${this.getValueLabel(column, filter.value)}`;
+  }
 
-    return `${columnName} ${operator} ${value}`;
+  /** Renders a stored filter value the way it was chosen, not as raw data. */
+  private getValueLabel(
+    column: ColumnDefinition<T>,
+    value: FilterCondition['value']
+  ): string {
+    if (value instanceof Date) return value.toLocaleDateString();
+    if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+
+    const option = this.normalizeValueOptions(column.valueOptions).find(
+      (candidate) => candidate.value === value
+    );
+    return option ? option.label : `${value}`;
   }
 
   private getOperatorLabel(operatorValue: string): string {
@@ -150,31 +195,111 @@ export class DataFilterComponent<T> implements OnInit, OnChanges {
       ...STRING_OPERATORS,
       ...NUMBER_OPERATORS,
       ...DATE_OPERATORS,
+      ...BOOL_OPERATORS,
+      ...ENUM_OPERATORS,
     ].find((op) => op.value === operatorValue);
     return operator ? operator.label.toLowerCase() : operatorValue;
   }
 
-  private determineColumnType(
-    column: ColumnDefinition<T>
-  ): 'string' | 'number' | 'date' | null {
-    if (!this.data.length) return null;
+  /**
+   * Prefers the type declared on the column, falling back to inspecting the data
+   * only when the host has not declared one.
+   */
+  private resolveColumnType(column: ColumnDefinition<T>): FilterOperatorType {
+    if (column.valueType) {
+      // An Enum with no declared members has nothing to populate a dropdown
+      // with, so it degrades to a free-text filter rather than an empty select.
+      if (
+        column.valueType === ColumnValueType.Enum &&
+        !this.normalizeValueOptions(column.valueOptions).length
+      ) {
+        return 'string';
+      }
+      return this.mapValueType(column.valueType);
+    }
 
-    const sampleValue = column.accessorKey
-      ? this.data[0][column.accessorKey]
-      : column.accessorFn
-      ? column.accessorFn(this.data[0])
-      : null;
+    return this.inferColumnType(column);
+  }
 
-    if (sampleValue === null) return null;
+  private mapValueType(valueType: ColumnValueType): FilterOperatorType {
+    switch (valueType) {
+      case ColumnValueType.Date:
+        return 'date';
+      case ColumnValueType.Number:
+      case ColumnValueType.Integer:
+      case ColumnValueType.Decimal:
+      case ColumnValueType.Currency:
+        return 'number';
+      case ColumnValueType.Bool:
+        return 'bool';
+      case ColumnValueType.Enum:
+        return 'enum';
+      default:
+        return 'string';
+    }
+  }
+
+  /**
+   * Best-effort type detection for columns that declare no `valueType`. Falls
+   * back to 'string' rather than null so the value field always renders.
+   */
+  private inferColumnType(column: ColumnDefinition<T>): FilterOperatorType {
+    const sampleValue = this.firstNonEmptyValue(column);
 
     if (sampleValue instanceof Date) return 'date';
     if (typeof sampleValue === 'number') return 'number';
+    if (typeof sampleValue === 'boolean') return 'bool';
+    if (typeof sampleValue === 'string' && this.isDateString(sampleValue)) {
+      return 'date';
+    }
     return 'string';
+  }
+
+  /**
+   * Scans rows for the first usable sample — sampling only the first row misses
+   * the type whenever that row happens to hold a null or undefined value.
+   */
+  private firstNonEmptyValue(column: ColumnDefinition<T>): unknown {
+    for (const row of this.data ?? []) {
+      const value = this.readValue(column, row);
+      if (value !== null && value !== undefined && value !== '') return value;
+    }
+    return null;
+  }
+
+  private readValue(column: ColumnDefinition<T>, row: T): unknown {
+    if (column.accessorKey) return row[column.accessorKey];
+    if (column.accessorFn) return column.accessorFn(row);
+    return null;
+  }
+
+  /**
+   * Dates usually arrive from an API as ISO strings, which would otherwise be
+   * typed as plain text. Anchored to ISO-ish input so ordinary strings that
+   * `Date` happens to parse (e.g. "March") are not misread as dates.
+   */
+  private isDateString(value: string): boolean {
+    if (!/^\d{4}-\d{2}-\d{2}([T\s]|$)/.test(value)) return false;
+    return !Number.isNaN(new Date(value).getTime());
+  }
+
+  /** Accepts either supported `valueOptions` shape and returns one of them. */
+  private normalizeValueOptions(
+    options: string[] | ColumnValueOption[] | undefined
+  ): ColumnValueOption[] {
+    if (!options?.length) return [];
+    return (options as unknown[]).map((option) =>
+      typeof option === 'string'
+        ? { label: option, value: option }
+        : (option as ColumnValueOption)
+    );
   }
 
   private resetCurrentFilter() {
     this.currentFilter = {};
     this.availableOperators = [];
+    this.currentColumnType = null;
+    this.valueOptions = [];
   }
 
   resetAll() {

@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   ColumnDefinition,
   ColumnDirective,
+  ColumnValueType,
   DataExportService,
   DataExtendItem,
   FilterCondition,
@@ -89,6 +90,7 @@ export class DataTableComponent {
       id: 'age',
       header: 'Age',
       accessorKey: 'age',
+      valueType: ColumnValueType.Integer,
       // accessorFn: (row) => row,
       importKey: 'age',
       footerFn: (values, rows) => {
@@ -101,6 +103,7 @@ export class DataTableComponent {
       id: 'money',
       header: 'Money',
       accessorKey: 'money',
+      valueType: ColumnValueType.Currency,
       // accessorFn: (row) => row.money,
       importKey: 'money',
       footerFn: (values, rows) => {
@@ -109,6 +112,26 @@ export class DataTableComponent {
       }
     },
     {
+      id: 'createdAt',
+      header: 'Created At',
+      accessorKey: 'createdAt',
+      valueType: ColumnValueType.Date,
+    },
+    {
+      id: 'status',
+      header: 'Status',
+      accessorKey: 'status',
+      valueType: ColumnValueType.Enum,
+      valueOptions: ['Draft', 'Sent', 'Paid'],
+    },
+    {
+      id: 'isActive',
+      header: 'Active',
+      accessorKey: 'isActive',
+      valueType: ColumnValueType.Bool,
+    },
+    {
+      // Deliberately undeclared, to exercise the inference fallback.
       id: 'message',
       header: 'Message',
       accessorKey: 'message',
@@ -427,6 +450,11 @@ export class DataTableComponent {
           names: generateRandomName(),
           age: Math.floor(Math.random() * 50) + 1,
           money: Math.floor(Math.random() * 500) + 1,
+          createdAt: new Date(
+            Date.now() - index * 86400000,
+          ).toISOString(),
+          status: ['Draft', 'Sent', 'Paid'][index % 3],
+          isActive: index % 2 === 0,
           message:
             'Dark seas and dark towers. Night sky and wry smile. Loneliness, nonetheless.',
         })),
@@ -445,6 +473,11 @@ export class DataTableComponent {
           names: generateRandomName(),
           age: Math.floor(Math.random() * 50) + 1,
           money: Math.floor(Math.random() * 500) + 1,
+          createdAt: new Date(
+            Date.now() - index * 86400000,
+          ).toISOString(),
+          status: ['Draft', 'Sent', 'Paid'][index % 3],
+          isActive: index % 2 === 0,
           message:
             'Dark seas and dark towers. Night sky and wry smile. Loneliness, nonetheless.',
         })),
@@ -712,6 +745,10 @@ interface YourDataType {
   money?: number;
   message?: string;
   names?: { firstName: string; lastName: string };
+  /** Held as an ISO string, as it would be coming back from an API. */
+  createdAt?: string;
+  status?: string;
+  isActive?: boolean;
 }
 
 // Default styles

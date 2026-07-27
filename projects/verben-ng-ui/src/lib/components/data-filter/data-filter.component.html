@@ -36,7 +36,7 @@
 
       <div *ngFor="let filter of visibleFilters" class="item">
         <div class="item-label">
-          <input type="checkbox" [(ngModel)]="filter.selected" />
+          <input type="checkbox" [(ngModel)]="filter.selected" (ngModelChange)="markTouched()" />
           <label>{{ getFilterDescription(filter) }}</label>
         </div>
       </div>

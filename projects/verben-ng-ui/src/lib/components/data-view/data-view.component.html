@@ -66,9 +66,12 @@
            >Columns <sup>({{ selectedColumnCount }})</sup></span
          >
        </span>
-       <div [style.z-index]="zIndex" class="data-view-element">
-         <ng-content *ngIf="showColumnChild" select="[column-content]">
-         </ng-content>
+       <div [style.z-index]="zIndex" class="data-view-element"
+         [style.display]="showColumnChild ? 'block' : 'none'">
+         <!-- Kept in the DOM (hidden via display) rather than *ngIf so the
+              projected panel stays change-detected and reflects host state
+              updates (e.g. restored column arrangement) even while collapsed. -->
+         <ng-content select="[column-content]"></ng-content>
        </div>
      </ng-template>
    </ng-container>
@@ -95,11 +98,12 @@
            >Filter <sup>({{ selectedFilterTableCount }})</sup></span
          >
        </span>
-       <div (click)="stopPropagation($event)" [style.z-index]="zIndex" class="data-view-element">
-
-          <ng-content *ngIf="showFilterChild" select="[filter-content]"></ng-content>
-      
-      
+       <div (click)="stopPropagation($event)" [style.z-index]="zIndex" class="data-view-element"
+         [style.display]="showFilterChild ? 'block' : 'none'">
+          <!-- Kept in the DOM (hidden via display) rather than *ngIf so the
+               projected panel stays change-detected and reflects host state
+               updates (e.g. restored filters) even while collapsed. -->
+          <ng-content select="[filter-content]"></ng-content>
        </div>
      </ng-template>
    </ng-container>

@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { ColumnDefinition } from 'verben-ng-ui/src/lib/components/data-table';
 import {
   FilterOperator,
@@ -14,9 +22,15 @@ import {
   templateUrl: './data-filter.component.html',
   styleUrl: './data-filter.component.css',
 })
-export class DataFilterComponent<T> implements OnInit {
+export class DataFilterComponent<T> implements OnInit, OnChanges {
   @Input() columns!: ColumnDefinition<T>[];
   @Input() data!: T[];
+  /**
+   * Optional restored filters: the panel opens pre-populated with these as
+   * selected filter chips. Applied once (the first time a non-empty value
+   * arrives) so it never clobbers the user's in-progress edits afterwards.
+   */
+  @Input() initialFilters?: FilterCondition[];
   @Output() filterApplied = new EventEmitter<FilterCondition[]>();
   @Output() resetFilter = new EventEmitter();
   filterableColumns: ColumnDefinition<T>[] = [];
@@ -26,9 +40,37 @@ export class DataFilterComponent<T> implements OnInit {
   showAllFilters = false;
   maxVisibleItems = 3;
   currentColumnType: 'string' | 'number' | 'date' | null = null;
+  // Set once the user edits the panel, so restored/host filters no longer
+  // overwrite their in-progress work.
+  private userTouched = false;
 
   ngOnInit() {
     this.initializeFilterableColumns();
+    this.hydrateSavedFilters();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // Pick up filters restored asynchronously by the host after first render.
+    if (changes['initialFilters']) {
+      this.hydrateSavedFilters();
+    }
+  }
+
+  /**
+   * Seed the saved-filter chips from the restored filters. Skipped once the user
+   * has touched the panel so it never overwrites their in-progress edits.
+   */
+  private hydrateSavedFilters() {
+    if (this.userTouched) return;
+    this.savedFilters = (this.initialFilters ?? []).map((filter) => ({
+      ...filter,
+      selected: true,
+    }));
+  }
+
+  /** Marks the panel as user-edited (called from template interactions). */
+  markTouched() {
+    this.userTouched = true;
   }
 
   private initializeFilterableColumns() {
@@ -80,6 +122,7 @@ export class DataFilterComponent<T> implements OnInit {
     };
 
     this.savedFilters.unshift(newFilter);
+    this.userTouched = true;
     this.resetCurrentFilter();
   }
 
@@ -135,12 +178,14 @@ export class DataFilterComponent<T> implements OnInit {
   }
 
   resetAll() {
+    this.userTouched = true;
     this.savedFilters = [];
     this.resetCurrentFilter();
     this.resetFilter.emit();
   }
 
   applyFilters() {
+    this.userTouched = true;
     const activeFilters = this.savedFilters
       .filter((filter) => filter.selected)
       .map(({ columnId, operator, value }) => ({

@@ -64,7 +64,7 @@ export class DataColumnsComponent<T> implements OnInit {
     const temp = this.visibleColumns[fromIndex];
     this.visibleColumns[fromIndex] = this.visibleColumns[toIndex];
     this.visibleColumns[toIndex] = temp;
-    this.emitUpdatedColumns();
+    // Staged only — applied/emitted when the user clicks Save (see template).
   }
 
   // Column Selection functionality
@@ -74,14 +74,14 @@ export class DataColumnsComponent<T> implements OnInit {
     this.visibleColumns.forEach((column) => {
       this.columnVisibility.set(column.id, newValue);
     });
-    this.emitUpdatedColumns();
+    // Staged only — applied/emitted when the user clicks Save (see template).
   }
 
   toggleColumnVisibility(columnId: string) {
     const currentValue = this.columnVisibility.get(columnId);
     this.columnVisibility.set(columnId, !currentValue);
     this.updateSelectAllStatus();
-    this.emitUpdatedColumns();
+    // Staged only — applied/emitted when the user clicks Save (see template).
   }
 
   isColumnVisible(columnId: string): boolean {

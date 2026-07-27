@@ -229,10 +229,7 @@ export class DataTableComponent {
     {
       id: 'Name',
       header: 'Name',
-      // accessorKey: 'Name',
-      accessorFn: (row: { Name: string; Friend: string; Date: Date }) => {
-        return row;
-      },
+      accessorKey: 'Name',
       importKey: 'Name',
     },
     {
@@ -279,19 +276,6 @@ export class DataTableComponent {
       },
       canExport: true,
       canImport: true,
-      isHidden: true,
-    },
-    {
-      id: 'firstName',
-      header: 'First Name',
-      accessorFn: (row) => row.names?.firstName,
-      isHidden: false,
-    },
-    {
-      id: 'lastName',
-      header: 'Last Name',
-      accessorFn: (row) => row.names?.lastName,
-      isHidden: false,
     },
     {
       id: 'role',

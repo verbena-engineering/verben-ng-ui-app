@@ -184,6 +184,14 @@ export class DataFilterComponent<T> implements OnInit, OnChanges {
     if (value instanceof Date) return value.toLocaleDateString();
     if (typeof value === 'boolean') return value ? 'Yes' : 'No';
 
+    // The native date input yields a 'YYYY-MM-DD' string; restored filters may
+    // carry one too. Parsed as local time — `new Date('2026-07-28')` is treated
+    // as UTC and would display as the previous day west of Greenwich.
+    if (typeof value === 'string' && this.isDateString(value)) {
+      const [year, month, day] = value.slice(0, 10).split('-').map(Number);
+      return new Date(year, month - 1, day).toLocaleDateString();
+    }
+
     const option = this.normalizeValueOptions(column.valueOptions).find(
       (candidate) => candidate.value === value
     );

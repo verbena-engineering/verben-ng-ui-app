@@ -31,6 +31,7 @@
     "
     [cdkConnectedOverlayLockPosition]="false"
     [cdkConnectedOverlayOrigin]="trigger"
+    [cdkConnectedOverlayPush]="true"
     [cdkConnectedOverlayPositions]="[
       {
         originX: 'start',
@@ -42,6 +43,18 @@
         originX: 'start',
         originY: 'top',
         overlayX: 'start',
+        overlayY: 'bottom',
+      },
+      {
+        originX: 'end',
+        originY: 'bottom',
+        overlayX: 'end',
+        overlayY: 'top',
+      },
+      {
+        originX: 'end',
+        originY: 'top',
+        overlayX: 'end',
         overlayY: 'bottom',
       },
     ]"

@@ -6,6 +6,7 @@ import { CardModule } from 'verben-ng-ui/src/lib/components/card';
 import { DropDownModule } from 'verben-ng-ui/src/lib/components/drop-down';
 import { TooltipModule } from 'verben-ng-ui/src/lib/components/tooltip';
 import { VerbenaInputModule } from 'verben-ng-ui/src/lib/verbena-input';
+import { DatePickerModule } from 'verben-ng-ui/src/lib/components/date-picker';
 import { DataFilterComponent } from './data-filter.component';
 
 @NgModule({
@@ -19,6 +20,7 @@ import { DataFilterComponent } from './data-filter.component';
     DropDownModule,
     TooltipModule,
     VerbenaInputModule,
+    DatePickerModule,
   ],
   exports: [DataFilterComponent],
 })

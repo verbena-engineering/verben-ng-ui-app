@@ -1,4 +1,9 @@
-export type FilterOperatorType = 'string' | 'number' | 'date';
+export type FilterOperatorType =
+  | 'string'
+  | 'number'
+  | 'date'
+  | 'bool'
+  | 'enum';
 
 export interface FilterOperator {
   label: string;
@@ -25,10 +30,20 @@ export const DATE_OPERATORS: FilterOperator[] = [
   { label: 'After', value: 'after', type: 'date' },
 ];
 
+export const BOOL_OPERATORS: FilterOperator[] = [
+  { label: 'Is', value: 'is', type: 'bool' },
+  { label: 'Is Not', value: 'isNot', type: 'bool' },
+];
+
+export const ENUM_OPERATORS: FilterOperator[] = [
+  { label: 'Is', value: 'is', type: 'enum' },
+  { label: 'Is Not', value: 'isNot', type: 'enum' },
+];
+
 export interface FilterCondition {
   columnId: string;
   operator: string;
-  value: string | number | Date;
+  value: string | number | boolean | Date;
 }
 
 export interface FilterGroup {

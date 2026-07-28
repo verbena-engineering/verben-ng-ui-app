@@ -34,6 +34,29 @@ export interface ColumnFooterConfig<T> {
   includeInExport?: boolean;
 }
 
+/**
+ * Declared type of a column's underlying value. Deliberately general rather than
+ * filter-specific: operation components that consume `ColumnDefinition` all need
+ * to know a column's type (the filter panel picks the value control from it, and
+ * import validation, sorting and exports have the same need).
+ */
+export enum ColumnValueType {
+  String = 'String',
+  Number = 'Number',
+  Integer = 'Integer',
+  Decimal = 'Decimal',
+  Currency = 'Currency',
+  Date = 'Date',
+  Bool = 'Bool',
+  Enum = 'Enum',
+}
+
+/** An allowed value for a column whose `valueType` is `Enum`. */
+export interface ColumnValueOption {
+  label: string;
+  value: any;
+}
+
 export interface ColumnDefinition<T> {
   id: string;
   header: string | ((context: any) => any);
@@ -61,6 +84,16 @@ export interface ColumnDefinition<T> {
   importBy?: keyof T | ((importedRow: any) => T[keyof T]);
   exportBy?: keyof T | ((row: T) => any);
   isHidden?: boolean;
+  /**
+   * Type of this column's value. Optional — consumers that need a type fall back
+   * to inferring one from the data when it is omitted.
+   */
+  valueType?: ColumnValueType;
+  /**
+   * Allowed values when `valueType` is `Enum`. Either a plain list of members or
+   * `{ label, value }` pairs when the display text differs from the stored value.
+   */
+  valueOptions?: string[] | ColumnValueOption[];
 }
 
 // Define a type that extends T with a _key property

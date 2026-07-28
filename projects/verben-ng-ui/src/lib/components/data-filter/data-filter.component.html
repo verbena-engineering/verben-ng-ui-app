@@ -90,13 +90,20 @@
 
         <!-- Value Input based on type -->
         <ng-container [ngSwitch]="currentColumnType">
-          <!-- Date Picker -->
-          <app-date-picker
+          <!-- Date Input — native rather than the library date picker, whose
+               overlay renders off screen from this narrow panel. -->
+          <verbena-input
             *ngSwitchCase="'date'"
-            placeholder="Select date"
+            type="date"
+            placeHolder="Select date"
             border="1px solid var(--vbn-color-border)"
+            borderRadius="5px"
+            textColor="var(--vbn-color-text)"
+            width="100%"
+            height="1.025rem"
+            pd="2px 6px"
             [(ngModel)]="currentFilter.value"
-          ></app-date-picker>
+          ></verbena-input>
 
           <!-- Number Input -->
           <verbena-input

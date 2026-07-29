@@ -1,37 +1,53 @@
-<div 
-[ngStyle]="notificationStyles"
-class="mainwrapper"
+<div
+  [ngStyle]="notificationStyles"
+  class="mainwrapper"
+  *ngIf="notificationOptions"
 >
   <div [ngStyle]="innerWrapperStyles">
     <verben-svg
-      [icon]="notificationOptions.iconName"
-      [width]="notificationOptions.iconWidth"
-      [height]="notificationOptions.iconHeight"
-      [stroke]="notificationOptions.stroke"
-      [fill]="notificationOptions.fill"
+      [icon]="notificationOptions.iconName || ''"
+      [width]="notificationOptions.iconWidth || 20"
+      [height]="notificationOptions.iconHeight || 20"
+      [stroke]="notificationOptions.stroke || ''"
+      [fill]="notificationOptions.fill || ''"
     ></verben-svg>
-        <p>{{ notificationContent }}</p>
+    <p>{{ notificationContent }}</p>
   </div>
   <div>
-    <div [ngStyle]="btnWrapperStyle" *ngIf="buttons.length">
-    <verbena-button
-    *ngFor="let button of buttons"
-    [text]="button.text"
-    [bgColor]="button.bgColor"
-    [textColor]="button.primarycolor || button.secondarycolor"
-    [borderRadius]="'8px'"
-    [pd]="'0px 8px'"
-    [fontSize]="'14px'"
-    (click)="onButtonClick(button)"
-  ></verbena-button>
-    </div>
+    <ng-container *ngIf="notificationOptions.buttons">
+      <div [ngStyle]="btnWrapperStyle">
+        <verbena-button
+          *ngFor="let button of notificationOptions.buttons"
+          [text]="button.text"
+          [bgColor]="button.bgColor"
+          [textColor]="button.primarycolor || button.secondarycolor"
+          [borderRadius]="'8px'"
+          [pd]="'0px 8px'"
+          [fontSize]="'14px'"
+          (click)="button.callBack && button.callBack()"
+        ></verbena-button>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!notificationOptions.buttons">
+      <div [ngStyle]="btnWrapperStyle" *ngIf="buttons.length">
+        <verbena-button
+          *ngFor="let button of buttons"
+          [text]="button.text"
+          [bgColor]="button.bgColor"
+          [textColor]="button.primarycolor || button.secondarycolor"
+          [borderRadius]="'8px'"
+          [pd]="'0px 8px'"
+          [fontSize]="'14px'"
+          (click)="onButtonClick(button); button.callBack && button.callBack()"
+        ></verbena-button>
+      </div>
+    </ng-container>
     <verben-svg
-    class="closeSvg"
-    [icon]="'close'"
-    [size]="'sm'"
-    [stroke]="'var(--vbn-color-text-muted)'"
-    (click) = "closeNotification()"
-  ></verben-svg>
+      class="closeSvg"
+      [icon]="'close'"
+      [size]="'sm'"
+      [stroke]="'var(--vbn-color-text-muted)'"
+      (click)="closeNotification()"
+    ></verben-svg>
   </div>
 </div>
-

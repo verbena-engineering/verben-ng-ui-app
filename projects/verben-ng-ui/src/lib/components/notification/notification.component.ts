@@ -7,16 +7,11 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { NotificationService } from 'verben-ng-ui/src/lib/services';
+import {
+  NotificationButton,
+  NotificationOptions,
+} from 'verben-ng-ui/src/lib/models';
 import { Subscription } from 'rxjs';
-
-interface Button {
-  text: string;
-  bgColor?: string;
-  primarycolor?: string;
-  secondarycolor?: string;
-  fontSize?: string;
-  fontWeight?: string;
-}
 
 @Component({
   selector: 'verben-notification',
@@ -33,14 +28,14 @@ export class NotificationComponent implements OnInit, OnDestroy {
   @Input() content?: string;
   top: string = '';
   bottom: string = '';
-  @Input() buttons: Button[] = [];
+  @Input() buttons: NotificationButton[] = [];
   @Input() timeout: number = 10000;
   @Input() position: string = 'top-left';
   transition: string = '0.6s ease-in-out';
 
   showNotification = false;
   notificationContent = '';
-  notificationOptions: any = {};
+  notificationOptions: NotificationOptions | null = null;
   subscription: Subscription;
 
   constructor(private notificationService: NotificationService) {
@@ -61,7 +56,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
         } else {
           this.showNotification = false;
         }
-      }
+      },
     );
   }
 
@@ -74,13 +69,15 @@ export class NotificationComponent implements OnInit, OnDestroy {
     this.notificationService.clearNotification();
   }
 
-  @Output() buttonClick = new EventEmitter<Button>();
+  @Output() buttonClick = new EventEmitter<NotificationButton>();
   @Output() close = new EventEmitter();
 
   get notificationStyles() {
     return {
-      'background-color': this.notificationOptions.backgroundColor,
-      color: this.notificationOptions.textColor,
+      'background-color': this.notificationOptions
+        ? this.notificationOptions.backgroundColor
+        : '',
+      color: this.notificationOptions ? this.notificationOptions.textColor : '',
       padding: this.padding,
       'border-radius': this.borderRadius,
       border: '1px solid transparent',
@@ -150,7 +147,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
     };
   }
 
-  onButtonClick(button: Button) {
+  onButtonClick(button: NotificationButton) {
     this.buttonClick.emit(button);
   }
 }

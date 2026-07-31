@@ -94,6 +94,13 @@ export interface ColumnDefinition<T> {
    * `{ label, value }` pairs when the display text differs from the stored value.
    */
   valueOptions?: string[] | ColumnValueOption[];
+  /**
+   * Marks this column's filter as required: the filter panel keeps its chip
+   * permanently active and refuses to delete it, so a page whose data cannot be
+   * fetched without the filter can never be left without one. The chip stays
+   * editable — only its removal is blocked.
+   */
+  isRequiredFilter?: boolean;
 }
 
 // Define a type that extends T with a _key property

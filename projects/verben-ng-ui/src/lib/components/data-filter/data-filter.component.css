@@ -42,12 +42,28 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
+}
+
+/* Marks the filter currently loaded into the operation row below. */
+.item-editing {
+  background-color: var(--vbn-color-surface-alt);
+  border-radius: 4px;
 }
 
 .item-label {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  /* Truncates rather than pushing the action icons off the fixed-width card. */
+  flex: 1;
+  min-width: 0;
+}
+
+.item-label label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .checkbox-label {
@@ -57,6 +73,20 @@
 .item-actions {
   display: flex;
   gap: 0.5rem;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.icon-button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.4;
 }
 
 .show-more {
@@ -79,15 +109,29 @@
   gap: 1rem;
 }
 
-.add-button {
+.operation-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.add-button,
+.clear-button {
   margin-top: 0.5rem;
   outline: none;
   border: none;
   background-color: transparent;
-  color: var(--vbn-color-border-focus);
   font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
+}
+
+.add-button {
+  color: var(--vbn-color-border-focus);
+}
+
+.clear-button {
+  color: var(--vbn-color-text-muted);
 }
 
 .card-footer {

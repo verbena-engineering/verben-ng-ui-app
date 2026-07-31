@@ -24,6 +24,9 @@ import {
   ENUM_OPERATORS,
 } from './data-filter.types';
 
+/** A filter chip in the panel's list: a condition plus its active state. */
+type SavedFilter = FilterCondition & { selected: boolean };
+
 @Component({
   selector: 'lib-data-filter',
   templateUrl: './data-filter.component.html',
@@ -42,7 +45,7 @@ export class DataFilterComponent<T> implements OnInit, OnChanges {
   @Output() resetFilter = new EventEmitter();
   filterableColumns: ColumnDefinition<T>[] = [];
   availableOperators: FilterOperator[] = [];
-  savedFilters: (FilterCondition & { selected: boolean })[] = [];
+  savedFilters: SavedFilter[] = [];
   currentFilter: Partial<FilterCondition> = {};
   showAllFilters = false;
   maxVisibleItems = 3;
@@ -64,6 +67,12 @@ export class DataFilterComponent<T> implements OnInit, OnChanges {
   // Set once the user edits the panel, so restored/host filters no longer
   // overwrite their in-progress work.
   private userTouched = false;
+  /**
+   * The saved filter currently loaded into the operation row, if any. Held by
+   * reference rather than by index so deleting or reordering another filter
+   * cannot retarget the write-back.
+   */
+  private editingFilter: SavedFilter | null = null;
 
   ngOnInit() {
     this.initializeFilterableColumns();
@@ -108,7 +117,15 @@ export class DataFilterComponent<T> implements OnInit, OnChanges {
     this.currentFilter.operator = undefined;
     this.currentFilter.value = undefined;
 
-    // Determine column type and set available operators
+    this.applyColumnContext(column);
+  }
+
+  /**
+   * Derives the value control, operators and options for a column without
+   * touching the operator or value already in the operation row — `editFilter`
+   * depends on those surviving, where `onColumnSelect` clears them first.
+   */
+  private applyColumnContext(column: ColumnDefinition<T>) {
     this.currentColumnType = this.resolveColumnType(column);
     this.valueOptions =
       this.currentColumnType === 'bool'
@@ -148,18 +165,108 @@ export class DataFilterComponent<T> implements OnInit, OnChanges {
       return;
     }
 
-    const newFilter: FilterCondition & { selected: boolean } = {
+    const condition: FilterCondition = {
       columnId: this.currentFilter.columnId!,
       operator: this.currentFilter.operator,
       // Bool values round-trip through the dropdown as strings; hosts receive
       // a real boolean.
       value: this.currentColumnType === 'bool' ? value === 'true' : value!,
-      selected: true,
     };
 
-    this.savedFilters.unshift(newFilter);
+    // Written back over the filter being edited, and over the existing chip of a
+    // required column, so neither case leaves a stale duplicate behind. Updated
+    // in place rather than removed and re-added so the chip keeps its position.
+    const target =
+      this.editingFilter ??
+      (this.isRequiredColumn(condition.columnId)
+        ? this.savedFilters.find((f) => f.columnId === condition.columnId)
+        : undefined);
+
+    if (target) {
+      Object.assign(target, condition);
+      target.selected = true;
+    } else {
+      this.savedFilters.unshift({ ...condition, selected: true });
+    }
+
+    this.editingFilter = null;
     this.userTouched = true;
     this.resetCurrentFilter();
+  }
+
+  /** Loads a saved filter back into the operation row for correction. */
+  editFilter(filter: SavedFilter) {
+    const column = this.filterableColumns.find(
+      (col) => col.id === filter.columnId
+    );
+    if (!column) return;
+
+    this.applyColumnContext(column);
+    this.currentFilter = {
+      columnId: filter.columnId,
+      operator: filter.operator,
+      value: this.toEditableValue(filter.value),
+    };
+    this.editingFilter = filter;
+    this.userTouched = true;
+  }
+
+  /**
+   * Converts a stored value back into what the value control expects: bools are
+   * held as real booleans but the dropdown's options are the strings
+   * 'true'/'false' (see `boolOptions`), and the native date input needs
+   * 'YYYY-MM-DD' rather than a `Date` a host may have restored.
+   */
+  private toEditableValue(value: FilterCondition['value']) {
+    if (this.currentColumnType === 'bool') return `${value}`;
+    if (value instanceof Date) {
+      // Built from the local parts: `toISOString` shifts to UTC and would move
+      // the date a day back west of Greenwich.
+      const month = `${value.getMonth() + 1}`.padStart(2, '0');
+      const day = `${value.getDate()}`.padStart(2, '0');
+      return `${value.getFullYear()}-${month}-${day}`;
+    }
+    return value;
+  }
+
+  /** Removes a saved filter. Required filters cannot be removed. */
+  deleteFilter(filter: SavedFilter) {
+    if (this.isRequired(filter)) return;
+
+    const index = this.savedFilters.indexOf(filter);
+    if (index === -1) return;
+
+    this.savedFilters.splice(index, 1);
+    if (this.editingFilter === filter) this.clearCurrentFilter();
+    this.userTouched = true;
+  }
+
+  /** Empties the operation row, abandoning any edit in progress. */
+  clearCurrentFilter() {
+    this.editingFilter = null;
+    this.resetCurrentFilter();
+  }
+
+  /** True when the filter's column is declared `isRequiredFilter`. */
+  isRequired(filter: FilterCondition): boolean {
+    return this.isRequiredColumn(filter.columnId);
+  }
+
+  private isRequiredColumn(columnId: string): boolean {
+    const column = this.filterableColumns.find((col) => col.id === columnId);
+    return !!column?.isRequiredFilter;
+  }
+
+  isEditing(filter: SavedFilter): boolean {
+    return this.editingFilter === filter;
+  }
+
+  /**
+   * Locks the property dropdown while a required filter is being edited —
+   * switching it to another column would drop the required filter entirely.
+   */
+  get isEditingRequired(): boolean {
+    return !!this.editingFilter && this.isRequired(this.editingFilter);
   }
 
   getFilterDescription(filter: FilterCondition): string {
@@ -312,15 +419,27 @@ export class DataFilterComponent<T> implements OnInit, OnChanges {
 
   resetAll() {
     this.userTouched = true;
-    this.savedFilters = [];
-    this.resetCurrentFilter();
+    this.savedFilters = this.savedFilters.filter((filter) =>
+      this.isRequired(filter)
+    );
+    this.clearCurrentFilter();
+
+    // Required filters survive a reset, so the host is told what is left rather
+    // than that everything is gone — a bare `resetFilter` would leave the panel
+    // showing chips the host is no longer filtering by.
+    if (this.savedFilters.length) {
+      this.applyFilters();
+      return;
+    }
     this.resetFilter.emit();
   }
 
   applyFilters() {
     this.userTouched = true;
     const activeFilters = this.savedFilters
-      .filter((filter) => filter.selected)
+      // Required filters are emitted whether or not they are ticked: their
+      // checkbox is disabled, but the host must never be left without them.
+      .filter((filter) => filter.selected || this.isRequired(filter))
       .map(({ columnId, operator, value }) => ({
         columnId,
         operator,
@@ -338,13 +457,26 @@ export class DataFilterComponent<T> implements OnInit, OnChanges {
       : columnId;
   }
 
-  get visibleFilters() {
+  /**
+   * Required filters pinned to the top so the collapsed list can never hide one
+   * behind "Show More".
+   */
+  get orderedFilters(): SavedFilter[] {
+    return [
+      ...this.savedFilters.filter((filter) => this.isRequired(filter)),
+      ...this.savedFilters.filter((filter) => !this.isRequired(filter)),
+    ];
+  }
+
+  get visibleFilters(): SavedFilter[] {
     return this.showAllFilters
-      ? this.savedFilters
-      : this.savedFilters.slice(0, this.maxVisibleItems);
+      ? this.orderedFilters
+      : this.orderedFilters.slice(0, this.maxVisibleItems);
   }
 
   get activeFilterCount(): number {
-    return this.savedFilters.filter((filter) => filter.selected).length;
+    return this.savedFilters.filter(
+      (filter) => filter.selected || this.isRequired(filter)
+    ).length;
   }
 }

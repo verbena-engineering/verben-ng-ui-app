@@ -34,10 +34,54 @@
         ></verben-svg>
       </div>
 
-      <div *ngFor="let filter of visibleFilters" class="item">
+      <div
+        *ngFor="let filter of visibleFilters"
+        class="item"
+        [class.item-editing]="isEditing(filter)"
+      >
         <div class="item-label">
-          <input type="checkbox" [(ngModel)]="filter.selected" (ngModelChange)="markTouched()" />
+          <!-- A required filter is always active, so its checkbox is ticked and
+               locked rather than hidden — the state stays readable. -->
+          <input
+            type="checkbox"
+            [(ngModel)]="filter.selected"
+            [disabled]="isRequired(filter)"
+            (ngModelChange)="markTouched()"
+          />
           <label>{{ getFilterDescription(filter) }}</label>
+        </div>
+
+        <div class="item-actions">
+          <button
+            type="button"
+            class="icon-button"
+            aria-label="Edit filter"
+            (click)="editFilter(filter)"
+          >
+            <!-- Only `stroke` is passed: `verben-svg` resolves a single colour as
+                 `fill || stroke` and applies it to both, so also passing `fill`
+                 would paint the icon in whatever `fill` holds. -->
+            <verben-svg
+              icon="edit"
+              [width]="15"
+              [height]="15"
+              stroke="var(--vbn-color-border-focus)"
+            ></verben-svg>
+          </button>
+          <button
+            type="button"
+            class="icon-button"
+            aria-label="Delete filter"
+            [disabled]="isRequired(filter)"
+            (click)="deleteFilter(filter)"
+          >
+            <verben-svg
+              icon="delete"
+              [width]="15"
+              [height]="15"
+              stroke="var(--vbn-color-error)"
+            ></verben-svg>
+          </button>
         </div>
       </div>
 
@@ -73,6 +117,7 @@
           [options]="filterableColumns"
           optionLabel="header"
           optionValue="id"
+          [disabled]="isEditingRequired"
           [(ngModel)]="currentFilter.columnId"
           (ngModelChange)="onColumnSelect($event)"
         ></verben-drop-down>
@@ -159,7 +204,12 @@
         </ng-container>
       </div>
 
-      <button class="add-button ml-auto" (click)="addFilter()">+ Add</button>
+      <div class="operation-actions">
+        <button class="clear-button" (click)="clearCurrentFilter()">
+          Clear
+        </button>
+        <button class="add-button" (click)="addFilter()">+ Add</button>
+      </div>
     </section>
   </div>
 

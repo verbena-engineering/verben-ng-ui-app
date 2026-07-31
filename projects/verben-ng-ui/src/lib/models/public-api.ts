@@ -3,5 +3,7 @@ export * from './column-filter';
 export * from './table-filter';
 export * from './DataFilterType';
 export * from './IDataFilter';
+export * from './NotificationButton';
+export * from './NotificationOptions';
 export * from './config';
 export * from './tokens';

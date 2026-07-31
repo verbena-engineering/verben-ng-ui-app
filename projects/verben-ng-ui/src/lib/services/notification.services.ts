@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
-interface NotificationOptions {
-  timeout?: number;
-  position?: string;
-  buttons?: { text: string; bgColor?: string; primaryColor?: string }[];
-  type: 'success' | 'error' | 'warning' | 'info';
-}
+import {
+  NotificationButton,
+  NotificationOptions,
+} from 'verben-ng-ui/src/lib/models';
 
 interface NotificationStyles {
   backgroundColor: string;
@@ -29,7 +26,7 @@ export class NotificationService {
   notification$ = this.notificationSubject.asObservable();
 
   private getDefaultOptions(
-    type: NotificationOptions['type']
+    type: NotificationOptions['type'],
   ): NotificationStyles {
     const typeStyles: Record<NotificationOptions['type'], NotificationStyles> =
       {
@@ -87,7 +84,7 @@ export class NotificationService {
   showNotification(
     type: NotificationOptions['type'],
     message: string,
-    options: Partial<NotificationOptions> = {}
+    options: Partial<NotificationOptions> = {},
   ) {
     const defaultOptions: NotificationOptions & NotificationStyles = {
       timeout: 2000,

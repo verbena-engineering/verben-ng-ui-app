@@ -71,8 +71,8 @@
           icon="pencil"
           [width]="15"
           [height]="15"
-          stroke="var(--vbn-color-border-focus)"
-          fill="var(--vbn-color-surface)"
+          stroke="black"
+          fill="black"
           (click)="editFilter(i)"
         ></verben-svg>
         <verben-svg
@@ -280,7 +280,7 @@
         }"
         (click)="addFilter()"
       >
-        + Add
+        {{ this.editIndex != null ? "+ Update" : "+ Add" }}
       </button>
     </div>
     <hr />

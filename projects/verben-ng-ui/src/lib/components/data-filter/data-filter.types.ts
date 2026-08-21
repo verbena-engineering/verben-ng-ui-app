@@ -1,9 +1,4 @@
-export type FilterOperatorType =
-  | 'string'
-  | 'number'
-  | 'date'
-  | 'bool'
-  | 'enum';
+export type FilterOperatorType = 'string' | 'number' | 'date' | 'bool' | 'enum';
 
 export interface FilterOperator {
   label: string;
@@ -16,12 +11,14 @@ export const STRING_OPERATORS: FilterOperator[] = [
   { label: 'Ends With', value: 'endsWith', type: 'string' },
   { label: 'Contains', value: 'contains', type: 'string' },
   { label: 'Equals', value: 'equals', type: 'string' },
+  { label: 'Is Not', value: 'isNot', type: 'string' },
 ];
 
 export const NUMBER_OPERATORS: FilterOperator[] = [
   { label: 'Equal', value: 'equal', type: 'number' },
   { label: 'Greater Than', value: 'greaterThan', type: 'number' },
   { label: 'Less Than', value: 'lessThan', type: 'number' },
+  { label: 'Is Not', value: 'isNot', type: 'number' },
 ];
 
 export const DATE_OPERATORS: FilterOperator[] = [

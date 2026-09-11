@@ -129,6 +129,7 @@ export class TableFilterComponent implements OnInit {
             (filter, index) =>
               filter.name === newFilter.name &&
               filter.condition === newFilter.condition &&
+              filter.value === newFilter.value &&
               index !== this.editIndex,
           );
 
@@ -142,7 +143,8 @@ export class TableFilterComponent implements OnInit {
             this.savedFilters.some(
               (filter) =>
                 filter.name === newFilter.name &&
-                filter.condition === newFilter.condition,
+                filter.condition === newFilter.condition &&
+                filter.value === newFilter.value,
             )
           ) {
             continue;
@@ -167,6 +169,7 @@ export class TableFilterComponent implements OnInit {
           (filter, index) =>
             filter.name === newFilter.name &&
             filter.condition === newFilter.condition &&
+            filter.value === newFilter.value &&
             index !== this.editIndex,
         );
 
@@ -180,7 +183,8 @@ export class TableFilterComponent implements OnInit {
           this.savedFilters.some(
             (filter) =>
               filter.name === newFilter.name &&
-              filter.condition === newFilter.condition,
+              filter.condition === newFilter.condition &&
+              filter.value === newFilter.value,
           )
         ) {
           return;
@@ -272,6 +276,7 @@ export class TableFilterComponent implements OnInit {
         (filter, index) =>
           filter.name === this.selectedFilterValue &&
           filter.condition === this.selectedCondition &&
+          filter.value === this.inputValue &&
           index !== this.editIndex,
       );
       this.disableAddFilterBtn = exists;
@@ -283,7 +288,8 @@ export class TableFilterComponent implements OnInit {
       const exists = this.savedFilters.some(
         (filter) =>
           filter.name === this.selectedFilterValue &&
-          filter.condition === this.selectedCondition,
+          filter.condition === this.selectedCondition &&
+          filter.value === this.inputValue,
       );
       this.disableAddFilterBtn = exists;
       this.isDuplicateFilter = exists;

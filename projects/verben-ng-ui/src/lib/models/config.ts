@@ -5,7 +5,11 @@ export class Config {
   typeOptions: ITypeOption[] = [
     {
       type: DataFilterType.String,
-      options: [ConditionalOptions.On, ConditionalOptions.NotEqual],
+      options: [
+        ConditionalOptions.On,
+        ConditionalOptions.Contains,
+        ConditionalOptions.NotEqual,
+      ],
     },
     {
       type: DataFilterType.Enum,

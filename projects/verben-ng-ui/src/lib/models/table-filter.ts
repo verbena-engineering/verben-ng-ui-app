@@ -9,6 +9,7 @@ export enum ConditionalOptions {
   After = 'After',
   Yes = 'Yes',
   No = 'No',
+  Contains = 'Contains',
 }
 
 export interface ITypeOption {

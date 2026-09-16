@@ -18,10 +18,10 @@ interface ViewState {
   isSort?: boolean;
   isExport?: boolean;
   isSelect?: boolean;
-  isCreate?:boolean
-  isToggle?:boolean
-  isImport?:boolean
-  isExtend?:boolean
+  isCreate?: boolean;
+  isToggle?: boolean;
+  isImport?: boolean;
+  isExtend?: boolean;
 }
 
 @Component({
@@ -33,22 +33,22 @@ interface ViewState {
 export class DataViewComponent implements OnInit {
   @Input() buttonClass?: string;
   @Input() iconClass?: string;
-  @Input() activeIconClass?: string=""
-  @Input() columnCustomClass?:string=''
-  @Input() filterCustomClass?:string=''
-  @Input() sortCustomClass?:string=''
-    @Input() extendCustomClass?:string=''
-  @Input() exportCustomClass?:string=''
-  @Input() selectCustomClass?:string=''
-    @Input() importCustomClass?:string=''
-  @Input() zIndex?:number=5
-  @Input() createCustomClass:string=''
+  @Input() activeIconClass?: string = '';
+  @Input() columnCustomClass?: string = '';
+  @Input() filterCustomClass?: string = '';
+  @Input() sortCustomClass?: string = '';
+  @Input() extendCustomClass?: string = '';
+  @Input() exportCustomClass?: string = '';
+  @Input() selectCustomClass?: string = '';
+  @Input() importCustomClass?: string = '';
+  @Input() zIndex?: number = 5;
+  @Input() createCustomClass: string = '';
   @Input() tableIcon: string = 'grid-3';
   @Input() cardIcon: string = 'list-view';
   @Input() cardClass: string = '';
   @Input() tableClass: string = '';
-  @Input() searchKey:string='search';
-  @Input() searchValue:string='';
+  @Input() searchKey: string = 'search';
+  @Input() searchValue: string = '';
   private searchSubject = new Subject<string>();
   @Input() viewState: ViewState = {
     isSearch: true,
@@ -57,10 +57,10 @@ export class DataViewComponent implements OnInit {
     isSort: true,
     isExport: true,
     isSelect: true,
-    isCreate:true,
-    isToggle:true,
-    isExtend:true,
-    isImport:true
+    isCreate: true,
+    isToggle: true,
+    isExtend: true,
+    isImport: true,
   };
 
   @Input() searchTemplate?: Node;
@@ -75,34 +75,33 @@ export class DataViewComponent implements OnInit {
   @Input() selectedColumnCount?: number = 0;
   @Input() selectedSortCount: number = 0;
   @Input() selectedFilterTableCount: number = 0;
-  @Input() inputWidth: string="100%";
-  @Input() milliseconds: number=400;
-  @Input()showColumnChild: boolean = false;
+  @Input() inputWidth: string = '100%';
+  @Input() milliseconds: number = 400;
+  @Input() showColumnChild: boolean = false;
   @Input() showSortChild: boolean = false;
   @Input() showFilterChild: boolean = false;
-  @Input() showImportChild:boolean=false
+  @Input() showImportChild: boolean = false;
   @Input() showExportChild: boolean = false;
-  @Input() showExtendChild:boolean=false
+  @Input() showExtendChild: boolean = false;
   @Input() create: boolean = false;
   @Input() showSelected: boolean = false;
-  
+  @Input() useTwoWayBinding: boolean = false;
+
   @Input() isTableView: boolean = false;
   @Output() viewChange = new EventEmitter<boolean>();
   @Output() stateChange = new EventEmitter<{ key: string; value: boolean }>();
-  @Output() onSearchChange=new EventEmitter<{ key: string; value: string }>()
+  @Output() onSearchChange = new EventEmitter<{ key: string; value: string }>();
   @ViewChild('filterContentWrapper') filterContentWrapper!: ElementRef;
 
- 
-
- 
   ngOnInit(): void {}
   constructor(private renderer: Renderer2) {
-    this.searchSubject.pipe(debounceTime(this.milliseconds)).subscribe((value) => {
-      this.onSearchChange.emit({ key: this.searchKey, value });
-    });
-    
+    this.searchSubject
+      .pipe(debounceTime(this.milliseconds))
+      .subscribe((value) => {
+        this.onSearchChange.emit({ key: this.searchKey, value });
+      });
   }
- 
+
   toggleView(): void {
     this.isTableView = !this.isTableView;
     this.viewChange.emit(this.isTableView);
@@ -110,17 +109,16 @@ export class DataViewComponent implements OnInit {
 
   onSearch(event: any): void {
     this.searchValue = event.target.value;
-    this.searchSubject.next(this.searchValue); 
+    this.searchSubject.next(this.searchValue);
   }
-stopPropagation(event:Event) {
- event.stopPropagation(); 
-}
+  stopPropagation(event: Event) {
+    event.stopPropagation();
+  }
 
-  
-onClearSearch(){
- this.searchValue=""
- this.onSearchChange.emit({ key: this.searchKey, value: this.searchValue });
-}
+  onClearSearch() {
+    this.searchValue = '';
+    this.onSearchChange.emit({ key: this.searchKey, value: this.searchValue });
+  }
   toggleChildView(viewType: string): void {
     switch (viewType) {
       case 'column':
@@ -143,21 +141,23 @@ onClearSearch(){
         this.showExportChild = !this.showExportChild;
         this.resetChildViewsExcept('export');
         break;
-        case 'import':
-          this.showImportChild = !this.showImportChild;
-          this.resetChildViewsExcept('import');
-          break;
-          case 'extend':
-            this.showExtendChild = !this.showExtendChild;
-            this.resetChildViewsExcept('extend');
-            break;
-        case 'create':
-          this.create = !this.create;
-          this.resetChildViewsExcept('create');
-          break;
+      case 'import':
+        this.showImportChild = !this.showImportChild;
+        this.resetChildViewsExcept('import');
+        break;
+      case 'extend':
+        this.showExtendChild = !this.showExtendChild;
+        this.resetChildViewsExcept('extend');
+        break;
+      case 'create':
+        this.create = !this.create;
+        this.resetChildViewsExcept('create');
+        break;
     }
-    this.stateChange.emit({ key: viewType, value: this.getChildViewState(viewType) });
-    
+    this.stateChange.emit({
+      key: viewType,
+      value: this.getChildViewState(viewType),
+    });
   }
   resetChildViewsExcept(viewType: string): void {
     if (viewType !== 'column') this.showColumnChild = false;
@@ -183,11 +183,11 @@ onClearSearch(){
         return this.showSelected;
       case 'export':
         return this.showExportChild;
-        case 'import':
-          return this.showImportChild;
-          case 'extend':
-            return this.showExtendChild;
-        case 'create':
+      case 'import':
+        return this.showImportChild;
+      case 'extend':
+        return this.showExtendChild;
+      case 'create':
         return this.create;
       default:
         return false;

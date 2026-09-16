@@ -10,6 +10,7 @@ import { VerbenaInputModule } from 'verben-ng-ui/src/lib/verbena-input';
 import { VerbenaButtonModule } from 'verben-ng-ui/src/lib/verbena-button';
 import { VisibleColumnModule } from 'verben-ng-ui/src/lib/components/visible-column';
 import { VerbenPopUpModule } from 'verben-ng-ui/src/lib/components/pop-up';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [DataViewComponent],
   imports: [
@@ -22,6 +23,7 @@ import { VerbenPopUpModule } from 'verben-ng-ui/src/lib/components/pop-up';
     OutSideClickDirective,
     VisibleColumnModule,
     VerbenPopUpModule,
+    FormsModule,
   ],
   exports: [DataViewComponent],
 })

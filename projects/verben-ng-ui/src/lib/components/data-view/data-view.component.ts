@@ -193,4 +193,8 @@ export class DataViewComponent implements OnInit {
         return false;
     }
   }
+
+  updateSearchValue(val: string) {
+    this.searchValue = val;
+  }
 }

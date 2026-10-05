@@ -8,6 +8,25 @@
   </p>
 
   <!-- ========================================== -->
+  <!-- Number input formatting -->
+  <!-- ========================================== -->
+  <div [ngStyle]="{ 'background': 'white', 'padding': '20px', 'border-radius': '8px', 'margin-bottom': '20px' }">
+    <h2 [ngStyle]="{ 'font-size': '24px', 'margin-bottom': '15px' }">Number input formatting</h2>
+
+    <verben-number-input label="Default (comma separated)" [(ngModel)]="formattedPlain"></verben-number-input>
+    <p>Model: {{ formattedPlain }} ({{ typeOf(formattedPlain) }})</p>
+
+    <verben-number-input label="2 decimal places, $ prefix" prefix="$ " [decimalPlaces]="2" [step]="0.5" [(ngModel)]="formattedAmount"></verben-number-input>
+    <p>Model: {{ formattedAmount }} ({{ typeOf(formattedAmount) }})</p>
+
+    <verben-number-input label="Suffix, min 0 max 100000" suffix=" kg" [min]="0" [max]="100000" [(value)]="formattedWeight"></verben-number-input>
+    <p>Model: {{ formattedWeight }} ({{ typeOf(formattedWeight) }})</p>
+
+    <verben-number-input label="No separator" [thousandSeparator]="false" [(ngModel)]="formattedRaw"></verben-number-input>
+    <p>Model: {{ formattedRaw }} ({{ typeOf(formattedRaw) }})</p>
+  </div>
+
+  <!-- ========================================== -->
   <!-- TEST 1: Template-Driven Textarea -->
   <!-- ========================================== -->
   <div [ngStyle]="{ 'background': 'white', 'padding': '20px', 'border-radius': '8px', 'margin-bottom': '20px' }">

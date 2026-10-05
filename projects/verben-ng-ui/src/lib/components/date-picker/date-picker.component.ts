@@ -4,12 +4,40 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnChanges,
   Output,
+  SimpleChanges,
   ViewChild,
   forwardRef,
 } from '@angular/core';
 import { DropdownChangeEvent } from 'verben-ng-ui/src/lib/components/drop-down';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+/*
+ * CHANGE LOG (2026-10-02) — search for "[DP-n]" to find each change.
+ *  [DP-1]  New public API: selectionMode ('default' | 'range'), range input,
+ *          rangeChange output, DateRange + DatePickerSelectionMode types.
+ *  [DP-2]  Range state fields + isRangeMode helper.
+ *  [DP-3]  Incoming values (ngModel / [range] / useDefaultDate) handle range mode.
+ *  [DP-4]  Select-to-commit: clicking a day sets the value immediately (no OK).
+ *          Closes right away unless showTime is on (stays open to pick time).
+ *  [DP-5]  Range selection flow: open, pick start, pick end, commit, clear.
+ *  [DP-6]  Range highlighting helpers (start / end / in-between / hover preview).
+ *  [DP-7]  Input text shows "start – end" in range mode.
+ *  [DP-8]  Changing the visible month never moves a range selection.
+ *  [DP-9]  Footer: "Cancel" -> "Close"; range hint text and Clear button (template).
+ *  [DP-10] Bug fix: empty picker opened on December of last year.
+ *  [DP-11] Hour/minute lists float over the calendar instead of pushing it down.
+ *  [DP-12] Year dropdown scrolls to the selected year (template).
+ *  [DP-13] Range value is an array [start, end] (was an { start, end } object).
+ */
+
+// [DP-1] 'default' = one date (existing behaviour), 'range' = start + end date
+export type DatePickerSelectionMode = 'default' | 'range';
+
+// [DP-1]/[DP-13] Range value: [start, end]. Emitted by rangeChange and
+// accepted by [range]. ngModel gets the same shape with local date strings.
+export type DateRange = [Date, Date];
 
 @Component({
   selector: 'app-date-picker',
@@ -23,7 +51,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     },
   ],
 })
-export class DatePickerComponent implements ControlValueAccessor {
+export class DatePickerComponent implements ControlValueAccessor, OnChanges {
   @Input() placeholder = 'Select date';
   @Input() format = 'MM/DD/YYYY';
   @Input() minDate?: Date;
@@ -40,8 +68,14 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   @Input() datePickerWidth: string = '400px';
   @Input() useDefaultDate: boolean = false;
+  // [DP-1] 'range' picks a start and an end date; the popup closes once both are chosen
+  @Input() selectionMode: DatePickerSelectionMode = 'default';
+  // [DP-1] Range value for [(range)] two-way binding (alternative to ngModel)
+  @Input() range: DateRange | null = null;
 
   @Output() dateChange = new EventEmitter<Date | null>();
+  // [DP-1] Fires when a full range is picked, or null when cleared
+  @Output() rangeChange = new EventEmitter<DateRange | null>();
   @ViewChild('datePickerContainer', { static: true })
   datePickerContainer!: ElementRef;
   @ViewChild('datePickerExpansion', { static: false })
@@ -77,10 +111,30 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   daysInMonth: (Date | null)[] = [];
 
+  // [DP-2] Range mode state:
+  //   rangeStart/rangeEnd         = committed range (what the input shows)
+  //   tempRangeStart/tempRangeEnd = range being picked while the popup is open
+  //   hoverDate                   = day under the mouse, used for the preview band
+  rangeStart: Date | null = null;
+  rangeEnd: Date | null = null;
+  tempRangeStart: Date | null = null;
+  tempRangeEnd: Date | null = null;
+  hoverDate: Date | null = null;
+
   private onChange: any = () => {};
   private onTouched: any = () => {};
 
-  writeValue(value: Date | string | null): void {
+  // [DP-2] Shorthand used throughout the class and the template
+  get isRangeMode(): boolean {
+    return this.selectionMode === 'range';
+  }
+
+  writeValue(value: any): void {
+    // [DP-3]/[DP-13] In range mode ngModel gives us [start, end] instead of a date
+    if (this.isRangeMode) {
+      this.setRange(value);
+      return;
+    }
     if (value) {
       if (typeof value === 'string') {
         value = this.sanitizeDateString(value);
@@ -112,7 +166,12 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    // [DP-3] In range mode, sync from the [range] input instead of [date]
+    if (this.isRangeMode) {
+      if (changes['range']) this.setRange(this.range);
+      return;
+    }
     if (this.date) {
       let d = this.date;
       if (typeof d === 'string') d = this.sanitizeDateString(d);
@@ -142,7 +201,8 @@ export class DatePickerComponent implements ControlValueAccessor {
     );
     this.yearRange.sort((a, b) => b - a);
 
-    if (!this.date && this.useDefaultDate) {
+    // [DP-3] useDefaultDate (pre-fill today) only applies to single-date mode
+    if (!this.date && this.useDefaultDate && !this.isRangeMode) {
       const now = new Date();
       const pad = (n: number) => n.toString().padStart(2, '0');
 
@@ -172,6 +232,14 @@ export class DatePickerComponent implements ControlValueAccessor {
   }
 
   get displayDate(): string {
+    // [DP-7] Range mode shows "10/05/2026 – 10/12/2026" (empty until both ends exist)
+    if (this.isRangeMode) {
+      if (!this.rangeStart || !this.rangeEnd) return '';
+      return `${this.formatDate(this.rangeStart, this.format)} – ${this.formatDate(
+        this.rangeEnd,
+        this.format,
+      )}`;
+    }
     const parsedDate =
       typeof this.date === 'string' ? new Date(this.date) : this.date;
     return parsedDate ? this.formatDate(parsedDate, this.format) : '';
@@ -200,15 +268,28 @@ export class DatePickerComponent implements ControlValueAccessor {
   selectHour(h: string) {
     this.selectedHour = h;
     this.showHourOptions = false;
+    // [DP-4] Time changes save immediately (no OK button any more)
+    this.commitDate(false);
   }
 
   selectMinute(m: string) {
     this.selectedMinute = m;
     this.showMinuteOptions = false;
+    // [DP-4] Time changes save immediately (no OK button any more)
+    this.commitDate(false);
   }
 
   toggleCalendar() {
     this.showCalendar = !this.showCalendar;
+    // [DP-11] Never reopen with an hour/minute list still expanded
+    this.showHourOptions = false;
+    this.showMinuteOptions = false;
+
+    // [DP-5] Range mode has its own opening logic
+    if (this.isRangeMode) {
+      this.openRangeCalendar();
+      return;
+    }
 
     if (this.date) {
       this.tempSelectedDate = new Date(this.date);
@@ -216,11 +297,13 @@ export class DatePickerComponent implements ControlValueAccessor {
       this.tempSelectedDate = this.useDefaultDate ? new Date() : null;
     }
 
-    if (this.tempSelectedDate) {
-      this.selectedMonth = this.tempSelectedDate.getMonth();
-      this.selectedMonthString = this.months[this.selectedMonth];
-      this.selectedYear = this.tempSelectedDate.getFullYear();
-    }
+    // [DP-10] Bug fix: always set the visible month. Before, an empty picker
+    // kept selectedMonth = 1 and the month dropdown was blank, which (see
+    // onDropdownMonthChange) ended up showing December of the previous year.
+    const focus = this.tempSelectedDate ?? new Date();
+    this.selectedMonth = focus.getMonth();
+    this.selectedMonthString = this.months[this.selectedMonth];
+    this.selectedYear = focus.getFullYear();
 
     this.generateDaysInMonth();
 
@@ -251,6 +334,11 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.tempSelectedDate?.setHours(hours, minutes, 0, 0);
   }
   clearDate() {
+    // [DP-5] Clearing a range resets start + end
+    if (this.isRangeMode) {
+      this.clearRange();
+      return;
+    }
     this.date = null;
     this.selectedDate = null;
     this.tempSelectedDate = null;
@@ -285,7 +373,10 @@ export class DatePickerComponent implements ControlValueAccessor {
     );
   }
 
-  confirm() {
+  // [DP-4] Saves tempSelectedDate (with the chosen time) as the value.
+  // Replaces the old OK-button-only confirm(); called on day click and on
+  // every time change. close = whether to hide the popup afterwards.
+  commitDate(close: boolean) {
     if (!this.tempSelectedDate) return;
 
     const hours = Number(this.selectedHour);
@@ -300,21 +391,28 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.selectedDate = new Date(this.tempSelectedDate);
     this.date = this.selectedDate;
 
-    const pad = (n: number) => n.toString().padStart(2, '0');
-
-    const localDateString = `${this.selectedDate.getFullYear()}-${pad(
-      this.selectedDate.getMonth() + 1,
-    )}-${pad(this.selectedDate.getDate())}T${pad(
-      this.selectedDate.getHours(),
-    )}:${pad(this.selectedDate.getMinutes())}:${pad(
-      this.selectedDate.getSeconds(),
-    )}`;
-
     this.dateChange.emit(this.selectedDate);
-    this.onChange(localDateString);
+    this.onChange(this.toLocalDateString(this.selectedDate));
     this.onTouched();
 
-    this.showCalendar = false;
+    if (close) this.showCalendar = false;
+  }
+
+  // [DP-4] Kept so any external caller of confirm() still works
+  confirm() {
+    this.commitDate(true);
+  }
+
+  // [DP-4] Extracted from the old confirm() so single and range modes share it.
+  // Local time, no "Z" — same format ngModel has always received.
+  private toLocalDateString(date: Date): string {
+    const pad = (n: number) => n.toString().padStart(2, '0');
+
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+      date.getDate(),
+    )}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(
+      date.getSeconds(),
+    )}`;
   }
 
   setToStartOfDay() {
@@ -326,7 +424,8 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.tempSelectedDate.setHours(0, 0, 0, 0);
     this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
 
-    this.selectedDate = new Date(this.tempSelectedDate);
+    // [DP-4] Previously only updated a draft; now saves immediately
+    this.commitDate(false);
   }
 
   setToEndOfDay() {
@@ -338,7 +437,121 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.tempSelectedDate.setHours(23, 59, 59, 999);
     this.tempTime = `${this.selectedHour}:${this.selectedMinute}`;
 
-    this.selectedDate = new Date(this.tempSelectedDate);
+    // [DP-4] Previously only updated a draft; now saves immediately
+    this.commitDate(false);
+  }
+
+  // ---- [DP-5] Range mode ----
+
+  // [DP-3]/[DP-5]/[DP-13] Accepts [start, end] as Dates or strings (from
+  // ngModel or [range]). Anything that isn't an array counts as "no range".
+  private setRange(value: any) {
+    const [rawStart, rawEnd] = Array.isArray(value) ? value : [];
+    const start = rawStart ? this.stripTime(rawStart) : null;
+    const end = rawEnd ? this.stripTime(rawEnd) : null;
+    this.rangeStart = start;
+    this.rangeEnd = start && end ? end : null;
+    if (this.rangeStart) {
+      this.selectedMonth = this.rangeStart.getMonth();
+      this.selectedYear = this.rangeStart.getFullYear();
+    }
+  }
+
+  // [DP-5] Copy the committed range into the working range and show its month
+  private openRangeCalendar() {
+    this.tempRangeStart = this.rangeStart;
+    this.tempRangeEnd = this.rangeEnd;
+    this.hoverDate = null;
+
+    const focus = this.rangeStart ?? new Date();
+    this.selectedMonth = focus.getMonth();
+    this.selectedMonthString = this.months[this.selectedMonth];
+    this.selectedYear = focus.getFullYear();
+    this.generateDaysInMonth();
+  }
+
+  // [DP-5] 1st click sets the start, 2nd click sets the end and closes.
+  // Clicking a day before the start restarts the range from that day.
+  private selectRangeDay(day: Date) {
+    const picked = this.stripTime(day);
+
+    if (
+      !this.tempRangeStart ||
+      this.tempRangeEnd ||
+      picked < this.tempRangeStart
+    ) {
+      this.tempRangeStart = picked;
+      this.tempRangeEnd = null;
+      return;
+    }
+
+    this.tempRangeEnd = picked;
+    this.commitRange();
+  }
+
+  // [DP-5] Save the range, notify ngModel / (rangeChange), close the popup
+  private commitRange() {
+    if (!this.tempRangeStart || !this.tempRangeEnd) return;
+
+    // Whole days: start at 00:00:00.000, end at 23:59:59.999
+    const start = new Date(this.tempRangeStart);
+    const end = new Date(this.tempRangeEnd);
+    end.setHours(23, 59, 59, 999);
+
+    this.rangeStart = this.tempRangeStart;
+    this.rangeEnd = this.tempRangeEnd;
+    // [DP-13] Array shape: [start, end]
+    this.range = [start, end];
+
+    this.rangeChange.emit([start, end]);
+    this.onChange([
+      this.toLocalDateString(start),
+      this.toLocalDateString(end),
+    ]);
+    this.onTouched();
+
+    this.showCalendar = false;
+  }
+
+  // [DP-5] Reset everything and emit null
+  private clearRange() {
+    this.rangeStart = null;
+    this.rangeEnd = null;
+    this.tempRangeStart = null;
+    this.tempRangeEnd = null;
+    this.hoverDate = null;
+    this.range = null;
+
+    this.rangeChange.emit(null);
+    this.onChange(null);
+    this.onTouched();
+
+    this.showCalendar = false;
+  }
+
+  // [DP-6] Template helpers that decide which CSS class each day button gets
+  isRangeStart(day: Date): boolean {
+    return !!this.tempRangeStart && this.isSameDate(day, this.tempRangeStart);
+  }
+
+  isRangeEnd(day: Date): boolean {
+    const end = this.tempRangeEnd ?? this.previewEnd;
+    return !!end && this.isSameDate(day, end);
+  }
+
+  // [DP-6] Strictly between start and end (or the hovered day while picking the end)
+  isInRange(day: Date): boolean {
+    const end = this.tempRangeEnd ?? this.previewEnd;
+    if (!this.tempRangeStart || !end) return false;
+    const d = this.stripTime(day);
+    return d > this.tempRangeStart && d < end;
+  }
+
+  // [DP-6] While only the start is picked, the hovered day acts as a temporary end
+  private get previewEnd(): Date | null {
+    if (!this.tempRangeStart || !this.hoverDate) return null;
+    const hovered = this.stripTime(this.hoverDate);
+    return hovered >= this.tempRangeStart ? hovered : null;
   }
 
   previousMonth() {
@@ -361,20 +574,26 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.generateDaysInMonth();
   }
 
+  // [DP-10] The dropdowns also fire onChange when initialised with an empty
+  // value; ignore those so the calendar doesn't jump to month -1 (December)
   onDropdownYearChange(event: DropdownChangeEvent): void {
+    if (event.value == null) return;
     this.selectedYear = event.value;
     this.updateTempSelectedDate();
     this.generateDaysInMonth();
   }
 
   onDropdownMonthChange(event: DropdownChangeEvent): void {
-    this.selectedMonth = this.months.indexOf(event.value);
+    const month = this.months.indexOf(event.value);
+    if (month < 0) return;
+    this.selectedMonth = month;
     this.updateTempSelectedDate();
     this.generateDaysInMonth();
   }
 
   updateTempSelectedDate() {
-    if (!this.tempSelectedDate) return;
+    // [DP-8] Changing the visible month must never move a range selection
+    if (this.isRangeMode || !this.tempSelectedDate) return;
     this.tempSelectedDate.setMonth(this.selectedMonth);
     this.tempSelectedDate.setFullYear(this.selectedYear);
   }
@@ -481,8 +700,16 @@ export class DatePickerComponent implements ControlValueAccessor {
   is24Hour: boolean = true;
 
   selectTemporaryDate(day: Date) {
-    if (!this.tempSelectedDate) this.tempSelectedDate = new Date(day);
     if (this.isDisabled(day)) return;
+    // [DP-11] Picking a day closes any open hour/minute list
+    this.showHourOptions = false;
+    this.showMinuteOptions = false;
+    // [DP-5] In range mode a click is a start/end pick instead
+    if (this.isRangeMode) {
+      this.selectRangeDay(day);
+      return;
+    }
+    if (!this.tempSelectedDate) this.tempSelectedDate = new Date(day);
 
     const isNewDate = !this.isSameDate(this.tempSelectedDate, day);
     this.tempSelectedDate = new Date(day);
@@ -509,6 +736,10 @@ export class DatePickerComponent implements ControlValueAccessor {
         this.selectedMinute = m;
       }
     }
+
+    // [DP-4] Selecting a day sets the value right away. With showTime the
+    // popup stays open so the time can still be adjusted.
+    this.commitDate(!this.showTime);
   }
 
   isSelected(day: Date): boolean {
@@ -535,7 +766,9 @@ export class DatePickerComponent implements ControlValueAccessor {
     }
   }
 
-  cancel() {
+  // [DP-9] Was cancel(); renamed with the "Close" caption. Nothing to discard
+  // any more because every pick is saved immediately.
+  close() {
     this.showCalendar = false;
   }
 

@@ -15,16 +15,27 @@
     <label [for]="label">{{ label }}</label>
   </div>
 
+  <!-- [NI-2] type="text" so the value can show separators/prefix/suffix;
+       the bound model value is still a number. [value] binding removed: the
+       component writes the text itself (render()) to keep the caret stable.
+       min/max/step attributes don't apply to text inputs, so they're exposed
+       via aria-* for screen readers; the logic still enforces them.
+       [NI-3] focus/blur, [NI-5] keydown for arrow stepping. -->
   <input
-    type="number"
-    [value]="value"
+    #inputEl
+    type="text"
+    inputmode="decimal"
+    autocomplete="off"
     (input)="onInput($event)"
+    (keydown)="onKeyDown($event)"
     (keyup)="onKeyUp($event)"
-    [min]="min"
-    [max]="max"
-    [step]="step"
+    (focus)="onFocus()"
+    (blur)="onBlur()"
+    [attr.aria-valuemin]="min"
+    [attr.aria-valuemax]="max"
+    [attr.aria-valuenow]="value"
+    role="spinbutton"
     [disabled]="disabled"
-    (blur)="validateValue()"
     class="input-field verben-input {{ inputWrapperClass }}"
   />
 </div>

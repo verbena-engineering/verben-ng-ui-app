@@ -115,10 +115,33 @@ button.selected {
 ::ng-deep .drop-down * {
   font-size: 13px !important;
 }
+/* [DP-11] Anchor for the floating hour/minute list (replaces Tailwind "relative") */
+.time-field {
+  position: relative;
+}
+/* [DP-11] Lay out the time row with component CSS so it doesn't depend on
+   Tailwind utilities being available in the consuming app */
+.time-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.time-picker .box {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+/* [DP-11] Hour/minute list now floats over the calendar instead of sitting in
+   the normal flow (which made the header grow and pushed the days down) */
+.time-field .dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 10;
+}
 .dropdown {
-  /* position: absolute;
-  top: 110%;
-  left: 0; */
   width: 60px;
   max-height: 120px;
   overflow-y: auto;
@@ -139,4 +162,38 @@ button.selected {
 .dropdown-item.active {
   background: var(--vbn-state-selected-bg);
   color: var(--vbn-state-selected-fg);
+}
+
+/* [DP-6] Range selection visuals.
+   Ends: filled primary (via .selected) with rounded outer corners.
+   Between: a lighter band. Buttons stretch to the full cell so the band is
+   continuous. Themeable with --vbn-datepicker-range-bg. */
+.dates button.range-start,
+.dates button.range-end,
+.dates button.in-range {
+  width: 100%;
+}
+.dates button.in-range {
+  background-color: var(
+    --vbn-datepicker-range-bg,
+    color-mix(in srgb, var(--vbn-color-primary) 25%, transparent)
+  );
+  color: var(--vbn-color-text);
+  border-radius: 0;
+}
+.dates button.range-start {
+  border-radius: 30px 0 0 30px;
+}
+.dates button.range-end {
+  border-radius: 0 30px 30px 0;
+}
+.dates button.range-start.range-end {
+  border-radius: 30px;
+}
+/* [DP-9] Hint text sits on the left, buttons stay on the right */
+.calendar-footer .range-hint {
+  margin-right: auto;
+  align-self: center;
+  color: var(--vbn-color-text-muted);
+  font-weight: 400;
 }

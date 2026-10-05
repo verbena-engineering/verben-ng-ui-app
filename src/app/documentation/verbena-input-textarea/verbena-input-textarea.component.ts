@@ -16,6 +16,14 @@ export class VerbenaInputTextareaComponent {
   number: number = 3;
   value: any;
 
+  formattedPlain: number = 1234567;
+  formattedAmount: number = 2500.5;
+  formattedWeight: number = 4200;
+  formattedRaw: number = 98765;
+  typeOf(v: unknown): string {
+    return typeof v;
+  }
+
   // ====================================
   // NEW: Properties for testing disabled
   // ====================================

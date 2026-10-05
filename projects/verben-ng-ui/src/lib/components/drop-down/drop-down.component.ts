@@ -1,5 +1,6 @@
 import {
   AfterContentInit,
+  AfterViewChecked,
   Component,
   ContentChildren,
   ElementRef,
@@ -28,6 +29,13 @@ import { SharedModule } from 'verben-ng-ui/src/lib/components/shared';
 import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
 import { TooltipModule } from 'verben-ng-ui/src/lib/components/tooltip';
 
+/*
+ * CHANGE LOG (2026-10-02) — search for "[DD-n]" to find each change.
+ *  [DD-1] New input autoScrollToCurrentItem (default false).
+ *  [DD-2] Opening the dropdown marks a scroll as pending.
+ *  [DD-3] ngAfterViewChecked runs the pending scroll once the list is rendered.
+ *  [DD-4] scrollToCurrentItem(): centres the selected item inside the list.
+ */
 @Component({
   selector: 'verben-drop-down',
   standalone: true,
@@ -43,7 +51,7 @@ import { TooltipModule } from 'verben-ng-ui/src/lib/components/tooltip';
   styleUrl: './drop-down.component.css',
 })
 export class DropDownComponent
-  implements ControlValueAccessor, OnInit, AfterContentInit
+  implements ControlValueAccessor, OnInit, AfterContentInit, AfterViewChecked
 {
   // INTERNAL
   private _options: any[] = []; // Internal variable for options
@@ -98,6 +106,9 @@ export class DropDownComponent
   @Input() refPageSize: number = 0;
   @Input() disabled: boolean = false;
   @Input() required: boolean = false;
+  // [DD-1] When true, opening the dropdown scrolls the list to the selected
+  // item (matched by selectKey when set, otherwise by deep equality)
+  @Input() autoScrollToCurrentItem: boolean = false;
   @Input() load?: (context: DropdownLoadEvent) => Promise<any[]>;
   @Input() asyncLabel?: (context: any) => Promise<string | null>;
   @Input() search?: (data: any, context: DropdownLoadEvent) => Promise<any[]>;
@@ -144,6 +155,8 @@ export class DropDownComponent
   searchContext: string = '';
   allowSelectAll: boolean = false;
   selectedAll: boolean = false;
+  // [DD-2] Set on open, consumed by ngAfterViewChecked ([DD-3])
+  private pendingScrollToCurrent: boolean = false;
 
   constructor(@Optional() @Self() private ngControl: NgControl) {
     if (this.ngControl) {
@@ -351,6 +364,44 @@ export class DropDownComponent
 
   toggleDropdown() {
     this.isExpanded = !this.isExpanded;
+    // [DD-2] Can't scroll yet: the list isn't rendered. Flag it and let
+    // ngAfterViewChecked do it once the overlay content exists.
+    this.pendingScrollToCurrent =
+      this.isExpanded && this.autoScrollToCurrentItem;
+  }
+
+  // [DD-3] Runs after every render of this component. setTimeout wasn't
+  // reliable because the app coalesces change detection to the next frame.
+  ngAfterViewChecked(): void {
+    if (this.pendingScrollToCurrent && this.dropdownExpansion) {
+      this.pendingScrollToCurrent = false;
+      // [DD-3] Wait one more frame: the overlay gets its final width after this
+      // check; measuring earlier (narrower, taller items) overshoots
+      requestAnimationFrame(() => this.scrollToCurrentItem());
+    }
+  }
+
+  // [DD-4] Scrolls the options list so the selected item is centred.
+  // drop-down-item already marks it with .active-item (single) or
+  // .multi-select-active-item (multi) using selectKey, so we just find it.
+  // Only the list scrolls, never the page (scrollIntoView could move the page).
+  scrollToCurrentItem() {
+    const expansion = this.dropdownExpansion?.nativeElement as
+      | HTMLElement
+      | undefined;
+    if (!expansion) return;
+    const list = expansion.querySelector(
+      '.drop-down-menu-item',
+    ) as HTMLElement | null;
+    const current = expansion.querySelector(
+      '.active-item, .multi-select-active-item',
+    ) as HTMLElement | null;
+    if (!list || !current) return;
+
+    const listRect = list.getBoundingClientRect();
+    const itemRect = current.getBoundingClientRect();
+    list.scrollTop +=
+      itemRect.top - listRect.top - (list.clientHeight - itemRect.height) / 2;
   }
 
   hasSibling(siblings: DropdownMenuItemWrapper[]): number | null {

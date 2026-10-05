@@ -110,6 +110,16 @@ export class DropdownSampleComponent implements OnInit {
     };
   });
 
+  scrollOptions = Array.from({ length: 50 }, (_, i) => ({
+    Id: i + 1,
+    Name: `Item ${i + 1}`,
+  }));
+  // A different object with the same Id — matched through selectKey
+  scrollSelected: { Id: number; Name: string } | null = {
+    Id: 38,
+    Name: 'Item 38',
+  };
+
   basicOption?: string;
   selectedOption: string[] = [];
   selectedOptionTwo: string[] = [];

@@ -7,6 +7,19 @@
   </div>
 
   <div class="example-section flex flex-col">
+    <h1>Auto scroll to current item (selectKey "Id", item 38 preselected)</h1>
+    <verben-drop-down
+      placeholder="Select item"
+      [options]="scrollOptions"
+      optionLabel="Name"
+      selectKey="Id"
+      [autoScrollToCurrentItem]="true"
+      [(ngModel)]="scrollSelected"
+    ></verben-drop-down>
+    <p>Selected: {{ scrollSelected | json }}</p>
+  </div>
+
+  <div class="example-section flex flex-col">
     <h1>Normal Example</h1>
     <verben-drop-down
       [width]="'100%'"

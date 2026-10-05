@@ -1,4 +1,13 @@
 <div class="date-page-container">
+  <h3>Default (closes as soon as a day is picked)</h3>
+  <app-date-picker
+    [(ngModel)]="plainDate"
+    placeholder="Pick a date"
+    [overlayWidth]="400"
+  ></app-date-picker>
+  <p>Chosen Date: {{ plainDate }}</p>
+
+  <h3>With time (day click sets the value; stays open to adjust time)</h3>
   <app-date-picker
     [(ngModel)]="selectedDate"
     [showTime]="true"
@@ -6,6 +15,25 @@
     [maxDate]="maxDate"
     [overlayWidth]="400"
   ></app-date-picker>
-</div>
+  <p>Chosen Date: {{ selectedDate }}</p>
 
-<p>Chosen Date: {{ selectedDate }}</p>
+  <h3>Range (ngModel)</h3>
+  <app-date-picker
+    selectionMode="range"
+    [(ngModel)]="rangeModel"
+    placeholder="Pick a date range"
+    [overlayWidth]="400"
+  ></app-date-picker>
+  <p>ngModel value: {{ rangeModel | json }}</p>
+
+  <h3>Range ([(range)] binding, max date today)</h3>
+  <app-date-picker
+    selectionMode="range"
+    [(range)]="range"
+    [maxDate]="maxDate"
+    [useDropdowns]="false"
+    placeholder="Pick a date range"
+    [overlayWidth]="400"
+  ></app-date-picker>
+  <p>range: {{ range?.[0] }} → {{ range?.[1] }}</p>
+</div>

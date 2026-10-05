@@ -74,10 +74,12 @@
         </ng-container>
 
         <ng-template #dropdowns>
+          <!-- [DP-12] Year list opens scrolled to the selected year -->
           <verben-drop-down
             [placeholder]="yearPlaceholder"
             (onChange)="onDropdownYearChange($event)"
             [options]="yearRange"
+            [autoScrollToCurrentItem]="true"
             [(ngModel)]="selectedYear"
             [width]="'90px'"
           ></verben-drop-down>
@@ -92,8 +94,15 @@
           ></verben-drop-down>
         </ng-template>
 
-        <div class="time-picker flex items-center gap-2" *ngIf="showTime">
-          <div class="relative">
+        <!-- [DP-5] Time picker hidden in range mode (ranges are whole days) -->
+        <div
+          class="time-picker flex items-center gap-2"
+          *ngIf="showTime && !isRangeMode"
+        >
+          <!-- [DP-11] "time-field" (component CSS) replaces Tailwind's "relative":
+               it anchors the floating list below. Tailwind isn't compiled for
+               the library, so apps using it may not have that class. -->
+          <div class="time-field">
             <div
               class="flex items-center box rounded px-2 py-1 cursor-pointer"
               (click)="toggleHourDropdown()"
@@ -101,6 +110,7 @@
               {{ selectedHour }}
             </div>
 
+            <!-- [DP-11] Floats over the calendar (see .time-field .dropdown in CSS) -->
             <div *ngIf="showHourOptions" class="dropdown">
               <div
                 class="dropdown-item"
@@ -115,7 +125,8 @@
 
           <span>:</span>
 
-          <div class="relative">
+          <!-- [DP-11] Same as the hour field -->
+          <div class="time-field">
             <div
               class="flex items-center box rounded px-2 py-1 cursor-pointer"
               (click)="toggleMinuteDropdown()"
@@ -215,13 +226,25 @@
           <span *ngFor="let day of weekDays">{{ day }}</span>
         </div>
 
-        <div class="dates">
+        <!-- [DP-6] Leaving the grid removes the hover preview -->
+        <div class="dates" (mouseleave)="hoverDate = null">
           <ng-container *ngFor="let day of daysInMonth">
+            <!-- [DP-6] In range mode the two ends get "selected" (filled circle),
+                 plus range-start / range-end / in-range for the band.
+                 mouseenter feeds the hover preview while picking the end. -->
             <button
               *ngIf="day; else empty"
-              [class.selected]="isSelected(day)"
+              [class.selected]="
+                isRangeMode
+                  ? isRangeStart(day) || isRangeEnd(day)
+                  : isSelected(day)
+              "
+              [class.range-start]="isRangeMode && isRangeStart(day)"
+              [class.range-end]="isRangeMode && isRangeEnd(day)"
+              [class.in-range]="isRangeMode && isInRange(day)"
               [disabled]="isDisabled(day)"
               [ngClass]="{ 'disabled-day': isDisabled(day) }"
+              (mouseenter)="isRangeMode && (hoverDate = day)"
               (click)="selectTemporaryDate(day)"
             >
               {{ day.getDate() }}
@@ -233,9 +256,18 @@
         </div>
       </div>
 
+      <!-- [DP-9] Footer: OK removed (picks save immediately), Cancel -> Close,
+           range mode adds a hint and a Clear button -->
       <div class="calendar-footer">
-        <button (click)="cancel()">Cancel</button>
-        <button (click)="confirm()">OK</button>
+        <span *ngIf="isRangeMode" class="range-hint">
+          {{
+            tempRangeStart && !tempRangeEnd ? "Select end date" : "Select start date"
+          }}
+        </span>
+        <button *ngIf="isRangeMode && rangeStart" (click)="clearDate()">
+          Clear
+        </button>
+        <button (click)="close()">Close</button>
       </div>
     </div>
   </ng-template>

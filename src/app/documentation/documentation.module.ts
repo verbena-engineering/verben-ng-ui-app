@@ -10,6 +10,8 @@ import {
   NumberInputModule,
   SvgModule,
   TooltipModule,
+  VerbenDatePickerModule,
+  VerbenSimpleDatePickerModule,
   VerbenDialogueModule,
   VerbenTimePickerModule,
   VerbenaBadgeModule,
@@ -49,6 +51,7 @@ import { TabsPageComponent } from './pages/components/tabs-page.component';
 import { TextareaPageComponent } from './pages/components/textarea-page.component';
 import { TimePickerPageComponent } from './pages/components/time-picker-page.component';
 import { TooltipPageComponent } from './pages/components/tooltip-page.component';
+import { VerbenDatePickerPageComponent } from './pages/components/verben-date-picker-page.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +79,7 @@ import { TooltipPageComponent } from './pages/components/tooltip-page.component'
     TextareaPageComponent,
     TimePickerPageComponent,
     TooltipPageComponent,
+    VerbenDatePickerPageComponent,
   ],
   imports: [
     CommonModule,
@@ -90,6 +94,8 @@ import { TooltipPageComponent } from './pages/components/tooltip-page.component'
     NumberInputModule,
     SvgModule,
     TooltipModule,
+    VerbenDatePickerModule,
+    VerbenSimpleDatePickerModule,
     VerbenDialogueModule,
     VerbenTimePickerModule,
     VerbenaBadgeModule,

@@ -1,0 +1,288 @@
+/* Component CSS only (no Tailwind) and --vbn-* tokens for every color, so it
+   works in any consuming app and follows light / dark mode. */
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* ---------- Field ---------- */
+
+.vdp-control {
+  position: relative;
+}
+
+.vdp-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 38px;
+  padding: 6px 36px 6px 10px;
+  border: 1px solid var(--vbn-input-border, var(--vbn-color-border));
+  border-radius: var(--vbn-radius, 5px);
+  background: var(--vbn-input-bg, var(--vbn-color-surface));
+  color: var(--vbn-input-text, var(--vbn-color-text));
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.vdp-field:hover:not(:disabled) {
+  border-color: var(--vbn-input-border-hover, var(--vbn-color-text-muted));
+}
+
+.vdp-field:focus-visible,
+.vdp-field[aria-expanded='true'] {
+  outline: none;
+  border-color: var(--vbn-input-border-focus, var(--vbn-color-border-focus));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--vbn-color-border-focus) 20%, transparent);
+}
+
+.vdp-field:disabled {
+  background: var(--vbn-input-disabled-bg, var(--vbn-color-surface-alt));
+  color: var(--vbn-color-text-muted);
+  cursor: not-allowed;
+}
+
+.vdp-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--vbn-color-text-muted);
+}
+
+.vdp-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vdp-text.is-placeholder {
+  color: var(--vbn-input-placeholder, var(--vbn-color-text-muted));
+}
+
+.vdp-clear {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--vbn-color-text-muted);
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.vdp-clear:hover {
+  background: var(--vbn-color-surface-alt);
+  color: var(--vbn-color-text);
+}
+
+.vdp-clear svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ---------- Popup ---------- */
+
+.vdp-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--vbn-color-border);
+  border-radius: var(--vbn-radius-lg, 8px);
+  background: var(--vbn-color-surface);
+  color: var(--vbn-color-text);
+  box-shadow: var(--vbn-shadow-md), 0 12px 32px -12px rgba(0, 0, 0, 0.25);
+  font-family: var(--vbn-font-family);
+}
+
+.vdp-modes {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 8px;
+  background: var(--vbn-color-surface-alt);
+}
+
+.vdp-modes button {
+  flex: 1;
+  height: 28px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--vbn-color-text-muted);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.vdp-modes button.is-active {
+  background: var(--vbn-color-surface);
+  color: var(--vbn-color-text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.vdp-body {
+  display: flex;
+  gap: 12px;
+}
+
+.vdp-months {
+  display: flex;
+  gap: 16px;
+}
+
+.vdp-caption {
+  display: grid;
+  grid-template-columns: 28px 1fr 28px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.vdp-caption-label,
+.vdp-nav,
+.vdp-link,
+.vdp-month-cell {
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.vdp-caption-label {
+  height: 28px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.vdp-nav {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+}
+
+.vdp-nav svg {
+  width: 16px;
+  height: 16px;
+}
+
+.vdp-caption-label:hover,
+.vdp-nav:hover,
+.vdp-link:hover,
+.vdp-month-cell:hover:not(:disabled) {
+  background: var(--vbn-state-hover-bg, var(--vbn-color-surface-alt));
+}
+
+.vdp-month-view {
+  width: 252px;
+}
+
+.vdp-month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.vdp-month-cell {
+  height: 40px;
+  font-size: 13px;
+}
+
+.vdp-month-cell.is-current {
+  background: var(--vbn-color-primary);
+  color: var(--vbn-color-on-primary);
+  font-weight: 600;
+}
+
+.vdp-month-cell:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.vdp-footer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--vbn-color-border);
+}
+
+/* "Several months" — a quiet checkbox, not a second set of controls */
+.vdp-several {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 8px;
+  font-size: 12px;
+  color: var(--vbn-color-text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.vdp-several input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: var(--vbn-color-text);
+  cursor: pointer;
+}
+
+.vdp-hint {
+  flex: 1;
+  font-size: 12px;
+  color: var(--vbn-color-text-muted);
+}
+
+.vdp-link {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
+.vdp-popup button:focus-visible {
+  outline: 2px solid var(--vbn-color-border-focus);
+  outline-offset: 1px;
+}
+
+/* Phones: one month only (see isNarrowScreen), a margin around the popup,
+   and the footer status on its own line */
+@media (max-width: 520px) {
+  .vdp-popup {
+    max-width: calc(100vw - 32px); /* 16px clear on each side */
+    box-sizing: border-box;
+  }
+
+  .vdp-body {
+    flex-direction: column;
+  }
+
+  .vdp-footer {
+    flex-wrap: wrap;
+  }
+
+  .vdp-hint {
+    flex-basis: 100%;
+    order: -1;
+    padding-bottom: 4px;
+  }
+
+  .vdp-several {
+    margin-right: auto;
+  }
+}

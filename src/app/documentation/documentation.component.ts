@@ -55,7 +55,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   /** Sidebar filtered by the search box (groups with no match disappear) */
   get filteredGroups(): DocsNavGroup[] {
     const q = this.query.trim().toLowerCase();
-    if (!q) return this.groups;
+    if (!q) return this.groups.filter((g) => g.items.length > 0);
     return this.groups
       .map((g) => ({
         ...g,

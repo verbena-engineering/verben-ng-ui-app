@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { COMPONENT_DOCS } from '../../docs-registry';
+import { COMPONENT_DOCS, UNSTABLE_DOCS } from '../../docs-registry';
 
 /** Landing page: intro + a grid of cards with a small preview of each component */
 @Component({
@@ -9,6 +9,7 @@ import { COMPONENT_DOCS } from '../../docs-registry';
 })
 export class DocsHomeComponent implements OnInit {
   components = COMPONENT_DOCS;
+  unstable = UNSTABLE_DOCS;
 
   // Sample values so the thumbnails look "in use"
   previewDate = new Date(2026, 9, 14);

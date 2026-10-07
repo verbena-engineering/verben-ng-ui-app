@@ -70,6 +70,8 @@
           [routerLinkActiveOptions]="{ exact: true }"
         >
           {{ item.title }}
+          <span *ngIf="item.status === 'unstable'" class="docs-tag-unstable">unstable</span>
+          <span *ngIf="item.status === 'new'" class="docs-tag-new">new</span>
         </a>
       </div>
       <p class="docs-nav-empty" *ngIf="filteredGroups.length === 0">

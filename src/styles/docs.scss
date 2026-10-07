@@ -418,6 +418,55 @@
   }
 }
 
+/* "New" marker for recently added components */
+.docs-tag-new {
+  margin-left: 6px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, #10b981 16%, transparent);
+  color: #047857;
+  font-size: 10.5px;
+  font-weight: 600;
+  vertical-align: 1px;
+}
+
+.docs-pill--new {
+  background: color-mix(in srgb, #10b981 14%, transparent);
+  color: #047857;
+}
+
+[data-vbn-theme='dark'] .docs-tag-new,
+[data-vbn-theme='dark'] .docs-pill--new {
+  color: #34d399;
+}
+
+/* Unstable (in review) markers */
+.docs-tag-unstable {
+  margin-left: 6px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, #f59e0b 18%, transparent);
+  color: #b45309;
+  font-size: 10.5px;
+  font-weight: 600;
+  vertical-align: 1px;
+}
+
+[data-vbn-theme='dark'] .docs-tag-unstable,
+[data-vbn-theme='dark'] .docs-pill--unstable {
+  color: #fbbf24;
+}
+
+.docs-pill--unstable {
+  background: color-mix(in srgb, #f59e0b 16%, transparent);
+  color: #b45309;
+}
+
+.docs-callout.is-warning {
+  border-color: color-mix(in srgb, #f59e0b 45%, var(--docs-border));
+  background: color-mix(in srgb, #f59e0b 7%, transparent);
+}
+
 /* ---------- Example (Preview / Code) ---------- */
 
 .docs-example {

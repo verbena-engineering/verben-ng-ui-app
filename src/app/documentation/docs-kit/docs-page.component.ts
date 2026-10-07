@@ -21,7 +21,11 @@ import { DOCS_SEQUENCE, DocsNavItem } from '../docs-registry';
       <h1 class="docs-h1">{{ title }}</h1>
       <p *ngIf="description" class="docs-lead">{{ description }}</p>
 
-      <div class="docs-page-meta" *ngIf="current?.playground || current?.source">
+      <div class="docs-page-meta" *ngIf="current?.playground || current?.source || current?.status">
+        <span *ngIf="current?.status === 'unstable'" class="docs-pill docs-pill--unstable">
+          Unstable · in review
+        </span>
+        <span *ngIf="current?.status === 'new'" class="docs-pill docs-pill--new">New</span>
         <a *ngIf="current?.playground" class="docs-pill" [routerLink]="current!.playground">
           Playground ↗
         </a>

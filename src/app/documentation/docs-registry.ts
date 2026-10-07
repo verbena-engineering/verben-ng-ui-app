@@ -14,6 +14,11 @@ export interface DocsNavItem {
   playground?: string;
   /** Library folder, shown on the page for people looking for the source */
   source?: string;
+  /**
+   * 'unstable' = in team review: badge in the sidebar, warning on the page.
+   * 'new' = recently added: small badge in the sidebar and on the page.
+   */
+  status?: 'unstable' | 'new';
 }
 
 export interface DocsNavGroup {
@@ -81,7 +86,15 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
     slug: 'date-picker',
     title: 'Date Picker',
     route: '/documentation/components/date-picker',
-    description: 'Pick a single date, a date and time, or a date range.',
+    description: 'A day, a range, or a period: daily, weekly, monthly, quarterly, yearly.',
+    source: lib + 'components/verben-date-picker',
+    status: 'new',
+  },
+  {
+    slug: 'date-picker-classic',
+    title: 'Date Picker (classic)',
+    route: '/documentation/components/date-picker-classic',
+    description: 'The original <app-date-picker>: single date, date & time, or range.',
     playground: '/documentation/date-picker',
     source: lib + 'components/date-picker',
   },
@@ -174,6 +187,9 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
   },
 ];
 
+/** New components waiting for team approval (empty right now). Their API may still change. */
+export const UNSTABLE_DOCS: DocsNavItem[] = [];
+
 /** The original demo / test pages, still reachable for manual testing */
 export const PLAYGROUND_PAGES: DocsNavItem[] = [
   { slug: 'pg-data-table', title: 'Data Table', route: '/documentation/data-table' },
@@ -203,6 +219,7 @@ export const PLAYGROUND_PAGES: DocsNavItem[] = [
 export const DOCS_NAV: DocsNavGroup[] = [
   { title: 'Getting Started', items: GETTING_STARTED },
   { title: 'Components', items: COMPONENT_DOCS },
+  { title: 'Unstable', items: UNSTABLE_DOCS },
   { title: 'Playground', items: PLAYGROUND_PAGES },
 ];
 
@@ -210,4 +227,5 @@ export const DOCS_NAV: DocsNavGroup[] = [
 export const DOCS_SEQUENCE: DocsNavItem[] = [
   ...GETTING_STARTED,
   ...COMPONENT_DOCS,
+  ...UNSTABLE_DOCS,
 ];

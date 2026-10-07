@@ -9,6 +9,11 @@ import {
 
 /*
  * CHANGE LOG (2026-10-05) — search for "[TP-n]" to find each change.
+
+[tp_2 ] [model] / [format 24] are now read when they change (ngOnChanges).
+[tp-3] 12h -> 24h conversion fixed: typed values are strings ("9" + 12 was "912"), 12 PM became 24 and 12 AM stayed noon.
+[tp-4 ] Added [modelChange] output to emit the updated date when time changes.
+[tp-6] added [timeChange] output to emit hours, minutes, and meridiem when time changes.
  *  [TP-1] [model] / [format24] are now read when they change (ngOnChanges).
  *         Before, they were read only in the constructor — before Angular sets
  *         inputs — so the picker ignored [model] and showed the current time.

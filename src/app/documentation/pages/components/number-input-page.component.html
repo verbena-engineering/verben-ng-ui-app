@@ -1,0 +1,50 @@
+<docs-page title="Number Input" description="A number field that shows thousand separators, fixed decimals and a prefix or suffix, while the bound value stays a plain number.">
+  <docs-example [code]="code.basic">
+    <div class="docs-stack">
+      <verben-number-input label="Population" [(ngModel)]="population"></verben-number-input>
+      <span class="docs-output">value: {{ population }} ({{ typeOf(population) }})</span>
+    </div>
+  </docs-example>
+
+  <h2 class="docs-h2" id="usage">Usage</h2>
+  <p class="docs-p">
+    Import <code class="docs-inline-code">NumberInputModule</code>. Formatting is only visual:
+    <code class="docs-inline-code">ngModel</code>, form controls and
+    <code class="docs-inline-code">(valueChange)</code> always receive a JavaScript
+    <code class="docs-inline-code">number</code>. While the field is focused the prefix and
+    suffix are hidden so only the number is edited; Arrow Up/Down step by
+    <code class="docs-inline-code">step</code>.
+  </p>
+
+  <h2 class="docs-h2" id="examples">Examples</h2>
+
+  <docs-example title="Currency" [code]="code.currency">
+    <div class="docs-stack">
+      <verben-number-input label="Price" prefix="₦ " [decimalPlaces]="2" [step]="0.5" [(ngModel)]="price"></verben-number-input>
+      <span class="docs-output">value: {{ price }} ({{ typeOf(price) }})</span>
+    </div>
+  </docs-example>
+
+  <docs-example title="Suffix with min / max" description="Try typing more than 100,000." [code]="code.suffix">
+    <div class="docs-stack">
+      <verben-number-input label="Weight" suffix=" kg" [min]="0" [max]="100000" [(value)]="weight"></verben-number-input>
+      <span class="docs-output">value: {{ weight }}</span>
+    </div>
+  </docs-example>
+
+  <docs-example title="Whole numbers" [code]="code.integer">
+    <div class="docs-stack">
+      <verben-number-input label="Quantity" [decimalPlaces]="0" [min]="1" [max]="99" [(ngModel)]="quantity"></verben-number-input>
+    </div>
+  </docs-example>
+
+  <docs-example title="Without separators" [code]="code.raw">
+    <div class="docs-stack">
+      <verben-number-input label="No separator" [thousandSeparator]="false" [(ngModel)]="raw"></verben-number-input>
+    </div>
+  </docs-example>
+
+  <h2 class="docs-h2" id="api">API</h2>
+  <docs-props-table [props]="inputs"></docs-props-table>
+  <docs-props-table [props]="outputs" kind="output"></docs-props-table>
+</docs-page>

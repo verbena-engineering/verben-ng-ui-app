@@ -1,0 +1,6 @@
+/* Runs only <verben-date-picker>'s specs. Several older specs in this library
+   don't compile yet, which would otherwise block these from running. */
+{
+  "extends": "./tsconfig.spec.json",
+  "include": ["src/lib/components/verben-date-picker/**/*.spec.ts", "**/*.d.ts"]
+}

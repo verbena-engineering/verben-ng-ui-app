@@ -1,0 +1,35 @@
+<docs-page title="Textarea" description="A multi-line text field with a label and required validation.">
+  <docs-example [code]="code.basic">
+    <div class="docs-stack">
+      <verbena-textarea label="Notes" [rows]="4" [(ngModel)]="note"></verbena-textarea>
+      <span class="docs-output">{{ note.length }} characters</span>
+    </div>
+  </docs-example>
+
+  <h2 class="docs-h2" id="usage">Usage</h2>
+  <p class="docs-p">Import <code class="docs-inline-code">VerbenaTextareaModule</code> and <code class="docs-inline-code">FormsModule</code>.</p>
+
+  <h2 class="docs-h2" id="examples">Examples</h2>
+
+  <docs-example title="Required" description="Type something, then clear it." [code]="code.required">
+    <div class="docs-stack">
+      <verbena-textarea label="Feedback" [required]="true" [rows]="3" [(ngModel)]="feedback"></verbena-textarea>
+    </div>
+  </docs-example>
+
+  <docs-example title="Custom styling" [code]="code.styled">
+    <div class="docs-stack">
+      <verbena-textarea label="Styled" [rows]="3" bgColor="var(--vbn-color-surface)" border="1px dashed var(--vbn-color-border)" borderRadius="10px" pd="14px"></verbena-textarea>
+    </div>
+  </docs-example>
+
+  <docs-example title="Disabled" [code]="code.disabled">
+    <div class="docs-stack">
+      <verbena-textarea label="Disabled" value="Read only text" [disabled]="true" [rows]="2"></verbena-textarea>
+    </div>
+  </docs-example>
+
+  <h2 class="docs-h2" id="api">API</h2>
+  <docs-props-table [props]="inputs"></docs-props-table>
+  <docs-props-table [props]="outputs" kind="output"></docs-props-table>
+</docs-page>

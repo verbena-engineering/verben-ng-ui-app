@@ -1,0 +1,41 @@
+<docs-page title="Tooltip" description="Shows extra information while the pointer is over an element.">
+  <docs-example [code]="code.basic">
+    <verben-tooltip [tooltipContent]="tip" bottom="calc(100% + 8px)" left="0" width="max-content">
+      <verbena-button text="Hover me" styleType="outline"></verbena-button>
+    </verben-tooltip>
+    <ng-template #tip>Saved 2 minutes ago</ng-template>
+  </docs-example>
+
+  <h2 class="docs-h2" id="usage">Usage</h2>
+  <p class="docs-p">
+    Import <code class="docs-inline-code">TooltipModule</code>. Wrap the element to hover, pass
+    an <code class="docs-inline-code">&lt;ng-template&gt;</code> as content, and place it with
+    <code class="docs-inline-code">top</code>/<code class="docs-inline-code">bottom</code> and
+    <code class="docs-inline-code">left</code>/<code class="docs-inline-code">right</code>.
+  </p>
+
+  <h2 class="docs-h2" id="examples">Examples</h2>
+
+  <docs-example title="Rich content" [code]="code.rich">
+    <verben-tooltip
+      [tooltipContent]="details"
+      top="calc(100% + 8px)"
+      left="0"
+      width="220px"
+      padding="12px"
+      borderRadius="8px"
+      backgroundColor="var(--vbn-color-surface)"
+      textColor="var(--vbn-color-text)"
+      border="1px solid var(--vbn-color-border)"
+    >
+      <span style="text-decoration: underline dotted; cursor: help; font-weight: 500">INV-0042</span>
+    </verben-tooltip>
+    <ng-template #details>
+      <strong style="font-size: 13px">Invoice INV-0042</strong>
+      <p style="margin: 4px 0 0; font-size: 12px">₦ 250,000 · Due 14 Oct</p>
+    </ng-template>
+  </docs-example>
+
+  <h2 class="docs-h2" id="api">API</h2>
+  <docs-props-table [props]="inputs"></docs-props-table>
+</docs-page>

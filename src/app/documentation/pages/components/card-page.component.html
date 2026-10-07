@@ -1,0 +1,43 @@
+<docs-page title="Card" description="A container that groups related content, with optional header, body and footer slots.">
+  <docs-example [code]="code.basic">
+    <verben-card width="340px" pd="20px" bgColor="var(--vbn-color-surface)" border="1px solid var(--vbn-color-border)" borderRadius="10px">
+      <div card-header>
+        <h3 style="margin: 0; font-size: 16px; font-weight: 600">Invoice INV-0042</h3>
+        <p style="margin: 2px 0 0; font-size: 13px; color: var(--vbn-color-text-muted)">Issued 2 Oct 2026</p>
+      </div>
+      <div card-body>
+        <p style="margin: 16px 0; font-size: 24px; font-weight: 700">₦ 250,000</p>
+      </div>
+      <div card-footer style="display: flex; gap: 8px; justify-content: flex-end">
+        <verbena-button text="View" styleType="outline"></verbena-button>
+        <verbena-button text="Pay now" styleType="secondary"></verbena-button>
+      </div>
+    </verben-card>
+  </docs-example>
+
+  <h2 class="docs-h2" id="usage">Usage</h2>
+  <p class="docs-p">
+    Import <code class="docs-inline-code">CardModule</code>. Put content in elements marked with
+    <code class="docs-inline-code">card-header</code>, <code class="docs-inline-code">card-body</code> or
+    <code class="docs-inline-code">card-footer</code>; sections you don't use aren't rendered.
+  </p>
+
+  <h2 class="docs-h2" id="examples">Examples</h2>
+
+  <docs-example title="Body only" [code]="code.simple">
+    <verben-card width="260px" pd="16px" bgColor="var(--vbn-color-surface-alt)" borderRadius="8px">
+      <div card-body>Only a body slot.</div>
+    </verben-card>
+  </docs-example>
+
+  <docs-example title="Disabled" [code]="code.disabled">
+    <verben-card width="260px" pd="16px" border="1px solid var(--vbn-color-border)" borderRadius="8px" [disabled]="true">
+      <div card-body>This card is disabled.</div>
+    </verben-card>
+  </docs-example>
+
+  <h2 class="docs-h2" id="api">API</h2>
+  <docs-props-table [props]="inputs"></docs-props-table>
+  <h3 class="docs-h3" id="api-slots">Slots</h3>
+  <docs-props-table [props]="slots" kind="output"></docs-props-table>
+</docs-page>

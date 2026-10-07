@@ -1,0 +1,147 @@
+<section class="docs-hero">
+  <h1>Build Verbena apps faster.</h1>
+  <p>
+    verben-ng-ui is the shared Angular component library for Verbena products:
+    inputs, pickers, tables, dialogs and more, all themeable from one set of
+    <code class="docs-inline-code">--vbn-*</code> tokens.
+  </p>
+  <div class="docs-hero-actions">
+    <a class="docs-btn is-primary" routerLink="/documentation/installation">Get started</a>
+    <a class="docs-btn" routerLink="/documentation/theming">Theming</a>
+  </div>
+</section>
+
+<h2 class="docs-h2" id="components">Components</h2>
+<p class="docs-p">
+  Each card shows a small live preview. Open one for full examples, code and the API reference.
+</p>
+
+<div class="docs-grid">
+  <a class="docs-card" *ngFor="let item of components" [routerLink]="item.route">
+    <!-- inert: thumbnails are for looking at; interaction lives on the component page -->
+    <div class="docs-card-preview" inert aria-hidden="true" [ngSwitch]="item.slug">
+      <ng-container *ngSwitchCase="'badge'">
+        <verbena-badge text="New" bgColor="var(--vbn-color-primary)" textColor="var(--vbn-color-on-primary)" fontSize="12px"></verbena-badge>
+        <verbena-badge text="3" fontSize="12px"></verbena-badge>
+        <verbena-badge text="Paid" bgColor="var(--vbn-color-success)" fontSize="12px"></verbena-badge>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'button'">
+        <verbena-button text="Save" styleType="secondary"></verbena-button>
+        <verbena-button text="Cancel" styleType="outline"></verbena-button>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'card'">
+        <verben-card bgColor="var(--vbn-color-surface)" border="1px solid var(--vbn-color-border)" borderRadius="8px" pd="12px" width="170px">
+          <div card-header><b style="font-size: 12px">Invoice #001</b></div>
+          <div card-body><span style="font-size: 11px">Due in 3 days</span></div>
+        </verben-card>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'chip'">
+        <verben-chip [ngModel]="tags" width="190px"></verben-chip>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'date-picker'">
+        <div style="width: 210px">
+          <verben-date-picker mode="preset" [ngModel]="'last-month'"></verben-date-picker>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'date-picker-classic'">
+        <div style="width: 190px">
+          <app-date-picker [date]="previewDate" [overlayWidth]="300"></app-date-picker>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'dialog'">
+        <div class="docs-mock-dialog">
+          <b>Delete item?</b>
+          This can't be undone.
+          <div><span>Cancel</span><span>Delete</span></div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'dropdown'">
+        <verben-drop-down [options]="fruits" [ngModel]="'Banana'" width="170px"></verben-drop-down>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'icons'">
+        <verben-svg icon="calendar" [width]="22" [height]="22"></verben-svg>
+        <verben-svg icon="search" [width]="22" [height]="22"></verben-svg>
+        <verben-svg icon="bell" [width]="22" [height]="22"></verben-svg>
+        <verben-svg icon="user" [width]="22" [height]="22"></verben-svg>
+        <verben-svg icon="trash" [width]="22" [height]="22"></verben-svg>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'input'">
+        <div style="width: 190px">
+          <verbena-input placeHolder="name@company.com" label="Email"></verbena-input>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'notification'">
+        <div class="docs-mock-toast"><i></i>Changes saved</div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'number-input'">
+        <div style="width: 170px">
+          <verben-number-input [value]="1250000" prefix="₦ " [decimalPlaces]="2"></verben-number-input>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'switch'">
+        <verbena-switch [checked]="true"></verbena-switch>
+        <verbena-switch [checked]="false"></verbena-switch>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'tabs'">
+        <div style="width: 200px; font-size: 12px">
+          <verben-tab textColor="var(--vbn-color-text)">
+            <lib-tab-item title="Account" [active]="true">Profile details</lib-tab-item>
+            <lib-tab-item title="Billing">Invoices</lib-tab-item>
+          </verben-tab>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'textarea'">
+        <div style="width: 190px">
+          <verbena-textarea [rows]="3" value="Leave a note for the team…"></verbena-textarea>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'time-picker'">
+        <div style="transform: scale(0.8)">
+          <verben-time-picker [model]="previewTime"></verben-time-picker>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'tooltip'">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+          <span class="docs-mock-tooltip">Copied to clipboard</span>
+          <verbena-button text="Hover me" styleType="outline"></verbena-button>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="docs-card-body">
+      <h3>{{ item.title }}</h3>
+      <p>{{ item.description }}</p>
+    </div>
+  </a>
+</div>
+
+<ng-container *ngIf="unstable.length">
+  <h2 class="docs-h2" id="unstable">Unstable <span class="docs-tag-unstable">in review</span></h2>
+  <p class="docs-p">
+    New components the team is still reviewing. Try them, but expect the API to change before they are promoted.
+  </p>
+  <div class="docs-grid">
+    <a class="docs-card" *ngFor="let item of unstable" [routerLink]="item.route">
+      <div class="docs-card-body">
+        <h3>{{ item.title }} <span class="docs-tag-unstable">unstable</span></h3>
+        <p>{{ item.description }}</p>
+      </div>
+    </a>
+  </div>
+</ng-container>

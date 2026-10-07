@@ -1,0 +1,37 @@
+<div class="vcg" role="grid" [attr.aria-label]="caption" (mouseleave)="hover.emit(null)">
+  <div class="vcg-row" role="row">
+    <span class="vcg-weekday" role="columnheader" *ngFor="let w of weekdays">{{ w }}</span>
+  </div>
+
+  <div class="vcg-row" role="row" *ngFor="let week of weeks; trackBy: trackByIndex">
+    <ng-container *ngFor="let day of week; trackBy: trackByDay">
+      <span *ngIf="!day" class="vcg-cell" role="gridcell"></span>
+
+      <span
+        *ngIf="day"
+        class="vcg-cell"
+        role="gridcell"
+        [class.is-band]="day.band"
+        [class.is-band-start]="day.bandStart"
+        [class.is-band-end]="day.bandEnd"
+      >
+        <button
+          type="button"
+          class="vcg-day"
+          [class.is-today]="day.isToday"
+          [class.is-selected]="day.isStart || day.isEnd"
+          [class.in-range]="day.inRange"
+          [class.is-static]="!interactive"
+          [disabled]="day.disabled"
+          [attr.tabindex]="interactive ? null : -1"
+          [attr.aria-label]="day.ariaLabel"
+          [attr.aria-pressed]="day.isStart || day.isEnd"
+          (click)="onPick(day)"
+          (mouseenter)="hover.emit(day.date)"
+        >
+          {{ day.label }}
+        </button>
+      </span>
+    </ng-container>
+  </div>
+</div>

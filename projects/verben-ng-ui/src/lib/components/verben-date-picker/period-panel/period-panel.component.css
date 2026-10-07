@@ -1,0 +1,219 @@
+/* Light visual weight on purpose: one tab at a time, plain cells, and only
+   the selection gets a filled color. */
+
+.vpp {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 470px;
+  font-size: 13px;
+}
+
+.vpp-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--vbn-color-border);
+}
+
+/* Each tab is as wide as its word plus an equal share of the free space */
+.vpp-tabs button {
+  flex: 1 1 auto;
+  margin-bottom: -1px;
+  padding: 6px 4px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--vbn-color-text-muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.vpp-tabs button:hover,
+.vpp-tabs button.is-active {
+  color: var(--vbn-color-text);
+}
+
+.vpp-tabs button.is-active {
+  border-bottom-color: var(--vbn-color-text);
+}
+
+.vpp-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.vpp-chip {
+  height: 26px;
+  padding: 0 10px;
+  border: 1px solid var(--vbn-color-border);
+  border-radius: 999px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.vpp-body {
+  display: flex;
+  gap: 16px;
+}
+
+.vpp-side {
+  width: 190px;
+  padding-right: 16px;
+  border-right: 1px solid var(--vbn-color-border);
+}
+
+.vpp-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.vpp-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.vpp-stepper button {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.vpp-stepper svg {
+  width: 15px;
+  height: 15px;
+}
+
+.vpp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.vpp-grid--quarters {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.vpp-grid--weeks {
+  grid-template-columns: 1fr;
+}
+
+.vpp-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  height: 36px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.vpp-grid--quarters .vpp-cell {
+  height: 48px;
+}
+
+.vpp-grid--weeks .vpp-cell {
+  flex-direction: row;
+  justify-content: space-between;
+  height: 32px;
+  padding: 0 10px 0 14px;
+}
+
+.vpp-cell small {
+  font-size: 10.5px;
+  color: var(--vbn-color-text-muted);
+}
+
+/* Covered by the selection / span preview: same band color as the calendar */
+.vpp-cell.in-selection {
+  background: var(
+    --vbn-datepicker-range-bg,
+    color-mix(in srgb, var(--vbn-color-primary) 22%, transparent)
+  );
+}
+
+/* The period containing today: a small dot, no extra color */
+.vpp-cell.is-current::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--vbn-color-text-muted);
+}
+
+.vpp-grid--weeks .vpp-cell.is-current::after {
+  top: 50%;
+  right: auto;
+  left: 4px;
+  transform: translateY(-50%);
+}
+
+.vpp-chip:hover:not(:disabled),
+.vpp-stepper button:hover,
+.vpp-cell:hover:not(:disabled):not(.is-active):not(.in-selection) {
+  background: var(--vbn-state-hover-bg, var(--vbn-color-surface-alt));
+}
+
+.vpp-chip.is-active,
+.vpp-cell.is-active {
+  border-color: var(--vbn-color-primary);
+  background: var(--vbn-color-primary);
+  color: var(--vbn-color-on-primary);
+}
+
+.vpp-cell.is-active small {
+  color: inherit;
+}
+
+.vpp-chip:disabled,
+.vpp-cell:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.vpp button:focus-visible {
+  outline: 2px solid var(--vbn-color-border-focus);
+  outline-offset: 1px;
+}
+
+/* Phones: grid above the calendar */
+@media (max-width: 520px) {
+  .vpp {
+    min-width: 0;
+  }
+
+  .vpp-body {
+    flex-direction: column;
+  }
+
+  /* The calendar is hidden here on phones (except Daily), so no divider */
+  .vpp-side {
+    width: auto;
+    padding: 0;
+    border-right: 0;
+  }
+}

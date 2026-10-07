@@ -1,0 +1,53 @@
+<docs-page
+  title="Theming"
+  section="Getting Started"
+  description="Every component reads its colors, radius and font from --vbn-* CSS variables. Change them once and the whole library follows."
+>
+  <h2 class="docs-h2" id="tokens">Color tokens</h2>
+  <p class="docs-p">
+    The current values in this app (they update when you switch light/dark in the header).
+    Defaults live in <code class="docs-inline-code">verben-ng-ui/styles/theme.css</code>.
+  </p>
+  <div class="docs-swatches">
+    <div class="docs-swatch" *ngFor="let s of swatches">
+      <span [style.background]="'var(' + s.token + ')'"></span>
+      <div>
+        <code>{{ s.token.replace('--vbn-color-', '') }}</code>
+        <small>{{ s.value }}</small>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="docs-h2" id="for-root">Configure with forRoot</h2>
+  <p class="docs-p">
+    The usual place for brand colors. Only the values you pass are written; the rest keep
+    their defaults.
+  </p>
+  <docs-code-block [code]="forRoot" lang="ts" filename="app.module.ts"></docs-code-block>
+
+  <h2 class="docs-h2" id="css">Or override in CSS</h2>
+  <p class="docs-p">No TypeScript needed. Load your stylesheet after <code class="docs-inline-code">theme.css</code>.</p>
+  <docs-code-block [code]="css" lang="css" filename="styles.scss"></docs-code-block>
+
+  <h2 class="docs-h2" id="dark-mode">Dark mode</h2>
+  <p class="docs-p">
+    Dark values are built in. Turning dark mode on sets
+    <code class="docs-inline-code">data-vbn-theme="dark"</code> on <code class="docs-inline-code">&lt;html&gt;</code>.
+    Use the service:
+  </p>
+  <docs-code-block [code]="darkMode" lang="ts"></docs-code-block>
+  <p class="docs-p">…or the directive:</p>
+  <docs-code-block [code]="directive"></docs-code-block>
+
+  <h2 class="docs-h2" id="runtime">Change the theme at runtime</h2>
+  <docs-code-block [code]="runtime" lang="ts"></docs-code-block>
+
+  <div class="docs-callout">
+    <span>📘</span>
+    <span>
+      The full token list and design notes are in
+      <code class="docs-inline-code">projects/verben-ng-ui/THEMING.md</code>; the setup guide for
+      apps and other libraries is <code class="docs-inline-code">INTEGRATION.md</code>.
+    </span>
+  </div>
+</docs-page>

@@ -1,0 +1,52 @@
+<docs-page
+  title="Installation"
+  section="Getting Started"
+  description="Add verben-ng-ui to an Angular 18 app in four steps."
+>
+  <h2 class="docs-h2" id="install">1. Install the package</h2>
+  <p class="docs-p">
+    The library needs Angular CDK for its overlays (date picker, dropdown, popups).
+  </p>
+  <docs-code-block [code]="install" lang="bash"></docs-code-block>
+
+  <h2 class="docs-h2" id="styles">2. Add styles and icons</h2>
+  <p class="docs-p">
+    In <code class="docs-inline-code">angular.json</code>, load the overlay CSS and the theme
+    <strong>before</strong> your own styles so you can override tokens, and copy the icon
+    assets to <code class="docs-inline-code">assets/lib-icons</code> (that's where
+    <code class="docs-inline-code">&lt;verben-svg&gt;</code> looks for them).
+  </p>
+  <docs-code-block [code]="angularJson" lang="ts" filename="angular.json"></docs-code-block>
+
+  <h2 class="docs-h2" id="configure">3. Configure the root module</h2>
+  <p class="docs-p">
+    <code class="docs-inline-code">VerbenUiModule.forRoot()</code> is optional. Anything you leave
+    out keeps the default from <code class="docs-inline-code">theme.css</code>. See
+    <a routerLink="/documentation/theming"><u>Theming</u></a> for every option.
+  </p>
+  <docs-code-block [code]="appModule" lang="ts" filename="app.module.ts"></docs-code-block>
+
+  <h2 class="docs-h2" id="use">4. Import a component module and use it</h2>
+  <p class="docs-p">
+    Each component ships in its own NgModule. Import the ones a feature needs (plus
+    <code class="docs-inline-code">FormsModule</code> for <code class="docs-inline-code">[(ngModel)]</code>).
+  </p>
+  <docs-code-block [code]="featureModule" lang="ts" filename="invoices.module.ts"></docs-code-block>
+  <docs-code-block [code]="usage" filename="invoices.component.html"></docs-code-block>
+
+  <h2 class="docs-h2" id="local-development">Working on the library</h2>
+  <p class="docs-p">
+    In this repo the docs app imports the <strong>built</strong> library from
+    <code class="docs-inline-code">dist/</code>, so run the library build in watch mode next to
+    the dev server.
+  </p>
+  <docs-code-block [code]="localDev" lang="bash"></docs-code-block>
+  <div class="docs-callout">
+    <span>💡</span>
+    <span>
+      <strong>Change not showing up?</strong> <code class="docs-inline-code">ng serve</code> caches
+      the built library. Stop and restart <code class="docs-inline-code">npm start</code> after a
+      library rebuild.
+    </span>
+  </div>
+</docs-page>

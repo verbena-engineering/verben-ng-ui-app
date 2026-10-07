@@ -1,0 +1,72 @@
+<div class="vpp">
+  <!-- Tabs: one kind of period at a time -->
+  <div class="vpp-tabs" role="tablist" aria-label="Period" *ngIf="tabs.length > 1">
+    <button
+      *ngFor="let tab of tabs"
+      type="button"
+      role="tab"
+      [class.is-active]="tab.key === activeTab"
+      [attr.aria-selected]="tab.key === activeTab"
+      (click)="selectTab(tab.key)"
+    >
+      {{ tab.label }}
+    </button>
+  </div>
+
+  <!-- Suggestions (relative presets) -->
+  <div class="vpp-quick" *ngIf="quick.length" (mouseleave)="preview.emit(null)">
+    <button
+      *ngFor="let item of quick; trackBy: trackByPreset"
+      type="button"
+      class="vpp-chip"
+      [class.is-active]="item.isActive"
+      [attr.aria-pressed]="item.isActive"
+      [disabled]="item.disabled"
+      (mouseenter)="preview.emit(item.preset)"
+      (focus)="preview.emit(item.preset)"
+      (click)="choose.emit(item.preset)"
+    >
+      {{ item.text }}
+    </button>
+  </div>
+
+  <div class="vpp-body">
+    <!-- Side: specific periods -->
+    <div class="vpp-side" *ngIf="gridKind" (mouseleave)="onCellHover(null)">
+      <div class="vpp-stepper">
+        <button type="button" aria-label="Previous" (click)="step(-1)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+        <span>{{ stepperLabel }}</span>
+        <button type="button" aria-label="Next" (click)="step(1)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+      </div>
+
+      <div class="vpp-grid" [ngClass]="'vpp-grid--' + gridKind">
+        <button
+          *ngFor="let item of grid; trackBy: trackByPreset"
+          type="button"
+          class="vpp-cell"
+          [class.is-active]="item.isActive"
+          [class.is-current]="item.isCurrent"
+          [class.in-selection]="item.inSelection && !item.isActive"
+          [attr.aria-pressed]="item.isActive"
+          [attr.aria-label]="item.preset.label"
+          [disabled]="item.disabled"
+          (mouseenter)="onCellHover(item)"
+          (focus)="onCellHover(item)"
+          (click)="onCellClick(item)"
+        >
+          <span>{{ item.text }}</span>
+          <small *ngIf="item.sub">{{ item.sub }}</small>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main: the calendar, passed in by the date picker -->
+    <div class="vpp-main">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<docs-page title="Date Picker (classic)" description="Pick a single date, a date and time, or a date range. Picking a day saves it straight away.">
+  <docs-example [code]="code.basic" minHeight="260px">
+    <div class="docs-stack">
+      <app-date-picker placeholder="Due date" [(ngModel)]="dueDate"></app-date-picker>
+      <span class="docs-output">ngModel: {{ dueDate | json }}</span>
+    </div>
+  </docs-example>
+
+  <h2 class="docs-h2" id="usage">Usage</h2>
+  <p class="docs-p">
+    Import <code class="docs-inline-code">DatePickerModule</code> and
+    <code class="docs-inline-code">FormsModule</code>.
+    <code class="docs-inline-code">ngModel</code> receives a local date string without a time
+    zone (<code class="docs-inline-code">"2026-10-05T00:00:00"</code>);
+    <code class="docs-inline-code">(dateChange)</code> gives a <code class="docs-inline-code">Date</code>.
+  </p>
+  <ul class="docs-list">
+    <li>Clicking a day sets the value and closes the popup.</li>
+    <li>With <code class="docs-inline-code">showTime</code>, the popup stays open so the time can be adjusted; every change saves immediately.</li>
+    <li>In range mode the first click sets the start, the second the end. Ranges cover whole days.</li>
+  </ul>
+
+  <h2 class="docs-h2" id="examples">Examples</h2>
+
+  <docs-example title="Date and time" [code]="code.time">
+    <div class="docs-stack">
+      <app-date-picker placeholder="Meeting time" [showTime]="true" [(ngModel)]="meeting"></app-date-picker>
+      <span class="docs-output">ngModel: {{ meeting | json }}</span>
+    </div>
+  </docs-example>
+
+  <docs-example title="Date range" description="Hover after the first click to preview the range." [code]="code.range" [tsCode]="code.rangeTs">
+    <div class="docs-stack">
+      <app-date-picker selectionMode="range" placeholder="Reporting period" [(ngModel)]="period"></app-date-picker>
+      <span class="docs-output">ngModel: {{ period | json }}</span>
+    </div>
+  </docs-example>
+
+  <docs-example title="Range with Date objects" description="[(range)] binding, arrow navigation, nothing after today." [code]="code.rangeBinding" [tsCode]="code.rangeBindingTs">
+    <div class="docs-stack">
+      <app-date-picker selectionMode="range" [useDropdowns]="false" [maxDate]="today" [(range)]="range"></app-date-picker>
+      <span class="docs-output">range: {{ range?.[0] | date: 'medium' }} → {{ range?.[1] | date: 'medium' }}</span>
+    </div>
+  </docs-example>
+
+  <docs-example title="Min and max date" [code]="code.bounds" [tsCode]="code.boundsTs">
+    <div class="docs-stack">
+      <app-date-picker placeholder="This month only" [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="bounded"></app-date-picker>
+    </div>
+  </docs-example>
+
+  <docs-example title="Day / month / year format" [code]="code.format">
+    <div class="docs-stack">
+      <app-date-picker format="DD/MM/YYYY" [(ngModel)]="ukDate"></app-date-picker>
+    </div>
+  </docs-example>
+
+  <h2 class="docs-h2" id="api">API</h2>
+  <docs-props-table [props]="inputs"></docs-props-table>
+  <docs-props-table [props]="outputs" kind="output"></docs-props-table>
+</docs-page>

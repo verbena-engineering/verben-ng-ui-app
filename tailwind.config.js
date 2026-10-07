@@ -2,6 +2,9 @@
 module.exports = {
   content: [
         "./src/**/*.{html,ts}",
+        // The library's templates also use Tailwind utilities (e.g. the dialog's
+        // "fixed inset-0", "max-w-lg"), so scan them too or those classes are missing
+        "./projects/verben-ng-ui/src/**/*.{html,ts}",
   ],
   theme: {
     colors:{

@@ -55,6 +55,8 @@ export * from 'verben-ng-ui/src/lib/components/verbena-icon';
 export * from 'verben-ng-ui/src/lib/components/verbena-tab';
 export * from 'verben-ng-ui/src/lib/components/number-input';
 
+export * from 'verben-ng-ui/src/lib/components/verben-date-picker';
+
 // Exporting modules
 // export * from './lib/components/card-data-view/card-data-view.component';
 // export * from './lib/components/card-data-view/card-data-view.module';

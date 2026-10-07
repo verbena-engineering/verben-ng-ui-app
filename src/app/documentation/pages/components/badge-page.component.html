@@ -1,0 +1,33 @@
+<docs-page title="Badge" description="A small label or count, used for statuses and notifications.">
+  <docs-example [code]="code.basic">
+    <verbena-badge text="3"></verbena-badge>
+  </docs-example>
+
+  <h2 class="docs-h2" id="usage">Usage</h2>
+  <p class="docs-p">Import <code class="docs-inline-code">VerbenaBadgeModule</code>. Use theme tokens for colors so badges follow light/dark mode.</p>
+
+  <h2 class="docs-h2" id="examples">Examples</h2>
+
+  <docs-example title="Status" [code]="code.status">
+    <verbena-badge text="Paid" bgColor="var(--vbn-color-success)"></verbena-badge>
+    <verbena-badge text="Pending" bgColor="var(--vbn-color-warning)"></verbena-badge>
+    <verbena-badge text="Overdue" bgColor="var(--vbn-color-error)"></verbena-badge>
+    <verbena-badge text="Draft" bgColor="var(--vbn-color-secondary)" textColor="var(--vbn-color-on-secondary)"></verbena-badge>
+  </docs-example>
+
+  <docs-example title="Sizes" [code]="code.sizes">
+    <verbena-badge text="Small" fontSize="11px" pd="2px 8px"></verbena-badge>
+    <verbena-badge text="Default"></verbena-badge>
+    <verbena-badge text="Large" fontSize="16px" pd="6px 14px"></verbena-badge>
+  </docs-example>
+
+  <docs-example title="Count next to a label" [code]="code.count">
+    <span style="display: inline-flex; align-items: center; gap: 8px; font-weight: 500">
+      Inbox
+      <verbena-badge text="12" fontSize="11px" pd="1px 7px"></verbena-badge>
+    </span>
+  </docs-example>
+
+  <h2 class="docs-h2" id="api">API</h2>
+  <docs-props-table [props]="inputs"></docs-props-table>
+</docs-page>

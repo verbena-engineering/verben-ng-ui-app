@@ -1,0 +1,85 @@
+/* Component CSS only (no Tailwind): consumer apps may not generate it.
+   Colors come from the --vbn-* theme tokens, so light/dark just work. */
+
+.vcg {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+}
+
+.vcg-row {
+  display: grid;
+  grid-template-columns: repeat(7, 36px);
+}
+
+.vcg-weekday {
+  display: grid;
+  place-items: center;
+  height: 28px;
+  font-size: 12px;
+  color: var(--vbn-color-text-muted);
+}
+
+.vcg-cell {
+  display: grid;
+  place-items: center;
+  height: 36px;
+}
+
+/* The range band sits on the cell so it runs continuously between days */
+.vcg-cell.is-band {
+  background: var(
+    --vbn-datepicker-range-bg,
+    color-mix(in srgb, var(--vbn-color-primary) 22%, transparent)
+  );
+}
+.vcg-cell.is-band-start {
+  border-radius: 999px 0 0 999px;
+}
+.vcg-cell.is-band-end {
+  border-radius: 0 999px 999px 0;
+}
+
+.vcg-day {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.vcg-day:hover:not(:disabled):not(.is-selected):not(.is-static) {
+  background: var(--vbn-state-hover-bg, var(--vbn-color-surface-alt));
+}
+
+.vcg-day:focus-visible {
+  outline: 2px solid var(--vbn-color-border-focus);
+  outline-offset: 1px;
+}
+
+.vcg-day.is-today {
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px var(--vbn-color-border);
+}
+
+.vcg-day.is-selected {
+  background: var(--vbn-color-primary);
+  color: var(--vbn-color-on-primary);
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.vcg-day:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.vcg-day.is-static {
+  cursor: default;
+}

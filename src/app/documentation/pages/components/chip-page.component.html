@@ -1,0 +1,40 @@
+<docs-page title="Chip" description="Collect a list of values: type one, press Enter, and it becomes a removable chip.">
+  <docs-example [code]="code.basic">
+    <div class="docs-stack">
+      <verben-chip placeholder="Add a tag and press Enter" [(ngModel)]="tags"></verben-chip>
+      <span class="docs-output">{{ tags | json }}</span>
+    </div>
+  </docs-example>
+
+  <h2 class="docs-h2" id="usage">Usage</h2>
+  <p class="docs-p">
+    Import <code class="docs-inline-code">ChipModule</code> and
+    <code class="docs-inline-code">FormsModule</code>. The chip input must be bound with
+    <code class="docs-inline-code">ngModel</code> or a form control; the value is a
+    <code class="docs-inline-code">string[]</code>.
+  </p>
+
+  <h2 class="docs-h2" id="examples">Examples</h2>
+
+  <docs-example title="Custom separator" [code]="code.separator">
+    <div class="docs-stack">
+      <verben-chip placeholder="Emails separated by ;" separator=";" [(ngModel)]="emails"></verben-chip>
+    </div>
+  </docs-example>
+
+  <docs-example title="Maximum" [code]="code.max">
+    <div class="docs-stack">
+      <verben-chip placeholder="Up to 3 items" [max]="3" [(ngModel)]="limited"></verben-chip>
+    </div>
+  </docs-example>
+
+  <docs-example title="Required" description="Click into the field and out again." [code]="code.required">
+    <div class="docs-stack">
+      <verben-chip placeholder="At least one label" [required]="true" invalidMessage="Add at least one label" [(ngModel)]="required"></verben-chip>
+    </div>
+  </docs-example>
+
+  <h2 class="docs-h2" id="api">API</h2>
+  <docs-props-table [props]="inputs"></docs-props-table>
+  <docs-props-table [props]="outputs" kind="output"></docs-props-table>
+</docs-page>

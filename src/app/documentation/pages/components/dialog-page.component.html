@@ -1,0 +1,54 @@
+<docs-page title="Dialog" description="A modal window or a side drawer, built from header, body and footer templates.">
+  <docs-example [code]="code.basic" [tsCode]="code.basicTs" direction="column">
+    <verbena-button text="Delete item" styleType="danger" (click)="dialogOpen = true"></verbena-button>
+    <span class="docs-output" *ngIf="lastAction">last action: {{ lastAction }}</span>
+
+    <verben-dialogue
+      size="small"
+      [isVisible]="dialogOpen"
+      [headerTemplate]="header"
+      [bodyTemplate]="body"
+      [footerTemplate]="footer"
+      (closeModal)="dialogOpen = false"
+    ></verben-dialogue>
+    <ng-template #header>Delete this item?</ng-template>
+    <ng-template #body>This can't be undone. The invoice will be removed for everyone.</ng-template>
+    <ng-template #footer>
+      <verbena-button text="Cancel" styleType="outline" (click)="dialogOpen = false"></verbena-button>
+      <verbena-button text="Delete" styleType="danger" (click)="confirm()"></verbena-button>
+    </ng-template>
+  </docs-example>
+
+  <h2 class="docs-h2" id="usage">Usage</h2>
+  <p class="docs-p">
+    Import <code class="docs-inline-code">VerbenDialogueModule</code>. The dialog is controlled:
+    you open it by setting <code class="docs-inline-code">isVisible</code> to
+    <code class="docs-inline-code">true</code>, and must set it back to
+    <code class="docs-inline-code">false</code> in <code class="docs-inline-code">(closeModal)</code>,
+    otherwise it can't be opened a second time.
+  </p>
+
+  <h2 class="docs-h2" id="examples">Examples</h2>
+
+  <docs-example title="Drawer" [code]="code.drawer">
+    <verbena-button text="Open drawer" styleType="outline" (click)="drawerOpen = true"></verbena-button>
+    <verben-dialogue
+      mode="drawer"
+      position="right"
+      drawerWidth="380px"
+      [isVisible]="drawerOpen"
+      [headerTemplate]="drawerHeader"
+      [bodyTemplate]="drawerBody"
+      [disableFooter]="true"
+      (closeModal)="drawerOpen = false"
+    ></verben-dialogue>
+    <ng-template #drawerHeader>Filters</ng-template>
+    <ng-template #drawerBody>
+      <p style="font-size: 14px">Drawers slide in from the side. Close with ×, Esc or a click on the backdrop.</p>
+    </ng-template>
+  </docs-example>
+
+  <h2 class="docs-h2" id="api">API</h2>
+  <docs-props-table [props]="inputs"></docs-props-table>
+  <docs-props-table [props]="outputs" kind="output"></docs-props-table>
+</docs-page>

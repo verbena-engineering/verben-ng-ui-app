@@ -1,0 +1,55 @@
+<docs-page title="Icons" description="The library ships hundreds of SVG icons. Render any of them with <verben-svg>.">
+  <docs-example [code]="code.basic">
+    <verben-svg icon="calendar"></verben-svg>
+  </docs-example>
+
+  <h2 class="docs-h2" id="usage">Usage</h2>
+  <p class="docs-p">
+    Import <code class="docs-inline-code">SvgModule</code>. Icons load over HTTP from
+    <code class="docs-inline-code">assets/lib-icons/</code>, so the app needs
+    <code class="docs-inline-code">provideHttpClient()</code> and the asset copy step from
+    <a routerLink="/documentation/installation"><u>Installation</u></a>.
+  </p>
+
+  <h2 class="docs-h2" id="examples">Examples</h2>
+
+  <docs-example title="Sizes" [code]="code.sizes">
+    <verben-svg icon="bell" size="sm"></verben-svg>
+    <verben-svg icon="bell" size="md"></verben-svg>
+    <verben-svg icon="bell" size="lg"></verben-svg>
+    <verben-svg icon="bell" size="xl"></verben-svg>
+    <verben-svg icon="bell" [width]="20" [height]="20"></verben-svg>
+  </docs-example>
+
+  <docs-example title="Colors" [code]="code.colors">
+    <verben-svg icon="check-circle" [width]="32" [height]="32" stroke="var(--vbn-color-success)"></verben-svg>
+    <verben-svg icon="warning" [width]="32" [height]="32" fill="var(--vbn-color-warning)"></verben-svg>
+    <verben-svg icon="trash" [width]="32" [height]="32" stroke="var(--vbn-color-error)"></verben-svg>
+  </docs-example>
+
+  <h2 class="docs-h2" id="gallery">Gallery</h2>
+  <p class="docs-p">{{ total }} icons. Click one to copy its tag.</p>
+  <input
+    class="docs-sidebar-search"
+    style="max-width: 320px"
+    type="search"
+    placeholder="Search icons…"
+    aria-label="Search icons"
+    [(ngModel)]="query"
+  />
+  <div class="docs-icon-grid">
+    <button type="button" class="docs-icon-cell" *ngFor="let name of visible" (click)="copy(name)" [title]="name">
+      <verben-svg [icon]="name" [width]="22" [height]="22"></verben-svg>
+      <small>{{ copied === name ? 'Copied!' : name }}</small>
+    </button>
+  </div>
+  <p class="docs-p" *ngIf="matches.length === 0">No icons match “{{ query }}”.</p>
+  <div class="docs-hero-actions" *ngIf="matches.length > limit">
+    <button type="button" class="docs-btn" (click)="limit = limit + 120">
+      Show more ({{ matches.length - limit }} left)
+    </button>
+  </div>
+
+  <h2 class="docs-h2" id="api">API</h2>
+  <docs-props-table [props]="inputs"></docs-props-table>
+</docs-page>

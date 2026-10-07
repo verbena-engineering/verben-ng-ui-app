@@ -1,0 +1,28 @@
+<docs-page title="Switch" description="A control that toggles between on and off.">
+  <docs-example [code]="code.basic">
+    <verbena-switch [(ngModel)]="notifications"></verbena-switch>
+    <span>{{ notifications ? 'Notifications on' : 'Notifications off' }}</span>
+  </docs-example>
+
+  <h2 class="docs-h2" id="usage">Usage</h2>
+  <p class="docs-p">Import <code class="docs-inline-code">VerbenaSwitchModule</code>. Bind with <code class="docs-inline-code">[(ngModel)]</code> or use <code class="docs-inline-code">[checked]</code> + <code class="docs-inline-code">(change)</code>.</p>
+
+  <h2 class="docs-h2" id="examples">Examples</h2>
+
+  <docs-example title="Custom labels" [code]="code.labels">
+    <verbena-switch onText="Yes" offText="No" width="70px" height="28px" [(ngModel)]="publish"></verbena-switch>
+  </docs-example>
+
+  <docs-example title="Custom colors" [code]="code.colors">
+    <verbena-switch [checked]="true" onColor="var(--vbn-color-info)" offColor="var(--vbn-color-secondary)"></verbena-switch>
+  </docs-example>
+
+  <docs-example title="Disabled" [code]="code.disabled">
+    <verbena-switch [checked]="true" [disabled]="true"></verbena-switch>
+    <verbena-switch [checked]="false" [disabled]="true"></verbena-switch>
+  </docs-example>
+
+  <h2 class="docs-h2" id="api">API</h2>
+  <docs-props-table [props]="inputs"></docs-props-table>
+  <docs-props-table [props]="outputs" kind="output"></docs-props-table>
+</docs-page>

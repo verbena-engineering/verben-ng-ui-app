@@ -1,0 +1,43 @@
+<docs-page title="Dropdown" description="Choose one or many options from a list, with search, object options, grouping and lazy loading.">
+  <docs-example [code]="code.basic" [tsCode]="code.basicTs" direction="column">
+    <verben-drop-down placeholder="Pick a fruit" [options]="fruits" [showClear]="true" [(ngModel)]="fruit"></verben-drop-down>
+    <span class="docs-output">fruit: {{ fruit | json }}</span>
+  </docs-example>
+
+  <h2 class="docs-h2" id="usage">Usage</h2>
+  <p class="docs-p">
+    Import <code class="docs-inline-code">DropDownModule</code> (and
+    <code class="docs-inline-code">FormsModule</code>). The full option reference, including
+    grouped and lazy-loaded lists, is in
+    <code class="docs-inline-code">components/drop-down/documentation.md</code>.
+  </p>
+
+  <h2 class="docs-h2" id="examples">Examples</h2>
+
+  <docs-example title="Object options" description="Show one property, store another." [code]="code.objects" direction="column">
+    <verben-drop-down placeholder="Country" [options]="countries" optionLabel="name" optionSubLabel="region" optionValue="code" [(ngModel)]="countryCode"></verben-drop-down>
+    <span class="docs-output">countryCode: {{ countryCode | json }}</span>
+  </docs-example>
+
+  <docs-example title="Search" [code]="code.search">
+    <verben-drop-down placeholder="Search countries" [options]="countries" optionLabel="name" [filter]="true" filterBy="name"></verben-drop-down>
+  </docs-example>
+
+  <docs-example title="Multiselect" [code]="code.multi" direction="column">
+    <verben-drop-down placeholder="Skills" [options]="skills" [multiselect]="true" [showClear]="true" width="320px" [(ngModel)]="selectedSkills"></verben-drop-down>
+    <span class="docs-output">{{ selectedSkills | json }}</span>
+  </docs-example>
+
+  <docs-example
+    title="Scroll to the current item"
+    description="Invoice #042 is preselected; the list opens with it in view."
+    [code]="code.scroll"
+    [tsCode]="code.scrollTs"
+  >
+    <verben-drop-down [options]="invoices" optionLabel="label" selectKey="id" [autoScrollToCurrentItem]="true" [(ngModel)]="invoice"></verben-drop-down>
+  </docs-example>
+
+  <h2 class="docs-h2" id="api">API</h2>
+  <docs-props-table [props]="inputs"></docs-props-table>
+  <docs-props-table [props]="outputs" kind="output"></docs-props-table>
+</docs-page>

@@ -1,0 +1,45 @@
+<docs-page title="Button" description="Displays a button with preset styles, optional icons and a loading state.">
+  <docs-example [code]="code.variants">
+    <verbena-button text="Primary" styleType="primary"></verbena-button>
+    <verbena-button text="Secondary" styleType="secondary"></verbena-button>
+    <verbena-button text="Outline" styleType="outline"></verbena-button>
+    <verbena-button text="Yellow outline" styleType="ylw-outline"></verbena-button>
+    <verbena-button text="Danger" styleType="danger"></verbena-button>
+  </docs-example>
+
+  <h2 class="docs-h2" id="usage">Usage</h2>
+  <p class="docs-p">
+    Import <code class="docs-inline-code">VerbenaButtonModule</code> from
+    <code class="docs-inline-code">verben-ng-ui</code>. Listen with a normal
+    <code class="docs-inline-code">(click)</code>.
+  </p>
+
+  <h2 class="docs-h2" id="examples">Examples</h2>
+
+  <docs-example title="With icon" [code]="code.icons">
+    <verbena-button text="Add item" styleType="secondary" svg="plus" [svgWidth]="16" [svgHeight]="16"></verbena-button>
+    <verbena-button text="Export" styleType="outline" svg="document-arrow-down" svgPosition="right" [svgWidth]="16" [svgHeight]="16"></verbena-button>
+  </docs-example>
+
+  <docs-example title="Loading" description="Click to see the spinner for 1.5s." [code]="code.loading" [tsCode]="code.loadingTs">
+    <verbena-button
+      text="Save changes"
+      styleType="secondary"
+      [isLoading]="saving"
+      spinnerSize="14px"
+      spinnerColor="var(--vbn-color-on-primary)"
+      (click)="save()"
+    ></verbena-button>
+  </docs-example>
+
+  <docs-example title="Disabled" [code]="code.disabled">
+    <verbena-button text="Disabled" styleType="secondary" [disable]="true"></verbena-button>
+  </docs-example>
+
+  <docs-example title="Custom colors" [code]="code.custom">
+    <verbena-button text="Custom" bgColor="#18181b" textColor="#fafafa" borderRadius="999px" pd="10px 22px"></verbena-button>
+  </docs-example>
+
+  <h2 class="docs-h2" id="api">API</h2>
+  <docs-props-table [props]="inputs"></docs-props-table>
+</docs-page>

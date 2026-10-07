@@ -1,0 +1,30 @@
+<docs-page title="Notification" description="Short toast messages, triggered from anywhere with NotificationService.">
+  <verben-notification position="top-right" width="380px"></verben-notification>
+
+  <docs-example [code]="code.basic" [tsCode]="code.basicTs">
+    <verbena-button text="Success" styleType="outline" (click)="success()"></verbena-button>
+    <verbena-button text="Error" styleType="outline" (click)="error()"></verbena-button>
+    <verbena-button text="Warning" styleType="outline" (click)="warning()"></verbena-button>
+    <verbena-button text="Info" styleType="outline" (click)="info()"></verbena-button>
+  </docs-example>
+
+  <h2 class="docs-h2" id="usage">Usage</h2>
+  <ol class="docs-list" style="list-style: decimal">
+    <li>Import <code class="docs-inline-code">NotificationModule</code> and place one <code class="docs-inline-code">&lt;verben-notification&gt;</code> in your app shell.</li>
+    <li>Inject <code class="docs-inline-code">NotificationService</code> wherever you need to show a message.</li>
+  </ol>
+
+  <h2 class="docs-h2" id="examples">Examples</h2>
+
+  <docs-example title="With an action" [code]="code.action" [tsCode]="code.actionTs">
+    <verbena-button text="Delete with undo" styleType="outline" (click)="withAction()"></verbena-button>
+  </docs-example>
+
+  <h2 class="docs-h2" id="api">API</h2>
+  <h3 class="docs-h3" id="api-service">NotificationService</h3>
+  <docs-props-table [props]="methods" kind="output"></docs-props-table>
+  <h3 class="docs-h3" id="api-options">Options</h3>
+  <docs-props-table [props]="options"></docs-props-table>
+  <h3 class="docs-h3" id="api-component">&lt;verben-notification&gt;</h3>
+  <docs-props-table [props]="inputs"></docs-props-table>
+</docs-page>

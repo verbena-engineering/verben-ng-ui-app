@@ -1,53 +1,127 @@
 <docs-page
   title="Date Picker"
-  description="Pick a day, a range, or whole periods (daily, weekly, monthly, quarterly or yearly) with one component."
+  description="One tag for a day, a date and time, a range, or whole periods. Pick how much UI with one prop: variant."
 >
   <docs-example [code]="code.basic" minHeight="240px">
     <div class="docs-stack">
-      <verben-date-picker [(ngModel)]="day"></verben-date-picker>
+      <app-date-picker [(ngModel)]="day"></app-date-picker>
       <span class="docs-output">ngModel: {{ day | json }}</span>
     </div>
   </docs-example>
 
   <h2 class="docs-h2" id="usage">Usage</h2>
+  <docs-code-block [code]="code.setup" lang="ts"></docs-code-block>
   <p class="docs-p">
-    Import <code class="docs-inline-code">VerbenDatePickerModule</code> from
-    <code class="docs-inline-code">verben-ng-ui</code>. Out of the box it is a normal date
-    picker. It changes what it picks in two ways:
+    Two inputs decide how it behaves. <code class="docs-inline-code">variant</code> is how much UI the
+    popup has; <code class="docs-inline-code">selectionMode</code> is what a click picks. Without either
+    it is the plain date picker every existing screen already uses, so old templates keep working unchanged.
   </p>
-  <ul class="docs-list">
-    <li><strong>You</strong> set <code class="docs-inline-code">mode</code> to <code class="docs-inline-code">'range'</code> or <code class="docs-inline-code">'preset'</code>.</li>
-    <li><strong>The user</strong> switches inside the popup when you pass several <code class="docs-inline-code">[modes]</code>. Their current value stays until they pick something new.</li>
-  </ul>
+  <docs-props-table [props]="variants" [headings]="['variant', 'Adds', 'Default', 'What you get']"></docs-props-table>
   <div class="docs-table-wrap">
     <table class="docs-table">
       <thead>
-        <tr><th>Mode</th><th>A click…</th><th>ngModel value</th></tr>
+        <tr><th>selectionMode</th><th>A click…</th><th>ngModel value</th></tr>
       </thead>
       <tbody>
-        <tr><td><code class="docs-inline-code">single</code></td><td>picks the day and closes</td><td><code class="docs-type">"2026-10-07T00:00:00"</code></td></tr>
+        <tr><td><code class="docs-inline-code">default</code></td><td>picks the day and closes</td><td><code class="docs-type">"2026-10-07T00:00:00"</code></td></tr>
         <tr><td><code class="docs-inline-code">range</code></td><td>1st = start, 2nd = end, then closes</td><td><code class="docs-type">["2026-10-01T00:00:00", "2026-10-07T23:59:59"]</code></td></tr>
         <tr><td><code class="docs-inline-code">preset</code></td><td>picks a whole period and closes</td><td><code class="docs-type">same as range</code> (preset id in selectionChange)</td></tr>
       </tbody>
     </table>
   </div>
+
+  <docs-example
+    title="Three variants, one tag"
+    description="Open each one: same calendar, more or less around it."
+    [code]="code.variants"
+    minHeight="300px"
+  >
+    <div class="docs-stack" style="max-width: 360px">
+      <span class="docs-output">variant="default"</span>
+      <app-date-picker [(ngModel)]="plain"></app-date-picker>
+      <span class="docs-output">variant="simple"</span>
+      <app-date-picker variant="simple" [(ngModel)]="simple"></app-date-picker>
+      <span class="docs-output">variant="advanced"</span>
+      <app-date-picker variant="advanced" [(ngModel)]="advanced"></app-date-picker>
+    </div>
+  </docs-example>
+
+  <h3 class="docs-h3" id="migrate">Coming from &lt;verben-date-picker&gt; or &lt;verben-simple-date-picker&gt;</h3>
   <p class="docs-p">
-    The previous picker, <code class="docs-inline-code">&lt;app-date-picker&gt;</code>, is still available as
-    <a routerLink="/documentation/components/date-picker-classic"><u>Date Picker (classic)</u></a>.
+    Both were folded into <code class="docs-inline-code">&lt;app-date-picker&gt;</code>. Existing
+    <code class="docs-inline-code">&lt;app-date-picker&gt;</code> code needs no change at all.
   </p>
+  <docs-code-block [code]="code.migrate" lang="html"></docs-code-block>
 
   <h2 class="docs-h2" id="examples">Examples</h2>
 
+  <docs-example title="Range with two months" [code]="code.range">
+    <div class="docs-stack">
+      <app-date-picker selectionMode="range" [monthsShown]="2" placeholder="Pick a period" [(ngModel)]="period"></app-date-picker>
+      <span class="docs-output">ngModel: {{ period | json }}</span>
+    </div>
+  </docs-example>
+
   <docs-example
-    title="Let the user switch"
+    title="Date and time"
+    description="Picking a day keeps the popup open so the time can be set; every change is saved right away."
+    [code]="code.time"
+    [tsCode]="code.timeTs"
+  >
+    <div class="docs-stack">
+      <app-date-picker [showTime]="true" placeholder="Meeting time" [(ngModel)]="meeting"></app-date-picker>
+      <span class="docs-output">ngModel: {{ meeting | json }}</span>
+    </div>
+  </docs-example>
+
+  <docs-example
+    title="Without forms: [(date)] and [(range)]"
+    description="The classic bindings still work and give Date objects."
+    [code]="code.binding"
+    [tsCode]="code.bindingTs"
+  >
+    <div class="docs-stack">
+      <app-date-picker placeholder="Due date" [(date)]="dueDate"></app-date-picker>
+      <span class="docs-output">date: {{ local(dueDate) }}</span>
+      <app-date-picker selectionMode="range" placeholder="Stay" [(range)]="range"></app-date-picker>
+      <span class="docs-output">range: {{ local(range?.[0]) }} → {{ local(range?.[1]) }}</span>
+    </div>
+  </docs-example>
+
+  <docs-example
+    title="Far away dates"
+    description="Click the month caption for months, then the year for a grid of years, 12 at a time. It replaces the old month and year dropdowns."
+    [code]="code.birthday"
+  >
+    <div class="docs-stack">
+      <app-date-picker placeholder="Date of birth" [minDate]="oldest" [maxDate]="today" [(ngModel)]="birthday"></app-date-picker>
+      <span class="docs-output">ngModel: {{ birthday | json }}</span>
+    </div>
+  </docs-example>
+
+  <docs-example
+    title="Simple: typed presets"
+    description="Type into the search, e.g. “last 7 weeks” or “q1 2025”. This one starts as “last-5-months”, a typed preset saved by its id."
+    [code]="code.typed"
+    [tsCode]="code.typedTs"
+    minHeight="300px"
+  >
+    <div class="docs-stack">
+      <app-date-picker variant="simple" [(ngModel)]="typed"></app-date-picker>
+      <span class="docs-output">ngModel: {{ typed | json }}</span>
+    </div>
+  </docs-example>
+
+  <docs-example
+    title="Advanced: let the user switch"
     description="Date, Range and Periods in one picker. Switch in the popup and watch the outputs."
     [code]="code.mutate"
     [tsCode]="code.mutateTs"
     minHeight="260px"
   >
     <div class="docs-stack" style="max-width: 420px">
-      <verben-date-picker [modes]="allModes" [(mode)]="mode" [(ngModel)]="value" (selectionChange)="lastSelection = $event"></verben-date-picker>
-      <span class="docs-output">mode: {{ mode }}</span>
+      <app-date-picker variant="advanced" [(selectionMode)]="mode" [(ngModel)]="value" (selectionChange)="lastSelection = $event"></app-date-picker>
+      <span class="docs-output">selectionMode: {{ mode }}</span>
       <span class="docs-output">ngModel: {{ value | json }}</span>
       <span class="docs-output">selectionChange: {{ describeSelection(lastSelection) }}</span>
     </div>
@@ -60,7 +134,7 @@
     [tsCode]="code.periodsTs"
   >
     <div class="docs-stack">
-      <verben-date-picker mode="preset" [(ngModel)]="report"></verben-date-picker>
+      <app-date-picker selectionMode="preset" [(ngModel)]="report"></app-date-picker>
       <span class="docs-output">ngModel: {{ report | json }}</span>
     </div>
   </docs-example>
@@ -72,7 +146,7 @@
     [tsCode]="code.spanTs"
   >
     <div class="docs-stack">
-      <verben-date-picker mode="preset" [(ngModel)]="span"></verben-date-picker>
+      <app-date-picker selectionMode="preset" [(ngModel)]="span"></app-date-picker>
       <span class="docs-output">ngModel: {{ span | json }}</span>
     </div>
   </docs-example>
@@ -84,15 +158,8 @@
     [tsCode]="code.customTs"
   >
     <div class="docs-stack">
-      <verben-date-picker mode="preset" [periods]="financePeriods" [presets]="financePresets" [(ngModel)]="finance"></verben-date-picker>
+      <app-date-picker selectionMode="preset" [periods]="financePeriods" [presets]="financePresets" [(ngModel)]="finance"></app-date-picker>
       <span class="docs-output">ngModel: {{ finance | json }}</span>
-    </div>
-  </docs-example>
-
-  <docs-example title="Range with two months" [code]="code.range">
-    <div class="docs-stack">
-      <verben-date-picker mode="range" [monthsShown]="2" placeholder="Pick a period" [(ngModel)]="period"></verben-date-picker>
-      <span class="docs-output">ngModel: {{ period | json }}</span>
     </div>
   </docs-example>
 
@@ -103,7 +170,7 @@
     [tsCode]="code.boundsTs"
   >
     <div class="docs-stack">
-      <verben-date-picker [modes]="allModes" format="DD/MM/YYYY" [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="bounded"></verben-date-picker>
+      <app-date-picker variant="advanced" format="DD/MM/YYYY" [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="bounded"></app-date-picker>
       <span class="docs-output">ngModel: {{ bounded | json }}</span>
     </div>
   </docs-example>
@@ -112,9 +179,9 @@
   <p class="docs-p">
     Week, month, quarter and year choices are <strong>calendar based</strong>: "Last 2 months"
     means the two complete months before this one. "Last N days" is rolling and includes today.
-    The default list shows at most four per tab; the rest can be added with
-    <code class="docs-inline-code">[presets]</code>. The last column shows what each means today
-    (weeks starting Monday).
+    The Periods tab shows a short list by default (at most four per tab) and the simple search lists all of
+    them; <code class="docs-inline-code">[presets]</code> sets your own. The last column shows what each means
+    today (weeks starting Monday).
   </p>
   <div class="docs-table-wrap">
     <table class="docs-table">
@@ -146,6 +213,7 @@
         <tr><td><span class="docs-type">Quarterly</span></td><td><code class="docs-inline-code">q3-2026</code></td><td>Q3 2026</td></tr>
         <tr><td><span class="docs-type">Yearly</span></td><td><code class="docs-inline-code">year-2025</code></td><td>2025</td></tr>
         <tr><td><span class="docs-type">Several</span></td><td><code class="docs-inline-code">month-2026-08..month-2027-03</code></td><td>Aug 2026 – Mar 2027 (any two ids of the same kind, joined by <code class="docs-inline-code">..</code>)</td></tr>
+        <tr><td><span class="docs-type">Typed</span></td><td><code class="docs-inline-code">last-5-months</code></td><td>Last 5 months (typed into the simple search)</td></tr>
       </tbody>
     </table>
   </div>
@@ -154,68 +222,5 @@
   <docs-props-table [props]="inputs"></docs-props-table>
   <docs-props-table [props]="outputs" kind="output"></docs-props-table>
   <h3 class="docs-h3" id="api-selection">DateSelection</h3>
-  <docs-props-table [props]="selectionFields" kind="output"></docs-props-table>
-
-  <!-- ===================== Alternative design, for comparison ===================== -->
-
-  <h2 class="docs-h2" id="alternative">Alternative: simple picker <span class="docs-tag-new">compare</span></h2>
-  <p class="docs-p">
-    <code class="docs-inline-code">&lt;verben-simple-date-picker&gt;</code> is a second design built
-    next to the one above, so the two can be compared before choosing. Instead of
-    Date / Range / Periods tabs it has:
-  </p>
-  <ul class="docs-list">
-    <li>a <strong>Range</strong> checkbox: unticked picks one day, ticked picks a start and an end day (in either order);</li>
-    <li>a <strong>preset combobox</strong>: click it to see every preset tagged Daily / Weekly / Monthly / Quarterly / Yearly, or type to filter. It also understands presets that aren't in the list, such as “last 5 months”, “past two quarters”, “Q2 2025”, “march 2026”, “2024” or “ytd”. Arrow keys + Enter work; Esc closes the list.</li>
-  </ul>
-  <p class="docs-p">
-    It uses the same calendar, presets and value format, and lives in its own
-    <code class="docs-inline-code">VerbenSimpleDatePickerModule</code>, so either design can be dropped later.
-  </p>
-
-  <docs-example [code]="simpleCode.basic" minHeight="300px">
-    <div class="docs-stack">
-      <verben-simple-date-picker [(ngModel)]="simpleDay"></verben-simple-date-picker>
-      <span class="docs-output">ngModel: {{ simpleDay | json }}</span>
-    </div>
-  </docs-example>
-
-  <docs-example
-    title="Range ticked"
-    description="Starts with the Range checkbox ticked and two months side by side."
-    [code]="simpleCode.range"
-    [tsCode]="simpleCode.rangeTs"
-  >
-    <div class="docs-stack">
-      <verben-simple-date-picker [(rangeMode)]="simpleRangeMode" [monthsShown]="2" [(ngModel)]="simpleRange"></verben-simple-date-picker>
-      <span class="docs-output">rangeMode: {{ simpleRangeMode }} · ngModel: {{ simpleRange | json }}</span>
-    </div>
-  </docs-example>
-
-  <docs-example
-    title="Typed presets"
-    description="Open it and type into the search, e.g. “last 7 weeks” or “q1 2025”. This one starts as “last-5-months”, a typed preset saved by its id."
-    [code]="simpleCode.typed"
-    [tsCode]="simpleCode.typedTs"
-  >
-    <div class="docs-stack">
-      <verben-simple-date-picker [(ngModel)]="simpleReport"></verben-simple-date-picker>
-      <span class="docs-output">ngModel: {{ simpleReport | json }}</span>
-    </div>
-  </docs-example>
-
-  <docs-example
-    title="Fixed list, single days only"
-    description="Your own presets (incl. a 'Fiscal' tag), no typed presets and no Range checkbox."
-    [code]="simpleCode.custom"
-  >
-    <div class="docs-stack">
-      <verben-simple-date-picker [presets]="simpleFinance" [allowTypedPresets]="false" [allowRange]="false" [(ngModel)]="simpleLimited"></verben-simple-date-picker>
-      <span class="docs-output">ngModel: {{ simpleLimited | json }}</span>
-    </div>
-  </docs-example>
-
-  <h3 class="docs-h3" id="alternative-api">API (simple picker)</h3>
-  <docs-props-table [props]="simpleInputs"></docs-props-table>
-  <docs-props-table [props]="simpleOutputs" kind="output"></docs-props-table>
+  <docs-props-table [props]="selectionFields" kind="output" [headings]="['Field', 'Type', 'Description']"></docs-props-table>
 </docs-page>

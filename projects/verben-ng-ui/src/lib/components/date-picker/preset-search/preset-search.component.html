@@ -1,0 +1,44 @@
+<div class="vps-combo">
+  <svg class="vps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+    <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+  </svg>
+  <input
+    type="text"
+    class="vps-input"
+    role="combobox"
+    autocomplete="off"
+    aria-autocomplete="list"
+    aria-label="Search presets"
+    [attr.aria-expanded]="listOpen"
+    [attr.aria-controls]="listId"
+    [attr.aria-activedescendant]="listOpen && activeIndex >= 0 ? listId + '-' + activeIndex : null"
+    [placeholder]="placeholder"
+    [value]="query"
+    (input)="onInput($any($event.target).value)"
+    (focus)="onFocus()"
+    (blur)="closeList()"
+    (keydown)="onKeydown($event)"
+  />
+</div>
+
+<!-- Floats over the calendar while in use -->
+<ul *ngIf="listOpen" class="vps-list" role="listbox" [id]="listId" aria-label="Presets">
+  <li
+    *ngFor="let option of options; let i = index; trackBy: trackByOption"
+    role="option"
+    class="vps-option"
+    [id]="listId + '-' + i"
+    [class.is-active]="i === activeIndex"
+    [class.is-disabled]="option.disabled"
+    [attr.aria-selected]="i === activeIndex"
+    [attr.aria-disabled]="option.disabled"
+    (mousedown)="$event.preventDefault()"
+    (mouseenter)="setActive(i)"
+    (click)="chooseOption(option)"
+  >
+    <span class="vps-label">{{ option.preset.label }}</span>
+    <span class="vps-tag" *ngIf="option.tag">{{ option.tag }}</span>
+    <span class="vps-dates">{{ option.dates }}</span>
+  </li>
+  <li *ngIf="!options.length" class="vps-empty">No match. Try “last 3 months”, “Q2 2025” or “2024”.</li>
+</ul>

@@ -86,17 +86,10 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
     slug: 'date-picker',
     title: 'Date Picker',
     route: '/documentation/components/date-picker',
-    description: 'A day, a range, or a period: daily, weekly, monthly, quarterly, yearly.',
-    source: lib + 'components/verben-date-picker',
-    status: 'new',
-  },
-  {
-    slug: 'date-picker-classic',
-    title: 'Date Picker (classic)',
-    route: '/documentation/components/date-picker-classic',
-    description: 'The original <app-date-picker>: single date, date & time, or range.',
+    description: 'A day, a date and time, a range or a period, in a default, simple or advanced variant.',
     playground: '/documentation/date-picker',
     source: lib + 'components/date-picker',
+    status: 'new',
   },
   {
     slug: 'dialog',
@@ -187,8 +180,17 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
   },
 ];
 
-/** New components waiting for team approval (empty right now). Their API may still change. */
-export const UNSTABLE_DOCS: DocsNavItem[] = [];
+/** New components waiting for team approval. Their API may still change. */
+export const UNSTABLE_DOCS: DocsNavItem[] = [
+  {
+    slug: 'unstable-card',
+    title: 'Card (composable)',
+    route: '/documentation/unstable/card',
+    description: 'shadcn-style parts for posts, comments, profiles, transactions and cards inside cards.',
+    source: lib + 'unstable/card',
+    status: 'unstable',
+  },
+];
 
 /** The original demo / test pages, still reachable for manual testing */
 export const PLAYGROUND_PAGES: DocsNavItem[] = [

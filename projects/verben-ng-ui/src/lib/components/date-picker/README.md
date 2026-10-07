@@ -1,28 +1,62 @@
-# `<verben-date-picker>`
+# `<app-date-picker>`
 
-One date picker that can change what it picks ("mutate"). Live docs: `/documentation/components/date-picker`
-in the docs app. The older `<app-date-picker>` (`DatePickerModule`) is unchanged and documented as
-"Date Picker (classic)".
+The library's one date picker (`DatePickerModule`). Live docs: `/documentation/components/date-picker`
+in the docs app. The earlier `<verben-date-picker>` and `<verben-simple-date-picker>` were folded into
+it; existing `<app-date-picker>` templates keep working unchanged.
 
-| `mode`     | A click…                                  | ngModel value                                            |
-|------------|-------------------------------------------|----------------------------------------------------------|
-| `single`   | picks the day and closes (default)        | `"2026-10-07T00:00:00"`                                  |
-| `range`    | 1st = start, 2nd = end (hover preview)    | `["2026-10-01T00:00:00", "2026-10-07T23:59:59"]`         |
-| `preset`   | picks a whole period                      | same as range; `presetId` is in `(selectionChange)`      |
+## Two inputs
 
-`[modes]="['single', 'range', 'preset']"` shows a Date / Range / Periods switcher so the **user** can
-change mode; `[(mode)]` reports it.
+**`variant`**: how much UI the popup has.
+
+| `variant` | Adds | |
+|---|---|---|
+| `default` | nothing: just the calendar | what every existing screen gets |
+| `simple` | a **Range** checkbox + a **preset search** (also understands typed presets) | |
+| `advanced` | **Date / Range / Periods** tabs; Periods has Daily … Yearly grids | |
+
+**`selectionMode`**: what a click picks (the classic picker's input, plus `'preset'`).
+
+| `selectionMode` | A click… | ngModel value |
+|---|---|---|
+| `default` | picks the day and closes (with `showTime`: stays open for the time) | `"2026-10-07T00:00:00"` |
+| `range` | 1st = start, 2nd = end (hover preview; an earlier day restarts) | `["2026-10-01T00:00:00", "2026-10-07T23:59:59"]` |
+| `preset` | picks a whole period (the Periods panel) | same as range; `presetId` is in `(selectionChange)` |
+
+In `simple` and `advanced` the user changes `selectionMode` (checkbox / tabs); `[(selectionMode)]` reports it.
 
 ```html
-<verben-date-picker
-  [modes]="['single', 'range', 'preset']"
-  [(mode)]="mode"
-  [(ngModel)]="value"
-  (selectionChange)="onSelection($event)"
-></verben-date-picker>
+<app-date-picker [(ngModel)]="due"></app-date-picker>                              <!-- as before -->
+<app-date-picker selectionMode="range" [(ngModel)]="period"></app-date-picker>     <!-- as before -->
+<app-date-picker variant="simple" [(ngModel)]="report"></app-date-picker>
+<app-date-picker variant="advanced" [(selectionMode)]="mode" [(ngModel)]="value"></app-date-picker>
+<app-date-picker selectionMode="preset" [(ngModel)]="report"></app-date-picker>    <!-- periods only -->
 ```
 
-## Periods (preset mode)
+## Classic inputs, all still accepted
+
+| Input / output | Now |
+|---|---|
+| `[(date)]`, `[(range)]` | Same: a `Date`, or `[Date, Date]` (00:00 → 23:59:59.999) |
+| `selectionMode` `'default' \| 'range'` | Same, plus `'preset'` |
+| `showTime` | Hour and minute selects + Start of day / End of day; the value keeps the time; the field shows it |
+| `useDefaultDate` | Same: today when there's no value (an empty form value doesn't clear it, as before) |
+| `minDate`, `maxDate`, `format`, `placeholder`, `disabled` | Same (dates may also be strings; a trailing "Z" is read as local time, as before) |
+| `bgColor`, `border` | Field background and border |
+| `overlayWidth`, `datePickerWidth` | Popup width. Default is now "fits its content" (was 400) |
+| `useDropdowns`, `yearPlaceholder`, `monthPlaceholder` | Deprecated, ignored: click the month caption for a month grid, then the year for a year grid |
+| `clearDate()`, `toggleCalendar()`, `close()` | Same methods |
+
+## Migrating from the folded pickers
+
+| Before | After |
+|---|---|
+| `<verben-date-picker [modes]="…" [(mode)]="m">` | `<app-date-picker variant="advanced" [modes]="…" [(selectionMode)]="m">` |
+| `<verben-date-picker mode="preset">` | `<app-date-picker selectionMode="preset">` |
+| `<verben-simple-date-picker [(rangeMode)]="r">` | `<app-date-picker variant="simple" [(selectionMode)]="m">` (`'range'` = ticked) |
+| mode `'single'`, `VerbenDatePickerMode` | `'default'`, `DatePickerSelectionMode` |
+| `VerbenDatePickerModule`, `VerbenSimpleDatePickerModule` | `DatePickerModule` |
+
+## Periods (`selectionMode="preset"`, or the advanced Periods tab)
 
 ```
  Daily   Weekly   Monthly   Quarterly   Yearly          ← tabs
@@ -42,68 +76,48 @@ change mode; `[(mode)]` reports it.
 | Quarterly | This quarter, Last quarter | Q1–Q4 (‹ › by year) |
 | Yearly | This year, Year to date, Last year, Last 2 years | 12-year page |
 
-- **One click = one period.** Tick **"Several months"** (weeks / quarters / years / days) in the footer to
-  pick a span: first click starts, second ends, in either order. The ‹ › stepper can move between the
-  clicks, so Aug 2026 → Mar 2027 or Q2 → Q1 work. `[allowSeveral]="false"` hides the checkbox.
-- Selected = filled; covered / previewed periods = tinted (grid and calendar); today's period = dot.
-  The footer says what is hovered or what to click next.
-- The calendar follows what you point at. On phones it is hidden except on the Daily tab.
+- **One click = one period.** Tick **"Several months"** (weeks / quarters / years / days) to pick a span:
+  first click starts, second ends, in either order and across years. `[allowSeveral]="false"` hides it.
 - `[periods]` picks which tabs show; `[presets]` replaces the suggestions (a preset's `group` decides its
   tab; any other group, e.g. `'Fiscal'`, becomes its own tab).
-- Week / month / quarter / year suggestions are **calendar based** ("Last 2 months" on 7 Oct = 1 Aug – 30 Sep);
-  "Last N days" is rolling and includes today.
+- Suggestions are **calendar based** ("Last 2 months" on 7 Oct = 1 Aug – 30 Sep); "Last N days" is rolling.
 - Ids as values: `'last-month'`, `'day-2026-10-07'`, `'week-2026-10-05'`, `'month-2026-09'`, `'q3-2026'`,
-  `'year-2025'`, and spans `'month-2026-08..month-2027-03'`. A relative id stays relative.
+  `'year-2025'`, spans `'month-2026-08..month-2027-03'`, typed `'last-5-months'`. A relative id stays relative.
 
-## Alternative design: `<verben-simple-date-picker>` (for comparison)
+## Preset search (`variant="simple"`)
 
-Built next to `<verben-date-picker>` (nothing above was replaced) and shown at the bottom of the same
-docs page, so the team can compare the two:
-
-```
- ☐ Range   [🔍 Preset, e.g. last 3 months   ]   ← checkbox + preset combobox
-           │ Q2 2026      Quarterly  Apr 1 – Jun 30 │   (list floats over the calendar)
-   ‹ October 2026 ›
-   calendar                                       ← one day, or a range when ticked
- Pick a day or a preset             Today  Clear  Close
-```
-
-- **Range checkbox** (`[(rangeMode)]`): unticked = one day per click; ticked = start + end, either order.
-- **Preset combobox**: every preset tagged Daily / Weekly / Monthly / Quarterly / Yearly (or a custom group);
-  type to filter by label or tag; arrow keys + Enter; first Esc closes the list, second the popup.
-- **Typed presets** (`allowTypedPresets`, default on): text that isn't in the list is parsed by
-  `date-preset-parser.ts`: "last 5 months", "past two quarters", "previous 3 wks", "q2 2025", "2025 q4",
-  "march 2026", "2026-03", "2024", "ytd". They get ids (`last-5-months`, `q2-2025`, …) so they can be saved.
-- Same value format and `DateSelection` as `<verben-date-picker>`; separate `VerbenSimpleDatePickerModule`
-  (reuses the calendar grid), so either design can be removed without touching the other.
+Lists every built-in preset tagged Daily / Weekly / Monthly / Quarterly / Yearly (or `[presets]`); type to
+filter by label or tag; arrow keys + Enter; first Esc closes the list, the second the popup. Typed presets
+that aren't listed are parsed by `date-preset-parser.ts`: "last 5 months", "past two quarters",
+"q2 2025", "march 2026", "2024", "ytd". `[allowRange]` / `[allowTypedPresets]` turn the parts off.
 
 ## How it is built
 
 | File | Role |
 |---|---|
-| `date-utils.ts` | Pure date maths, local time, whole days, weeks. No dependency. |
-| `date-presets.ts` | Periods, built-in suggestions (`DATE_PRESETS`), `dayPreset` / `weekPreset` / `monthPreset` / `quarterPreset` / `yearPreset`, `spanPreset()` (several periods), `findPreset()`. A preset = `{ id, label, group, fixed?, range(today, { weekStartsOn }) }`. |
-| `calendar-grid/` | One month of days. Presentational (OnPush): highlight in, `(pick)` / `(hover)` out. |
-| `period-panel/` | Tabs, suggestion chips, side grid with stepper and span picking; the calendar is projected into it. Presentational (OnPush). |
-| `verben-date-picker.component.*` | Field, popup (CDK overlay), mode switch, value + forms (ControlValueAccessor). |
-| `verben-date-picker.spec.ts` | Unit tests for presets and date maths. |
-| `simple/` | The alternative `<verben-simple-date-picker>` + `VerbenSimpleDatePickerModule`. |
-| `date-preset-parser.ts` (+ spec) | Typed text → preset, used by the simple picker's combobox. |
+| `date-picker.component.*` | `<app-date-picker>`: field, popup (CDK overlay), variants, value + forms (ControlValueAccessor), classic inputs. |
+| `date-picker.types.ts` | `DatePickerVariant`, `DatePickerSelectionMode`, `DateRange`, `DateSelection`. |
+| `calendar/` | `<verben-calendar>`: month navigation + days / months / years views. |
+| `calendar-grid/` | `<verben-calendar-grid>`: one month of days. Presentational (OnPush). |
+| `period-panel/` | `<verben-period-panel>`: tabs, suggestions, side grid, span picking; the calendar is projected in. |
+| `preset-search/` | `<verben-preset-search>`: the simple variant's combobox. |
+| `date-utils.ts`, `date-presets.ts`, `date-preset-parser.ts` | Pure logic: date maths, presets, typed-preset parsing. |
 
-Colors come from `--vbn-*` tokens (works in dark mode), styles are component CSS only (no Tailwind),
-icons are inline SVG. The template only reads fields set in `refresh()`, never getters that create new
-objects (that would trigger Angular's NG0100 error in dev).
+The parts are exported from `DatePickerModule` too (e.g. an inline `<verben-calendar>`). Colors come from
+`--vbn-*` tokens (dark mode works), component CSS only (no Tailwind), inline SVG icons. The template only
+reads fields set in `refresh()`, never getters that create new objects (NG0100 in dev).
 
 ## Not included yet
 
-- Time selection (the classic picker's `showTime`).
 - Arrow-key navigation between days (days and periods are focusable buttons; Tab / Enter / Esc work).
+- Time for ranges (ranges are whole days).
 - Labels like "Last month" are English only; month and weekday names follow the browser locale.
 
 ## Running its tests
 
-Several older specs in the library don't compile, so run only these (19 tests):
+Several older specs in the library don't compile, so run only these (27 tests: presets, date maths,
+typed presets, and the component incl. every classic input):
 
 ```bash
-npx ng test verben-ng-ui --watch=false --browsers=ChromeHeadless --include='**/verben-date-picker/**/*.spec.ts' --ts-config=projects/verben-ng-ui/tsconfig.spec.date-picker.json
+npx ng test verben-ng-ui --watch=false --browsers=ChromeHeadless --include='**/date-picker/**/*.spec.ts' --ts-config=projects/verben-ng-ui/tsconfig.spec.date-picker.json
 ```

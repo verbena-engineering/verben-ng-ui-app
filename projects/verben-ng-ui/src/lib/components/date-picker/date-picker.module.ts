@@ -1,25 +1,26 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { DatePickerComponent } from './date-picker.component';
-import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
-import { DropDownModule } from 'verben-ng-ui/src/lib/components/drop-down';
-import { VerbenPopUpModule } from 'verben-ng-ui/src/lib/components/pop-up';
-import { OutSideClickDirective } from 'verben-ng-ui/src/lib/components/data-view';
-import { TooltipModule } from 'verben-ng-ui/src/lib/components/tooltip';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { DatePickerComponent } from './date-picker.component';
+import { VerbenCalendarComponent } from './calendar/calendar.component';
+import { VerbenCalendarGridComponent } from './calendar-grid/calendar-grid.component';
+import { VerbenPeriodPanelComponent } from './period-panel/period-panel.component';
+import { VerbenPresetSearchComponent } from './preset-search/preset-search.component';
+
+const PARTS = [
+  VerbenCalendarComponent,
+  VerbenCalendarGridComponent,
+  VerbenPeriodPanelComponent,
+  VerbenPresetSearchComponent,
+];
+
+/**
+ * <app-date-picker> and its parts. The parts are exported too, so a screen
+ * can use, say, an inline <verben-calendar> without the field and popup.
+ */
 @NgModule({
-  declarations: [DatePickerComponent],
-  imports: [
-    FormsModule,
-    CommonModule,
-    SvgModule,
-    DropDownModule,
-    VerbenPopUpModule,
-    OutSideClickDirective,
-    TooltipModule,
-    OverlayModule,
-  ],
-  exports: [DatePickerComponent],
+  declarations: [DatePickerComponent, ...PARTS],
+  imports: [CommonModule, OverlayModule],
+  exports: [DatePickerComponent, ...PARTS],
 })
 export class DatePickerModule {}

@@ -20,7 +20,7 @@ import { TabsPageComponent } from './pages/components/tabs-page.component';
 import { TextareaPageComponent } from './pages/components/textarea-page.component';
 import { TimePickerPageComponent } from './pages/components/time-picker-page.component';
 import { TooltipPageComponent } from './pages/components/tooltip-page.component';
-import { VerbenDatePickerPageComponent } from './pages/components/verben-date-picker-page.component';
+import { UnstableCardPageComponent } from './pages/unstable/card-page.component';
 
 const title = (page: string) => `${page} · verben-ng-ui`;
 
@@ -42,12 +42,9 @@ const routes: Routes = [
       { path: 'components/button', component: ButtonPageComponent, title: title('Button') },
       { path: 'components/card', component: CardPageComponent, title: title('Card') },
       { path: 'components/chip', component: ChipPageComponent, title: title('Chip') },
-      { path: 'components/date-picker', component: VerbenDatePickerPageComponent, title: title('Date Picker') },
-      {
-        path: 'components/date-picker-classic',
-        component: DatePickerPageComponent,
-        title: title('Date Picker (classic)'),
-      },
+      { path: 'components/date-picker', component: DatePickerPageComponent, title: title('Date Picker') },
+      // The classic picker was folded into <app-date-picker>; old links still work
+      { path: 'components/date-picker-classic', redirectTo: 'components/date-picker' },
       { path: 'components/dialog', component: DialogPageComponent, title: title('Dialog') },
       { path: 'components/dropdown', component: DropdownPageComponent, title: title('Dropdown') },
       { path: 'components/icons', component: IconsPageComponent, title: title('Icons') },
@@ -59,6 +56,9 @@ const routes: Routes = [
       { path: 'components/textarea', component: TextareaPageComponent, title: title('Textarea') },
       { path: 'components/time-picker', component: TimePickerPageComponent, title: title('Time Picker') },
       { path: 'components/tooltip', component: TooltipPageComponent, title: title('Tooltip') },
+
+      // ---- Unstable: new components in team review ----
+      { path: 'unstable/card', component: UnstableCardPageComponent, title: title('Card (composable)') },
 
 
       // ---- Playground: the original test pages, URLs unchanged ----

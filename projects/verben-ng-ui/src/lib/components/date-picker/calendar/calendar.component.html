@@ -1,0 +1,86 @@
+<ng-container [ngSwitch]="view">
+  <!-- Days: one or two months -->
+  <div *ngSwitchCase="'days'" class="vcal-months">
+    <div class="vcal-month" *ngFor="let m of visibleMonths; let first = first; let last = last; trackBy: trackByMonth">
+      <div class="vcal-caption">
+        <button *ngIf="first; else gap" type="button" class="vcal-nav" aria-label="Previous month" (click)="shiftMonth(-1)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+        <button type="button" class="vcal-caption-label" title="Choose month and year" (click)="showMonths()">
+          {{ m.caption }}
+        </button>
+        <button *ngIf="last; else gap" type="button" class="vcal-nav" aria-label="Next month" (click)="shiftMonth(1)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+      </div>
+      <verben-calendar-grid
+        [month]="m.date"
+        [weekStartsOn]="weekStartsOn"
+        [start]="start"
+        [end]="end"
+        [min]="min"
+        [max]="max"
+        [today]="today"
+        [interactive]="interactive"
+        (pick)="pick.emit($event)"
+        (hover)="hover.emit($event)"
+      ></verben-calendar-grid>
+    </div>
+  </div>
+
+  <!-- Months of one year -->
+  <div *ngSwitchCase="'months'" class="vcal-picker">
+    <div class="vcal-caption">
+      <button type="button" class="vcal-nav" aria-label="Previous year" (click)="shiftYear(-1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+      </button>
+      <button type="button" class="vcal-caption-label" title="Choose year" (click)="showYears()">
+        {{ month.getFullYear() }}
+      </button>
+      <button type="button" class="vcal-nav" aria-label="Next year" (click)="shiftYear(1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+      </button>
+    </div>
+    <div class="vcal-cells">
+      <button
+        *ngFor="let cell of monthCells"
+        type="button"
+        class="vcal-cell"
+        [class.is-current]="cell.current"
+        [disabled]="cell.disabled"
+        (click)="pickMonth(cell.value)"
+      >
+        {{ cell.label }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Years, 12 at a time -->
+  <div *ngSwitchCase="'years'" class="vcal-picker">
+    <div class="vcal-caption">
+      <button type="button" class="vcal-nav" aria-label="Earlier years" (click)="shiftYearPage(-1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+      </button>
+      <button type="button" class="vcal-caption-label" title="Back to months" (click)="showMonths()">
+        {{ yearsCaption }}
+      </button>
+      <button type="button" class="vcal-nav" aria-label="Later years" (click)="shiftYearPage(1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+      </button>
+    </div>
+    <div class="vcal-cells">
+      <button
+        *ngFor="let cell of yearCells"
+        type="button"
+        class="vcal-cell"
+        [class.is-current]="cell.current"
+        [disabled]="cell.disabled"
+        (click)="pickYear(cell.value)"
+      >
+        {{ cell.label }}
+      </button>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #gap><span></span></ng-template>

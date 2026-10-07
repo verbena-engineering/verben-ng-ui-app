@@ -13,7 +13,7 @@ const read = (text: string) => {
   return `${p.id}: ${p.label}: ${toLocalIso(s).slice(0, 10)}..${toLocalIso(e).slice(0, 10)}`;
 };
 
-describe('verben-date-picker: typed presets', () => {
+describe('date picker: typed presets', () => {
   it('understands relative words', () => {
     expect(read('today')).toBe('today: Today: 2026-10-07..2026-10-07');
     expect(read('YTD')).toBe('year-to-date: Year to date: 2026-01-01..2026-10-07');

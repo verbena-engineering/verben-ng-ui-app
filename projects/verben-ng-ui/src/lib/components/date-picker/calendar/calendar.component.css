@@ -1,0 +1,89 @@
+/* Component CSS only (no Tailwind) and --vbn-* tokens, so it works in any
+   consuming app and follows light / dark mode. */
+
+:host {
+  display: block;
+}
+
+.vcal-months {
+  display: flex;
+  gap: 16px;
+}
+
+.vcal-caption {
+  display: grid;
+  grid-template-columns: 28px 1fr 28px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.vcal-caption-label,
+.vcal-nav,
+.vcal-cell {
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.vcal-caption-label {
+  height: 28px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.vcal-nav {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+}
+
+.vcal-nav svg {
+  width: 16px;
+  height: 16px;
+}
+
+.vcal-caption-label:hover,
+.vcal-nav:hover,
+.vcal-cell:hover:not(:disabled) {
+  background: var(--vbn-state-hover-bg, var(--vbn-color-surface-alt));
+}
+
+.vcal-caption-label:focus-visible,
+.vcal-nav:focus-visible,
+.vcal-cell:focus-visible {
+  outline: 2px solid var(--vbn-color-border-focus);
+  outline-offset: 1px;
+}
+
+/* Months / years: the same width as a month of days (7 × 36px) */
+.vcal-picker {
+  width: 252px;
+}
+
+.vcal-cells {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.vcal-cell {
+  height: 40px;
+  font-size: 13px;
+}
+
+.vcal-cell.is-current {
+  background: var(--vbn-color-primary);
+  color: var(--vbn-color-on-primary);
+  font-weight: 600;
+}
+
+.vcal-cell:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

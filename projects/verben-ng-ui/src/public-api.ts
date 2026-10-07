@@ -55,7 +55,10 @@ export * from 'verben-ng-ui/src/lib/components/verbena-icon';
 export * from 'verben-ng-ui/src/lib/components/verbena-tab';
 export * from 'verben-ng-ui/src/lib/components/number-input';
 
-export * from 'verben-ng-ui/src/lib/components/verben-date-picker';
+
+// ⚠️ UNSTABLE — composable card, under team review; the API may change.
+// Opt in via UnstableCardModule; see src/lib/unstable/card/README.md
+export * from 'verben-ng-ui/src/lib/unstable/card';
 
 // Exporting modules
 // export * from './lib/components/card-data-view/card-data-view.component';

@@ -44,13 +44,7 @@
 
       <ng-container *ngSwitchCase="'date-picker'">
         <div style="width: 210px">
-          <verben-date-picker mode="preset" [ngModel]="'last-month'"></verben-date-picker>
-        </div>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'date-picker-classic'">
-        <div style="width: 190px">
-          <app-date-picker [date]="previewDate" [overlayWidth]="300"></app-date-picker>
+          <app-date-picker variant="advanced" selectionMode="preset" [ngModel]="'last-month'"></app-date-picker>
         </div>
       </ng-container>
 
@@ -138,6 +132,13 @@
   </p>
   <div class="docs-grid">
     <a class="docs-card" *ngFor="let item of unstable" [routerLink]="item.route">
+      <div class="docs-card-preview" inert aria-hidden="true">
+        <vbn-card size="sm" style="width: 200px">
+          <vbn-card-header avatar title="Ada Lovelace" description="Lagos">
+            <vbn-card-action><vbn-amount [value]="25000"></vbn-amount></vbn-card-action>
+          </vbn-card-header>
+        </vbn-card>
+      </div>
       <div class="docs-card-body">
         <h3>{{ item.title }} <span class="docs-tag-unstable">unstable</span></h3>
         <p>{{ item.description }}</p>

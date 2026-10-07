@@ -1,5 +1,5 @@
 /**
- * Periods for <verben-date-picker> preset mode.
+ * Periods for <app-date-picker> (Periods tab and the preset search).
  *
  * The panel has one tab per period: Daily · Weekly · Monthly · Quarterly ·
  * Yearly. Each tab shows a few QUICK presets (relative: "Last month") and,
@@ -24,6 +24,7 @@ import {
   DateSpan,
   addDays,
   addMonths,
+  clampSpan,
   endOfDay,
   endOfMonth,
   endOfQuarter,
@@ -329,6 +330,17 @@ export function lastPeriodsPreset(n: number, unit: DatePeriod): DatePreset {
             ? lastQuarters(count)
             : lastYears(count);
   return { id, label: `Last ${count} ${unit}s`, group: unit, range };
+}
+
+/** A preset's dates for this "today", trimmed to min / max (null when fully outside) */
+export function presetSpan(
+  preset: DatePreset,
+  today: Date,
+  weekStartsOn: 0 | 1,
+  min?: Date | null,
+  max?: Date | null,
+): DateSpan | null {
+  return clampSpan(preset.range(today, { weekStartsOn }), min, max);
 }
 
 /** Turns the [presets] input (ids and/or objects) into preset objects */

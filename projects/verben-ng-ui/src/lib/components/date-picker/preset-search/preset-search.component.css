@@ -1,0 +1,98 @@
+:host {
+  position: relative;
+  display: block;
+  flex: 1;
+  min-width: 0;
+}
+
+.vps-combo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--vbn-color-border);
+  border-radius: 6px;
+}
+
+.vps-combo:focus-within {
+  border-color: var(--vbn-color-border-focus);
+}
+
+.vps-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--vbn-color-text-muted);
+}
+
+.vps-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 12.5px;
+}
+
+.vps-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 2;
+  min-width: 240px;
+  max-height: 260px;
+  margin: 0;
+  padding: 4px;
+  overflow-y: auto;
+  list-style: none;
+  border: 1px solid var(--vbn-color-border);
+  border-radius: 8px;
+  background: var(--vbn-color-surface);
+  box-shadow: var(--vbn-shadow-md), 0 8px 24px -8px rgba(0, 0, 0, 0.2);
+}
+
+.vps-option {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.vps-option.is-active {
+  background: var(--vbn-state-hover-bg, var(--vbn-color-surface-alt));
+}
+
+.vps-option.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.vps-tag {
+  padding: 1px 7px;
+  border: 1px solid var(--vbn-color-border);
+  border-radius: 999px;
+  background: var(--vbn-color-surface-alt);
+  color: var(--vbn-color-text-muted);
+  font-size: 10.5px;
+  font-weight: 500;
+}
+
+.vps-dates,
+.vps-empty {
+  font-size: 11.5px;
+  color: var(--vbn-color-text-muted);
+  white-space: nowrap;
+}
+
+.vps-empty {
+  padding: 10px 8px;
+  white-space: normal;
+}

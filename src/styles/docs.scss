@@ -579,6 +579,38 @@
   word-break: break-all;
 }
 
+/* Composable card examples: a sensible width inside previews.
+   :where() keeps it weak, so an example's own class (e.g. .invoices) wins */
+:where(.docs-preview > .vbn-card) {
+  width: 100%;
+  max-width: min(100%, 400px);
+}
+
+/* Vendor invoices demo: the same CSS the example's Code tab shows */
+.docs-preview {
+  .invoices { width: 100%; max-width: none; --vbn-card-min-column: 260px; }
+  .invoice { display: flex; align-items: flex-start; gap: 6px; }
+  .invoice > vbn-card { flex: 1; min-width: 0; }
+  .invoice-toggle {
+    flex: none; width: 28px; height: 28px; margin-top: 14px;
+    border: 0; border-radius: 6px; background: none;
+    color: inherit; font-size: 20px; line-height: 1; cursor: pointer;
+  }
+  .invoice-toggle:hover { background: var(--vbn-color-surface-alt); }
+  .link {
+    padding: 0; border: 0; background: none; cursor: pointer;
+    color: var(--vbn-color-info); font: inherit; text-decoration: underline;
+  }
+  .invoice .link { margin-top: 10px; }
+
+  /* "Coming from <verben-card>" demo */
+  .compare { display: flex; flex-direction: column; gap: 8px; max-width: 100%; }
+  .compare > .vbn-card { max-width: 100%; }
+  .compare-label { font: 12px var(--docs-mono, ui-monospace, monospace); color: var(--vbn-color-text-muted); }
+  .filter-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .filter-actions { display: flex; justify-content: flex-end; gap: 8px; }
+}
+
 /* ---------- Code block ---------- */
 
 .docs-code {

@@ -2,7 +2,7 @@
   title="Date Picker"
   description="One tag for a day, a date and time, a range, or whole periods. Pick how much UI with one prop: variant."
 >
-  <docs-example [code]="code.basic" minHeight="240px">
+  <docs-example responsive [code]="code.basic" minHeight="240px">
     <div class="docs-stack">
       <app-date-picker [(ngModel)]="day"></app-date-picker>
       <span class="docs-output">ngModel: {{ day | json }}</span>
@@ -30,7 +30,7 @@
     </table>
   </div>
 
-  <docs-example
+  <docs-example responsive
     title="Three variants, one tag"
     description="Open each one: same calendar, more or less around it."
     [code]="code.variants"
@@ -55,14 +55,14 @@
 
   <h2 class="docs-h2" id="examples">Examples</h2>
 
-  <docs-example title="Range with two months" [code]="code.range">
+  <docs-example responsive title="Range with two months" [code]="code.range">
     <div class="docs-stack">
       <app-date-picker selectionMode="range" [monthsShown]="2" placeholder="Pick a period" [(ngModel)]="period"></app-date-picker>
       <span class="docs-output">ngModel: {{ period | json }}</span>
     </div>
   </docs-example>
 
-  <docs-example
+  <docs-example responsive
     title="Date and time"
     description="Picking a day keeps the popup open so the time can be set; every change is saved right away."
     [code]="code.time"
@@ -74,7 +74,7 @@
     </div>
   </docs-example>
 
-  <docs-example
+  <docs-example responsive
     title="Without forms: [(date)] and [(range)]"
     description="The classic bindings still work and give Date objects."
     [code]="code.binding"
@@ -88,7 +88,7 @@
     </div>
   </docs-example>
 
-  <docs-example
+  <docs-example responsive
     title="Far away dates"
     description="Click the month caption for months, then the year for a grid of years, 12 at a time. It replaces the old month and year dropdowns."
     [code]="code.birthday"
@@ -99,7 +99,7 @@
     </div>
   </docs-example>
 
-  <docs-example
+  <docs-example responsive
     title="Simple: typed presets"
     description="Type into the search, e.g. “last 7 weeks” or “q1 2025”. This one starts as “last-5-months”, a typed preset saved by its id."
     [code]="code.typed"
@@ -112,7 +112,7 @@
     </div>
   </docs-example>
 
-  <docs-example
+  <docs-example responsive
     title="Advanced: let the user switch"
     description="Date, Range and Periods in one picker. Switch in the popup and watch the outputs."
     [code]="code.mutate"
@@ -127,7 +127,7 @@
     </div>
   </docs-example>
 
-  <docs-example
+  <docs-example responsive
     title="Periods"
     description="Tabs and suggestions on top; on the side a grid of specific weeks, months, quarters or years, next to a calendar that previews what you point at. On the Daily tab the calendar itself is the picker."
     [code]="code.periods"
@@ -139,7 +139,7 @@
     </div>
   </docs-example>
 
-  <docs-example
+  <docs-example responsive
     title="Several periods"
     description="Tick 'Several months' (or weeks, quarters…) in the footer: the first click starts, the second ends, in either order and across years. This one starts as Aug 2026 – Mar 2027."
     [code]="code.span"
@@ -151,7 +151,7 @@
     </div>
   </docs-example>
 
-  <docs-example
+  <docs-example responsive
     title="Fewer tabs and custom presets"
     description="Only Monthly, Quarterly and Yearly, plus a 'Fiscal' tab made from two custom presets."
     [code]="code.custom"
@@ -163,7 +163,7 @@
     </div>
   </docs-example>
 
-  <docs-example
+  <docs-example responsive
     title="Limits and format"
     description="Nothing before 1 Jan last year or after today; periods outside are disabled, overlapping ones are trimmed."
     [code]="code.bounds"

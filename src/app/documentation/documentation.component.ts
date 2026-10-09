@@ -2,7 +2,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { ThemeService } from 'verben-ng-ui';
-import { DOCS_NAV, DocsNavGroup, PLAYGROUND_PAGES } from './docs-registry';
+import { DOCS_NAV, DocsNavGroup, DocsNavItem, PLAYGROUND_PAGES } from './docs-registry';
 
 interface TocEntry {
   id: string;
@@ -28,8 +28,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   navOpen = false;
   isDark = false;
   isWide = false;
-  /** Current path without query / hash, for the playground Usage section */
-  currentPath = '';
+  /** The playground page on screen (framed with Preview | Code), if any */
+  playgroundPage?: DocsNavItem;
   toc: TocEntry[] = [];
   activeId = '';
 
@@ -99,7 +99,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   private onRouteChange(url: string): void {
     const path = url.split(/[?#]/)[0];
-    this.currentPath = path;
+    this.playgroundPage = PLAYGROUND_PAGES.find((p) => p.route === path);
     this.navOpen = false;
     // The home grid and the old test pages (own layouts) use the full width
     this.isWide =

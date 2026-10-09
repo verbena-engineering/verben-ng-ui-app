@@ -1,47 +1,84 @@
-import { DocsCodeFile } from './docs-kit/code-tabs.component';
+import { DocsCodeFile } from './docs-kit/code-explorer.component';
+import { DocsLang } from './docs-kit/highlight';
 import { DocsProp } from './docs-kit/props-table.component';
 
 /*
- * "Usage" under each playground page: how the element is built, and the
- * page's real source files.
+ * What the playground pages show around the live page (see
+ * docs-kit/playground-shell.component.ts): a description, Preview | Code
+ * (the page's real files), then Installation steps, Anatomy and Performance.
  *
  * Each file is a dynamic import with esbuild's text loader, so it becomes its
- * own small chunk and is downloaded only when its tab is opened: the docs
- * don't ship ~150 KB of example code to everyone. The import paths must be
- * written out (not built from strings) so the bundler can find them.
+ * own small chunk and is downloaded only when it is opened in the Code view:
+ * the docs don't ship ~160 KB of example code to everyone. The import paths
+ * must be written out (not built from strings) so the bundler can find them.
  */
 
+export interface PlaygroundStep {
+  title: string;
+  text?: string;
+  code?: string;
+  lang?: DocsLang;
+  filename?: string;
+}
+
+export interface PlaygroundNote {
+  title: string;
+  text: string;
+}
+
+/** A number before / after, shown as a stat card */
+export interface PlaygroundMetric {
+  label: string;
+  before: string;
+  after: string;
+  note: string;
+}
+
 export interface PlaygroundUsage {
-  /** One paragraph: what the element is and how it is put together */
-  intro?: string;
-  /** The parts, slots and inputs that matter, as a table */
-  anatomy?: DocsProp[];
-  /** A clean, minimal version (the playground pages also hold experiments) */
-  minimal?: { html: string; ts?: string };
-  /** Notes on speed: what the element does well, and what to watch for */
-  performance?: string[];
-  /** The page's real files */
+  /** Lead paragraph under the title */
+  description?: string;
+  /** Route of the component's docs page, if it has one */
+  docs?: string;
+  /** "Installation": numbered steps from nothing to a working screen */
+  steps?: PlaygroundStep[];
+  /** "Anatomy": the structure as a tree, then the parts that matter */
+  anatomy?: { tree: string; parts?: DocsProp[] };
+  performance?: {
+    intro?: string;
+    /** Labels for the two columns of the metrics */
+    compare?: [string, string];
+    metrics?: PlaygroundMetric[];
+    notes?: PlaygroundNote[];
+    /** Optional detailed table: [name, before, after, why] */
+    table?: { headings: string[]; rows: DocsProp[] };
+  };
+  /** The page's real files, shown in the Code view */
   files: DocsCodeFile[];
 }
 
 const DATA_VIEW: PlaygroundUsage = {
-  intro:
-    '<verben-data-view> is a toolbar (view toggle, search, column / filter / sort / export / import / create) over ' +
-    'two views you provide: table-content and card-content. Each toolbar button opens the matching *-content slot ' +
-    'as a popover; viewState decides which buttons exist. The data view does not filter or sort anything itself: ' +
-    'it tells you (onSearchChange, stateChange, the popovers\' own outputs) and you update your data.',
-  anatomy: [
-    { name: '[viewState]', type: '{ isSearch?, isToggle?, isColumn?, isFilter?, isSort?, isExport?, isImport?, isSelect?, isCreate?, isExtend? }', description: 'Which toolbar buttons are shown. Unset keys are hidden.' },
-    { name: '(onSearchChange)', type: '{ key, value }', description: 'Search text, debounced (milliseconds, default 400) so you query once per pause, not per key.' },
-    { name: '[isTableView] / (viewChange)', type: 'boolean', description: 'Table or card view (the toggle).' },
-    { name: '(stateChange)', type: '{ key, value }', description: 'A popover opened or closed (key: filter, sort, create…).' },
-    { name: '[selectedFilterTableCount] / [selectedSortCount] / [selectedColumnCount]', type: 'number', description: 'The (n) badges next to Filter, Sort and Column.' },
-    { name: 'table-content / card-content', type: 'slot', description: 'The two views, e.g. <lib-data-table> and <verben-card-data-view>.' },
-    { name: 'filter-content / sort-content / column-content / export-content / import-content / create-content', type: 'slot', description: 'Popover bodies, e.g. <verben-table-filter>, <verben-sort-table>, <verben-visible-column>, your create form.' },
-    { name: 'children', type: 'slot', description: 'Anything shown under the toolbar.' },
-  ],
-  minimal: {
-    html: `<verben-data-view
+  description:
+    'A toolbar (view toggle, search, column / filter / sort / export / import / create) over two views you provide. ' +
+    "It doesn't filter or sort anything itself: it tells you what the user asked for, and you update your data.",
+  steps: [
+    {
+      title: 'Import the modules',
+      text: 'The data view, plus the popovers you want to use.',
+      lang: 'ts',
+      filename: 'feature.module.ts',
+      code: `import { DataViewModule, SortTableModule, TableFilterModule } from 'verben-ng-ui';
+
+@NgModule({
+  imports: [DataViewModule, TableFilterModule, SortTableModule],
+})
+export class FeatureModule {}`,
+    },
+    {
+      title: 'Add the toolbar and your views',
+      text: 'viewState picks the buttons; each *-content element becomes a popover or a view.',
+      lang: 'html',
+      filename: 'example.component.html',
+      code: `<verben-data-view
   [viewState]="{ isSearch: true, isToggle: true, isFilter: true, isSort: true, isCreate: true }"
   [selectedFilterTableCount]="activeFilters"
   [selectedSortCount]="activeSorts"
@@ -54,9 +91,14 @@ const DATA_VIEW: PlaygroundUsage = {
 
   <!-- The two views -->
   <div table-content><!-- e.g. <lib-data-table> --></div>
-  <div card-content><!-- e.g. <verben-card-data-view> or vbn-cards --></div>
+  <div card-content><!-- e.g. <verben-card-data-view> or a grid of <verben-card> --></div>
 </verben-data-view>`,
-    ts: `import { DataFilterType, IDataFilter } from 'verben-ng-ui';
+    },
+    {
+      title: 'Give it options and react to it',
+      lang: 'ts',
+      filename: 'example.component.ts',
+      code: `import { DataFilterType, IDataFilter } from 'verben-ng-ui';
 
 filters: IDataFilter[] = [
   { name: 'Vendor', type: DataFilterType.String, checked: false },
@@ -68,12 +110,33 @@ activeSorts = 0;
 
 search(text: string) { /* query your API, or filter your list */ }
 sortBy(options: IDataFilter[]) { this.activeSorts = options.length; }`,
-  },
-  performance: [
-    'Search is debounced inside the data view, so typing "dangote" causes one search, not seven.',
-    'Column and filter popovers stay attached while closed (hidden with CSS) so they keep their state; sort, import, export and create are attached only while open. Either way Angular creates projected content with the page, so popover components exist (and are checked) from the start: keep them light, or put heavy ones behind your own *ngIf.',
-    'The views are your own components: how fast the list is depends on them (see Card Data View below, and the Vendor Invoices playground).',
+    },
   ],
+  anatomy: {
+    tree: `<verben-data-view [viewState] (onSearchChange) (viewChange) (stateChange)>
+├── [column-content] [filter-content] [sort-content]   popovers
+├── [export-content] [import-content] [create-content] popovers
+├── [table-content]                                    table view
+├── [card-content]                                     card view
+└── [children]                                         under the toolbar`,
+    parts: [
+      { name: '[viewState]', type: '{ isSearch?, isToggle?, isColumn?, isFilter?, isSort?, isExport?, isImport?, isSelect?, isCreate?, isExtend? }', description: 'Which toolbar buttons are shown. Unset keys are hidden.' },
+      { name: '(onSearchChange)', type: '{ key, value }', description: 'Search text, debounced (milliseconds, default 400) so you query once per pause, not per key.' },
+      { name: '[isTableView] / (viewChange)', type: 'boolean', description: 'Table or card view (the toggle).' },
+      { name: '(stateChange)', type: '{ key, value }', description: 'A popover opened or closed (key: filter, sort, create…).' },
+      { name: '[selectedFilterTableCount] / [selectedSortCount] / [selectedColumnCount]', type: 'number', description: 'The (n) badges next to Filter, Sort and Column.' },
+    ],
+  },
+  performance: {
+    notes: [
+      { title: 'Search is debounced', text: 'Typing "dangote" causes one search, not seven.' },
+      {
+        title: 'Popovers exist from the start',
+        text: 'Column and filter stay attached while closed (they keep their state); sort, import, export and create are attached only while open. Either way Angular creates projected content with the page, so keep popovers light or put heavy ones behind your own *ngIf.',
+      },
+      { title: 'Your views decide the speed', text: 'The table and card views are your components; see Card Data View and the Vendor Invoices playground.' },
+    ],
+  },
   files: [
     { name: 'data-view.component.html', lang: 'html', load: () => import('./data-view/data-view.component.html', { with: { loader: 'text' } }) },
     { name: 'data-view.component.ts', lang: 'ts', load: () => import('./data-view/data-view.component', { with: { loader: 'text' } }) },
@@ -81,24 +144,27 @@ sortBy(options: IDataFilter[]) { this.activeSorts = options.length; }`,
 };
 
 const CARD_DATA_VIEW: PlaygroundUsage = {
-  intro:
-    '<verben-card-data-view> is a master–detail list: cards on the left; clicking a card (or one of its children) ' +
-    'opens a details panel on the right. You give it the data (CardData[]) and small templates: how a card looks ' +
-    '(#card), how a child looks (#cardChild), and the details for each (#parent / #child). Selection is stored on ' +
-    'the data itself (item.selected, item.isChildrenExpanded).',
-  anatomy: [
-    { name: '<verben-card-data-view #view [cardDataList] dataId (loadMoreClick)>', type: 'container', description: 'The frame. #view gives you onItemClick(item), onCardChildClick(index) and clearData(). dataId names the field in item.data that identifies an item.' },
-    { name: '<verben-card-data-view-header>', type: 'optional', description: 'Anything above the list.' },
-    { name: '<verben-left-card-data-view> → <verben-left-card-data #list [parent]="view" [cardDataList] dataId>', type: 'list', description: 'The list column. #list gives you showChildren(item) for the +/− toggle.' },
-    { name: '<ng-template #card let-item>', type: 'template', description: 'One item. Call view.onItemClick(item) on click; it returns the item to show in the details.' },
-    { name: '<ng-template #cardChild let-item let-index="index">', type: 'template', description: 'One child, shown under an expanded item. Call view.onCardChildClick(index).' },
-    { name: '<ng-template #cardFooter let-item>', type: 'optional template', description: 'Shown under an expanded item\'s children (e.g. a Save All button).' },
-    { name: '<verben-right-card-data-view> → <ng-template #parent> / <ng-template #child>', type: 'details', description: 'The details for a selected item / child. They get no context: read your own field (current in the example).' },
-    { name: '<verben-card-data-view-footer>', type: 'optional', description: 'E.g. "N records loaded · Load more".' },
-    { name: 'CardData', type: '{ title, body: {title, value}[], data, children: CardData[], selected, isChildrenExpanded? }', description: 'One item. data holds your own object; body is what a card typically lists.' },
-  ],
-  minimal: {
-    html: `<verben-card-data-view #view [cardDataList]="cards" dataId="id" (loadMoreClick)="loadMore()">
+  description:
+    'A master–detail list: cards on the left; clicking a card (or one of its children) opens a details panel on the right. ' +
+    'You give it the data (CardData[]) and small templates for a card, a child and the details.',
+  steps: [
+    {
+      title: 'Import the module',
+      lang: 'ts',
+      filename: 'feature.module.ts',
+      code: `import { CardDataViewModule, VerbenaInputModule } from 'verben-ng-ui';
+
+@NgModule({
+  imports: [CardDataViewModule, VerbenaInputModule, FormsModule],
+})
+export class FeatureModule {}`,
+    },
+    {
+      title: 'Describe a card, a child and the details',
+      text: 'The templates get the item; clicking calls the view so it can open the details.',
+      lang: 'html',
+      filename: 'example.component.html',
+      code: `<verben-card-data-view #view [cardDataList]="cards" dataId="id" (loadMoreClick)="loadMore()">
   <verben-left-card-data-view>
     <verben-left-card-data #list [parent]="view" [cardDataList]="cards" dataId="id">
       <!-- One item -->
@@ -137,7 +203,12 @@ const CARD_DATA_VIEW: PlaygroundUsage = {
     {{ cards.length }} records loaded · <button type="button" (click)="loadMore()">Load more</button>
   </verben-card-data-view-footer>
 </verben-card-data-view>`,
-    ts: `import { CardData } from 'verben-ng-ui';
+    },
+    {
+      title: 'Give it data',
+      lang: 'ts',
+      filename: 'example.component.ts',
+      code: `import { CardData } from 'verben-ng-ui';
 
 current!: CardData;
 
@@ -157,22 +228,158 @@ cards: CardData[] = [
 ];
 
 loadMore() { /* fetch the next page and append it to cards */ }`,
-  },
-  performance: [
-    'The list is rendered with "@for … track $index": after a sort, a filter or an item added at the top, every card is matched by position, so Angular rewrites each card\'s content instead of moving it. Tracking by id (item.data[dataId]) would keep each card with its item.',
-    'useVirtualScroll puts the list in a cdk-virtual-scroll-viewport, but the items are rendered with @for, not *cdkVirtualFor, so every item is still created: you get a fixed-height scroll box, not virtualisation. Page with Load more (or server paging) instead.',
-    'Templates that call a method per item run it on every change-detection pass. The playground calls list.showToggle(item), which filters the whole list each time: n items × n checks per pass. Measured here with 48 items: 48 calls and 2,304 list scans per check (500 items would be 250,000), on every click or key press anywhere in the app. Prefer a field you set when the data changes.',
-    'Selection is stored on the data: clicking an item loops over all items to clear the others, and the details read a mutable field. Fine for tens of items; for hundreds, one "selected" reference is O(1).',
-    'The components use the default change detection, so they are checked on every event anywhere in the app: measured here, an unrelated app-wide check costs 1.16 ms on this page with 48 items, against 0.20 ms on the OnPush Vendor Invoices page (see its Performance section).',
+    },
   ],
+  anatomy: {
+    tree: `<verben-card-data-view #view [cardDataList] dataId (loadMoreClick)>
+├── <verben-card-data-view-header>              optional
+├── <verben-left-card-data-view>
+│   └── <verben-left-card-data #list [parent]="view">
+│       ├── <ng-template #card let-item>        one item
+│       ├── <ng-template #cardChild let-item>   one child
+│       └── <ng-template #cardFooter let-item>  optional
+├── <verben-right-card-data-view>
+│   ├── <ng-template #parent>                   details of an item
+│   └── <ng-template #child>                    details of a child
+└── <verben-card-data-view-footer>              optional`,
+    parts: [
+      { name: '#view', type: 'CardDataViewComponent', description: 'onItemClick(item) and onCardChildClick(index) return what to show in the details; clearData() closes them.' },
+      { name: '#list', type: 'LeftCardDataComponent', description: 'showChildren(item) for the +/− toggle.' },
+      { name: 'dataId', type: 'string', description: 'The field in item.data that identifies an item.' },
+      { name: '#parent / #child', type: 'template', description: 'Get no context: read your own field (current in the example).' },
+      { name: 'CardData', type: '{ title, body, data, children, selected, isChildrenExpanded? }', description: 'One item. data holds your own object; body is what a card typically lists.' },
+    ],
+  },
+  performance: {
+    notes: [
+      { title: 'Cards are matched by position', text: '@for … track $index: after a sort, a filter or an item added at the top, every card is rewritten instead of moved. Tracking by id would keep each card with its item.' },
+      { title: '"Virtual scroll" renders everything', text: 'useVirtualScroll wraps an @for list, not *cdkVirtualFor, so every item is still created: a fixed-height scroll box, not virtualisation. Page with Load more instead.' },
+      { title: 'n × n template calls', text: 'The playground calls list.showToggle(item) per card, which scans the whole list. 48 items: 2,304 scans per check (500 items: 250,000), on every click or key press anywhere. Prefer a field set when data changes.' },
+      { title: 'Selection loops over the list', text: 'Clicking an item clears every other item\'s flag. Fine for tens of items; one "selected" reference is O(1).' },
+      { title: 'Default change detection', text: 'Checked on every event in the app: an unrelated check costs 1.01 ms on this page (48 items) against 0.07 ms on the OnPush Vendor Invoices page.' },
+    ],
+  },
   files: [
     { name: 'cdv.component.html', lang: 'html', load: () => import('../views/card-data-view/cdv.component.html', { with: { loader: 'text' } }) },
     { name: 'cdv.component.ts', lang: 'ts', load: () => import('../views/card-data-view/cdv.component', { with: { loader: 'text' } }) },
   ],
 };
 
-/** Usage for each playground route (the Vendor Invoices page has its own) */
+const VENDOR_INVOICES: PlaygroundUsage = {
+  description:
+    "The app's invoices screen built with the existing <verben-card> and data view toolbar: search, filter, sort, create, " +
+    '+ for invoice lines, click for details, load more. Written the way the rest of the app writes cards.',
+  docs: '/documentation/components/card',
+  steps: [
+    {
+      title: 'Import the modules',
+      text: 'Only existing modules; CommonModule also brings the currency pipe.',
+      lang: 'ts',
+      filename: 'invoices.module.ts',
+      code: `import { CardModule, DataViewModule, NumberInputModule, VerbenaBadgeModule,
+  VerbenaButtonModule, VerbenaInputModule } from 'verben-ng-ui';
+
+@NgModule({
+  declarations: [VendorInvoicesComponent],
+  imports: [
+    CommonModule, FormsModule,
+    DataViewModule,              // the toolbar
+    CardModule,                  // <verben-card>, the same card as everywhere else
+    VerbenaBadgeModule, VerbenaButtonModule, VerbenaInputModule, NumberInputModule,
+  ],
+})
+export class InvoicesModule {}`,
+    },
+    {
+      title: 'One card per invoice',
+      text: 'The whole template is in Code above; the heart of it is a list of interactive cards with their lines inside.',
+      lang: 'html',
+      filename: 'vendor-invoices.component.html',
+      code: `<verben-card
+  *ngFor="let inv of visible; trackBy: byId"
+  variant="plain"
+  interactive
+  [selected]="inv === selected"
+  (click)="select(inv)"
+>
+  <div card-header>
+    <div class="row"><b>{{ inv.id }}</b><span>{{ inv.vendor }}</span></div>
+    <div class="row">
+      <span>{{ inv.total | currency: 'NGN' : 'symbol-narrow' }}</span>
+      <verbena-badge [text]="inv.status" [bgColor]="badge[inv.status].bg" [textColor]="badge[inv.status].fg"></verbena-badge>
+    </div>
+  </div>
+  <div card-body *ngIf="inv.open">
+    <verben-card *ngFor="let line of inv.lines; trackBy: byId" variant="plain"
+      [heading]="line.id" [subheading]="'Product: ' + line.product"></verben-card>
+  </div>
+</verben-card>`,
+    },
+    {
+      title: 'Keep the template cheap',
+      text: 'OnPush, and everything the template shows is computed once per change, never in the template.',
+      lang: 'ts',
+      filename: 'vendor-invoices.component.ts',
+      code: `@Component({ …, changeDetection: ChangeDetectionStrategy.OnPush })
+export class VendorInvoicesComponent {
+  visible: Invoice[] = [];      // what the board shows
+  selected: Invoice | null = null;
+
+  refresh(): void {             // after every search, filter, sort, save…
+    for (const invoice of this.all) invoice.total = this.sumLines(invoice);
+    const matches = this.all.filter(…);   // search + filters
+    this.visible = matches.sort(…).slice(0, this.loaded);
+  }
+
+  byId(_: number, item: { id: string }) { return item.id; }   // trackBy
+}`,
+    },
+  ],
+  anatomy: {
+    tree: `<verben-data-view>                               toolbar
+├── <verben-card filter-content|sort-content|create-content variant="plain" heading>
+└── <verben-card card-content variant="plain">   the board
+    ├── [card-body]
+    │   ├── <verben-card interactive [selected]> × n   an invoice
+    │   │   ├── [card-header]   id · vendor, amount · status
+    │   │   └── [card-body]     its lines: <verben-card [heading] [subheading]>
+    │   └── <verben-card>                         details (default look)
+    └── [card-footer]                             "9 of 37 records loaded · Load more"`,
+    parts: [
+      { name: 'variant="plain"', type: 'verben-card', description: 'No grey bars: the board, popovers and invoice cards.' },
+      { name: 'interactive / [selected]', type: 'verben-card', description: 'Clickable invoice and line cards; the open one gets the accent strip.' },
+      { name: '[heading] / [subheading]', type: 'verben-card', description: 'Line cards without header markup.' },
+      { name: 'Details card', type: 'verben-card', description: 'The default look: header with close, form in the body, Delete / Save in the footer.' },
+      { name: 'Status pill / amount', type: 'verbena-badge / currency pipe', description: 'Existing library badge with soft colors; Angular\'s currency pipe for ₦.' },
+    ],
+  },
+  performance: {
+    intro: 'Measured in this docs app in one session (dev build, Chrome); compare the columns, not the absolute numbers. Both include the docs layout around the page.',
+    compare: ['Card Data View', 'Vendor Invoices'],
+    metrics: [
+      { label: 'Check from elsewhere in the app', before: '1.01 ms', after: '0.07 ms', note: 'OnPush: the screen is skipped, its template isn\'t read.' },
+      { label: 'Check of the screen itself', before: '0.90 ms', after: '0.36 ms', note: '48 items vs 37 cards: about half the work per card.' },
+      { label: 'Elements per card', before: '21', after: '14', note: 'Less memory and less style / layout work.' },
+    ],
+    notes: [
+      { title: 'Cards stay with their data', text: 'trackBy id: after a sort, a filter or a new invoice, Angular moves cards and creates only new ones.' },
+      { title: 'No work per card per check', text: 'The template reads fields (inv.total, visible, selected) computed once per change in refresh().' },
+      { title: 'One selected reference', text: '"Is this card open" is inv === selected; no loop over the list.' },
+      { title: 'Paging, not "virtual scroll"', text: '9 cards render; Load more adds 9 (a real screen asks the server for the next page).' },
+      { title: 'verben-card is OnPush', text: 'Its template only reads its own inputs; unfilled sections are hidden by CSS (:empty), states are CSS.' },
+      { title: 'Buttons without per-check objects', text: 'verbena-button used to build a new style object 5× per check; now plain bindings and CSS states.' },
+    ],
+  },
+  files: [
+    { name: 'vendor-invoices.component.html', lang: 'html', load: () => import('./pages/playground/vendor-invoices/vendor-invoices.component.html', { with: { loader: 'text' } }) },
+    { name: 'vendor-invoices.component.ts', lang: 'ts', load: () => import('./pages/playground/vendor-invoices/vendor-invoices.component', { with: { loader: 'text' } }) },
+    { name: 'vendor-invoices.component.css', lang: 'css', load: () => import('./pages/playground/vendor-invoices/vendor-invoices.component.css', { with: { loader: 'text' } }) },
+  ],
+};
+
+/** Usage for each playground route */
 export const PLAYGROUND_USAGE: Record<string, PlaygroundUsage> = {
+  '/documentation/vendor-invoices': VENDOR_INVOICES,
   '/documentation/data-view': DATA_VIEW,
   '/documentation/card-data-view': CARD_DATA_VIEW,
   '/documentation/data-table': {

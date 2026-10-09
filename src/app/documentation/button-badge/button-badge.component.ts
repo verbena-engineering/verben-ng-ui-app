@@ -14,6 +14,13 @@ export class ButtonBadgeComponent {
   age: string = '';
   decimalValue: string = '';
 
+  saving = false;
+
+  save() {
+    this.saving = true;
+    setTimeout(() => (this.saving = false), 1500);
+  }
+
   onTabChange(tab: TabItemComponent) {
     // console.log('Active tab changed:', tab.title, 'with ID:', tab.id);
   }

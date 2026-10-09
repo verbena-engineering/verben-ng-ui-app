@@ -521,46 +521,17 @@
   color: var(--docs-muted-fg);
 }
 
-.docs-tabs {
-  display: flex;
-  gap: 4px;
-  border-bottom: 1px solid var(--docs-border);
-  margin-bottom: 16px;
+/* The example uses the playground block (.docs-pg-block / .docs-pg-toolbar);
+   these are its stage, preview area and code */
+.docs-example-block {
+  margin-bottom: 0;
+}
 
-  button {
-    position: relative;
-    padding: 8px 12px;
-    border: 0;
-    background: none;
-    color: var(--docs-muted-fg);
-    font: inherit;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-
-    &:hover {
-      color: var(--docs-fg);
-    }
-
-    &.is-active {
-      color: var(--docs-fg);
-
-      &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: -1px;
-        height: 2px;
-        background: var(--docs-fg);
-      }
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--docs-ring);
-      border-radius: 4px;
-    }
-  }
+.docs-example-stage {
+  background:
+    radial-gradient(var(--docs-dot) 1px, transparent 1px) 0 0 / 16px 16px,
+    var(--docs-bg);
+  overflow-x: auto;
 }
 
 .docs-preview {
@@ -571,14 +542,11 @@
   flex-wrap: wrap;
   gap: 16px;
   min-height: 320px;
+  margin: 0 auto;
   padding: 40px;
-  border: 1px solid var(--docs-border);
-  border-radius: var(--docs-radius);
-  background-color: var(--docs-bg);
-  background-image: radial-gradient(var(--docs-dot) 1px, transparent 1px);
-  background-size: 18px 18px;
   color: var(--vbn-color-text);
   font-family: var(--vbn-font-family);
+  transition: max-width 0.25s ease;
 
   &.is-start {
     align-items: flex-start;
@@ -588,6 +556,20 @@
   &.is-column {
     flex-direction: column;
   }
+
+  /* A set width (Mobile): show the edges of the "screen" */
+  &.is-framed {
+    padding: 24px 16px;
+    border-inline: 1px dashed color-mix(in srgb, var(--docs-fg) 22%, transparent);
+    background: var(--vbn-color-background, var(--docs-bg));
+  }
+}
+
+/* One file: the code fills the block */
+.docs-example-code .docs-code {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
 }
 
 /* A neutral surface inside previews so library components sit on their own
@@ -622,37 +604,16 @@
   word-break: break-all;
 }
 
-/* Composable card examples: a sensible width inside previews.
-   :where() keeps it weak, so an example's own class wins */
-:where(.docs-preview > .vbn-card) {
-  width: 100%;
-  max-width: min(100%, 400px);
-}
-
+/* Card page examples (the ".row" / ".stack" helpers shown in their code) */
 .docs-preview {
-  .link {
-    padding: 0; border: 0; background: none; cursor: pointer;
-    color: var(--vbn-color-info); font: inherit; text-decoration: underline;
+  .card-demo-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .card-demo-stack { display: grid; gap: 10px; }
+  .card-demo-muted { color: var(--vbn-color-text-muted); font-size: 13px; }
+  .card-demo-list { display: grid; gap: 10px; width: 100%; max-width: 320px; }
+  .card-demo-cover {
+    height: 120px;
+    background: linear-gradient(135deg, #f97316, #db2777 55%, #7c3aed);
   }
-
-  /* "Coming from <verben-card>" demo */
-  .compare { display: flex; flex-direction: column; gap: 8px; max-width: 100%; }
-  .compare > .vbn-card { max-width: 100%; }
-  .compare-label { font: 12px var(--docs-mono, ui-monospace, monospace); color: var(--vbn-color-text-muted); }
-  .filter-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .filter-actions { display: flex; justify-content: flex-end; gap: 8px; }
-}
-
-/* Playground screens shown full width inside a docs page (Vendor Invoices) */
-.docs-playground-screen {
-  margin: 24px 0 8px;
-  color: var(--vbn-color-text);
-}
-
-/* Several files in tabs: long files scroll inside the block */
-.docs-code-tabs pre {
-  max-height: 560px;
-  overflow: auto;
 }
 
 /* ---------- Code block ---------- */
@@ -1210,9 +1171,420 @@
   }
 }
 
-/* Usage section under playground pages */
-.docs-playground-usage {
-  margin-top: 56px;
-  padding-top: 8px;
-  border-top: 1px solid var(--docs-border);
+/* ===================== Playground pages (docs-playground) =====================
+   Like a shadcn block: header, one block with Preview | Code, then sections. */
+
+.docs-pg-header {
+  margin-bottom: 20px;
+}
+
+.docs-pg-block {
+  overflow: hidden;
+  margin-bottom: 8px;
+  border: 1px solid var(--docs-border);
+  border-radius: calc(var(--docs-radius) * 1.5);
+  background: var(--docs-card);
+}
+
+.docs-pg-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--docs-border);
+  background: var(--docs-muted);
+}
+
+/* Segmented control (Preview | Code, viewport sizes) */
+.docs-segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--docs-border);
+  border-radius: calc(var(--docs-radius) + 2px);
+  background: var(--docs-bg);
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 28px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: var(--docs-radius);
+    background: transparent;
+    color: var(--docs-muted-fg);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  button:hover:not(:disabled) {
+    color: var(--docs-fg);
+  }
+
+  button.is-active {
+    background: var(--docs-muted);
+    color: var(--docs-fg);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  }
+
+  button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  button:focus-visible {
+    outline: 2px solid var(--docs-ring);
+    outline-offset: 1px;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.docs-pg-viewports button {
+  padding: 0 8px;
+}
+
+/* The live page */
+.docs-pg-stage {
+  padding: 24px;
+  background:
+    radial-gradient(var(--docs-dot) 1px, transparent 1px) 0 0 / 16px 16px,
+    var(--docs-bg);
+  overflow-x: auto;
+}
+
+.docs-pg-frame {
+  margin: 0 auto;
+  padding: 16px;
+  border-radius: var(--docs-radius);
+  background: var(--vbn-color-background, var(--docs-bg));
+  color: var(--vbn-color-text);
+  transition: max-width 0.25s ease;
+}
+
+/* Code: files on the left, the file on the right */
+.docs-explorer {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  min-height: 420px;
+}
+
+.docs-explorer-files {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 8px;
+  border-right: 1px solid var(--docs-border);
+  background: var(--docs-muted);
+}
+
+.docs-explorer-title {
+  margin: 0 8px 6px;
+  color: var(--docs-muted-fg);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.docs-explorer-file {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: var(--docs-radius);
+  background: transparent;
+  color: var(--docs-muted-fg);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--docs-accent);
+    color: var(--docs-fg);
+  }
+
+  &.is-active {
+    background: var(--docs-bg);
+    color: var(--docs-fg);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--docs-ring);
+    outline-offset: -2px;
+  }
+}
+
+/* Angular file names are long ("vendor-invoices.component.html"): wrap at the dots */
+.docs-explorer-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+}
+
+.docs-explorer-lang {
+  flex: none;
+  min-width: 34px;
+  padding: 1px 0;
+  border-radius: 4px;
+  font-family: var(--docs-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+  background: #64748b;
+
+  &[data-lang='html'] { background: #e34c26; }
+  &[data-lang='ts'] { background: #3178c6; }
+  &[data-lang='css'] { background: #7c3aed; }
+}
+
+.docs-explorer-code {
+  min-width: 0;
+  padding: 12px;
+
+  .docs-code {
+    margin: 0;
+  }
+
+  pre {
+    max-height: 620px;
+    overflow: auto;
+  }
+}
+
+.docs-explorer-note,
+.docs-explorer-loading {
+  margin: 0 0 10px;
+  color: var(--docs-muted-fg);
+  font-size: 13px;
+}
+
+/* Compact (component examples): the files are a row of tabs over the code */
+.docs-explorer.is-compact {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 0;
+
+  .docs-explorer-files {
+    flex-direction: row;
+    gap: 4px;
+    padding: 6px 8px;
+    overflow-x: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--docs-border);
+  }
+
+  .docs-explorer-title {
+    display: none;
+  }
+
+  .docs-explorer-file {
+    flex: none;
+    align-items: center;
+    padding: 5px 10px 5px 6px;
+  }
+
+  .docs-explorer-name {
+    white-space: nowrap;
+  }
+
+  .docs-explorer-code {
+    padding: 0;
+
+    .docs-code {
+      border: 0;
+      border-radius: 0;
+    }
+
+    /* The tab already names the file */
+    .docs-code-header {
+      display: none;
+    }
+  }
+
+  .docs-explorer-note {
+    margin: 0;
+    padding: 10px 16px 0;
+  }
+}
+
+/* Installation: numbered steps on a line (shadcn) */
+.docs-steps {
+  counter-reset: docs-step;
+  margin: 16px 0 0 16px;
+  padding: 0 0 0 30px;
+  border-left: 1px solid var(--docs-border);
+  list-style: none;
+}
+
+.docs-step {
+  position: relative;
+  padding-bottom: 28px;
+
+  &::before {
+    counter-increment: docs-step;
+    content: counter(docs-step);
+    position: absolute;
+    top: -2px;
+    left: -47px;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 4px solid var(--docs-bg);
+    border-radius: 50%;
+    background: var(--docs-muted);
+    color: var(--docs-fg);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+
+  .docs-code {
+    margin-top: 12px;
+  }
+}
+
+.docs-step-title {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Performance: stat cards and notes */
+.docs-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.docs-metric {
+  padding: 16px;
+  border: 1px solid var(--docs-border);
+  border-radius: calc(var(--docs-radius) * 1.5);
+  background: var(--docs-card);
+}
+
+.docs-metric-label {
+  margin: 0 0 10px;
+  color: var(--docs-muted-fg);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.docs-metric-values {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+
+  span {
+    display: flex;
+    flex-direction: column;
+  }
+
+  small {
+    color: var(--docs-muted-fg);
+    font-size: 11.5px;
+  }
+
+  b {
+    font-size: 22px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--docs-muted-fg);
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+
+  .is-after b {
+    color: var(--docs-fg);
+    text-decoration: none;
+  }
+}
+
+.docs-metric-arrow {
+  padding-bottom: 4px;
+  color: var(--docs-muted-fg);
+}
+
+.docs-metric-note {
+  margin: 10px 0 0;
+  color: var(--docs-muted-fg);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.docs-notes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.docs-note {
+  padding: 16px;
+  border: 1px solid var(--docs-border);
+  border-radius: calc(var(--docs-radius) * 1.5);
+
+  h3 {
+    margin: 0 0 6px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    color: var(--docs-muted-fg);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+}
+
+@media (max-width: 760px) {
+  .docs-pg-stage {
+    padding: 12px;
+  }
+
+  .docs-pg-frame {
+    padding: 8px;
+  }
+
+  .docs-explorer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .docs-explorer-files {
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--docs-border);
+  }
+
+  .docs-explorer-title {
+    display: none;
+  }
+
+  .docs-explorer-file {
+    flex: none;
+  }
+
+  .docs-pg-toolbar {
+    flex-wrap: wrap;
+  }
 }

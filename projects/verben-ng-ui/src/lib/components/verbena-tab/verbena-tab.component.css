@@ -1,88 +1,101 @@
+/* Can shrink in a flex row; the tabs then scroll sideways */
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* The colour inputs (backgroundColor, activeTabBgColor, tabColor, textColor,
+   badgeColor) are inline styles, so they still win over everything here. */
+
 .tab-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  
-  .tab-header {
-    display: flex;
-    border-bottom: 1px solid var(--vbn-color-border);
-    background-color: var(--vbn-color-surface-alt);
-  }
-  
-  .tab-item {
-    padding: 12px 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    user-select: none;
-  }
-  
-  .tab-item:hover:not(.active):not(.disabled) {
-    background-color: var(--vbn-color-surface-alt);
-  }
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--vbn-color-border);
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--vbn-color-surface);
+}
 
-  .tab-item.active {
-    border-bottom: 2px solid var(--vbn-color-primary);
-    background-color: var(--vbn-color-surface);
-    color: var(--vbn-color-primary);
-    font-weight: 500;
-  }
+/* The tabs scroll sideways when they don't fit (phones) */
+.tab-header {
+  display: flex;
+  gap: 2px;
+  padding: 0 6px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  border-bottom: 1px solid var(--vbn-color-border);
+  background-color: var(--vbn-color-surface-alt);
+}
 
-  .tab-item.disabled {
-    color: var(--vbn-color-text-muted);
-    cursor: not-allowed;
-  }
+.tab-item {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 12px 13px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  color: var(--vbn-color-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
 
-  .tab-content {
-    padding: 16px;
-    background-color: var(--vbn-color-surface);
-  }
-  
-  /* Animation for tab transitions */
-  .tab-content {
-    animation: fadeIn 0.3s ease;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+.tab-item:hover:not(.active):not(.disabled) {
+  color: var(--vbn-color-text);
+  background-color: var(--vbn-state-hover-bg);
+}
 
-  .tab-container {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--vbn-color-border);
-    border-radius: 5px;
-    overflow: hidden;
+/* Active: normal text colour and a 2px line under it (no layout shift) */
+.tab-item.active {
+  padding-bottom: 11px;
+  border-bottom: 2px solid var(--vbn-color-text);
+  background-color: var(--vbn-color-surface);
+  color: var(--vbn-color-text);
+  font-weight: 600;
+}
+
+.tab-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tab-item:focus-visible {
+  outline: 2px solid var(--vbn-color-border-focus);
+  outline-offset: -2px;
+}
+
+.tab-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  box-sizing: border-box;
+  border-radius: 999px;
+  background-color: var(--vbn-color-error);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.tab-content {
+  padding: 16px;
+  background-color: var(--vbn-color-surface);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
-  .tab-header {
-    display: flex;
-    border-bottom: 1px solid var(--vbn-color-border);
+  to {
+    opacity: 1;
   }
-  
-  .tab-item {
-    padding: 10px 15px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .tab-item:hover {
-    filter: brightness(90%);
-  }
-  
-  .tab-item.active {
-    font-weight: bold;
-  }
-  
-  .tab-item.disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-  
-  .tab-content {
-    padding: 15px;
-  }
-  
+}

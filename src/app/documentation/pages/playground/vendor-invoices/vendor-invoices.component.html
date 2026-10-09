@@ -1,6 +1,6 @@
 <!-- The existing toolbar: toggle, search, filter, sort, create -->
 <verben-data-view
-  [viewState]="{ isSearch: true, isToggle: true, isFilter: true, isSort: true, isCreate: true, isColumn: false, isExport: false, isSelect: false, isImport: false, isExtend: false }"
+  [viewState]="{ isSearch: true, isToggle: true, isFilter: true, isSort: true, isCreate: true }"
   [selectedFilterTableCount]="filterCount"
   [selectedSortCount]="sort === 'newest' ? 0 : 1"
   [create]="creating"
@@ -8,11 +8,11 @@
   (onSearchChange)="search($event.value)"
 >
   <!-- Filter popover -->
-  <vbn-card filter-content class="vi-panel" size="sm" variant="elevated" title="Filter" description="Show only…">
-    <vbn-card-content>
+  <verben-card filter-content class="vi-panel" variant="plain" pd="0" bgColor="var(--vbn-color-surface)" heading="Filter" subheading="Show only…">
+    <div card-body>
       <label class="vi-check" *ngFor="let s of statuses">
         <input type="checkbox" [(ngModel)]="shownStatuses[s]" (ngModelChange)="refresh()" />
-        <vbn-badge [tone]="tone[s]">{{ s }}</vbn-badge>
+        <verbena-badge [text]="s" [bgColor]="badge[s].bg" [textColor]="badge[s].fg" pd="2px 10px" fontSize="12px"></verbena-badge>
       </label>
       <label class="vi-field">
         Vendor
@@ -21,25 +21,25 @@
           <option *ngFor="let v of vendors" [value]="v">{{ v }}</option>
         </select>
       </label>
-    </vbn-card-content>
-    <vbn-card-footer justify="end">
+    </div>
+    <div card-footer class="vi-row vi-row--end">
       <verbena-button styleType="ghost" size="sm" text="Reset" (click)="resetFilters()"></verbena-button>
-    </vbn-card-footer>
-  </vbn-card>
+    </div>
+  </verben-card>
 
   <!-- Sort popover -->
-  <vbn-card sort-content class="vi-panel" size="sm" variant="elevated" title="Sort by">
-    <vbn-card-content>
+  <verben-card sort-content class="vi-panel" variant="plain" pd="0" bgColor="var(--vbn-color-surface)" heading="Sort by">
+    <div card-body>
       <label class="vi-check" *ngFor="let s of sorts">
         <input type="radio" name="vi-sort" [value]="s.value" [(ngModel)]="sort" (ngModelChange)="refresh()" />
         {{ s.label }}
       </label>
-    </vbn-card-content>
-  </vbn-card>
+    </div>
+  </verben-card>
 
   <!-- Create popover -->
-  <vbn-card create-content class="vi-panel" size="sm" variant="elevated" title="New invoice">
-    <vbn-card-content>
+  <verben-card create-content class="vi-panel" variant="plain" pd="0" bgColor="var(--vbn-color-surface)" heading="New invoice">
+    <div card-body>
       <label class="vi-field">
         Vendor
         <select [(ngModel)]="newInvoice.vendor">
@@ -47,17 +47,17 @@
         </select>
       </label>
       <verben-number-input label="Amount" prefix="₦ " [decimalPlaces]="2" [(ngModel)]="newInvoice.amount"></verben-number-input>
-    </vbn-card-content>
-    <vbn-card-footer justify="end">
+    </div>
+    <div card-footer class="vi-row vi-row--end">
       <verbena-button styleType="outline" size="sm" text="Cancel" (click)="creating = false"></verbena-button>
       <verbena-button styleType="secondary" size="sm" text="Create" (click)="create()"></verbena-button>
-    </vbn-card-footer>
-  </vbn-card>
+    </div>
+  </verben-card>
 
   <!-- Card view: invoices, + shows their lines, a click opens the details -->
-  <vbn-card card-content class="vi-board" variant="filled">
-    <vbn-card-content class="vi-layout" [class.has-detail]="selected">
-      <vbn-card-content class="vi-list" [columns]="selected ? 1 : 'auto'">
+  <verben-card card-content class="vi-board" variant="plain" bgColor="var(--vbn-color-surface-alt)">
+    <div card-body class="vi-layout" [class.has-detail]="selected">
+      <div class="vi-list">
         <div class="vi-item" *ngFor="let inv of visible; trackBy: byId">
           <button
             type="button"
@@ -69,58 +69,61 @@
           >
             {{ inv.open ? '−' : '+' }}
           </button>
-          <vbn-card
-            size="sm"
-            interactive
-            tabindex="0"
+          <verben-card
             class="vi-invoice"
-            [class.is-selected]="inv === selected && !selectedLine"
+            variant="plain"
+            pd="0"
+            bgColor="var(--vbn-color-surface)"
+            interactive
+            [selected]="inv === selected && !selectedLine"
             (click)="select(inv)"
             (keydown.enter)="select(inv)"
           >
-            <vbn-card-header [title]="inv.id">
-              <vbn-card-action>{{ inv.vendor }}</vbn-card-action>
-            </vbn-card-header>
-            <vbn-card-footer justify="between">
-              <vbn-amount [value]="inv.total" signed="false" colored="false"></vbn-amount>
-              <vbn-badge [tone]="tone[inv.status]">{{ inv.status }}</vbn-badge>
-            </vbn-card-footer>
+            <div card-header>
+              <div class="vi-row"><b>{{ inv.id }}</b><span>{{ inv.vendor }}</span></div>
+              <div class="vi-row vi-summary">
+                <span>{{ inv.total | currency: 'NGN' : 'symbol-narrow' }}</span>
+                <verbena-badge [text]="inv.status" [bgColor]="badge[inv.status].bg" [textColor]="badge[inv.status].fg" pd="2px 10px" fontSize="12px"></verbena-badge>
+              </div>
+            </div>
             <!-- Lines: cards inside the card -->
-            <vbn-card-content *ngIf="inv.open">
-              <vbn-card
+            <div card-body *ngIf="inv.open" class="vi-lines">
+              <verben-card
                 *ngFor="let line of inv.lines; trackBy: byId"
-                size="sm"
+                variant="plain"
+                pd="0"
+                bgColor="var(--vbn-color-surface-alt)"
                 interactive
-                tabindex="0"
-                class="vi-line"
-                [class.is-selected]="line === selectedLine"
+                [selected]="line === selectedLine"
+                [heading]="line.id"
+                [subheading]="'Product: ' + line.product"
                 (click)="$event.stopPropagation(); select(inv, line)"
                 (keydown.enter)="$event.stopPropagation(); select(inv, line)"
               >
-                <vbn-card-header [title]="line.id" [description]="'Product: ' + line.product"></vbn-card-header>
-                <vbn-card-footer justify="between">
-                  <vbn-amount [value]="line.amount" signed="false" colored="false"></vbn-amount>
-                  <vbn-badge [tone]="tone[line.status]">{{ line.status }}</vbn-badge>
-                </vbn-card-footer>
-              </vbn-card>
-            </vbn-card-content>
-          </vbn-card>
+                <div card-footer class="vi-row">
+                  <span>{{ line.amount | currency: 'NGN' : 'symbol-narrow' }}</span>
+                  <verbena-badge [text]="line.status" [bgColor]="badge[line.status].bg" [textColor]="badge[line.status].fg" pd="2px 10px" fontSize="12px"></verbena-badge>
+                </div>
+              </verben-card>
+            </div>
+          </verben-card>
         </div>
-        <vbn-card-description *ngIf="!visible.length">No invoices match the search or filters.</vbn-card-description>
-      </vbn-card-content>
+        <p class="vi-muted" *ngIf="!visible.length">No invoices match the search or filters.</p>
+      </div>
 
-      <!-- Details of the clicked invoice or line -->
-      <vbn-card *ngIf="selected" class="vi-detail" variant="elevated">
-        <vbn-card-header
-          [title]="selectedLine ? selectedLine.id : selected.id"
-          [description]="selectedLine ? 'Line of ' + selected.id + ' · ' + selected.vendor : selected.vendor + ' · ' + selected.date"
-        >
-          <vbn-card-action>
-            <verbena-button styleType="ghost" size="sm" svg="x-mark" [svgWidth]="16" [svgHeight]="16" aria-label="Close details" (click)="close()"></verbena-button>
-          </vbn-card-action>
-        </vbn-card-header>
+      <!-- Details of the clicked invoice or line: the default card look -->
+      <verben-card *ngIf="selected" class="vi-detail" pd="0" bgColor="var(--vbn-color-surface)">
+        <div card-header class="vi-row">
+          <div>
+            <b>{{ selectedLine ? selectedLine.id : selected.id }}</b>
+            <div class="vi-muted">
+              {{ selectedLine ? 'Line of ' + selected.id + ' · ' + selected.vendor : selected.vendor + ' · ' + selected.date }}
+            </div>
+          </div>
+          <verbena-button styleType="ghost" size="sm" svg="x-mark" [svgWidth]="16" [svgHeight]="16" aria-label="Close details" (click)="close()"></verbena-button>
+        </div>
 
-        <vbn-card-content class="vi-form">
+        <div card-body class="vi-form">
           <verbena-input *ngIf="!selectedLine" label="Vendor" [(ngModel)]="draft.vendor"></verbena-input>
           <ng-container *ngIf="selectedLine">
             <verbena-input label="Product" [(ngModel)]="draft.product"></verbena-input>
@@ -136,47 +139,49 @@
               (click)="draft.status = s"
             ></verbena-button>
           </div>
-        </vbn-card-content>
 
-        <!-- The invoice's lines, as rows -->
-        <vbn-card-content *ngIf="!selectedLine && selected.lines.length">
-          <vbn-card-title>Lines</vbn-card-title>
-          <vbn-card
-            *ngFor="let line of selected.lines; trackBy: byId"
-            variant="ghost"
-            size="sm"
-            interactive
-            class="vi-row"
-            (click)="select(selected, line)"
-          >
-            <vbn-card-header [title]="line.product" [description]="line.id + ' · ' + (line.litres | number) + ' L'">
-              <vbn-card-action>
-                <vbn-amount [value]="line.amount" signed="false" colored="false"></vbn-amount>
-              </vbn-card-action>
-            </vbn-card-header>
-          </vbn-card>
-        </vbn-card-content>
+          <!-- The invoice's lines, as rows -->
+          <ng-container *ngIf="!selectedLine && selected.lines.length">
+            <b class="vi-lines-title">Lines</b>
+            <verben-card
+              *ngFor="let line of selected.lines; trackBy: byId"
+              class="vi-line-row"
+              variant="plain"
+              pd="0"
+              interactive
+              (click)="select(selected, line)"
+              (keydown.enter)="select(selected, line)"
+            >
+              <div card-header class="vi-row">
+                <div>
+                  {{ line.product }}
+                  <div class="vi-muted">{{ line.id }} · {{ line.litres | number }} L</div>
+                </div>
+                <span>{{ line.amount | currency: 'NGN' : 'symbol-narrow' }}</span>
+              </div>
+            </verben-card>
+          </ng-container>
+          <div *ngIf="!selectedLine" class="vi-row vi-total">
+            <span class="vi-muted">Total · {{ selected.lines.length }} {{ selected.lines.length === 1 ? 'line' : 'lines' }}</span>
+            <b>{{ selected.total | currency: 'NGN' : 'symbol-narrow' }}</b>
+          </div>
+        </div>
 
-        <vbn-card-footer *ngIf="!selectedLine" justify="between">
-          <vbn-card-description>Total · {{ selected.lines.length }} {{ selected.lines.length === 1 ? 'line' : 'lines' }}</vbn-card-description>
-          <vbn-amount [value]="selected.total" signed="false" colored="false"></vbn-amount>
-        </vbn-card-footer>
-        <vbn-card-divider></vbn-card-divider>
-        <vbn-card-footer justify="between">
+        <div card-footer class="vi-row">
           <verbena-button styleType="outline" svg="trash" [svgWidth]="16" [svgHeight]="16" text="Delete" (click)="remove()"></verbena-button>
           <span class="vi-actions">
             <verbena-button *ngIf="selectedLine" styleType="ghost" text="Back" (click)="select(selected)"></verbena-button>
             <verbena-button styleType="secondary" text="Save" (click)="save()"></verbena-button>
           </span>
-        </vbn-card-footer>
-      </vbn-card>
-    </vbn-card-content>
-    <ng-container [ngTemplateOutlet]="pager"></ng-container>
-  </vbn-card>
+        </div>
+      </verben-card>
+    </div>
+    <div card-footer class="vi-row vi-row--end"><ng-container [ngTemplateOutlet]="pager"></ng-container></div>
+  </verben-card>
 
   <!-- Table view (the toolbar's toggle) -->
-  <vbn-card table-content class="vi-board" variant="filled">
-    <vbn-card-content class="vi-table-wrap">
+  <verben-card table-content class="vi-board" variant="plain" bgColor="var(--vbn-color-surface-alt)">
+    <div card-body class="vi-table-wrap">
       <table class="vi-table">
         <thead>
           <tr><th>Invoice</th><th>Vendor</th><th>Date</th><th>Lines</th><th class="is-num">Amount</th><th>Status</th></tr>
@@ -187,20 +192,18 @@
             <td>{{ inv.vendor }}</td>
             <td>{{ inv.date }}</td>
             <td>{{ inv.lines.length }}</td>
-            <td class="is-num"><vbn-amount [value]="inv.total" signed="false" colored="false"></vbn-amount></td>
-            <td><vbn-badge [tone]="tone[inv.status]">{{ inv.status }}</vbn-badge></td>
+            <td class="is-num">{{ inv.total | currency: 'NGN' : 'symbol-narrow' }}</td>
+            <td><verbena-badge [text]="inv.status" [bgColor]="badge[inv.status].bg" [textColor]="badge[inv.status].fg" pd="2px 10px" fontSize="12px"></verbena-badge></td>
           </tr>
         </tbody>
       </table>
-    </vbn-card-content>
-    <ng-container [ngTemplateOutlet]="pager"></ng-container>
-  </vbn-card>
+    </div>
+    <div card-footer class="vi-row vi-row--end"><ng-container [ngTemplateOutlet]="pager"></ng-container></div>
+  </verben-card>
 </verben-data-view>
 
 <!-- "37 records loaded · Load more", shared by both views -->
 <ng-template #pager>
-  <vbn-card-footer justify="end">
-    <vbn-card-description>{{ visible.length }} of {{ matching }} records loaded</vbn-card-description>
-    <verbena-button *ngIf="visible.length < matching" styleType="link" text="Load more" (click)="loadMore()"></verbena-button>
-  </vbn-card-footer>
+  <span class="vi-muted">{{ visible.length }} of {{ matching }} records loaded</span>
+  <verbena-button *ngIf="visible.length < matching" styleType="link" text="Load more" (click)="loadMore()"></verbena-button>
 </ng-template>

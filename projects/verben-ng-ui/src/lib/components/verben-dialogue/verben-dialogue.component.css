@@ -87,3 +87,22 @@ right: 0;
 }
 
 
+
+/* Responsive: the sizes are minimums only while the screen has room; the
+   dialog keeps a margin on phones and a drawer is never wider than the screen */
+.modal-content {
+  max-width: calc(100vw - 48px);
+}
+.max-w-sm {
+  min-width: min(400px, calc(100vw - 48px));
+}
+.max-w-md {
+  min-width: min(600px, calc(100vw - 48px));
+}
+.max-w-lg {
+  min-width: min(800px, calc(100vw - 48px));
+}
+.drawer-left,
+.drawer-right {
+  max-width: 100vw;
+}

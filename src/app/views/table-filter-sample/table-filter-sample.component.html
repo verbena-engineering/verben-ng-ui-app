@@ -1,16 +1,7 @@
-<p>table-filter-sample works!</p>
-<p [ngStyle]="{'margin-top':'20px'}"></p>
-<verben-table-filter
- border = '1px solid rgba(212, 160, 7, 1)'
- borderRadius = '10px'
- boxShadow = '2px 2px 2px 0px silver'
- bgColor = 'white'
- width = '420px'
- textColor = 'black'
- pd = '1rem'
- primaryColor="#FFE681"
- secondaryColor="#3479E9"
- tertiaryColor="#404040"
- [filterOptions]="filterArray"
- [maxFilterLength] = "3"
-></verben-table-filter>
+<p class="demo-intro">
+  <code>verben-table-filter</code> builds filters from a field, a condition and
+  a value; the value input follows the field's type (text, number, decimal,
+  date). Saved filters can be ticked, edited or deleted, and Confirm applies
+  the ticked ones. The style inputs still override the default look.
+</p>
+<verben-table-filter width="420px" [filterOptions]="filterArray" [maxFilterLength]="3"></verben-table-filter>

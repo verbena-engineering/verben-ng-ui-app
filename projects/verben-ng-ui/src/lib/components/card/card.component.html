@@ -9,9 +9,20 @@
   [ngClass]="disabled?'disable':''"
   [style.aspect-ratio]="aspectRatio"
   [style.padding]="pd"
+  [class.card--plain]="variant === 'plain'"
+  [class.card--interactive]="interactive"
+  [class.card--selected]="selected"
+  [style.--card-pad-top]="padTop"
+  [style.--card-pad-right]="padRight"
+  [style.--card-pad-left]="padLeft"
   >
     <div class="card-header" *ngIf="hasHeader">
       <ng-content select="[card-header]"></ng-content>
+      <div class="card-heading" *ngIf="heading">{{ heading }}</div>
+      <div class="card-subheading" *ngIf="subheading">{{ subheading }}</div>
+    </div>
+    <div class="card-media">
+      <ng-content select="[card-media]"></ng-content>
     </div>
     <div class="card-body" *ngIf="hasBody">
       <ng-content select="[card-body]"></ng-content>
@@ -20,4 +31,3 @@
       <ng-content select="[card-footer]"></ng-content>
     </div>
   </div>
-  

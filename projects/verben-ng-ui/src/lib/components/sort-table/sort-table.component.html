@@ -7,40 +7,27 @@
   [style.width]="width"
   [style.height]="height"
   [style.padding]="pd"
-  class="sort-wrapper"
+  class="sort-wrapper vbn-panel"
 >
   <!-- Header Section -->
-  <div class="sort-header flex justify-between text-sm">
-    <span class="sort-title font-semibold">
+  <div class="vbn-panel-header">
+    <span class="vbn-panel-title">
       Sort
-      <sup [style.color]="secondaryColor">[{{ countSelectedSorts() }}]</sup>
+      <span class="vbn-panel-count" [style.color]="secondaryColor">{{ countSelectedSorts() }}</span>
     </span>
-    <span
-      [style.color]="secondaryColor"
-      [style.font-size]="'12px'"
-      class="cursor-pointer"
-      (click)="resetSort()"
-    >
+    <button type="button" class="vbn-panel-link" [style.color]="secondaryColor" (click)="resetSort()">
       {{ resetText }}
-    </span>
+    </button>
   </div>
 
-  <hr />
-
   <!-- Sort Options (Scrollable Section) -->
-  <div class="sort-options flex-grow overflow-y-auto my-2">
-    <p class="pd">{{ propertyText }}</p>
+  <div class="sort-options">
+    <p class="vbn-panel-label">{{ propertyText }}</p>
 
-    <div class="flex items-center gap" [style.padding]="'4px 10px'">
-      <label [style.font-size]="'13px'" [style.font-weight]="'500'">
-        <input
-          type="checkbox"
-          [checked]="checkAll"
-          (change)="toggleSelectAll()"
-        />
-        Select All
-      </label>
-    </div>
+    <label class="vbn-panel-row vbn-panel-row--all">
+      <input type="checkbox" [checked]="checkAll" (change)="toggleSelectAll()" />
+      Select All
+    </label>
 
     <div
       *ngFor="let option of visibleSortOptions; let i = index"
@@ -49,32 +36,26 @@
       (dragover)="onDragOver($event)"
       (drop)="onDrop(i, $event)"
       class="sort-option"
+      [class.is-checked]="option.checked"
     >
-      <div [style.font-size]="'14px'" [style.margin-top]="'13px'">
-        <div class="flex items-center gap-md">
-          <verben-svg
-            *ngIf="enableDragAndDrop"
-            fill="var(--vbn-color-text)"
-            [width]="25"
-            class="svg"
-            icon="square-dot"
-          ></verben-svg>
-          <div class="flex items-center gap">
-            <input
-              type="checkbox"
-              [checked]="option.checked"
-              (change)="toggleSort(i)"
-            />
-            <span>{{ option.name }}</span>
-          </div>
-        </div>
+      <div class="sort-option-main">
+        <verben-svg
+          *ngIf="enableDragAndDrop"
+          fill="var(--vbn-color-text-muted)"
+          [width]="18"
+          class="vbn-panel-handle"
+          icon="square-dot"
+        ></verben-svg>
+        <label class="vbn-panel-row">
+          <input type="checkbox" [checked]="option.checked" (change)="toggleSort(i)" />
+          <span>{{ option.name }}</span>
+        </label>
+      </div>
 
-        <!-- Sorting Controls -->
-        <div class="flex items-center gap" [style.margin-left]="'35px'">
-          <label
-            class="flex items-center gap-sm"
-            *ngIf="option.type === 'Number'"
-          >
+      <!-- Sorting Controls: a small segmented choice -->
+      <div class="sort-order" role="radiogroup" [attr.aria-label]="option.name + ' order'">
+        <ng-container *ngIf="option.type === 'Number'">
+          <label class="sort-order-option">
             <input
               type="radio"
               name="sortOrder{{ i }}"
@@ -85,10 +66,7 @@
             />
             1-100
           </label>
-          <label
-            class="flex items-center gap-sm"
-            *ngIf="option.type === 'Number'"
-          >
+          <label class="sort-order-option">
             <input
               type="radio"
               name="sortOrder{{ i }}"
@@ -99,10 +77,9 @@
             />
             100-1
           </label>
-          <label
-            class="flex items-center gap-sm"
-            *ngIf="option.type === 'String' || option.type === 'Date'"
-          >
+        </ng-container>
+        <ng-container *ngIf="option.type === 'String' || option.type === 'Date'">
+          <label class="sort-order-option">
             <input
               type="radio"
               name="sortOrder{{ i }}"
@@ -113,10 +90,7 @@
             />
             A-Z
           </label>
-          <label
-            class="flex items-center gap-sm"
-            *ngIf="option.type === 'String' || option.type === 'Date'"
-          >
+          <label class="sort-order-option">
             <input
               type="radio"
               name="sortOrder{{ i }}"
@@ -127,35 +101,28 @@
             />
             Z-A
           </label>
-        </div>
+        </ng-container>
       </div>
     </div>
 
     <!-- Show More -->
-    <div *ngIf="showMore && hiddenSortOptions.length > 0">
-      <span
-        [style.padding]="'20px 10px 0px 10px'"
-        [style.color]="'var(--vbn-color-text)'"
-        class="cursor-pointer block"
-        (click)="toggleShowMore()"
-      >
-        {{ showMoreText }}
-      </span>
-    </div>
+    <button
+      *ngIf="showMore && hiddenSortOptions.length > 0"
+      type="button"
+      class="vbn-panel-link vbn-panel-more"
+      (click)="toggleShowMore()"
+    >
+      {{ showMoreText }}
+    </button>
   </div>
 
-  <hr />
-
   <!-- Sort Button -->
-  <div class="btn-wrapper mt-2 flex-shrink-0">
+  <div class="vbn-panel-footer">
     <button
-      [style.outline]="'none'"
-      [style.border]="'none'"
-      [style.padding]="'0.2rem 1.6rem'"
+      type="button"
+      class="vbn-panel-primary"
       [style.background-color]="primaryColor"
       [style.color]="tertiaryColor"
-      [style.font-size]="'12px'"
-      [style.font-weight]="'600'"
       (click)="applySort()"
     >
       {{ sortButtonText }}

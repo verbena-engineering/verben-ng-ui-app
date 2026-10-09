@@ -30,6 +30,8 @@ const NUMBER_INPUT_VALUE_ACCESSOR = {
  *  [NI-5] Arrow Up/Down stepping (replaces the native number spinner).
  *  [NI-6] Step rounding to avoid floating point noise (0.1 + 0.2).
  *  [NI-7] valueChange now also fires while typing; keyUp sends a parsed number.
+ *  [NI-8] (2026-10-09) Editing shows no padded decimals, so typing after "0.00"
+ *          or "2,500.00" works; a leading 0 is dropped ("05" → "5").
  */
 @Component({
   selector: 'verben-number-input',
@@ -197,10 +199,14 @@ export class NumberInputComponent
   // While focused, prefix/suffix are hidden so only the number is edited.
   get displayValue(): string {
     const value = Number.isFinite(this.value) ? this.value : 0;
+    // [NI-8] While editing, no padded decimals ("2500.5", not "2500.50"):
+    // padded zeros would sit at the end and block typing there
     const raw =
-      this.decimalPlaces !== undefined
-        ? value.toFixed(this.decimalPlaces)
-        : String(value);
+      this.decimalPlaces === undefined
+        ? String(value)
+        : this.isFocused
+          ? String(Number(value.toFixed(this.decimalPlaces)))
+          : value.toFixed(this.decimalPlaces);
     const formatted = this.formatRaw(raw);
     return this.isFocused ? formatted : `${this.prefix}${formatted}${this.suffix}`;
   }
@@ -216,6 +222,8 @@ export class NumberInputComponent
     const negative = allowNegative && text.trim().startsWith('-');
     let [intPart, ...rest] = text.replace(/[^\d.]/g, '').split('.');
     let fraction = rest.join('');
+    // [NI-8] "05" → "5" (typing after a 0)
+    intPart = intPart.replace(/^0+(?=\d)/, '');
     const hasPoint = text.includes('.') && this.decimalPlaces !== 0;
 
     if (this.decimalPlaces !== undefined) {

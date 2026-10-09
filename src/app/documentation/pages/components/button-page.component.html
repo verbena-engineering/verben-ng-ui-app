@@ -1,45 +1,73 @@
-<docs-page title="Button" description="Displays a button with preset styles, optional icons and a loading state.">
+<docs-page title="Button" description="A button with preset looks and sizes, hover / pressed / focus states, icons and a loading state.">
   <docs-example [code]="code.variants">
     <verbena-button text="Primary" styleType="primary"></verbena-button>
     <verbena-button text="Secondary" styleType="secondary"></verbena-button>
     <verbena-button text="Outline" styleType="outline"></verbena-button>
     <verbena-button text="Yellow outline" styleType="ylw-outline"></verbena-button>
+    <verbena-button text="Ghost" styleType="ghost"></verbena-button>
     <verbena-button text="Danger" styleType="danger"></verbena-button>
+    <verbena-button text="Link" styleType="link"></verbena-button>
   </docs-example>
 
   <h2 class="docs-h2" id="usage">Usage</h2>
   <p class="docs-p">
     Import <code class="docs-inline-code">VerbenaButtonModule</code> from
     <code class="docs-inline-code">verben-ng-ui</code>. Listen with a normal
-    <code class="docs-inline-code">(click)</code>.
+    <code class="docs-inline-code">(click)</code>. The label can be the
+    <code class="docs-inline-code">text</code> input or content between the tags.
+    Hover, pressed and keyboard-focus states come for free and follow dark mode.
   </p>
 
   <h2 class="docs-h2" id="examples">Examples</h2>
+
+  <docs-example title="Sizes" [code]="code.sizes">
+    <verbena-button text="Small" styleType="secondary" size="sm"></verbena-button>
+    <verbena-button text="Medium" styleType="secondary"></verbena-button>
+    <verbena-button text="Large" styleType="secondary" size="lg"></verbena-button>
+  </docs-example>
 
   <docs-example title="With icon" [code]="code.icons">
     <verbena-button text="Add item" styleType="secondary" svg="plus" [svgWidth]="16" [svgHeight]="16"></verbena-button>
     <verbena-button text="Export" styleType="outline" svg="document-arrow-down" svgPosition="right" [svgWidth]="16" [svgHeight]="16"></verbena-button>
   </docs-example>
 
+  <docs-example title="Icon only" description="No text: the button becomes a square. Give it an aria-label." [code]="code.iconOnly">
+    <verbena-button styleType="outline" svg="pencil" [svgWidth]="16" [svgHeight]="16" aria-label="Edit"></verbena-button>
+    <verbena-button styleType="ghost" svg="trash" [svgWidth]="16" [svgHeight]="16" aria-label="Delete"></verbena-button>
+    <verbena-button styleType="secondary" size="sm" svg="plus" [svgWidth]="14" [svgHeight]="14" aria-label="Add"></verbena-button>
+  </docs-example>
+
+  <docs-example title="Label as content" description="Put any markup between the tags." [code]="code.content">
+    <verbena-button styleType="outline">Load <b>more</b></verbena-button>
+    <verbena-button styleType="secondary" svg="check" [svgWidth]="16" [svgHeight]="16">Approve 3 invoices</verbena-button>
+  </docs-example>
+
   <docs-example title="Loading" description="Click to see the spinner for 1.5s." [code]="code.loading" [tsCode]="code.loadingTs">
-    <verbena-button
-      text="Save changes"
-      styleType="secondary"
-      [isLoading]="saving"
-      spinnerSize="14px"
-      spinnerColor="var(--vbn-color-on-primary)"
-      (click)="save()"
-    ></verbena-button>
+    <verbena-button text="Save changes" styleType="secondary" [isLoading]="saving" (click)="save()"></verbena-button>
   </docs-example>
 
   <docs-example title="Disabled" [code]="code.disabled">
     <verbena-button text="Disabled" styleType="secondary" [disable]="true"></verbena-button>
+    <verbena-button text="Disabled" styleType="outline" disabled></verbena-button>
   </docs-example>
 
-  <docs-example title="Custom colors" [code]="code.custom">
-    <verbena-button text="Custom" bgColor="#18181b" textColor="#fafafa" borderRadius="999px" pd="10px 22px"></verbena-button>
+  <docs-example title="Full width" [code]="code.block">
+    <div style="width: 100%; max-width: 320px">
+      <verbena-button text="Continue" styleType="secondary" size="lg" block></verbena-button>
+    </div>
+  </docs-example>
+
+  <docs-example
+    title="Custom colors"
+    description="Per-instance inputs still win over the preset; hover and pressed shades are derived from them."
+    [code]="code.custom"
+  >
+    <verbena-button text="Custom" bgColor="#18181b" textColor="#fafafa" borderRadius="999px" pd="0 22px"></verbena-button>
+    <verbena-button text="Brand blue" bgColor="#2563eb" textColor="#ffffff"></verbena-button>
   </docs-example>
 
   <h2 class="docs-h2" id="api">API</h2>
   <docs-props-table [props]="inputs"></docs-props-table>
+  <h3 class="docs-h3" id="api-theming">Theming</h3>
+  <docs-props-table [props]="tokens"></docs-props-table>
 </docs-page>

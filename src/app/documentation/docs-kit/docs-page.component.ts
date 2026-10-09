@@ -26,6 +26,9 @@ import { DOCS_SEQUENCE, DocsNavItem } from '../docs-registry';
           Unstable · in review
         </span>
         <span *ngIf="current?.status === 'new'" class="docs-pill docs-pill--new">New</span>
+        <span *ngIf="current?.status === 'updated'" class="docs-pill docs-pill--updated">
+          Updated {{ current?.changes?.date }}
+        </span>
         <a *ngIf="current?.playground" class="docs-pill" [routerLink]="current!.playground">
           Playground ↗
         </a>
@@ -33,6 +36,8 @@ import { DOCS_SEQUENCE, DocsNavItem } from '../docs-registry';
           <code>{{ current!.source }}</code>
         </span>
       </div>
+
+      <docs-changes *ngIf="current?.changes as changes" [changes]="changes"></docs-changes>
 
       <ng-content></ng-content>
 

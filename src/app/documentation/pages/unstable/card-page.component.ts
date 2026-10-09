@@ -4,23 +4,6 @@ import { DocsProp } from '../../docs-kit/props-table.component';
 
 type InvoiceStatus = 'Posted' | 'Pending';
 
-interface InvoiceLine {
-  id: string;
-  product: string;
-  amount: number;
-  status: InvoiceStatus;
-}
-
-interface Invoice {
-  id: string;
-  vendor: string;
-  amount: number;
-  status: InvoiceStatus;
-  lines: InvoiceLine[];
-  open?: boolean;
-  showAll?: boolean;
-}
-
 /** A soft gradient "photo" as a PNG data URL, so the examples need no image files */
 function photo(colors: string[], width = 400, height = 400): string {
   if (typeof document === 'undefined') return '';
@@ -56,51 +39,19 @@ interface Comment {
   templateUrl: './card-page.component.html',
 })
 export class UnstableCardPageComponent {
-  // ---------- Vendor invoices (a real screen) ----------
+  // One invoice for the "add parts" example. The full Vendor Invoices screen
+  // lives in the playground: /documentation/vendor-invoices
   tone: Record<InvoiceStatus, VbnTone> = { Posted: 'success', Pending: 'warning' };
-
-  invoices: Invoice[] = [
-    {
-      id: 'VIN-MXTUOE', vendor: 'Dangote', amount: 210_000_000, status: 'Posted',
-      lines: [
-        { id: 'VIL-85N0JB', product: 'Premium Motor Spirit', amount: 53_488_372.09, status: 'Posted' },
-        { id: 'VIL-XUJZ6V', product: 'Premium Motor Spirit', amount: 111_627_906.98, status: 'Posted' },
-        { id: 'VIL-Q4M2PA', product: 'Automotive Gas Oil', amount: 44_883_720.93, status: 'Posted' },
-      ],
-    },
-    {
-      id: 'VIN-2ZDH89', vendor: 'Dangote', amount: 210_000_000, status: 'Posted',
-      lines: [
-        { id: 'VIL-7TRW1C', product: 'Premium Motor Spirit', amount: 150_000_000, status: 'Posted' },
-        { id: 'VIL-M0P2KD', product: 'Dual Purpose Kerosene', amount: 60_000_000, status: 'Posted' },
-      ],
-    },
-    {
-      id: 'VIN-2BOO9K', vendor: 'Dangote', amount: 206_250_000, status: 'Pending',
-      lines: [{ id: 'VIL-HH3K8E', product: 'Automotive Gas Oil', amount: 206_250_000, status: 'Pending' }],
-    },
-    {
-      id: 'VIN-R25V8Q', vendor: 'Dangote', amount: 177_500_000, status: 'Posted',
-      lines: [{ id: 'VIL-ZP0Q4M', product: 'Premium Motor Spirit', amount: 177_500_000, status: 'Posted' }],
-    },
-    { id: 'VIN-V9HEKP', vendor: 'Dangote', amount: 550_000_000, status: 'Posted', lines: [] },
-    { id: 'VIN-AD8Q8Q', vendor: 'Exxon Mobil', amount: 0, status: 'Pending', lines: [] },
-  ];
-
-  /** Demo only: makes three more invoices (an app would call its API) */
-  loadMore(): void {
-    const vendors = ['Dangote', 'Exxon Mobil', 'TotalEnergies'];
-    for (let i = 0; i < 3; i++) {
-      const n = this.invoices.length + 1;
-      this.invoices.push({
-        id: `VIN-${((n * 2_654_435_761) % 36 ** 6).toString(36).toUpperCase().padStart(6, '0')}`,
-        vendor: vendors[n % vendors.length],
-        amount: n * 12_500_000,
-        status: n % 2 ? 'Posted' : 'Pending',
-        lines: [],
-      });
-    }
-  }
+  invoice = {
+    id: 'VIN-MXTUOE',
+    status: 'Posted' as InvoiceStatus,
+    amount: 210_000_000,
+    lines: [
+      { id: 'VIL-85N0JB', product: 'Premium Motor Spirit' },
+      { id: 'VIL-XUJZ6V', product: 'Premium Motor Spirit' },
+      { id: 'VIL-Q4M2PA', product: 'Automotive Gas Oil' },
+    ],
+  };
 
   post = {
     author: 'ada.lovelace',
@@ -197,95 +148,6 @@ export class UnstableCardPageComponent {
 })
 export class FeatureModule {}`,
 
-    invoices: `<vbn-card class="invoices" title="Vendor invoices">
-  <vbn-card-content columns="auto">
-    <div class="invoice" *ngFor="let inv of invoices">
-      <button type="button" class="invoice-toggle" (click)="inv.open = !inv.open"
-        [attr.aria-expanded]="!!inv.open" [attr.aria-label]="(inv.open ? 'Hide' : 'Show') + ' lines of ' + inv.id">
-        {{ inv.open ? '−' : '+' }}
-      </button>
-      <vbn-card variant="filled" size="sm">
-        <vbn-card-header [title]="inv.id">
-          <vbn-card-action>{{ inv.vendor }}</vbn-card-action>
-        </vbn-card-header>
-        <vbn-card-footer justify="between">
-          <vbn-amount [value]="inv.amount" signed="false" colored="false"></vbn-amount>
-          <vbn-badge [tone]="tone[inv.status]">{{ inv.status }}</vbn-badge>
-        </vbn-card-footer>
-        <!-- Invoice lines: cards inside the card -->
-        <vbn-card-content *ngIf="inv.open">
-          <vbn-card *ngFor="let line of inv.lines | slice: 0 : (inv.showAll ? undefined : 2)" size="sm">
-            <vbn-card-header [title]="line.id" [description]="'Product: ' + line.product"></vbn-card-header>
-            <vbn-card-footer justify="between">
-              <vbn-amount [value]="line.amount" signed="false" colored="false"></vbn-amount>
-              <vbn-badge [tone]="tone[line.status]">{{ line.status }}</vbn-badge>
-            </vbn-card-footer>
-          </vbn-card>
-          <vbn-card-description *ngIf="!inv.lines.length">No lines yet</vbn-card-description>
-          <button *ngIf="!inv.showAll && inv.lines.length > 2" type="button" class="link" (click)="inv.showAll = true">
-            See more
-          </button>
-        </vbn-card-content>
-      </vbn-card>
-    </div>
-  </vbn-card-content>
-  <vbn-card-footer justify="end">
-    <vbn-card-description>{{ invoices.length }} records loaded</vbn-card-description>
-    <button type="button" class="link" (click)="loadMore()">Load more</button>
-  </vbn-card-footer>
-</vbn-card>`,
-
-    invoicesTs: `import { VbnTone } from 'verben-ng-ui';
-
-type Status = 'Posted' | 'Pending';
-
-interface InvoiceLine { id: string; product: string; amount: number; status: Status; }
-
-interface Invoice {
-  id: string;
-  vendor: string;
-  amount: number;
-  status: Status;
-  lines: InvoiceLine[];
-  open?: boolean;     // lines shown
-  showAll?: boolean;  // "See more" clicked
-}
-
-tone: Record<Status, VbnTone> = { Posted: 'success', Pending: 'warning' };
-
-invoices: Invoice[] = [
-  {
-    id: 'VIN-MXTUOE', vendor: 'Dangote', amount: 210_000_000, status: 'Posted',
-    lines: [
-      { id: 'VIL-85N0JB', product: 'Premium Motor Spirit', amount: 53_488_372.09, status: 'Posted' },
-      { id: 'VIL-XUJZ6V', product: 'Premium Motor Spirit', amount: 111_627_906.98, status: 'Posted' },
-      { id: 'VIL-Q4M2PA', product: 'Automotive Gas Oil', amount: 44_883_720.93, status: 'Posted' },
-    ],
-  },
-  // …
-];
-
-loadMore() {
-  // Replace with your API call; this demo makes three more
-}`,
-
-    invoicesCss: `.invoices { width: 100%; --vbn-card-min-column: 260px; }
-
-.invoice { display: flex; align-items: flex-start; gap: 6px; }
-.invoice > vbn-card { flex: 1; min-width: 0; }
-
-.invoice-toggle {
-  flex: none; width: 28px; height: 28px; margin-top: 14px;
-  border: 0; border-radius: 6px; background: none;
-  color: inherit; font-size: 20px; line-height: 1; cursor: pointer;
-}
-.invoice-toggle:hover { background: var(--vbn-color-surface-alt); }
-
-.link {
-  padding: 0; border: 0; background: none; cursor: pointer;
-  color: var(--vbn-color-info); font: inherit; text-decoration: underline;
-}
-.invoice .link { margin-top: 10px; }`,
 
     basic: `<vbn-card>
   <vbn-card-header title="Team plan" description="For growing teams">

@@ -59,10 +59,15 @@ cards (comment rows, transaction rows) have no side padding so they line up with
 
 ## Scenarios covered in the docs (lines of template)
 
-Vendor invoices grid with expandable invoice lines, See more and Load more (~35, mirrors the real
-Vendor Invoices screen) · social post (~19) · comment thread with recursive replies (~17) · profile
+Social post (~19) · comment thread with recursive replies (~17) · profile
 with cover, overlapping avatar and stats (~12) · bank transactions with balance (~17) · order with
 side-by-side sub-cards and a third nesting level (~23).
+
+**A real screen:** the docs app's Playground → **Vendor Invoices** (`/documentation/vendor-invoices`, marked
+unstable) rebuilds the app's invoices screen with these cards inside the stable `<verben-data-view>` toolbar:
+search, filter / sort / create popovers (each a card), invoice cards with + for their lines (cards inside
+cards), click for a details card (form, lines, Delete / Save), table view, "N of M records loaded · Load more".
+Its Usage tabs show the screen's real HTML and CSS. Source: `src/app/documentation/pages/playground/vendor-invoices/`.
 
 ## How it is built
 
@@ -77,6 +82,17 @@ side-by-side sub-cards and a third nesting level (~23).
   tokens (`--vbn-color-error-bg` is yellow in the default theme).
 - Uses CSS `:has()` (header with/without avatar) and a container query (narrow header); both are
   supported in current Chrome, Edge, Safari and Firefox.
+
+## Performance
+
+- Parts are standalone `OnPush` components whose template is just `<ng-content>`; they only set a class on their
+  own element, so a change-detection check has nothing to compare inside them. `vbn-amount` / `vbn-avatar` compute in
+  `ngOnChanges`, not per check.
+- Layout (auto-fill columns, narrow header, list ↔ details) is CSS (grid, `:has()`, container queries): no JS on resize.
+- Trade-off: a card is a few small components, so a full check of a screen of cards touches more bindings than plain
+  `<div>`s. Keep screens `OnPush`, track lists by id and page long lists. Measured on the Vendor Invoices playground
+  (`#performance`): a check from elsewhere in the app skips the screen (0.20 ms page total vs 1.16 ms for Card Data
+  View with 48 items); a check of the screen itself is 1.40 ms vs 0.56 ms; 7 vs 21 elements per card.
 
 ## Decisions to confirm in review
 

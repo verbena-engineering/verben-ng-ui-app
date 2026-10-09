@@ -1,5 +1,30 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, booleanAttribute } from '@angular/core';
 
+export type VerbenaButtonStyle =
+  | 'primary'
+  | 'secondary'
+  | 'danger'
+  | 'small'
+  | 'outline'
+  | 'grey'
+  | 'ylw-outline'
+  | 'ghost'
+  | 'link';
+
+export type VerbenaButtonSize = 'sm' | 'md' | 'lg';
+
+/**
+ * <verbena-button>: preset looks (styleType) and sizes with hover, pressed,
+ * keyboard-focus and loading states.
+ *
+ *   <verbena-button text="Save" styleType="secondary"></verbena-button>
+ *   <verbena-button styleType="outline" size="sm" svg="plus">Add line</verbena-button>
+ *
+ * The look lives in CSS (verbena-button.component.css) and the --vbn-btn-*
+ * theme tokens. The per-instance inputs (bgColor, textColor, border, pd…)
+ * still win over the preset; they are passed as CSS custom properties, so
+ * the hover and pressed shades are derived from them too.
+ */
 @Component({
   selector: 'verbena-button',
   templateUrl: './verbena-button.component.html',
@@ -8,11 +33,35 @@ import { Component, Input } from '@angular/core';
 export class VerbenaButtonComponent {
   @Input() type: string | undefined;
   @Input() text: string = '';
+  /** Preset look. Colors come from the --vbn-btn-* theme tokens */
+  @Input() styleType: VerbenaButtonStyle = 'primary';
+  /** Height: sm 32px · md 36px · lg 44px */
+  @Input() size: VerbenaButtonSize = 'md';
+  /** Fill the width of the parent */
+  @Input({ transform: booleanAttribute }) block = false;
+  @Input({ transform: booleanAttribute }) disable: boolean = false;
+  /** Same as disable */
+  @Input({ transform: booleanAttribute }) disabled = false;
+  @Input() isLoading: any;
+  @Input() spinnerSize: any;
+  @Input() spinnerColor: any;
+
+  // ---- Icons: an icon from the library set (svg) or a Material Symbol (useIcon + icon) ----
+  @Input() svg: string = '';
+  @Input() svgPosition: 'left' | 'right' = 'left';
+  @Input() svgWidth: number = 20;
+  @Input() svgHeight: number = 20;
+  @Input() svgSize: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' = 'md';
+  /** Icon color. Unset = the text color, so icons follow hover and dark mode */
+  @Input() svgColor: string = '';
   @Input() icon: string = '';
   @Input() useIcon: boolean = false;
-
-  @Input() svgPosition: 'left' | 'right' = 'left';
   @Input() iconPosition: 'left' | 'right' = 'left';
+  @Input() iconColor: string = '';
+  @Input() variant: 'outlined' | 'rounded' | 'sharp' = 'outlined';
+  @Input() weight: number = 400;
+
+  // ---- Per-instance overrides (win over the preset) ----
   @Input() bgColor?: string = '';
   @Input() textColor?: string = '';
   @Input() border: string = '';
@@ -20,96 +69,15 @@ export class VerbenaButtonComponent {
   @Input() pd: string = '';
   @Input() width: string = '';
   @Input() height: string = '';
-  @Input() fontSize: string = '14px';
-  @Input() fontWeight: string = '500';
-  @Input() disable: boolean = false;
-  @Input() svgSize: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' = 'md';
-  @Input() weight: number = 400;
-  @Input() variant: 'outlined' | 'rounded' | 'sharp' = 'outlined';
-  @Input() styleType:
-    | 'primary'
-    | 'secondary'
-    | 'danger'
-    | 'small'
-    | 'outline'
-    | 'grey'
-    | 'ylw-outline' = 'primary'; // Predefined styles
+  @Input() fontSize: string = '';
+  @Input() fontWeight: string = '';
 
-  @Input() svg: string = '';
-  @Input() svgWidth: number = 20;
-  @Input() svgHeight: number = 20;
-  @Input() iconColor: string = '';
-  @Input() svgColor: string = '';
+  /** Extra class on the inner <button> */
+  @Input() buttonClass: string = '';
+  /** Extra class on the label */
+  @Input() buttonTextClass: string = '';
 
-  @Input() buttonClass: string = ''; // Custom class for button
-  @Input() buttonTextClass: string = ''; // Custom class for button
-  @Input() isLoading: any;
-  @Input() spinnerSize: any;
-  @Input() spinnerColor: any;
-
-  // Defaults resolve to theme tokens (see styles/theme.css). The color @Inputs
-  // remain optional per-instance overrides that take precedence over the token.
-  get buttonStyles() {
-    switch (this.styleType) {
-      case 'primary':
-        return {
-          bgColor: this.bgColor || 'var(--vbn-btn-primary-bg)',
-          textColor: this.textColor || 'var(--vbn-btn-primary-fg)',
-          border: this.border || 'none',
-          borderRadius: this.borderRadius || 'var(--vbn-radius-sm)',
-          pd: this.pd || '10px 15px',
-        };
-      case 'secondary':
-        return {
-          bgColor: this.bgColor || 'var(--vbn-btn-secondary-bg)',
-          textColor: this.textColor || 'var(--vbn-btn-secondary-fg)',
-          border: this.border || 'none',
-          borderRadius: this.borderRadius || 'var(--vbn-radius-sm)',
-          pd: this.pd || '10px 15px',
-        };
-      case 'danger':
-        return {
-          bgColor: this.bgColor || 'var(--vbn-btn-danger-bg)',
-          textColor: this.textColor || 'var(--vbn-btn-danger-fg)',
-          border: this.border || 'none',
-          borderRadius: this.borderRadius || 'var(--vbn-radius-sm)',
-          pd: this.pd || '8px 10px',
-        };
-      case 'small':
-        return {
-          bgColor: this.bgColor || 'var(--vbn-btn-small-bg)',
-          textColor: this.textColor || 'var(--vbn-btn-small-fg)',
-          border: this.border || '1px solid var(--vbn-color-border)',
-          borderRadius: this.borderRadius || '7px',
-          pd: this.pd || '0px 10px',
-        };
-
-      case 'outline':
-        return {
-          bgColor: this.bgColor || 'none',
-          textColor: this.textColor || 'var(--vbn-btn-outline-fg)',
-          border: this.border || '1px solid var(--vbn-btn-outline-border)',
-          borderRadius: this.borderRadius || 'var(--vbn-radius)',
-          pd: this.pd || '0px 8px',
-        };
-      case 'ylw-outline':
-        return {
-          bgColor: this.bgColor || 'var(--vbn-btn-ylw-outline-bg)',
-          textColor: this.textColor || 'var(--vbn-btn-ylw-outline-fg)',
-          border: this.border || '1px solid var(--vbn-btn-ylw-outline-border)',
-          borderRadius: this.borderRadius || 'var(--vbn-radius)',
-          pd: this.pd || '10px 15px',
-        };
-      case 'grey':
-        return {
-          bgColor: this.bgColor || 'none',
-          textColor: this.textColor || 'var(--vbn-btn-grey-fg)',
-          border: this.border || '2px solid var(--vbn-color-border)',
-          borderRadius: this.borderRadius || 'var(--vbn-radius-sm)',
-          pd: this.pd || '10px 15px',
-        };
-      default:
-        return {};
-    }
+  get isDisabled(): boolean {
+    return this.disable || this.disabled || !!this.isLoading;
   }
 }

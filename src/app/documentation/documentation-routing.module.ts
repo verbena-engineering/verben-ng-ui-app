@@ -21,6 +21,7 @@ import { TextareaPageComponent } from './pages/components/textarea-page.componen
 import { TimePickerPageComponent } from './pages/components/time-picker-page.component';
 import { TooltipPageComponent } from './pages/components/tooltip-page.component';
 import { UnstableCardPageComponent } from './pages/unstable/card-page.component';
+import { VendorInvoicesPageComponent } from './pages/playground/vendor-invoices/vendor-invoices-page.component';
 
 const title = (page: string) => `${page} · verben-ng-ui`;
 
@@ -62,6 +63,8 @@ const routes: Routes = [
 
 
       // ---- Playground: the original test pages, URLs unchanged ----
+      // ⚠️ Unstable: a full screen built with the composable card
+      { path: 'vendor-invoices', component: VendorInvoicesPageComponent, title: title('Vendor Invoices') },
       {
         path: 'data-table',
         loadChildren: () =>

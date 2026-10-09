@@ -94,15 +94,15 @@
   >
     <vbn-card width="22rem" pd="16px" borderRadius="1rem">
       <div card-header class="filter-head">
-        <b>{{ invoices[0].id }}</b>
-        <vbn-badge [tone]="tone[invoices[0].status]">{{ invoices[0].status }}</vbn-badge>
+        <b>{{ invoice.id }}</b>
+        <vbn-badge [tone]="tone[invoice.status]">{{ invoice.status }}</vbn-badge>
       </div>
       <div card-body>
-        <vbn-card *ngFor="let line of invoices[0].lines" size="sm" [title]="line.id" [description]="'Product: ' + line.product"></vbn-card>
+        <vbn-card *ngFor="let line of invoice.lines" size="sm" [title]="line.id" [description]="'Product: ' + line.product"></vbn-card>
       </div>
       <vbn-card-footer justify="between">
         <vbn-card-description>Total</vbn-card-description>
-        <vbn-amount [value]="invoices[0].amount" signed="false" colored="false"></vbn-amount>
+        <vbn-amount [value]="invoice.amount" signed="false" colored="false"></vbn-amount>
       </vbn-card-footer>
     </vbn-card>
   </docs-example>
@@ -112,52 +112,15 @@
 
   <h2 class="docs-h2" id="examples">Examples</h2>
 
-  <docs-example
-    title="Vendor invoices"
-    description="A real screen: a grid of invoices; + opens an invoice's lines as cards inside its card. Try + on the first one, then See more and Load more."
-    [code]="code.invoices"
-    [tsCode]="code.invoicesTs"
-    [cssCode]="code.invoicesCss"
-    align="start"
-  >
-    <vbn-card class="invoices" title="Vendor invoices">
-      <vbn-card-content columns="auto">
-        <div class="invoice" *ngFor="let inv of invoices">
-          <button type="button" class="invoice-toggle" (click)="inv.open = !inv.open"
-            [attr.aria-expanded]="!!inv.open" [attr.aria-label]="(inv.open ? 'Hide' : 'Show') + ' lines of ' + inv.id">
-            {{ inv.open ? '−' : '+' }}
-          </button>
-          <vbn-card variant="filled" size="sm">
-            <vbn-card-header [title]="inv.id">
-              <vbn-card-action>{{ inv.vendor }}</vbn-card-action>
-            </vbn-card-header>
-            <vbn-card-footer justify="between">
-              <vbn-amount [value]="inv.amount" signed="false" colored="false"></vbn-amount>
-              <vbn-badge [tone]="tone[inv.status]">{{ inv.status }}</vbn-badge>
-            </vbn-card-footer>
-            <!-- Invoice lines: cards inside the card -->
-            <vbn-card-content *ngIf="inv.open">
-              <vbn-card *ngFor="let line of inv.lines | slice: 0 : (inv.showAll ? undefined : 2)" size="sm">
-                <vbn-card-header [title]="line.id" [description]="'Product: ' + line.product"></vbn-card-header>
-                <vbn-card-footer justify="between">
-                  <vbn-amount [value]="line.amount" signed="false" colored="false"></vbn-amount>
-                  <vbn-badge [tone]="tone[line.status]">{{ line.status }}</vbn-badge>
-                </vbn-card-footer>
-              </vbn-card>
-              <vbn-card-description *ngIf="!inv.lines.length">No lines yet</vbn-card-description>
-              <button *ngIf="!inv.showAll && inv.lines.length > 2" type="button" class="link" (click)="inv.showAll = true">
-                See more
-              </button>
-            </vbn-card-content>
-          </vbn-card>
-        </div>
-      </vbn-card-content>
-      <vbn-card-footer justify="end">
-        <vbn-card-description>{{ invoices.length }} records loaded</vbn-card-description>
-        <button type="button" class="link" (click)="loadMore()">Load more</button>
-      </vbn-card-footer>
-    </vbn-card>
-  </docs-example>
+  <div class="docs-callout">
+    <span>🧾</span>
+    <span>
+      <strong>See it in a real screen:</strong> the
+      <a routerLink="/documentation/vendor-invoices"><u>Vendor Invoices playground</u></a> builds the app's
+      invoices screen from these cards inside the existing data view toolbar (search, filter, sort, + for lines,
+      click for details, load more), with its full code.
+    </span>
+  </div>
 
   <docs-example title="Social post" description="Instagram-style: header, edge-to-edge photo, actions, caption." [code]="code.post">
     <vbn-card size="sm">

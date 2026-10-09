@@ -1,86 +1,56 @@
 <button
-  [ngStyle]="{
-    'background-color': buttonStyles.bgColor,
-    color: buttonStyles.textColor,
-    border: buttonStyles.border,
-    'border-radius': buttonStyles.borderRadius,
-    padding: buttonStyles.pd,
-    width: width,
-    height: height,
-    'font-size': fontSize,
-    display: 'flex',
-    'align-items': 'center',
-    'justify-content': 'center',
-    cursor: isLoading ? 'not-allowed' : 'pointer',
-    gap: '6px',
-  }"
-  [type]="type || 'button'"
-  [disabled]="disable || isLoading"
-  class="verbena-button {{ buttonClass }}"
+  [attr.type]="type || 'button'"
+  class="verbena-button vbn-btn vbn-btn--{{ styleType }} vbn-btn--{{ size }} {{ buttonClass }}"
+  [class.vbn-btn--block]="block"
+  [class.is-loading]="isLoading"
+  [disabled]="isDisabled"
+  [attr.aria-busy]="isLoading ? true : null"
+  [style.--_bg]="bgColor || null"
+  [style.--_fg]="textColor || null"
+  [style.--_border]="border || null"
+  [style.--_radius]="borderRadius || null"
+  [style.--_pad]="pd || null"
+  [style.--_h]="height || null"
+  [style.width]="width || null"
+  [style.height]="height || null"
+  [style.font-size]="fontSize || null"
+  [style.font-weight]="fontWeight || null"
 >
-  <!-- Loading Spinner -->
-  <ng-container *ngIf="isLoading">
-    <div
-      class="loading-spinner"
-      [ngStyle]="{
-        width: spinnerSize,
-        height: spinnerSize,
-        'border-color': spinnerColor,
-        'border-top-color': 'transparent',
-      }"
-    ></div>
-    <span
-      *ngIf="text"
-      class="{{ buttonTextClass }}"
-      [ngStyle]="{ 'font-size': fontSize, 'font-weight': fontWeight }"
-      >{{ text }}</span
-    >
-  </ng-container>
+  <span
+    *ngIf="isLoading"
+    class="vbn-btn-spinner"
+    aria-hidden="true"
+    [style.width]="spinnerSize || null"
+    [style.height]="spinnerSize || null"
+    [style.--_spin]="spinnerColor || null"
+  ></span>
 
-  <ng-container *ngIf="!isLoading">
-    <ng-container *ngIf="!useIcon && svg && svgPosition === 'left'">
-      <verben-svg
-        [icon]="svg"
-        [width]="svgWidth"
-        [height]="svgHeight"
-        [size]="svgSize"
-        [stroke]="svgColor"
-      ></verben-svg>
-    </ng-container>
-    <ng-container *ngIf="useIcon && icon && iconPosition === 'left'">
-      <verbena-icon
-        [icon]="icon"
-        [variant]="variant"
-        [size]="svgSize"
-        [weight]="weight"
-        [color]="svgColor"
-      ></verbena-icon>
-    </ng-container>
+  <ng-container *ngIf="!isLoading" [ngTemplateOutlet]="iconTpl" [ngTemplateOutletContext]="{ $implicit: 'left' }"></ng-container>
 
-    <span
-      *ngIf="text"
-      class="{{ buttonTextClass }}"
-      [ngStyle]="{ 'font-size': fontSize, 'font-weight': fontWeight }"
-      >{{ text }}</span
-    >
+  <span *ngIf="text" class="vbn-btn-label {{ buttonTextClass }}">{{ text }}</span>
+  <!-- Projected label: <verbena-button>Save</verbena-button> -->
+  <span class="vbn-btn-content"><ng-content></ng-content></span>
 
-    <ng-container *ngIf="!useIcon && svg && svgPosition === 'right'">
-      <verben-svg
-        [icon]="svg"
-        [width]="svgWidth"
-        [height]="svgHeight"
-        [size]="svgSize"
-        [stroke]="svgColor"
-      ></verben-svg>
-    </ng-container>
-    <ng-container *ngIf="useIcon && icon && iconPosition === 'right'">
-      <verbena-icon
-        [icon]="icon"
-        [variant]="variant"
-        [size]="svgSize"
-        [weight]="weight"
-        [color]="svgColor"
-      ></verbena-icon>
-    </ng-container>
-  </ng-container>
+  <ng-container *ngIf="!isLoading" [ngTemplateOutlet]="iconTpl" [ngTemplateOutletContext]="{ $implicit: 'right' }"></ng-container>
 </button>
+
+<ng-template #iconTpl let-side>
+  <verben-svg
+    *ngIf="!useIcon && svg && svgPosition === side"
+    class="vbn-btn-icon"
+    [icon]="svg"
+    [width]="svgWidth"
+    [height]="svgHeight"
+    [size]="svgSize"
+    [stroke]="svgColor || 'currentColor'"
+  ></verben-svg>
+  <verbena-icon
+    *ngIf="useIcon && icon && iconPosition === side"
+    class="vbn-btn-icon"
+    [icon]="icon"
+    [variant]="variant"
+    [size]="svgSize"
+    [weight]="weight"
+    [color]="svgColor || iconColor"
+  ></verbena-icon>
+</ng-template>

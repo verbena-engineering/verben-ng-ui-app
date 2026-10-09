@@ -28,6 +28,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   navOpen = false;
   isDark = false;
   isWide = false;
+  /** Current path without query / hash, for the playground Usage section */
+  currentPath = '';
   toc: TocEntry[] = [];
   activeId = '';
 
@@ -97,6 +99,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   private onRouteChange(url: string): void {
     const path = url.split(/[?#]/)[0];
+    this.currentPath = path;
     this.navOpen = false;
     // The home grid and the old test pages (own layouts) use the full width
     this.isWide =

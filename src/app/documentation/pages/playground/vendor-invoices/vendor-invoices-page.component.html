@@ -1,0 +1,42 @@
+<docs-page
+  title="Vendor Invoices"
+  section="Playground"
+  description="A full screen built with the composable card inside the existing data view toolbar: search, filter, sort, create, + for invoice lines, click for details, load more."
+>
+  <div class="docs-callout is-warning">
+    <span>⚠️</span>
+    <span>
+      <strong>Unstable.</strong> The cards come from <code class="docs-inline-code">UnstableCardModule</code>, which is
+      still in team review (<a routerLink="/documentation/unstable/card"><u>Card (composable)</u></a>). The toolbar is the
+      stable <code class="docs-inline-code">&lt;verben-data-view&gt;</code>. The data is generated in the component.
+    </span>
+  </div>
+
+  <div class="docs-playground-screen">
+    <app-vendor-invoices></app-vendor-invoices>
+  </div>
+
+  <h2 class="docs-h2" id="usage">Usage</h2>
+  <p class="docs-p">How the screen is put together, then its code.</p>
+  <docs-props-table [props]="anatomy" kind="output" [headings]="['Region', 'Built with', 'What it does']"></docs-props-table>
+
+  <h3 class="docs-h3" id="usage-module">Module</h3>
+  <docs-code-block [code]="setup" lang="ts" filename="invoices.module.ts"></docs-code-block>
+
+  <h3 class="docs-h3" id="usage-code">Component</h3>
+  <p class="docs-p">The real files of the screen above. Each one is downloaded when you open its tab.</p>
+  <docs-code-tabs [files]="files"></docs-code-tabs>
+
+  <h2 class="docs-h2" id="performance">Performance</h2>
+  <p class="docs-p">
+    The same screen exists in the app as <a routerLink="/documentation/card-data-view"><u>Card Data View</u></a>.
+    What is different here, and why it does less work:
+  </p>
+  <docs-props-table [props]="comparison" [headings]="['', 'Card Data View → here', 'Here', 'Why it matters']"></docs-props-table>
+
+  <h3 class="docs-h3" id="performance-measured">Measured</h3>
+  <docs-props-table [props]="measured" [headings]="['', 'Card Data View', 'Vendor Invoices', 'What it means']"></docs-props-table>
+
+  <h3 class="docs-h3" id="performance-inside">Inside the components</h3>
+  <docs-props-table [props]="inside" kind="output" [headings]="['Component', 'How', 'Why it matters']"></docs-props-table>
+</docs-page>

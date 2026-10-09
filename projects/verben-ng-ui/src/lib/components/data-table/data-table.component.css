@@ -4,3 +4,12 @@
   max-height: 600px; /* or as needed */
   overflow: auto;
 }
+
+/* Responsive: a table wider than the screen scrolls sideways inside the
+   component instead of widening the page (dropdowns and date pickers in
+   cells open in overlays, so they are not clipped) */
+:host {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}

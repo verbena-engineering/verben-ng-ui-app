@@ -133,11 +133,7 @@
   <div class="docs-grid">
     <a class="docs-card" *ngFor="let item of unstable" [routerLink]="item.route">
       <div class="docs-card-preview" inert aria-hidden="true">
-        <vbn-card size="sm" style="width: 200px">
-          <vbn-card-header avatar title="Ada Lovelace" description="Lagos">
-            <vbn-card-action><vbn-amount [value]="25000"></vbn-amount></vbn-card-action>
-          </vbn-card-header>
-        </vbn-card>
+        <span class="docs-tag-unstable">{{ item.title }}</span>
       </div>
       <div class="docs-card-body">
         <h3>{{ item.title }} <span class="docs-tag-unstable">unstable</span></h3>

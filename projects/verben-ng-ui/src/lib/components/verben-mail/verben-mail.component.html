@@ -13,7 +13,6 @@
     <button
       type="submit"
       [style.background-color]="primaryColor"
-      [style.padding]="'0px 10px'"
       [ngClass]="{
         disabled: mailForm.invalid,
         enabled: !mailForm.invalid
@@ -45,7 +44,7 @@
               [required]="true"
               [invalidMessage]="toEmailError || 'email must be provided'"
               (onChange)="onToChange()"
-              formControlName="Groups"
+              formControlName="toEmails"
               [max]="max"
               [ngModel]="toEmails"
             >
@@ -117,8 +116,8 @@
 
         <!-- Email Body -->
 
-        <hr [style.color]="'var(--vbn-color-border)'" />
-        <div class="form-element quill" [style.margin-top]="'30px'">
+        <hr />
+        <div class="form-element quill" [style.margin-top]="'16px'">
           <div *ngIf="isRichText; else textArea">
             <ng-content select="[rich-text]">widget should appear here </ng-content>
           </div>

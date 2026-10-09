@@ -1,5 +1,5 @@
 <docs-page title="Input" description="A text field with label, validation messages, password toggle and text formatting.">
-  <docs-example [code]="snippets.basic" direction="column">
+  <docs-example responsive [code]="snippets.basic" direction="column">
     <div class="docs-stack">
       <verbena-input label="Email" type="email" placeHolder="name@company.com" [(ngModel)]="email"></verbena-input>
       <span class="docs-output">email: "{{ email }}"</span>
@@ -16,13 +16,13 @@
 
   <h2 class="docs-h2" id="examples">Examples</h2>
 
-  <docs-example title="Password" [code]="snippets.password">
+  <docs-example responsive title="Password" [code]="snippets.password">
     <div class="docs-stack">
       <verbena-input label="Password" type="password" placeHolder="At least 8 characters" [passwordToggle]="true" [(ngModel)]="password"></verbena-input>
     </div>
   </docs-example>
 
-  <docs-example title="Validation" description="Errors appear as you type; clear the field to see the custom required message." [code]="snippets.validation">
+  <docs-example responsive title="Validation" description="Errors appear as you type; clear the field to see the custom required message." [code]="snippets.validation">
     <div class="docs-stack">
       <verbena-input
         label="Username"
@@ -35,13 +35,13 @@
     </div>
   </docs-example>
 
-  <docs-example title="Capitalization" [code]="snippets.capitalization">
+  <docs-example responsive title="Capitalization" [code]="snippets.capitalization">
     <div class="docs-stack">
       <verbena-input label="Voucher code" placeHolder="Typed text becomes uppercase" capitalization="uppercase" [(ngModel)]="code"></verbena-input>
     </div>
   </docs-example>
 
-  <docs-example title="Disabled and read-only" [code]="snippets.disabled">
+  <docs-example responsive title="Disabled and read-only" [code]="snippets.disabled">
     <div class="docs-stack">
       <verbena-input label="Company" value="Verbena Logic" [disabled]="true"></verbena-input>
       <verbena-input label="Reference" value="INV-0042" [readOnly]="true"></verbena-input>

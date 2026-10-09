@@ -1,0 +1,177 @@
+/* Shared look of the toolbar panels: Sort, Filter and Columns.
+   The panels' inputs (bgColor, border, borderRadius, boxShadow, pd, width,
+   textColor, primaryColor, secondaryColor, tertiaryColor) are inline styles,
+   so when they are passed they still win over everything here. */
+
+.vbn-panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%; /* width="400px" never wider than the screen */
+  padding: 14px 16px;
+  border: 1px solid var(--vbn-color-border);
+  border-radius: 10px;
+  background: var(--vbn-color-surface);
+  box-shadow: var(--vbn-shadow-md), 0 0 0 1px rgb(0 0 0 / 0.02);
+  color: var(--vbn-color-text);
+  font-family: var(--vbn-font-family, inherit);
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.vbn-panel input[type='checkbox'],
+.vbn-panel input[type='radio'] {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: var(--vbn-color-border-focus);
+  cursor: pointer;
+}
+
+/* Header: title + count on the left, Reset on the right */
+.vbn-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--vbn-color-border);
+}
+
+.vbn-panel-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.vbn-panel-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  box-sizing: border-box;
+  border-radius: 999px;
+  background: var(--vbn-color-surface-alt);
+  box-shadow: inset 0 0 0 1px var(--vbn-color-border);
+  color: var(--vbn-color-text-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.vbn-panel-label {
+  margin: 6px 0 2px;
+  color: var(--vbn-color-text-muted);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* A checkbox with its text; the whole row is clickable */
+.vbn-panel-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.vbn-panel-row:hover {
+  background: var(--vbn-state-hover-bg);
+}
+
+.vbn-panel-row--all {
+  font-weight: 500;
+}
+
+.vbn-panel-handle {
+  flex: none;
+  cursor: grab;
+  opacity: 0.7;
+}
+
+/* Text buttons: Reset, Show more, + Add */
+.vbn-panel-link {
+  padding: 4px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--vbn-color-border-focus);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.vbn-panel-link:hover:not(:disabled) {
+  background: var(--vbn-state-hover-bg);
+}
+
+.vbn-panel-link:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.vbn-panel-more {
+  align-self: flex-start;
+  margin-top: 6px;
+}
+
+/* Footer with the main action */
+.vbn-panel-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 12px;
+  margin-top: 8px;
+  border-top: 1px solid var(--vbn-color-border);
+}
+
+.vbn-panel-primary {
+  height: 32px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--vbn-color-primary);
+  color: var(--vbn-color-on-primary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+.vbn-panel-primary:hover:not(:disabled) {
+  filter: brightness(0.96);
+}
+
+.vbn-panel-primary:active:not(:disabled) {
+  filter: brightness(0.9);
+}
+
+.vbn-panel-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.vbn-panel button:focus-visible,
+.vbn-panel-row:has(input:focus-visible) {
+  outline: 2px solid var(--vbn-color-border-focus);
+  outline-offset: 1px;
+}
+
+/* Scrollable list in the middle */
+.vbn-panel-scroll {
+  overflow-y: auto;
+  max-height: calc(32rem - 8rem);
+  margin-right: -8px;
+  padding-right: 8px;
+}

@@ -1,309 +1,95 @@
-<div
-  [ngStyle]="{
-    'margin': '40px'
-  }"
->
+<div class="bb">
+  <!-- ---------- Buttons ---------- -->
+  <section class="bb-section">
+    <h2 class="bb-title">Buttons</h2>
 
-<!-- Buttons with different styles and icons -->
-<h2
-  [ngStyle]="{
-    'font-size': '35px',
-    'font-weight':'700',
-    'padding-bottom':'20px'
-  }"
->Custom Buttons</h2>
+    <p class="bb-label">Looks (styleType)</p>
+    <div class="bb-row">
+      <verbena-button text="Primary" styleType="primary"></verbena-button>
+      <verbena-button text="Secondary" styleType="secondary"></verbena-button>
+      <verbena-button text="Outline" styleType="outline"></verbena-button>
+      <verbena-button text="Yellow outline" styleType="ylw-outline"></verbena-button>
+      <verbena-button text="Grey" styleType="grey"></verbena-button>
+      <verbena-button text="Ghost" styleType="ghost"></verbena-button>
+      <verbena-button text="Link" styleType="link"></verbena-button>
+      <verbena-button text="Delete" styleType="danger" svg="trash"></verbena-button>
+    </div>
 
-<div
-  [ngStyle]="{
-    'display': 'flex',
-    'gap': '10px',
-    'padding-bottom':'50px'
+    <p class="bb-label">Sizes and icons</p>
+    <div class="bb-row">
+      <verbena-button text="Small" size="sm" styleType="secondary"></verbena-button>
+      <verbena-button text="Medium" styleType="secondary"></verbena-button>
+      <verbena-button text="Large" size="lg" styleType="secondary"></verbena-button>
+      <verbena-button text="Home" svg="home" styleType="outline"></verbena-button>
+      <verbena-button text="Add" svg="add" svgPosition="right" styleType="outline"></verbena-button>
+      <verbena-button svg="academic-cap" styleType="outline" aria-label="Courses"></verbena-button>
+    </div>
 
-  }"
->
+    <p class="bb-label">States</p>
+    <div class="bb-row">
+      <verbena-button text="Save" styleType="secondary" [isLoading]="saving" (click)="save()"></verbena-button>
+      <verbena-button text="Disabled" styleType="secondary" disabled></verbena-button>
+    </div>
+    <div class="bb-box">
+      <verbena-button text="Block: fills its container" styleType="primary" block></verbena-button>
+    </div>
 
+    <p class="bb-label">Your own colours still win (bgColor, textColor, border, borderRadius, pd)</p>
+    <div class="bb-row">
+      <verbena-button text="Submit" bgColor="#16a34a" textColor="#fff" border="1px solid #16a34a" borderRadius="8px"></verbena-button>
+      <verbena-button text="Approve" svg="check-icon" bgColor="#2563eb" textColor="#fff" borderRadius="999px" pd="0 18px"></verbena-button>
+    </div>
+  </section>
 
+  <!-- ---------- Badges ---------- -->
+  <section class="bb-section">
+    <h2 class="bb-title">Badges</h2>
+    <div class="bb-row">
+      <verbena-badge text="5" bgColor="#2563eb" textColor="#fff" width="28px" height="28px" borderRadius="999px" pd="0" fontSize="13px"></verbena-badge>
+      <verbena-badge text="New" bgColor="var(--vbn-status-success-bg)" textColor="var(--vbn-status-success-fg)" fontSize="12px" pd="3px 10px"></verbena-badge>
+      <verbena-badge text="Sold" bgColor="var(--vbn-status-error-bg)" textColor="var(--vbn-status-error-fg)" fontSize="12px" pd="3px 10px"></verbena-badge>
+      <verbena-badge text="Pending" bgColor="var(--vbn-status-warning-bg)" textColor="var(--vbn-status-warning-fg)" fontSize="12px" pd="3px 10px"></verbena-badge>
+      <verbena-badge text="Draft" bgColor="var(--vbn-color-surface-alt)" textColor="var(--vbn-color-text-muted)" fontSize="12px" pd="3px 10px"></verbena-badge>
+    </div>
+  </section>
 
+  <!-- ---------- Tabs ---------- -->
+  <section class="bb-section">
+    <h2 class="bb-title">Tabs</h2>
+    <p class="bb-label">Default look; the tabs scroll sideways when they don't fit</p>
+    <verben-tab (tabChange)="onTabChange($event)">
+      <lib-tab-item title="Overview" id="overview">
+        <h3 class="bb-tab-title">Overview</h3>
+        <p class="bb-muted">Invoices, payments and balances at a glance.</p>
+      </lib-tab-item>
+      <lib-tab-item title="Invoices" id="invoices" [badgeCount]="5">
+        <h3 class="bb-tab-title">Invoices</h3>
+        <p class="bb-muted">5 invoices are waiting for approval.</p>
+      </lib-tab-item>
+      <lib-tab-item title="Payments" id="payments">
+        <h3 class="bb-tab-title">Payments</h3>
+        <p class="bb-muted">Scheduled and completed payments.</p>
+      </lib-tab-item>
+      <lib-tab-item title="Settings" id="settings">
+        <h3 class="bb-tab-title">Settings</h3>
+        <verbena-button text="Save settings" styleType="secondary" size="sm"></verbena-button>
+      </lib-tab-item>
+      <lib-tab-item title="Archived" id="archived" [disabled]="true">
+        <p>Not available.</p>
+      </lib-tab-item>
+    </verben-tab>
 
-
-
-<verben-tab 
- 
-  (tabChange)="onTabChange($event)"
-  [activeTabBgColor]="'yellow'"
-
-  backgroundColor="blue"
-
-  >
-  
-  
-  <lib-tab-item title="Home"
- 
-  
- 
-
-  [textColor]="'#000'"
-  id="home">
-    <h2>Home Content</h2>
-    <p>This is the content for the home tab.</p>
-  </lib-tab-item>
-  
-  <lib-tab-item title="Profile" id="profile">
-    <h2>Profile Content</h2>
-    <p>This is the content for the profile tab.</p>
-  </lib-tab-item>
-  
-  <lib-tab-item 
-    title="Notifications" 
-    id="notifications" 
-    [badgeCount]="5" 
-    badgeColor="#e53935"
-    tabColor="grey"
-    activeTabBgColor="#fff9e6"
-    textColor="#856404">
-    <h2>Notifications</h2>
-    <p>You have 5 unread notifications.</p>
-  </lib-tab-item>
-  
-  <lib-tab-item title="Settings" id="settings">
-    <h2>Settings Content</h2>
-    <p>This is the content for the settings tab.</p>
-  </lib-tab-item>
-</verben-tab>
-
-<verben-tab (tabChange)="onTabChange($event)">
-  <lib-tab-item title="Home" id="home">
-    <h2>Home Content</h2>
-    <p>This is the content for the home tab.</p>
-  </lib-tab-item>
-  
-  <lib-tab-item title="Profile" id="profile">
-    <h2>Profile Content</h2>
-    <p>This is the content for the profile tab.</p>
-  </lib-tab-item>
-  
-  <lib-tab-item title="Settings" id="settings">
-    <h2>Settings Content</h2>
-    <p>This is the content for the settings tab.</p>
-  </lib-tab-item>
-  <lib-tab-item title="class" id="settings">
-    <h2>class Content</h2>
-    <p>This is the content for the settings tab.</p>
-  </lib-tab-item>
-
-  <lib-tab-item title="Home" id="settings">
-    <h2>Home Content</h2>
-    <p>This is the content for the settings tab.</p>
-
-      <verbena-button
-    text="Submit"
-    bgColor="#28a745"
-    textColor="white"
-    border="1px solid #28a745"
-    borderRadius="5px"
-    pd="10px 20px"
-    width="150px"
-    height="40px"
-    ></verbena-button>
-
-  </lib-tab-item>
-  
-  <lib-tab-item title="Disabled Tab" id="disabled" [disabled]="true">
-    <p>This tab is disabled and cannot be selected.</p>
-  </lib-tab-item>
-</verben-tab>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <!-- Submit button with green background and rounded corners -->
-<verbena-button
-text="Submit"
-bgColor="#28a745"
-textColor="white"
-border="1px solid #28a745"
-borderRadius="5px"
-pd="10px 20px"
-width="150px"
-height="40px"
-></verbena-button>
-
-
-<verbena-button
-  [text]="'Submit'"
-  [svg]="'check-icon'"
-  [svgPosition]="'left'"
-  [isLoading]="false"
-  [spinnerSize]="'20px'"
-  [spinnerColor]="'#fff'"
-  [disable]="false"
-  class="primary-button"
-></verbena-button>
-
-
-<!-- hellooo this is new  -->
-
-<!-- Submit button with an alert icon on the left -->
-<verbena-button
-text="Submit"
-svg="'alert'"
-iconPosition="left"
-bgColor="#28a745"
-textColor="white"
-border="1px solid #28a745"
-borderRadius="5px"
-pd="10px 20px"
-width="150px"
-height="40px"
-></verbena-button>
-
-<!-- Button with an icon on the right, labeled "backward" -->
-<verbena-button
-
-text="backward"
-svg="backward"
-fontSize="20px"
-fontWeight="900"
-svgColor="'white'"
-svgPosition="right"
-bgColor="#28a745"
-textColor="white"
-border="1px solid #28a745"
-borderRadius="5px"
-pd="10px 20px"
-width="150px"
-height="40px"
-></verbena-button>
-
-<!-- Button with an academic cap icon on the right -->
-<verbena-button
-svg="academic-cap"
-[svgHeight]="20"
-[svgWidth]="20"
-svgColor="'white'"
-text="Submit"
-bgColor="#4CAF50"
-textColor="#fff"
-border="none"
-borderRadius="4px"
-pd="8px 16px"
-svgPosition="right"
-></verbena-button>
-
-<!-- Round button with a chevron icon inside -->
-<verbena-button
-svg="chevron"
-[svgHeight]="10"
-[svgWidth]="10"
-svgColor="'white'"
-bgColor="#007bff"
-textColor="white"
-border="none"
-borderRadius="50%"
-fontSize="20px"
-fontWeight="900"
-width="50px"
-height="50px"
-> </verbena-button>
-
-<!-- Submit button with a home icon -->
-<verbena-button
-text="Submit"
-
-svg="home"
-[svgHeight]="20"
-[svgWidth]="20"
-svgColor="'white'"
-
-styleType="danger"
-
-></verbena-button>
+    <p class="bb-label">With colours (activeTabBgColor, textColor, badgeColor)</p>
+    <verben-tab (tabChange)="onTabChange($event)" activeTabBgColor="#fff8db">
+      <lib-tab-item title="Home" id="home" textColor="#78350f">
+        <p class="bb-muted">The active tab and its panel use activeTabBgColor.</p>
+      </lib-tab-item>
+      <lib-tab-item title="Notifications" id="notifications" [badgeCount]="12" badgeColor="#2563eb" textColor="#78350f">
+        <p class="bb-muted">You have 12 unread notifications.</p>
+      </lib-tab-item>
+      <lib-tab-item title="Profile" id="profile" textColor="#78350f">
+        <p class="bb-muted">Name, email and password.</p>
+      </lib-tab-item>
+    </verben-tab>
+  </section>
 </div>
-
-<!-- Badge showing the number 5 inside a blue circle -->
-<h2 [ngStyle]="{
-  'font-size': '35px',
-  'font-weight':'700',
-    'padding-bottom':'20px'
-}">Badges</h2>
-<div
-[ngStyle]="{
-  'display': 'flex',
-  'gap': '10px',
-  'padding-bottom':'50px'
-
-}"
->
-  <verbena-badge
-  text="5"
-  bgColor="#3498db"
-  textColor="white"
-  width="40px"
-  height="40px"
-  borderRadius="50%"
-  pd="5px 8px"
-  fontSize="20px"
-></verbena-badge>
-
-<!-- Large badge with a green background saying "new product" -->
-<verbena-badge
-
-  borderRadius="50%"
-  bgColor="green"
-  text="new "
-></verbena-badge>
-
-<!-- Another badge showing "New" with red background -->
-<verbena-badge
-borderRadius="5px"
-  text="Sold"
-  bgColor="red"
-  textColor="white"
-  pd="5px 15px"
-  fontSize="12px"
-></verbena-badge>
-</div>
-
-
-<verbena-button text="Primary Button" styleType="small"
-svg="chevron"
-[svgHeight]="10"
-[svgWidth]="10"
-svgColor="'white'"
-></verbena-button>
-<verbena-button text="Secondary Button" styleType="secondary"></verbena-button>
-<verbena-button text="Danger Button" styleType="danger" [svg]="'academic-cap'"></verbena-button>
-<verbena-button text="Primary Button" styleType="primary"></verbena-button>
-<verbena-button text="outline" styleType="outline"></verbena-button>
-<verbena-button text="outline" styleType="ylw-outline" ></verbena-button>
-
-
-
-

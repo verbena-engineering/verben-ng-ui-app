@@ -1,5 +1,5 @@
 <docs-page title="Time Picker" description="Enter hours and minutes, in 12-hour or 24-hour format.">
-  <docs-example [code]="code.basic" [tsCode]="code.basicTs" direction="column">
+  <docs-example responsive [code]="code.basic" [tsCode]="code.basicTs" direction="column">
     <verben-time-picker [(model)]="start" (timeChange)="onTimeChange($event)"></verben-time-picker>
     <span class="docs-output">model: {{ start | date: 'shortTime' }} {{ lastChange ? '· timeChange: ' + lastChange : '' }}</span>
   </docs-example>
@@ -14,7 +14,7 @@
 
   <h2 class="docs-h2" id="examples">Examples</h2>
 
-  <docs-example title="24-hour clock" [code]="code.format24" direction="column">
+  <docs-example responsive title="24-hour clock" [code]="code.format24" direction="column">
     <verben-time-picker [(model)]="shift" [format24]="true"></verben-time-picker>
     <span class="docs-output">model: {{ shift | date: 'HH:mm' }}</span>
   </docs-example>

@@ -5,7 +5,7 @@ import { IDataFilter } from 'verben-ng-ui/src/lib/models';
 @Component({
   selector: 'verben-sort-table',
   templateUrl: './sort-table.component.html',
-  styleUrls: ['./sort-table.component.css'],
+  styleUrls: ['../shared/panel.css', './sort-table.component.css'],
 })
 export class SortTableComponent {
   @Input() enableDragAndDrop: boolean = false;

@@ -1,5 +1,5 @@
 <docs-page title="Tabs" description="Layered panels of content, one visible at a time.">
-  <docs-example [code]="code.basic" [tsCode]="code.basicTs" direction="column">
+  <docs-example responsive [code]="code.basic" [tsCode]="code.basicTs" direction="column">
     <div style="width: 100%; max-width: 460px">
       <verben-tab textColor="var(--vbn-color-text)" (tabChange)="onTabChange($event)">
         <lib-tab-item title="Account" [active]="true">Update your name, email and profile photo.</lib-tab-item>
@@ -19,7 +19,7 @@
 
   <h2 class="docs-h2" id="examples">Examples</h2>
 
-  <docs-example title="Badges and disabled tabs" [code]="code.badges">
+  <docs-example responsive title="Badges and disabled tabs" [code]="code.badges">
     <div style="width: 100%; max-width: 460px">
       <verben-tab textColor="var(--vbn-color-text)">
         <lib-tab-item title="Inbox" [badgeCount]="12" [active]="true">12 unread messages</lib-tab-item>

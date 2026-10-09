@@ -26,8 +26,8 @@
   (stateChange)="onStateChange($event)"
 >
   <div table-content>
-    hello
-    <!-- import table content -->
+    <!-- Your table goes here (see the Data Table page) -->
+    <p class="demo-placeholder">Table view: pass your table as table-content.</p>
   </div>
   <div card-content>
     <verben-card-data-view
@@ -160,51 +160,21 @@
   </div>
   <div column-content>
     <verben-visible-column
-      (columnsUpdated)="onColumnsUpdated($event)"
-      [border]="'1px solid rgba(212, 160, 7, 1)'"
-      borderRadius="10px"
-      boxShadow="2px 2px 2px 0px silver"
-      bgColor="white"
       width="400px"
-      textColor="black"
-      pd="1rem"
-      primaryColor="#FFE681"
-      secondaryColor="#3479E9"
       [columns]="columns"
       [displayedColumns]="5"
+      (columnsUpdated)="onColumnsUpdated($event)"
     ></verben-visible-column>
   </div>
   <div filter-content>
-    <verben-table-filter
-      [border]="'1px solid rgba(212, 160, 7, 1)'"
-      borderRadius="10px"
-      boxShadow="2px 2px 2px 0px silver"
-      bgColor="white"
-      width="420px"
-      textColor="black"
-      pd="1rem"
-      primaryColor="#FFE681"
-      secondaryColor="#3479E9"
-      tertiaryColor="#404040"
-      [filterOptions]="filterArray"
-      [maxFilterLength]="3"
-    ></verben-table-filter>
+    <verben-table-filter width="420px" [filterOptions]="filterArray" [maxFilterLength]="3"></verben-table-filter>
   </div>
   <div sort-content>
     <verben-sort-table
-      (selectedOptions)="onSortUpdated($event)"
-      [border]="'1px solid rgba(212, 160, 7, 1)'"
-      borderRadius="10px"
-      boxShadow="2px 2px 2px 0px silver"
-      bgColor="white"
       width="400px"
-      textColor="black"
-      pd="1rem"
-      primaryColor="#FFE681"
-      secondaryColor="#3479E9"
-      tertiaryColor="#404040"
       [enableDragAndDrop]="true"
       [sortOptions]="sortOptions"
+      (selectedOptions)="onSortUpdated($event)"
     ></verben-sort-table>
   </div>
   <div export-content>
@@ -213,6 +183,6 @@
   <div create-content>
     <!--pass create component-->
   </div>
-  <div import-content>helloiiiiii</div>
+  <div import-content><p class="demo-placeholder">Pass your import panel as import-content.</p></div>
   <div children></div>
 </verben-data-view>

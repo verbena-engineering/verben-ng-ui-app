@@ -20,8 +20,7 @@ import { TabsPageComponent } from './pages/components/tabs-page.component';
 import { TextareaPageComponent } from './pages/components/textarea-page.component';
 import { TimePickerPageComponent } from './pages/components/time-picker-page.component';
 import { TooltipPageComponent } from './pages/components/tooltip-page.component';
-import { UnstableCardPageComponent } from './pages/unstable/card-page.component';
-import { VendorInvoicesPageComponent } from './pages/playground/vendor-invoices/vendor-invoices-page.component';
+import { VendorInvoicesComponent } from './pages/playground/vendor-invoices/vendor-invoices.component';
 
 const title = (page: string) => `${page} · verben-ng-ui`;
 
@@ -59,12 +58,13 @@ const routes: Routes = [
       { path: 'components/tooltip', component: TooltipPageComponent, title: title('Tooltip') },
 
       // ---- Unstable: new components in team review ----
-      { path: 'unstable/card', component: UnstableCardPageComponent, title: title('Card (composable)') },
+      // The composable card was folded back into <verben-card>; old links still work
+      { path: 'unstable/card', redirectTo: 'components/card' },
 
 
       // ---- Playground: the original test pages, URLs unchanged ----
       // ⚠️ Unstable: a full screen built with the composable card
-      { path: 'vendor-invoices', component: VendorInvoicesPageComponent, title: title('Vendor Invoices') },
+      { path: 'vendor-invoices', component: VendorInvoicesComponent, title: title('Vendor Invoices') },
       {
         path: 'data-table',
         loadChildren: () =>

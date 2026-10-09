@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DialogueSampleComponent } from './dialogue-sample.component';
 import { CommonModule } from '@angular/common';
-import { TableFilterModule, VerbenDialogueModule } from 'verben-ng-ui';
+import { TableFilterModule, VerbenaButtonModule, VerbenDialogueModule } from 'verben-ng-ui';
 
 const routes: Routes = [{ path: '', component: DialogueSampleComponent }];
 
@@ -13,6 +13,7 @@ const routes: Routes = [{ path: '', component: DialogueSampleComponent }];
     CommonModule,
     VerbenDialogueModule,
     TableFilterModule,
+    VerbenaButtonModule,
   ],
 })
 export class DialogueSampleModule {}

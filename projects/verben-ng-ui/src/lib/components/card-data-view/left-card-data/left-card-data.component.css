@@ -8,7 +8,11 @@ box-sizing: border-box;
 } */
 :host {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* 3 columns, as before; 2 then 1 when a column would be under 220px */
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, max(220px, (100% - 30px) / 3)), 1fr)
+  );
   gap: 15px;
   /* display: flex;
   flex-direction: column; */
@@ -29,6 +33,7 @@ box-sizing: border-box;
 }
 
 .childrenPadding {
+  box-sizing: border-box; /* width 100% includes the padding: no overflow */
   width: 100%;
   padding: 10px 10px 10px calc(100% - 85%);
   display: flex;

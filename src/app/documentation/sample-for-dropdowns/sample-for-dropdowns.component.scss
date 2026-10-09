@@ -1,9 +1,64 @@
-.pop-up-Class {
-  background-color: red;
+.demo-intro {
+  max-width: 680px;
+  margin: 0 0 20px;
+  color: var(--vbn-color-text-muted);
+  line-height: 1.6;
 }
 
+/* The scrolling area: fits the page, its content is much bigger */
 .main-sec {
-  width: 600vw;
-  height: 600vh;
+  height: 420px;
   overflow: auto;
+  border: 1px solid var(--vbn-color-border);
+  border-radius: 10px;
+  background: var(--vbn-color-surface);
+}
+
+.scroll-space {
+  display: grid;
+  align-content: start;
+  gap: 20px;
+  width: 1600px;
+  height: 1200px;
+  padding: 24px;
+}
+
+.demo-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.demo-muted {
+  margin: 0;
+  color: var(--vbn-color-text-muted);
+  font-size: 13px;
+}
+
+.demo-trigger {
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--vbn-color-border);
+  border-radius: 8px;
+  background: var(--vbn-color-surface);
+  color: var(--vbn-color-text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.demo-trigger:hover {
+  background: var(--vbn-color-surface-alt);
+}
+
+.demo-popup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.demo-popup-text {
+  margin: 0;
+  font-size: 13px;
 }

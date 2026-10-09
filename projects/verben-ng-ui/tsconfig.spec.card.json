@@ -1,0 +1,13 @@
+/* Runs only <verben-card>'s specs (older specs in this library don't compile yet).
+   "@angular/*": see tsconfig.spec.date-picker.json (keeps TestBed on one copy of Angular). */
+{
+  "extends": "./tsconfig.spec.json",
+  "compilerOptions": {
+    "paths": {
+      "@angular/*": ["./node_modules/@angular/*"],
+      "verben-ng-ui/*": ["./*"],
+      "verben-ng-ui": ["../../dist/verben-ng-ui"]
+    }
+  },
+  "include": ["src/lib/components/card/**/*.spec.ts", "**/*.d.ts"]
+}

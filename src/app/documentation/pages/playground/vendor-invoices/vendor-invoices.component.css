@@ -1,10 +1,31 @@
+/* The screen is its own size container: it adapts to the space it gets
+   (a column, a panel, the docs' mobile preview), not to the window */
 :host {
   display: block;
+  container-type: inline-size;
+}
+
+/* Rows used inside the cards' header / footer (the card leaves layout to you, as before) */
+.vi-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.vi-row--end {
+  justify-content: flex-end;
+}
+
+.vi-muted {
+  color: var(--vbn-color-text-muted);
+  font-size: 12.5px;
 }
 
 /* ---------- Toolbar popovers ---------- */
 
 .vi-panel {
+  display: block;
   width: 280px;
   text-align: left;
 }
@@ -26,7 +47,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-top: 8px;
+  margin: 8px 0;
   font-size: 12.5px;
   color: var(--vbn-color-text-muted);
 }
@@ -45,6 +66,7 @@
 /* ---------- Board: list + details ---------- */
 
 .vi-board {
+  display: block;
   margin-top: 16px;
 }
 
@@ -60,10 +82,14 @@
 }
 
 .vi-list {
-  --vbn-card-min-column: 260px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 10px;
+  align-items: start;
 }
 
 .vi-layout.has-detail .vi-list {
+  grid-template-columns: minmax(0, 1fr);
   max-height: 640px;
   overflow-y: auto;
 }
@@ -74,7 +100,7 @@
   gap: 6px;
 }
 
-.vi-item > vbn-card {
+.vi-item > verben-card {
   flex: 1;
   min-width: 0;
 }
@@ -83,7 +109,7 @@
   flex: none;
   width: 28px;
   height: 28px;
-  margin-top: 10px;
+  margin-top: 8px;
   border: 0;
   border-radius: 6px;
   background: none;
@@ -101,21 +127,19 @@
   visibility: hidden; /* keeps the cards lined up */
 }
 
-/* The selected invoice or line: an accent strip, like the card data view */
-.vi-invoice.is-selected,
-.vi-line.is-selected {
-  border-color: var(--vbn-color-primary);
-  box-shadow: inset 4px 0 0 var(--vbn-color-primary);
+.vi-summary {
+  margin-top: 8px;
+}
+
+.vi-lines {
+  display: grid;
+  gap: 8px;
 }
 
 .vi-detail {
+  display: block;
   position: sticky;
   top: 80px;
-}
-
-/* Sub-cards after the first get a top margin; the details sit beside the list */
-.vi-layout > .vi-detail {
-  margin-top: 0;
 }
 
 .vi-form verbena-input,
@@ -134,6 +158,21 @@
 
 .vi-status span {
   margin-right: 6px;
+}
+
+.vi-lines-title {
+  display: block;
+  margin: 16px 0 6px;
+}
+
+.vi-line-row {
+  display: block;
+}
+
+.vi-total {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--vbn-color-border);
 }
 
 .vi-actions {
@@ -170,8 +209,8 @@
   text-align: right;
 }
 
-/* Phones and narrow screens: details on top, list below */
-@media (max-width: 760px) {
+/* Narrow: details on top, list below */
+@container (max-width: 760px) {
   .vi-layout.has-detail {
     grid-template-columns: minmax(0, 1fr);
   }

@@ -7,70 +7,66 @@
   [style.width]="width"
   [style.height]="height"
   [style.padding]="pd"
-  class="column-control"
+  class="column-control vbn-panel"
 >
-  <div class="visible-column-header flex justify-between text-sm">
-    <span class="column-title">
-      Column <sup>[{{ getSelectedColumnCount() }}]</sup>
+  <div class="vbn-panel-header">
+    <span class="vbn-panel-title">
+      Column <span class="vbn-panel-count" [style.color]="secondaryColor">{{ getSelectedColumnCount() }}</span>
     </span>
-    <span class="column-reset" (click)="resetColumns()">Reset</span>
+    <button type="button" class="vbn-panel-link" [style.color]="secondaryColor" (click)="resetColumns()">Reset</button>
   </div>
-  <hr />
 
   <!-- Select All Checkbox -->
-  <div class="flex items-center gap" [style.padding]="'4px 10px'">
-    <label [style.font-size]="'13px'" [style.font-weight]="'500'">
-      <input type="checkbox" [checked]="selectAll" (change)="toggleSelectAll()" />
-      Select All
-    </label>
-  </div>
+  <label class="vbn-panel-row vbn-panel-row--all">
+    <input type="checkbox" [checked]="selectAll" (change)="toggleSelectAll()" />
+    Select All
+  </label>
 
- <div class="center">
-  <ul *ngFor="let column of columns; let i = index" class="column-options-container">
-    <li
-      [attr.draggable]="enableDragAndDrop"
-      (dragstart)="onDragStart(i, $event)"
-      (dragover)="onDragOver($event)"
-      (drop)="onDrop(i, $event)"
-      *ngIf="i < displayedColumns"
-      [style.font-size]="'14px'"
-      [style.margin-top]="'14px'"
-      class="flex gap-sm items-center"
+  <div class="vbn-panel-scroll">
+    <ul class="column-options-container">
+      <ng-container *ngFor="let column of columns; let i = index">
+        <li
+          *ngIf="i < displayedColumns"
+          [attr.draggable]="enableDragAndDrop"
+          (dragstart)="onDragStart(i, $event)"
+          (dragover)="onDragOver($event)"
+          (drop)="onDrop(i, $event)"
+          class="column-option"
+        >
+          <verben-svg
+            *ngIf="enableDragAndDrop"
+            fill="var(--vbn-color-text-muted)"
+            [width]="18"
+            class="vbn-panel-handle"
+            icon="square-dot"
+          ></verben-svg>
+          <label class="vbn-panel-row">
+            <input type="checkbox" [(ngModel)]="visibleColumns[i]" (ngModelChange)="updateSelectAllStatus()" />
+            {{ column.name }}
+          </label>
+        </li>
+      </ng-container>
+    </ul>
+
+    <!-- Show More / Show Less -->
+    <button
+      *ngIf="displayedColumns <= columns.length"
+      type="button"
+      class="vbn-panel-link vbn-panel-more"
+      (click)="toggleShowMore()"
     >
-      <verben-svg *ngIf="enableDragAndDrop" fill="var(--vbn-color-text)" class="svg" icon="square-dot"></verben-svg>
-      <label class="flex gap-md items-center">
-        <input type="checkbox" [(ngModel)]="visibleColumns[i]" (ngModelChange)="updateSelectAllStatus()" />
-        {{ column.name }}
-      </label>
-    </li>
-  </ul>
-
-  <!-- Show More / Show Less -->
-  <div *ngIf="displayedColumns <= columns.length" class="cursor-pointer" [style.padding]="'20px 10px 0px 10px'">
-    <span (click)="toggleShowMore()">
       {{ displayedColumns === columns.length ? "Show Less" : "Show More" }}
-    </span>
+    </button>
   </div>
- </div>
-
-  <hr />
 
   <!-- Save Button -->
-  <div class="btn-wrapper">
+  <div class="vbn-panel-footer">
     <button
-      [style.margin-top]="'0.5rem'"
-      [style.outline]="'none'"
-      [style.border]="'none'"
-      [style.padding]="'0.2rem 1.6rem'"
+      type="button"
+      class="vbn-panel-primary"
       [style.background-color]="primaryColor"
       [style.color]="tertiaryColor"
-      [style.font-size]="'12px'"
-      [style.font-weight]="'600'" 
       [disabled]="getSelectedColumnCount() === 0"
-      [ngClass]="{
-        disabledBtn: getSelectedColumnCount() === 0,
-        enableBtn: getSelectedColumnCount() !== 0
-      }"
       (click)="saveColumnVisibility()"
     >
       Save

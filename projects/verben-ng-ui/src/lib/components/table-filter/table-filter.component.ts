@@ -5,7 +5,7 @@ import { Config } from 'verben-ng-ui/src/lib/models';
 @Component({
   selector: 'verben-table-filter',
   templateUrl: './table-filter.component.html',
-  styleUrls: ['./table-filter.component.css'],
+  styleUrls: ['../shared/panel.css', './table-filter.component.css'],
 })
 export class TableFilterComponent implements OnInit {
   @Input() filterOptions: IDataFilter[] = [];

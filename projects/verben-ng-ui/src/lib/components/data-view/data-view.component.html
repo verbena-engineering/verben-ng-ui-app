@@ -1,5 +1,5 @@
-<div class="toolbar flex gap justify-between items-center">
-  <div class="flex items-center gap flex-1 justify-end">
+<div class="toolbar">
+  <div class="dv-search-group">
     <div *ngIf="viewState.isToggle" class="toggle-button-container">
       <button type="button" (click)="toggleView()" [ngClass]="buttonClass">
         <verben-svg
@@ -49,7 +49,7 @@
       ></verben-svg>
     </div>
   </div>
-  <div class="relative flex items-center gap-2">
+  <div class="relative dv-actions">
     <!-- Column Section -->
     <ng-container
       [appOutSideClick]="showColumnChild"
@@ -60,16 +60,14 @@
       <ng-template #defaultColumn>
         <span
           [ngClass]="[
-            'flex gap text-xs items-center pd rounded cursor-pointer',
+            'dv-action',
             columnCustomClass ? columnCustomClass : '',
           ]"
-          [style.background-color]="'var(--vbn-color-surface-alt)'"
+          [class.is-open]="showColumnChild"
           (click)="toggleChildView('column')"
         >
           <verben-svg [width]="15" [icon]="'column'"></verben-svg>
-          <span
-            >Columns <sup>({{ selectedColumnCount }})</sup></span
-          >
+          <span>Columns</span><span class="dv-count">{{ selectedColumnCount }}</span>
         </span>
         <div
           [style.z-index]="zIndex"
@@ -95,16 +93,14 @@
       <ng-template #defaultFilter>
         <span
           [ngClass]="[
-            'flex gap text-xs items-center pd rounded cursor-pointer',
+            'dv-action',
             filterCustomClass ? filterCustomClass : '',
           ]"
-          [style.background-color]="'var(--vbn-color-surface-alt)'"
+          [class.is-open]="showFilterChild"
           (click)="toggleChildView('filter')"
         >
           <verben-svg [width]="15" [icon]="'filter'"></verben-svg>
-          <span
-            >Filter <sup>({{ selectedFilterTableCount }})</sup></span
-          >
+          <span>Filter</span><span class="dv-count">{{ selectedFilterTableCount }}</span>
         </span>
         <div
           (click)="stopPropagation($event)"
@@ -130,10 +126,10 @@
       <ng-template #defaultImport>
         <span
           [ngClass]="[
-            'flex gap text-xs items-center pd rounded cursor-pointer',
+            'dv-action',
             importCustomClass ? importCustomClass : '',
           ]"
-          [style.background-color]="'var(--vbn-color-surface-alt)'"
+          [class.is-open]="showImportChild"
           (click)="toggleChildView('import')"
         >
           <verben-svg [width]="15" [icon]="'file'"></verben-svg>
@@ -161,16 +157,14 @@
       <ng-template #defaultSort>
         <span
           [ngClass]="[
-            'flex gap text-xs items-center pd rounded cursor-pointer',
+            'dv-action',
             sortCustomClass ? sortCustomClass : '',
           ]"
-          [style.background-color]="'var(--vbn-color-surface-alt)'"
+          [class.is-open]="showSortChild"
           (click)="toggleChildView('sort')"
         >
           <verben-svg [width]="15" [icon]="'sort'"></verben-svg>
-          <span
-            >Sort <sup>({{ selectedSortCount }})</sup></span
-          >
+          <span>Sort</span><span class="dv-count">{{ selectedSortCount }}</span>
         </span>
         <div [style.z-index]="zIndex" class="data-view-element">
           <ng-content
@@ -191,10 +185,10 @@
       <ng-template #defaultExtend>
         <span
           [ngClass]="[
-            'flex gap text-xs items-center pd rounded cursor-pointer',
+            'dv-action',
             importCustomClass ? extendCustomClass : '',
           ]"
-          [style.background-color]="'var(--vbn-color-surface-alt)'"
+          [class.is-open]="showExtendChild"
           (click)="toggleChildView('extend')"
         >
           <verben-svg [width]="15" [icon]="'extend'"></verben-svg>
@@ -222,10 +216,10 @@
       <ng-template #defaultExport>
         <span
           [ngClass]="[
-            'flex gap text-xs items-center pd rounded cursor-pointer',
+            'dv-action',
             exportCustomClass ? exportCustomClass : '',
           ]"
-          [style.background-color]="'var(--vbn-color-surface-alt)'"
+          [class.is-open]="showExportChild"
           (click)="toggleChildView('export')"
         >
           <verben-svg [width]="15" [icon]="'export'"></verben-svg>
@@ -264,11 +258,9 @@
       *ngIf="viewState.isCreate"
     >
       <verbena-button
-        class="text-sm font-semibold"
+        size="sm"
         [bgColor]="'var(--vbn-color-primary)'"
         [buttonClass]="createCustomClass"
-        [pd]="'6px'"
-        [borderRadius]="'4px'"
         [textColor]="'var(--vbn-color-on-primary)'"
         [svg]="'add'"
         [svgPosition]="'right'"

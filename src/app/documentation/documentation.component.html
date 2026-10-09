@@ -84,9 +84,10 @@
 
     <main class="docs-main" [class.is-wide]="isWide">
       <div class="docs-content">
-        <router-outlet></router-outlet>
-        <!-- Playground pages: what changed, how it's built, the page's code -->
-        <docs-playground-usage *ngIf="isWide && currentPath !== '/documentation'" [route]="currentPath"></docs-playground-usage>
+        <!-- Playground pages get a header, Preview | Code and their usage around them; other pages show as they are -->
+        <docs-playground [page]="playgroundPage">
+          <router-outlet></router-outlet>
+        </docs-playground>
       </div>
 
       <nav class="docs-toc" *ngIf="!isWide && toc.length > 1" aria-label="On this page">

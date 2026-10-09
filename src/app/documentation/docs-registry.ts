@@ -90,9 +90,20 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
     slug: 'card',
     title: 'Card',
     route: '/documentation/components/card',
-    description: 'A container with optional header, body and footer slots.',
+    description: 'A container with optional header, media, body and footer sections.',
     playground: '/documentation/card-view',
     source: lib + 'components/card',
+    status: 'updated',
+    changes: {
+      date: '2026-10-09',
+      notes: [
+        'Existing cards are unchanged: same tag, module, inputs, defaults, slots and look. No code changes needed.',
+        "Sections you don't fill are no longer drawn (empty grey header / footer bars were shown before).",
+        'New, opt-in: heading / subheading, variant="plain", interactive, selected and a card-media slot.',
+        'The card is OnPush inside; projected content is unaffected.',
+        'Responsive: a set width (width="340px") is never wider than the space the card gets; long words wrap.',
+      ],
+    },
   },
   {
     slug: 'chip',
@@ -118,6 +129,14 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
     description: 'A modal window or side drawer built from templates.',
     playground: '/documentation/dialogue',
     source: lib + 'components/verben-dialogue',
+    status: 'updated',
+    changes: {
+      date: '2026-10-09',
+      notes: [
+        'Responsive: small / medium / large shrink to the screen on phones (16px+ margin); a drawer is never wider than the screen.',
+        'Same inputs and look on larger screens.',
+      ],
+    },
   },
   {
     slug: 'dropdown',
@@ -186,6 +205,16 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
     route: '/documentation/components/tabs',
     description: 'Switch between panels of related content.',
     source: lib + 'components/verbena-tab',
+    status: 'updated',
+    changes: {
+      date: '2026-10-09',
+      notes: [
+        'New look: rounded frame, muted tabs, the active tab in the text colour with a line under it (it was yellow on white), a styled count badge.',
+        'Responsive: tabs that do not fit scroll sideways instead of widening the page.',
+        'Keyboard: tabs are focusable and open with Enter or Space (tablist / tab / tabpanel roles).',
+        'Same inputs; the colour inputs (activeTabBgColor, tabColor, textColor, badgeColor) still win.',
+      ],
+    },
   },
   {
     slug: 'textarea',
@@ -215,19 +244,18 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
 
 /** New components waiting for team approval. Their API may still change. */
 export const UNSTABLE_DOCS: DocsNavItem[] = [
-  {
-    slug: 'unstable-card',
-    title: 'Card (composable)',
-    route: '/documentation/unstable/card',
-    description: 'shadcn-style parts for posts, comments, profiles, transactions and cards inside cards.',
-    source: lib + 'unstable/card',
-    status: 'unstable',
-  },
 ];
 
 /** The original demo / test pages, still reachable for manual testing */
 export const PLAYGROUND_PAGES: DocsNavItem[] = [
-  { slug: 'pg-data-table', title: 'Data Table', route: '/documentation/data-table' },
+  {
+    slug: 'pg-data-table',
+    title: 'Data Table',
+    description: 'The data table with its filter, sort, column, export and import popovers.',
+    route: '/documentation/data-table',
+    status: 'updated',
+    changes: { date: '2026-10-09', notes: ['Responsive: a table wider than the screen scrolls sideways inside the component instead of widening the page.'] },
+  },
   {
     slug: 'pg-data-view',
     title: 'Data View',
@@ -238,30 +266,101 @@ export const PLAYGROUND_PAGES: DocsNavItem[] = [
       notes: [
         'The "Create New" button text uses --vbn-color-on-primary, so it stays readable in dark mode.',
         'Its buttons have the new button look (hover, focus, sizes).',
+        'Toolbar refresh: segmented table / cards switch, outlined search with a focus ring, bordered action buttons with count pills and an open state.',
+        'Responsive: the toolbar wraps; the popovers open right-aligned under the actions and are never wider than the toolbar.',
       ],
     },
   },
-  { slug: 'pg-card-data-view', title: 'Card Data View', route: '/documentation/card-data-view' },
-  { slug: 'pg-vendor-invoices', title: 'Vendor Invoices', route: '/documentation/vendor-invoices', status: 'unstable' },
-  { slug: 'pg-card-view', title: 'Card View', route: '/documentation/card-view' },
-  { slug: 'pg-sort-table', title: 'Sort Table', route: '/documentation/sort-table' },
-  { slug: 'pg-table-filter', title: 'Table Filter', route: '/documentation/table-filter' },
-  { slug: 'pg-visible-column', title: 'Visible Column', route: '/documentation/visible-column' },
-  { slug: 'pg-mail', title: 'Mail Template', route: '/documentation/verben-mail' },
-  { slug: 'pg-button-badge', title: 'Button & Badge', route: '/documentation/button-badge' },
-  { slug: 'pg-input-textarea', title: 'Inputs & Validation', route: '/documentation/input-textarea' },
-  { slug: 'pg-switch', title: 'Switch', route: '/documentation/switch' },
-  { slug: 'pg-dropdown', title: 'Dropdown', route: '/documentation/dropdown' },
-  { slug: 'pg-dropdown-sample', title: 'Dropdown (sample)', route: '/documentation/dropdown-sample' },
-  { slug: 'pg-chip', title: 'Chip', route: '/documentation/chip' },
-  { slug: 'pg-date-picker', title: 'Date Picker', route: '/documentation/date-picker' },
-  { slug: 'pg-time-picker', title: 'Time Picker', route: '/documentation/time-picker' },
-  { slug: 'pg-dialogue', title: 'Dialogue', route: '/documentation/dialogue' },
-  { slug: 'pg-notifications', title: 'Notifications', route: '/documentation/notifications' },
-  { slug: 'pg-tooltip', title: 'Tooltip', route: '/documentation/tooltip' },
-  { slug: 'pg-icons', title: 'Icons', route: '/documentation/icons' },
-  { slug: 'pg-svg', title: 'Verben Icons', route: '/documentation/svg' },
-  { slug: 'pg-images', title: 'Images', route: '/documentation/images' },
+  {
+    slug: 'pg-card-data-view',
+    title: 'Card Data View',
+    description: 'A master–detail list: cards with children on the left, details on the right.',
+    route: '/documentation/card-data-view',
+    status: 'updated',
+    changes: {
+      date: '2026-10-09',
+      notes: [
+        'Responsive only, same look: list | details (30 / 70) no longer overflow by the gap, and stack (details on top) when both cannot fit.',
+        'The card grid keeps 3 columns while there is room, then 2, then 1.',
+        'Child rows and the header no longer overflow by their padding.',
+      ],
+    },
+  },
+  { slug: 'pg-vendor-invoices', title: 'Vendor Invoices', route: '/documentation/vendor-invoices', status: 'new' },
+  { slug: 'pg-card-view', title: 'Card View', description: 'A plain verben-card with header, body and footer.', route: '/documentation/card-view' },
+  {
+    slug: 'pg-sort-table',
+    title: 'Sort Table',
+    description: 'Pick and order the columns to sort by, with drag and drop.',
+    route: '/documentation/sort-table',
+    status: 'updated',
+    changes: {
+      date: '2026-10-09',
+      notes: [
+        'New look shared by Sort, Filter and Columns: surface, border and shadow by default, count pill, text buttons, row hover, blue checkboxes, rounded main button.',
+        'Responsive: never wider than the space they get; inputs wrap.',
+        'Same inputs and outputs; bgColor, border, primaryColor and the other style inputs still win.',
+      ],
+    },
+  },
+  {
+    slug: 'pg-table-filter',
+    title: 'Table Filter',
+    description: 'Build filters per column type: text, numbers, dates and yes / no.',
+    route: '/documentation/table-filter',
+    status: 'updated',
+    changes: {
+      date: '2026-10-09',
+      notes: [
+        'New look shared by Sort, Filter and Columns: surface, border and shadow by default, count pill, text buttons, row hover, blue checkboxes, rounded main button.',
+        'Responsive: never wider than the space they get; inputs wrap.',
+        'Same inputs and outputs; bgColor, border, primaryColor and the other style inputs still win.',
+      ],
+    },
+  },
+  {
+    slug: 'pg-visible-column',
+    title: 'Visible Column',
+    description: 'Choose which table columns are shown.',
+    route: '/documentation/visible-column',
+    status: 'updated',
+    changes: {
+      date: '2026-10-09',
+      notes: [
+        'New look shared by Sort, Filter and Columns: surface, border and shadow by default, count pill, text buttons, row hover, blue checkboxes, rounded main button.',
+        'Responsive: never wider than the space they get; inputs wrap.',
+        'Same inputs and outputs; bgColor, border, primaryColor and the other style inputs still win.',
+      ],
+    },
+  },
+  {
+    slug: 'pg-mail',
+    title: 'Mail Template',
+    description: 'A ready-made email form: subject, To / CC / BCC chips, attachment and message.',
+    route: '/documentation/verben-mail',
+    status: 'updated',
+    changes: {
+      date: '2026-10-09',
+      notes: [
+        'New look: rounded fields with a focus ring, a fixed label column, outline and primary buttons; default border uses the theme border colour.',
+        'Responsive: never wider than the space it gets; on narrow widths the labels go above their fields.',
+      ],
+    },
+  },
+  { slug: 'pg-button-badge', title: 'Button & Badge', description: 'Buttons and badges in every preset, with icons and loading.', route: '/documentation/button-badge' },
+  { slug: 'pg-input-textarea', title: 'Inputs & Validation', description: 'Inputs, number inputs, textareas and validation directives.', route: '/documentation/input-textarea' },
+  { slug: 'pg-switch', title: 'Switch', description: 'The switch, on and off, with labels.', route: '/documentation/switch' },
+  { slug: 'pg-dropdown', title: 'Dropdown', description: 'Single and multi select, search, lazy loading and auto-scroll to the current item.', route: '/documentation/dropdown' },
+  { slug: 'pg-dropdown-sample', title: 'Dropdown (sample)', description: 'Pop-ups inside a scrolling area: they stay attached to their buttons while you scroll.', route: '/documentation/dropdown-sample' },
+  { slug: 'pg-chip', title: 'Chip', description: 'Type values and press Enter to collect them as chips.', route: '/documentation/chip' },
+  { slug: 'pg-date-picker', title: 'Date Picker', description: 'The classic date picker inputs: one day, date and time, ranges, bounds.', route: '/documentation/date-picker' },
+  { slug: 'pg-time-picker', title: 'Time Picker', description: 'The time picker.', route: '/documentation/time-picker' },
+  { slug: 'pg-dialogue', title: 'Dialogue', description: 'Dialogs and side drawers built from templates.', route: '/documentation/dialogue' },
+  { slug: 'pg-notifications', title: 'Notifications', description: 'Success, error, warning and info notifications.', route: '/documentation/notifications' },
+  { slug: 'pg-tooltip', title: 'Tooltip', description: 'Tooltips with custom content and positions.', route: '/documentation/tooltip' },
+  { slug: 'pg-icons', title: 'Icons', description: 'The icon component.', route: '/documentation/icons' },
+  { slug: 'pg-svg', title: 'Verben Icons', description: 'Every icon in the library set, by name.', route: '/documentation/svg' },
+  { slug: 'pg-images', title: 'Images', description: 'The image component.', route: '/documentation/images' },
 ];
 
 export const DOCS_NAV: DocsNavGroup[] = [

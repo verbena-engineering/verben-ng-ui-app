@@ -17,4 +17,80 @@
     padding: 10px 15px;
     border-top: 1px solid var(--vbn-color-border);
   }
-  
+
+  /* ===== Added 2026-10-09. Nothing above changed; everything below is opt-in
+     or only affects sections that are empty. ===== */
+
+  /* Sections you don't fill are not shown (no empty grey bars) */
+  .card-header:empty,
+  .card-media:empty,
+  .card-body:empty,
+  .card-footer:empty {
+    display: none;
+  }
+
+  /* heading / subheading inputs */
+  .card-heading {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .card-subheading {
+    font-size: 12.5px;
+    color: var(--vbn-color-text-muted);
+  }
+
+  /* card-media: edge to edge over the card's padding (pd) */
+  .card-media {
+    margin-left: calc(var(--card-pad-left) * -1);
+    margin-right: calc(var(--card-pad-right) * -1);
+  }
+  .card-header:empty + .card-media {
+    margin-top: calc(var(--card-pad-top) * -1);
+  }
+  /* The image belongs to the page's template, hence ::ng-deep */
+  .card-media ::ng-deep img,
+  .card-media ::ng-deep video {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  /* variant="plain": no grey bars */
+  .card--plain > .card-header,
+  .card--plain > .card-footer {
+    background-color: transparent;
+    border: 0;
+  }
+
+  /* interactive: for cards you click */
+  .card--interactive {
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .card--interactive:hover {
+    border-color: var(--vbn-color-text-muted);
+    box-shadow: var(--vbn-shadow-md);
+  }
+  :host(:focus-visible) {
+    outline: none;
+  }
+  :host(:focus-visible) .card {
+    outline: 2px solid var(--vbn-color-border-focus);
+    outline-offset: 2px;
+  }
+
+  /* selected: accent strip */
+  .card--selected {
+    border-color: var(--vbn-color-primary);
+    box-shadow: inset 4px 0 0 var(--vbn-color-primary), var(--vbn-shadow-sm);
+  }
+
+  /* Responsive: a set width (width="340px") is never wider than the space
+     the card gets; long words wrap instead of overflowing. Exact with the
+     usual global box-sizing: border-box (Tailwind and most resets). A card
+     with room keeps its width either way. */
+  .card {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }

@@ -1,5 +1,5 @@
-<docs-page title="Card" description="A container that groups related content, with optional header, body and footer slots.">
-  <docs-example [code]="code.basic">
+<docs-page title="Card" description="A container that groups related content, with optional header, media, body and footer sections.">
+  <docs-example responsive [code]="code.basic">
     <verben-card width="340px" pd="20px" bgColor="var(--vbn-color-surface)" border="1px solid var(--vbn-color-border)" borderRadius="10px">
       <div card-header>
         <h3 style="margin: 0; font-size: 16px; font-weight: 600">Invoice INV-0042</h3>
@@ -15,33 +15,94 @@
     </verben-card>
   </docs-example>
 
-  <div class="docs-callout">
-    <span>🧩</span>
-    <span>
-      A composable card that takes this same markup (rename the tag to
-      <code class="docs-inline-code">&lt;vbn-card&gt;</code>) is in review:
-      <a routerLink="/documentation/unstable/card" fragment="migrate"><u>Card (composable)</u></a>.
-    </span>
-  </div>
-
   <h2 class="docs-h2" id="usage">Usage</h2>
   <p class="docs-p">
     Import <code class="docs-inline-code">CardModule</code>. Put content in elements marked with
-    <code class="docs-inline-code">card-header</code>, <code class="docs-inline-code">card-body</code> or
-    <code class="docs-inline-code">card-footer</code>; sections you don't use aren't rendered.
+    <code class="docs-inline-code">card-header</code>, <code class="docs-inline-code">card-media</code>,
+    <code class="docs-inline-code">card-body</code> or <code class="docs-inline-code">card-footer</code>;
+    sections you don't use aren't shown, and they always appear in that order (header, media, body,
+    footer) wherever they are in your markup. Everything added on 2026-10-09 is opt-in: existing cards
+    render exactly as before.
   </p>
 
   <h2 class="docs-h2" id="examples">Examples</h2>
 
-  <docs-example title="Body only" [code]="code.simple">
+  <docs-example responsive title="Body only" [code]="code.simple">
     <verben-card width="260px" pd="16px" bgColor="var(--vbn-color-surface-alt)" borderRadius="8px">
       <div card-body>Only a body slot.</div>
     </verben-card>
   </docs-example>
 
-  <docs-example title="Disabled" [code]="code.disabled">
+  <docs-example responsive title="Disabled" [code]="code.disabled">
     <verben-card width="260px" pd="16px" border="1px solid var(--vbn-color-border)" borderRadius="8px" [disabled]="true">
       <div card-body>This card is disabled.</div>
+    </verben-card>
+  </docs-example>
+
+  <docs-example responsive title="Heading without markup" description="New: heading and subheading fill the header for you." [code]="code.heading">
+    <verben-card width="280px" heading="Shipping to" subheading="12 Admiralty Way, Lekki">
+      <div card-body>Delivery on Thursday, 9 Oct.</div>
+    </verben-card>
+  </docs-example>
+
+  <docs-example responsive title="Plain" description="New: variant=&quot;plain&quot; drops the grey header and footer bars." [code]="code.plain">
+    <verben-card width="280px" variant="plain" heading="Team plan" subheading="For growing teams">
+      <div card-body>Shared workspaces, unlimited projects and priority support.</div>
+      <div card-footer class="card-demo-row">
+        <b>₦25,000 / month</b>
+        <verbena-button text="Upgrade" styleType="secondary" size="sm"></verbena-button>
+      </div>
+    </verben-card>
+  </docs-example>
+
+  <docs-example responsive title="Media" description="New: card-media goes edge to edge, over the card's padding. With no header it also covers the top padding." [code]="code.media">
+    <verben-card width="280px" variant="plain">
+      <div card-header class="card-demo-row">
+        <b>Sunday market</b>
+        <span class="card-demo-muted">Lagos</span>
+      </div>
+      <div card-media class="card-demo-cover"></div>
+      <div card-body>Peppers, tomatoes and ata rodo, fresh this morning.</div>
+    </verben-card>
+  </docs-example>
+
+  <docs-example responsive
+    title="Clickable list"
+    description="New: interactive adds hover and keyboard focus; selected adds an accent strip. Click a card or Tab to it and press Enter."
+    [code]="code.list"
+    [tsCode]="code.listTs"
+  >
+    <div class="card-demo-list">
+      <verben-card
+        *ngFor="let inv of invoices"
+        variant="plain"
+        interactive
+        [selected]="inv.id === selectedId"
+        (click)="selectedId = inv.id"
+        (keydown.enter)="selectedId = inv.id"
+      >
+        <div card-header class="card-demo-row">
+          <b>{{ inv.id }}</b>
+          <span>{{ inv.vendor }}</span>
+        </div>
+        <div card-footer class="card-demo-row">
+          <span>{{ inv.amount | currency: 'NGN' : 'symbol-narrow' }}</span>
+          <verbena-badge [text]="inv.status" [bgColor]="badge[inv.status].bg" [textColor]="badge[inv.status].fg" pd="2px 10px" fontSize="12px"></verbena-badge>
+        </div>
+      </verben-card>
+    </div>
+  </docs-example>
+
+  <docs-example responsive title="Cards inside cards" description="A card in card-body is just another card; pd keeps the inner ones compact." [code]="code.nested">
+    <verben-card width="320px" heading="Order #1042" subheading="Placed 7 Oct 2026 · Paid">
+      <div card-body class="card-demo-stack">
+        <verben-card variant="plain" pd="4px" heading="Shipping to" subheading="12 Admiralty Way, Lekki"></verben-card>
+        <verben-card variant="plain" pd="4px" heading="Payment" subheading="Visa ending 4242"></verben-card>
+      </div>
+      <div card-footer class="card-demo-row">
+        <b>Total</b>
+        <b>{{ 98500 | currency: 'NGN' : 'symbol-narrow' }}</b>
+      </div>
     </verben-card>
   </docs-example>
 

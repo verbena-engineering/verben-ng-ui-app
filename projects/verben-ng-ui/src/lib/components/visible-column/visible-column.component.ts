@@ -14,7 +14,7 @@ interface Item {
 @Component({
   selector: 'verben-visible-column',
   templateUrl: './visible-column.component.html',
-  styleUrls: ['./visible-column.component.css'],
+  styleUrls: ['../shared/panel.css', './visible-column.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VisibleColumnComponent {

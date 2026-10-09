@@ -1,4 +1,9 @@
-<button (click)="openModal()">Open Modal</button>
+<p class="demo-intro">
+  <code>verben-dialogue</code> shows a header, body and footer from your own
+  templates, over the page. It closes with the close icon, Escape or a click
+  outside. Here the body holds a filter panel.
+</p>
+<verbena-button text="Open dialog" styleType="secondary" (click)="openModal()"></verbena-button>
 
 <!-- Modal Component -->
 <verben-dialogue
@@ -6,46 +11,31 @@
   [dismissOutsideClick]="true"
   [closeOnEscape]="true"
   [mode]="'dialogue'"
-   [size]="'large'"
+  [size]="'large'"
   [customClass]="'my-modal-custom-class'"
   [disableFooter]="false"
-  [modalData]="[{data:{first_name:'verben-ng', last_name:'verbena'}}]"
-  (openModal)="onModalOpen($event)"
-  (closeModal)="onModalClose($event)"
+  [modalData]="[{ data: { first_name: 'verben-ng', last_name: 'verbena' } }]"
   [isVisible]="isModalVisible"
   [headerTemplate]="headerTemplate"
   [bodyTemplate]="bodyTemplate"
   [footerTemplate]="footerTemplate"
+  (openModal)="onModalOpen($event)"
   (closeModal)="onModalClose($event)"
->
-<a download=""></a>
-</verben-dialogue>
+></verben-dialogue>
 
 <!-- Define templates -->
 <ng-template #headerTemplate>
-  <h2>Confirm Deletion</h2>
+  <h2 class="demo-dialog-title">Filter invoices</h2>
 </ng-template>
 
 <ng-template #bodyTemplate>
-  <p>Are you sure you want to delete this item?</p>
-  <verben-table-filter
-  [border]="'1px solid rgba(212, 160, 7, 1)'"
-  borderRadius="10px"
-  boxShadow="2px 2px 2px 0px silver"
-  bgColor="white"
-  width="420px"
-  textColor="black"
-  pd="1rem"
-  primaryColor="#FFE681"
-  secondaryColor="#3479E9"
-  tertiaryColor="#404040"
-  [filterOptions]="filterArray"
-  [maxFilterLength]="3"
-></verben-table-filter>
+  <p class="demo-dialog-text">Pick the filters to apply to the list.</p>
+  <verben-table-filter width="100%" [filterOptions]="filterArray" [maxFilterLength]="3"></verben-table-filter>
 </ng-template>
 
 <ng-template #footerTemplate>
-  <button class="btn btn-secondary" (click)="onModalClose($event)">Cancel</button>
-  <button class="btn btn-primary" (click)="onConfirm()">Confirm</button>
+  <div class="demo-dialog-actions">
+    <verbena-button text="Cancel" styleType="outline" (click)="onModalClose($event)"></verbena-button>
+    <verbena-button text="Apply" styleType="secondary" (click)="onConfirm()"></verbena-button>
+  </div>
 </ng-template>
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci voluptate quibusdam porro iusto nam sapiente quasi, quaerat omnis ut modi! Aspernatur quam laudantium atque soluta veritatis blanditiis nesciunt vero itaque cupiditate, necessitatibus illum? Accusantium nihil, quaerat natus accusamus, esse aliquam nesciunt, aut laudantium fuga in officiis sequi nulla totam. Eveniet vero ut dolorum fugiat quam distinctio.</p>

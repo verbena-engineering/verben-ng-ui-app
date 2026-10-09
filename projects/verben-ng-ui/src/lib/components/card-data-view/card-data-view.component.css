@@ -6,11 +6,23 @@
   border-radius: 12px;
 }
 
+/* List 30% | details 70% (3 : 7 after the gap; "30% 70%" plus the gap was
+   15px wider than the component). When both can't fit (list under 240px or
+   details under 300px) they stack, details on top so they're seen first. */
 .master-detail-container {
-  display: grid;
-  grid-template-columns: 30% 70%;
+  display: flex;
+  flex-wrap: wrap-reverse;
   gap: 15px;
-  justify-content: center;
+}
+
+.master-detail-container > :first-child {
+  flex: 3 1 0;
+  min-width: min(100%, 240px);
+}
+
+.master-detail-container > .card-detail-section {
+  flex: 7 1 0;
+  min-width: min(100%, 300px);
 }
 
 .master-only-container {

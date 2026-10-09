@@ -1,6 +1,47 @@
-.bg-yellow{
-  background: yellow;
+.bb {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* never wider than the page */
+  gap: 32px;
 }
-.h-mu{
-  height: 100px !important;
+
+.bb-section {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.bb-title {
+  margin: 0 0 4px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--vbn-color-border);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.bb-label {
+  margin: 8px 0 0;
+  color: var(--vbn-color-text-muted);
+  font-size: 12.5px;
+}
+
+.bb-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.bb-tab-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.bb-muted {
+  margin: 0 0 10px;
+  color: var(--vbn-color-text-muted);
+}
+
+.bb-box {
+  max-width: 360px;
 }

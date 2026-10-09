@@ -1,0 +1,23 @@
+.demo-intro {
+  max-width: 680px;
+  margin: 0 0 20px;
+  color: var(--vbn-color-text-muted);
+  line-height: 1.6;
+}
+
+.demo-dialog-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.demo-dialog-text {
+  margin: 0 0 12px;
+  color: var(--vbn-color-text-muted);
+}
+
+.demo-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}

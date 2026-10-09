@@ -1,0 +1,6 @@
+.demo-intro {
+  max-width: 680px;
+  margin: 0 0 20px;
+  color: var(--vbn-color-text-muted);
+  line-height: 1.6;
+}

@@ -1,71 +1,190 @@
-.container{
-    background-color: var(--vbn-color-surface);
+/* containerWidth (500px) is the width while there is room; on phones the
+   form takes the space it gets */
+form {
+  max-width: 100%;
+  font-size: 14px;
+  color: var(--vbn-color-text);
 }
-.verben-mail-container{
-    background-color: var(--vbn-color-surface-alt);
 
+/* Its width comes from the form, so it can be the size container for the
+   narrow layout below (works in any column, not only on phones) */
+.container {
+  box-sizing: border-box;
+  container-type: inline-size;
+  background-color: var(--vbn-color-surface);
 }
-.verben-mail-form{
-    background-color: var(--vbn-color-surface);
+.verben-mail-container {
+  background-color: var(--vbn-color-surface);
+}
+.verben-mail-form {
+  background-color: var(--vbn-color-surface);
+}
+
+/* A row: label on the left (fixed column), field takes the rest */
+.verben-mail-form .form-element {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  min-width: 0;
 }
 .verben-mail-form label {
-    font-weight:500;
-    margin-right: 6px;
-    font-size: 14px;
+  flex: none;
+  width: 64px;
+  margin: 0;
+  color: var(--vbn-color-text-muted);
+  font-size: 13px;
+  font-weight: 500;
 }
-#attachment{
-    display: none;
+.verben-mail-form .email-tags-container {
+  flex: 1;
+  min-width: 0;
 }
-.verben-mail-form .form-element {
- margin-bottom: 10px;
- display: flex;
+#attachment {
+  display: none;
 }
-.verben-mail-form .form-element input{
-    padding: 0;
-    display:inline-block;
-    padding:2px 4px;
-    border: 1px solid var(--vbn-color-border);
-    outline: none;
-    min-width: 200px;
+.verben-mail-form .form-element input {
+  flex: 1;
+  min-width: 0;
+  height: 34px;
+  box-sizing: border-box;
+  padding: 0 10px;
+  border: 1px solid var(--vbn-color-border);
+  border-radius: 8px;
+  background: var(--vbn-input-bg, var(--vbn-color-surface));
+  color: var(--vbn-color-text);
+  font: inherit;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-.verben-mail-form .form-element.subject input{
-    border-color: var(--vbn-color-border);
-    min-width: 300px;
-    font-weight: 600;
+.verben-mail-form .form-element.subject input {
+  font-weight: 600;
 }
-.verben-mail-form .form-element textarea{
-    padding: 16px;
-    width: 100%;
-    height: 100%;
-    resize: none;
+.verben-mail-form .form-element input:focus,
+.verben-mail-form .form-element textarea:focus {
+  border-color: var(--vbn-color-border-focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--vbn-color-border-focus) 18%, transparent);
 }
 
-.button-container :nth-child(1){
-    border:1px solid var(--vbn-color-primary);
-    border-radius: 3px;
-    color: var(--vbn-color-primary);
-    padding: 4px 15px;
-    font-weight: 500;
+.verben-mail-form .form-element.attachment label {
+  width: auto;
+  padding: 6px 10px;
+  border: 1px dashed var(--vbn-color-border);
+  border-radius: 8px;
+  color: var(--vbn-color-text);
+}
+.verben-mail-form .form-element.attachment label:hover {
+  background: var(--vbn-color-surface-alt);
+}
+.verben-mail-form .form-element.attachment button {
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  cursor: pointer;
+}
 
+.verben-mail-form hr {
+  border: 0;
+  border-top: 1px solid var(--vbn-color-border);
 }
-.semibold{
-    font-weight: 500;
+
+.verben-mail-form .form-element.quill {
+  display: block;
 }
-.flex-end{
-    justify-content: flex-end;
+.verben-mail-form .form-element textarea {
+  display: block;
+  width: 100%;
+  min-height: 180px;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid var(--vbn-color-border);
+  border-radius: 8px;
+  background: var(--vbn-input-bg, var(--vbn-color-surface));
+  color: var(--vbn-color-text);
+  font: inherit;
+  line-height: 1.5;
+  outline: none;
+  resize: vertical;
 }
-.flex{
-    display: flex;
+
+/* View Designer (outline) and Send (primaryColor) */
+.button-container {
+  flex-wrap: wrap;
 }
-.items-center{
-    align-items: center;
+.button-container button {
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--vbn-color-border);
+  border-radius: 8px;
+  background: var(--vbn-color-surface);
+  color: var(--vbn-color-text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  transition: filter 0.15s ease, background-color 0.15s ease;
 }
-.gap{
-gap:20px;
+.button-container button:nth-child(1) {
+  cursor: pointer;
 }
-.enabled{
-    cursor: pointer;
+.button-container button:nth-child(1):hover {
+  background: var(--vbn-color-surface-alt);
 }
-.disabled{
-    cursor: not-allowed;
+.button-container button[type='submit'] {
+  min-width: 80px;
+  border-color: transparent;
+  color: var(--vbn-color-on-primary);
+}
+.button-container button[type='submit']:hover:not(:disabled) {
+  filter: brightness(0.96);
+}
+.button-container button:disabled {
+  opacity: 0.55;
+}
+.button-container button:focus-visible {
+  outline: 2px solid var(--vbn-color-border-focus);
+  outline-offset: 1px;
+}
+
+.error {
+  color: var(--vbn-color-error);
+  font-size: 12.5px;
+}
+
+.semibold {
+  font-weight: 500;
+}
+.flex-end {
+  justify-content: flex-end;
+}
+.flex {
+  display: flex;
+}
+.items-center {
+  align-items: center;
+}
+.gap {
+  gap: 8px;
+}
+.enabled {
+  cursor: pointer;
+}
+.disabled {
+  cursor: not-allowed;
+}
+
+/* Narrow: labels above their fields */
+@container (max-width: 420px) {
+  .verben-mail-form .form-element:not(.attachment):not(.quill) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+  .verben-mail-form label {
+    width: auto;
+  }
+  /* In a column, flex: 1 would act on the height */
+  .verben-mail-form .form-element input,
+  .verben-mail-form .email-tags-container {
+    flex: none;
+  }
 }

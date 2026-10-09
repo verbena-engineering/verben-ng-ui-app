@@ -13,7 +13,7 @@ export class VerbenMailTemplate {
   @Input() primaryColor: string = 'var(--vbn-color-primary)';
   @Input() secondaryColor: string = '';
   @Input() tetiaryColor: string = '';
-  @Input() border: string = '1px solid gray';
+  @Input() border: string = '1px solid var(--vbn-color-border)';
   @Input() pd: string = '20px';
   @Input() m: string = '';
   @Input() max: number = 10;

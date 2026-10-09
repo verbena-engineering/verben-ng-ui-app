@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { VbnTone } from 'verben-ng-ui';
 
 /*
- * Vendor Invoices: the same screen as the app's, built from the unstable
- * composable card (UnstableCardModule) inside the existing <verben-data-view>
- * toolbar. Data is generated here; a real screen would call its API in
- * loadMore() / search() and save().
+ * Vendor Invoices: the same screen as the app's, built with <verben-card>
+ * (the existing card, same syntax as everywhere else) inside the existing
+ * <verben-data-view> toolbar. Data is generated here; a real screen would
+ * call its API in loadMore() / search() and save().
  */
 
 export type InvoiceStatus = 'Posted' | 'Pending';
@@ -46,7 +45,11 @@ const PAGE_SIZE = 9;
 export class VendorInvoicesComponent {
   readonly statuses: InvoiceStatus[] = ['Posted', 'Pending'];
   readonly vendors = VENDORS;
-  readonly tone: Record<InvoiceStatus, VbnTone> = { Posted: 'success', Pending: 'warning' };
+  /** Soft status pill colors for <verbena-badge> */
+  readonly badge: Record<InvoiceStatus, { bg: string; fg: string }> = {
+    Posted: { bg: 'color-mix(in srgb, var(--vbn-color-success) 14%, transparent)', fg: 'var(--vbn-color-success)' },
+    Pending: { bg: 'color-mix(in srgb, var(--vbn-color-warning) 16%, transparent)', fg: 'var(--vbn-color-warning)' },
+  };
   readonly sorts: { value: InvoiceSort; label: string }[] = [
     { value: 'newest', label: 'Newest first' },
     { value: 'amount-desc', label: 'Amount, high to low' },

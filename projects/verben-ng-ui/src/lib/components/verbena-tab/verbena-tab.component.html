@@ -2,10 +2,16 @@
   class="tab-container" 
   [ngStyle]="{'background-color': backgroundColor}"
 >
-  <div class="tab-header">
+  <div class="tab-header" role="tablist">
     <div 
       *ngFor="let tab of tabs" 
       class="tab-item" 
+      role="tab"
+      [attr.aria-selected]="tab.active"
+      [attr.aria-disabled]="tab.disabled || null"
+      [attr.tabindex]="tab.disabled ? -1 : 0"
+      (keydown.enter)="!tab.disabled && selectTab(tab)"
+      (keydown.space)="$event.preventDefault(); !tab.disabled && selectTab(tab)"
       [ngClass]="{'active': tab.active, 'disabled': tab.disabled}"
       [ngStyle]="{
         'background-color': tab.active ? (tab.activeTabBgColor || activeTabBgColor) : tab.tabColor,
@@ -24,7 +30,7 @@
       </span>
     </div>
   </div>
-  <div class="tab-content" *ngIf="activeTab" [ngStyle]="{'background-color': !activeTab.tabColor? activeTabBgColor : activeTab.tabColor}">
+  <div class="tab-content" role="tabpanel" *ngIf="activeTab" [ngStyle]="{'background-color': !activeTab.tabColor? activeTabBgColor : activeTab.tabColor}">
     <ng-container [ngTemplateOutlet]="activeTab.content"></ng-container>
   </div>
 </div>

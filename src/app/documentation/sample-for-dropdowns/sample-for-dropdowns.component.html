@@ -1,50 +1,42 @@
+<p class="demo-intro">
+  <code>verben-pop-Up</code> inside a scrolling area: open a pop-up, then
+  scroll the box in both directions. The pop-up stays attached to its button.
+</p>
+
 <section class="main-sec">
-  <p>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim, placeat.
-  </p>
-  <verben-pop-Up
-    [(dropdownOpen)]="isOpen2"
-    [enableMouseLeave]="false"
-    (close)="onClose2()"
-    [customStyles]="{
-      'background-color': 'blue',
-      padding: '10px',
-      'border-radius': '20px'
-    }"
-  >
-    <button dropdown-trigger>Toggle Dropdown</button>
-
-    <div dropdown-content>
-      <div class="p-4 flex gap-4 rounded-lg">
-        <p>Lorem, ipsum dolor sit amet consectetur repellat.</p>
-        <!-- <button (click)="onClose2()">close</button> -->
-      </div>
-    </div>
-  </verben-pop-Up>
-
-  <div class="">
-    <span>A</span>
+  <div class="scroll-space">
     <verben-pop-Up
-      [(dropdownOpen)]="isOpen"
+      [(dropdownOpen)]="isOpen2"
       [enableMouseLeave]="false"
-      (close)="onClose()"
-      [customStyles]="{
-        'background-color': 'blue',
-        padding: '10px',
-        'border-radius': '20px'
-      }"
+      (close)="onClose2()"
+      [customStyles]="popupStyles"
     >
-      <button dropdown-trigger>Toggle Dropdown</button>
+      <button class="demo-trigger" dropdown-trigger>Toggle pop-up</button>
 
       <div dropdown-content>
-        <div class="p-4 flex gap-4 rounded-lg">
-          <p>Lorem, ipsum dolor sit amet consectetur repellat.</p>
-          <button (click)="onClose()">close</button>
-        </div>
+        <p class="demo-popup-text">Closes with a click outside.</p>
       </div>
     </verben-pop-Up>
+
+    <div class="demo-row">
+      <span class="demo-muted">With a close button</span>
+      <verben-pop-Up
+        [(dropdownOpen)]="isOpen"
+        [enableMouseLeave]="false"
+        (close)="onClose()"
+        [customStyles]="popupStyles"
+      >
+        <button class="demo-trigger" dropdown-trigger>Toggle pop-up</button>
+
+        <div dropdown-content>
+          <div class="demo-popup">
+            <p class="demo-popup-text">Content can close it too.</p>
+            <button class="demo-trigger" (click)="onClose()">Close</button>
+          </div>
+        </div>
+      </verben-pop-Up>
+    </div>
+
+    <p class="demo-muted">The box is larger than the screen on purpose: scroll it.</p>
   </div>
-  <p>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim, placeat.
-  </p>
 </section>

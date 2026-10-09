@@ -7,112 +7,79 @@
   [style.width]="width"
   [style.height]="height"
   [style.padding]="pd"
+  class="vbn-panel"
 >
-  <div class="top">
-    <h3 [style.color]="tertiaryColor" [style.font-size]="'14px'">
+  <div class="vbn-panel-header">
+    <h3 class="vbn-panel-title" [style.color]="tertiaryColor">
       Filters
-      <span [style.color]="secondaryColor"
-        ><sup>({{ filterCount }})</sup></span
-      >
+      <span class="vbn-panel-count" [style.color]="secondaryColor">{{ filterCount }}</span>
     </h3>
-    <button
-      [style.color]="secondaryColor"
-      [style.background-color]="bgColor"
-      [style.border]="'none'"
-      [style.cursor]="'pointer'"
-      [style.font-size]="'12px'"
-      (click)="resetFilters()"
-    >
+    <button type="button" class="vbn-panel-link" [style.color]="secondaryColor" (click)="resetFilters()">
       Reset
     </button>
   </div>
-  <hr />
 
   <!-- Saved Filters Section -->
-  <div class="center">
-    <div class="savedWrapper">
-      <h3 [style.font-size]="'13px'">Saved Filters</h3>
-      <verben-svg
-        icon="info"
-        [width]="15"
-        [height]="15"
-        fill="var(--vbn-color-text-muted)"
-      ></verben-svg>
+  <div class="vbn-panel-scroll">
+    <div class="filter-section-title">
+      <p class="vbn-panel-label">Saved Filters</p>
+      <verben-svg icon="info" [width]="14" [height]="14" fill="var(--vbn-color-text-muted)"></verben-svg>
     </div>
-    <div class="selectAllWrapper" *ngIf="savedFilters.length">
-      <input
-        type="checkbox"
-        [checked]="checkAll"
-        (change)="toggleSelectAll()"
-      />
-      <p [style.font-size]="'13px'" [style.font-weight]="'500'">Select All</p>
-    </div>
-    <div
-      *ngFor="let filter of visibleFilters; let i = index"
-      class="centerInnerWrapper"
-    >
-      <div class="checkboxWrapper">
-        <span
-          ><input
-            type="checkbox"
-            [checked]="filter.checked"
-            (click)="toggleCheckbox(i)"
-        /></span>
-        <p
-          [style.font-size]="'13px'"
-          [style.font-weight]="'500'"
-          [style.color]="tertiaryColor"
-        >
-          {{ filter.name }} {{ filter.condition }} {{ filter.value }}
-        </p>
-      </div>
-      <div class="iconWrapper">
-        <verben-svg
-          icon="pencil"
-          [width]="15"
-          [height]="15"
-          stroke="black"
-          fill="black"
-          (click)="editFilter(i)"
-        ></verben-svg>
-        <verben-svg
-          icon="trash"
-          [width]="15"
-          [height]="15"
-          stroke="var(--vbn-color-error)"
-          (click)="deleteFilter(i)"
-        ></verben-svg>
+
+    <p class="filter-empty" *ngIf="!savedFilters.length">No saved filters yet. Add one below.</p>
+
+    <label class="vbn-panel-row vbn-panel-row--all" *ngIf="savedFilters.length">
+      <input type="checkbox" [checked]="checkAll" (change)="toggleSelectAll()" />
+      Select All
+    </label>
+
+    <div *ngFor="let filter of visibleFilters; let i = index" class="filter-item">
+      <label class="vbn-panel-row">
+        <input type="checkbox" [checked]="filter.checked" (click)="toggleCheckbox(i)" />
+        <span class="filter-text" [style.color]="tertiaryColor">
+          <b>{{ filter.name }}</b> {{ filter.condition }} <b>{{ filter.value }}</b>
+        </span>
+      </label>
+      <div class="filter-actions">
+        <button type="button" class="filter-icon" aria-label="Edit filter" title="Edit" (click)="editFilter(i)">
+          <verben-svg
+            icon="pencil"
+            [width]="14"
+            [height]="14"
+            stroke="var(--vbn-color-text-muted)"
+            fill="var(--vbn-color-text-muted)"
+          ></verben-svg>
+        </button>
+        <button type="button" class="filter-icon is-danger" aria-label="Delete filter" title="Delete" (click)="deleteFilter(i)">
+          <verben-svg icon="trash" [width]="14" [height]="14" stroke="var(--vbn-color-error)"></verben-svg>
+        </button>
       </div>
     </div>
 
-    <div
-      class="moreWrapper"
+    <button
+      type="button"
+      class="vbn-panel-link vbn-panel-more filter-more"
       *ngIf="savedFilters.length > maxFilterLength"
+      [style.color]="tertiaryColor"
       (click)="toggleShowMore()"
     >
-      <p
-        [style.font-size]="'12px'"
-        [style.font-weight]="'500'"
-        [style.color]="tertiaryColor"
-      >
-        {{ showAllFilters ? "Show less" : "Show more" }}
-      </p>
+      {{ showAllFilters ? "Show less" : "Show more" }}
       <verben-svg
         icon="chevron"
         [width]="8"
         [height]="6"
-        fill="var(--vbn-color-text)"
-        stroke="var(--vbn-color-text)"
+        [class.is-open]="showAllFilters"
+        fill="currentColor"
+        stroke="currentColor"
       ></verben-svg>
-    </div>
+    </button>
   </div>
-  <hr />
 
   <!-- Operation Section -->
-  <div class="bottom">
-    <div class="savedWrapper">
-      <h3 [style.font-size]="'13px'">Operation</h3>
-      <div [ngStyle]="{ position: 'relative' }">
+  <div class="filter-operation">
+    <div class="filter-section-title">
+      <p class="vbn-panel-label">Operation</p>
+      <div class="filter-info">
         <verben-tooltip
           [tooltipContent]="tooltipTemplate"
           [backgroundColor]="'var(--vbn-color-surface-alt)'"
@@ -120,55 +87,36 @@
           [top]="'20px'"
           [right]="'0px'"
         >
-          <verben-svg
-            icon="info"
-            [width]="15"
-            [height]="15"
-            *ngIf="isDuplicateFilter"
-            fill="var(--vbn-color-error)"
-          >
+          <verben-svg icon="info" [width]="14" [height]="14" *ngIf="isDuplicateFilter" fill="var(--vbn-color-error)">
           </verben-svg>
         </verben-tooltip>
 
         <ng-template #tooltipTemplate>
           {{ duplicateMessage }}
         </ng-template>
-        <!-- <verben-tooltip
-         [backgroundColor]="'var(--vbn-color-surface-alt)'"
-         [textColor]="'var(--vbn-color-surface)'"
-         [padding]="'10px'"
-         [borderRadius]="'8px'"
-         [top]="'20px'"                 
-         [right]="'0px'"   
-         width="250px" 
-         #tooltip 
-         *ngIf="tooltip"
-         >
-         <h3>{{duplicateMessage}}</h3>
-        </verben-tooltip> -->
+        <verben-svg
+          icon="info"
+          [width]="14"
+          [height]="14"
+          fill="var(--vbn-color-text-muted)"
+          *ngIf="!isDuplicateFilter"
+        ></verben-svg>
       </div>
-      <verben-svg
-        icon="info"
-        [width]="15"
-        [height]="15"
-        fill="var(--vbn-color-text-muted)"
-        *ngIf="!isDuplicateFilter"
-      ></verben-svg>
     </div>
 
+    <!-- Field, condition and value; they wrap on narrow screens -->
     <div class="inputsWrapper">
       <verben-drop-down
-        width="7rem"
-        placeholder="Select value"
+        width="100%"
+        placeholder="Field"
         [options]="filterArray"
         [(ngModel)]="selectedFilterValue"
         (ngModelChange)="onFilterNameChange(selectedFilterValue)"
       >
       </verben-drop-down>
       <verben-drop-down
-        width="7rem"
-        placeholder="Select value"
-        placeholder="Select value"
+        width="100%"
+        placeholder="Condition"
         [options]="conditionOptions"
         (onChange)="checkDuplicateFilter()"
         [(ngModel)]="selectedCondition"
@@ -178,11 +126,8 @@
       <verbena-input
         *ngIf="selectedFilterType === 'Date'"
         border="1px solid var(--vbn-color-border)"
-        borderRadius="5px"
+        borderRadius="8px"
         textColor="var(--vbn-color-text)"
-        width="80px"
-        height="25px"
-        pd="6px"
         [showBorder]="true"
         [showErrorMessage]="true"
         [errorPosition]="'bottom'"
@@ -191,16 +136,11 @@
       ></verbena-input>
 
       <verbena-input
-        *ngIf="
-          selectedFilterType === 'Credit' || selectedFilterType === 'Integer'
-        "
+        *ngIf="selectedFilterType === 'Credit' || selectedFilterType === 'Integer'"
         border="1px solid var(--vbn-color-border)"
-        borderRadius="5px"
+        borderRadius="8px"
         textColor="var(--vbn-color-text)"
-        width="100px"
-        height="25px"
-        pd="6px"
-        placeHolder="input integer"
+        placeHolder="Whole number"
         [showBorder]="true"
         [showErrorMessage]="true"
         [errorPosition]="'bottom'"
@@ -211,12 +151,9 @@
       <verbena-input
         *ngIf="selectedFilterType === 'Decimal'"
         border="1px solid var(--vbn-color-border)"
-        borderRadius="5px"
+        borderRadius="8px"
         textColor="var(--vbn-color-text)"
-        width="100px"
-        height="25px"
-        pd="6px"
-        placeHolder="input a decimal"
+        placeHolder="Decimal"
         [showBorder]="true"
         [showErrorMessage]="false"
         [errorPosition]="'bottom'"
@@ -227,12 +164,9 @@
       <verbena-input
         *ngIf="selectedFilterType === 'Number'"
         border="1px solid var(--vbn-color-border)"
-        borderRadius="5px"
+        borderRadius="8px"
         textColor="var(--vbn-color-text)"
-        width="100px"
-        height="25px"
-        pd="6px"
-        placeHolder="input number"
+        placeHolder="Number"
         [showBorder]="true"
         [showErrorMessage]="false"
         type="number"
@@ -250,12 +184,9 @@
           selectedFilterType !== 'Number'
         "
         border="1px solid var(--vbn-color-border)"
-        placeHolder="input value"
-        borderRadius="5px"
+        placeHolder="Value"
+        borderRadius="8px"
         textColor="var(--vbn-color-text)"
-        width="100px"
-        height="25px"
-        pd="6px"
         [showBorder]="true"
         [showErrorMessage]="true"
         [errorPosition]="'bottom'"
@@ -263,42 +194,28 @@
       ></verbena-input>
     </div>
 
-    <div class="btnWrapper">
+    <div class="filter-add">
       <button
-        [style.margin-top]="'0.5rem'"
-        [style.outline]="'none'"
-        [style.border]="'none'"
-        [style.border-radius]="borderRadius"
-        [style.background-color]="'transparent'"
+        type="button"
+        class="vbn-panel-link"
         [style.color]="secondaryColor"
-        [style.font-size]="'12px'"
-        [style.font-weight]="'500'"
         [disabled]="disableAddFilterBtn"
-        [ngClass]="{
-          disablebtn: disableAddFilterBtn,
-          enableBtn: !disableAddFilterBtn,
-        }"
         (click)="addFilter()"
       >
-        {{ this.editIndex != null ? "+ Update" : "+ Add" }}
+        {{ this.editIndex != null ? "+ Update filter" : "+ Add filter" }}
       </button>
     </div>
-    <hr />
+  </div>
 
-    <div class="btnWrapper">
-      <button
-        [style.margin-top]="'0.5rem'"
-        [style.outline]="'none'"
-        [style.border]="'none'"
-        [style.padding]="'0.2rem 1.6rem'"
-        [style.background-color]="primaryColor"
-        [style.color]="tertiaryColor"
-        [style.font-size]="'12px'"
-        [style.font-weight]="'600'"
-        (click)="applyFilters()"
-      >
-        Confirm
-      </button>
-    </div>
+  <div class="vbn-panel-footer">
+    <button
+      type="button"
+      class="vbn-panel-primary"
+      [style.background-color]="primaryColor"
+      [style.color]="tertiaryColor"
+      (click)="applyFilters()"
+    >
+      Confirm
+    </button>
   </div>
 </section>

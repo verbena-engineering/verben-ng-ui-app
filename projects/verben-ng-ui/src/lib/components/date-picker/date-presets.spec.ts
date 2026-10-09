@@ -21,7 +21,7 @@ const sunday: DatePresetContext = { weekStartsOn: 0 };
 const resolve = (id: DatePresetId, today: Date, ctx = monday) =>
   show(DATE_PRESETS[id].range(today, ctx));
 
-describe('verben-date-picker: presets', () => {
+describe('date picker: presets', () => {
   const today = new Date(2026, 9, 7); // Wed 7 Oct 2026
 
   it('resolves calendar month presets', () => {
@@ -118,7 +118,7 @@ describe('verben-date-picker: presets', () => {
   });
 });
 
-describe('verben-date-picker: date utils', () => {
+describe('date picker: date utils', () => {
   it('clamps the day when adding months', () => {
     expect(toLocalIso(addMonths(new Date(2026, 0, 31), 1)).slice(0, 10)).toBe('2026-02-28');
   });

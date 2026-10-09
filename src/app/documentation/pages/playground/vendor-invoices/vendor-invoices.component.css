@@ -1,0 +1,187 @@
+:host {
+  display: block;
+}
+
+/* ---------- Toolbar popovers ---------- */
+
+.vi-panel {
+  width: 280px;
+  text-align: left;
+}
+
+.vi-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+.vi-check input {
+  margin: 0;
+  accent-color: var(--vbn-color-text);
+}
+
+.vi-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--vbn-color-text-muted);
+}
+
+.vi-field select {
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--vbn-color-border);
+  border-radius: 6px;
+  background: var(--vbn-color-surface);
+  color: var(--vbn-color-text);
+  font: inherit;
+  font-size: 13px;
+}
+
+/* ---------- Board: list + details ---------- */
+
+.vi-board {
+  margin-top: 16px;
+}
+
+.vi-layout {
+  display: grid;
+  gap: 16px;
+}
+
+/* A click opens the details: the list becomes a column on the left */
+.vi-layout.has-detail {
+  grid-template-columns: minmax(240px, 340px) minmax(0, 1fr);
+  align-items: start;
+}
+
+.vi-list {
+  --vbn-card-min-column: 260px;
+}
+
+.vi-layout.has-detail .vi-list {
+  max-height: 640px;
+  overflow-y: auto;
+}
+
+.vi-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.vi-item > vbn-card {
+  flex: 1;
+  min-width: 0;
+}
+
+.vi-toggle {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  margin-top: 10px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.vi-toggle:hover:not(:disabled) {
+  background: var(--vbn-color-surface-alt);
+}
+
+.vi-toggle:disabled {
+  visibility: hidden; /* keeps the cards lined up */
+}
+
+/* The selected invoice or line: an accent strip, like the card data view */
+.vi-invoice.is-selected,
+.vi-line.is-selected {
+  border-color: var(--vbn-color-primary);
+  box-shadow: inset 4px 0 0 var(--vbn-color-primary);
+}
+
+.vi-detail {
+  position: sticky;
+  top: 80px;
+}
+
+/* Sub-cards after the first get a top margin; the details sit beside the list */
+.vi-layout > .vi-detail {
+  margin-top: 0;
+}
+
+.vi-form verbena-input,
+.vi-form verben-number-input {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.vi-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--vbn-color-text-muted);
+}
+
+.vi-status span {
+  margin-right: 6px;
+}
+
+.vi-actions {
+  display: inline-flex;
+  gap: 8px;
+}
+
+/* ---------- Table view ---------- */
+
+.vi-table-wrap {
+  overflow-x: auto;
+}
+
+.vi-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.vi-table th,
+.vi-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--vbn-color-border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.vi-table th {
+  color: var(--vbn-color-text-muted);
+  font-weight: 500;
+}
+
+.vi-table .is-num {
+  text-align: right;
+}
+
+/* Phones and narrow screens: details on top, list below */
+@media (max-width: 760px) {
+  .vi-layout.has-detail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .vi-detail {
+    position: static;
+    order: -1;
+  }
+
+  .vi-layout.has-detail .vi-list {
+    max-height: none;
+  }
+}

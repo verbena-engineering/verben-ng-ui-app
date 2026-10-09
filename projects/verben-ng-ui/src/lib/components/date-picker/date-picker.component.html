@@ -1,274 +1,137 @@
-<div #datePickerContainer class="date-picker">
-  <div class="calendar-container">
-    <input
-      cdkOverlayOrigin
-      #trigger="cdkOverlayOrigin"
-      type="text"
-      [placeholder]="placeholder"
-      [value]="displayDate"
-      [disabled]="disabled"
-      (click)="!disabled && toggleCalendar()"
-      class="w-full block"
-      [style.background-color]="bgColor"
-      [style.border]="border"
-      [ngClass]="{
-        'cursor-not-allowed': disabled === true,
-        'cursor-pointer': disabled === false,
-      }"
-      readonly
-    />
-    <verben-svg
-      (click)="!disabled && toggleCalendar()"
-      class="icon"
-      [icon]="'calendar'"
-    ></verben-svg>
+<div class="vdp-control" cdkOverlayOrigin #origin="cdkOverlayOrigin">
+  <button
+    #trigger
+    type="button"
+    class="vdp-field"
+    aria-haspopup="dialog"
+    [attr.aria-expanded]="open"
+    [disabled]="disabled"
+    [style.background-color]="bgColor"
+    [style.border]="border"
+    (click)="toggle()"
+  >
+    <svg class="vdp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" />
+    </svg>
+    <span class="vdp-text" [class.is-placeholder]="!displayText">{{ displayText || placeholder }}</span>
+  </button>
+
+  <button *ngIf="clearable && selection && !disabled" type="button" class="vdp-clear" aria-label="Clear" (click)="clear()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+  </button>
+</div>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayOpen]="open"
+  [cdkConnectedOverlayPositions]="positions"
+  [cdkConnectedOverlayWidth]="overlayWidth ?? ''"
+  [cdkConnectedOverlayPush]="true"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  (backdropClick)="close()"
+  (detach)="close()"
+  (overlayKeydown)="onOverlayKeydown($event)"
+>
+  <div class="vdp-popup" role="dialog" aria-label="Choose a date" [style.width]="datePickerWidth">
+    <!-- advanced: Date | Range | Periods tabs -->
+    <div class="vdp-modes" *ngIf="variant === 'advanced' && modeList.length > 1" role="group" aria-label="Selection type">
+      <button
+        *ngFor="let m of modeList"
+        type="button"
+        [class.is-active]="m === selectionMode"
+        [attr.aria-pressed]="m === selectionMode"
+        (click)="setMode(m)"
+      >
+        {{ labelFor(m) }}
+      </button>
+    </div>
+
+    <!-- simple: one checkbox and one search field -->
+    <div class="vdp-top" *ngIf="variant === 'simple'">
+      <label class="vdp-check" *ngIf="allowRange" title="Tick to pick a start and an end day">
+        <input type="checkbox" [checked]="selectionMode === 'range'" (change)="toggleRange()" />
+        Range
+      </label>
+      <verben-preset-search
+        [presets]="presetList"
+        [today]="todayDate"
+        [min]="min"
+        [max]="max"
+        [weekStartsOn]="weekStartsOn"
+        [allowTyped]="allowTypedPresets"
+        [placeholder]="searchPlaceholder"
+        (preview)="onPresetPreview($event)"
+        (choose)="onPresetChoose($event)"
+      ></verben-preset-search>
+    </div>
+
+    <div class="vdp-body">
+      <!-- Periods: tabs + suggestions on top, period grid on the side, calendar beside it -->
+      <verben-period-panel
+        *ngIf="selectionMode === 'preset'; else calendar"
+        [presets]="presetList"
+        [periods]="periods"
+        [activeId]="selection?.presetId ?? null"
+        [today]="todayDate"
+        [min]="min"
+        [max]="max"
+        [weekStartsOn]="weekStartsOn"
+        [focus]="panelFocus"
+        [selectedStart]="selection?.start ?? null"
+        [selectedEnd]="selection?.end ?? null"
+        [multi]="multi"
+        (preview)="onPresetPreview($event)"
+        (choose)="onPresetChoose($event)"
+        (tabChange)="onPeriodTab($event)"
+        (spanStartChange)="onSpanStart($event)"
+      >
+        <ng-container *ngIf="showPeriodCalendar" [ngTemplateOutlet]="calendar"></ng-container>
+      </verben-period-panel>
+    </div>
+
+    <!-- showTime: hours and minutes for the picked day -->
+    <div class="vdp-time" *ngIf="timeOn">
+      <span class="vdp-time-label">Time</span>
+      <select class="vdp-select" aria-label="Hour" (change)="setTime(+$any($event.target).value, minute)">
+        <option *ngFor="let h of hourOptions; let i = index" [value]="h" [selected]="i === hour">{{ h }}</option>
+      </select>
+      <span aria-hidden="true">:</span>
+      <select class="vdp-select" aria-label="Minute" (change)="setTime(hour, +$any($event.target).value)">
+        <option *ngFor="let m of minuteOptions; let i = index" [value]="m" [selected]="i === minute">{{ m }}</option>
+      </select>
+      <button type="button" class="vdp-link" title="00:00" (click)="setTime(0, 0)">Start of day</button>
+      <button type="button" class="vdp-link" title="23:59" (click)="setTime(23, 59, true)">End of day</button>
+    </div>
+
+    <div class="vdp-footer">
+      <!-- Selecting more than one period: one quiet checkbox, off by default -->
+      <label class="vdp-check is-muted" *ngIf="selectionMode === 'preset' && allowSeveral && severalLabel">
+        <input type="checkbox" [checked]="multi" (change)="toggleMulti()" />
+        {{ severalLabel }}
+      </label>
+      <span class="vdp-hint" [title]="hint">{{ hint }}</span>
+      <button *ngIf="selectionMode !== 'preset'" type="button" class="vdp-link" (click)="goToToday()">Today</button>
+      <button *ngIf="clearable && selection" type="button" class="vdp-link" (click)="clear()">Clear</button>
+      <button type="button" class="vdp-link" (click)="close()">Close</button>
+    </div>
   </div>
 
-  <ng-template
-    cdkConnectedOverlay
-    [cdkConnectedOverlayWidth]="
-      overlayWidth ? overlayWidth : datePickerContainer.offsetWidth
-    "
-    [cdkConnectedOverlayLockPosition]="false"
-    [cdkConnectedOverlayOrigin]="trigger"
-    [cdkConnectedOverlayPush]="true"
-    [cdkConnectedOverlayPositions]="[
-      {
-        originX: 'start',
-        originY: 'bottom',
-        overlayX: 'start',
-        overlayY: 'top',
-      },
-      {
-        originX: 'start',
-        originY: 'top',
-        overlayX: 'start',
-        overlayY: 'bottom',
-      },
-      {
-        originX: 'end',
-        originY: 'bottom',
-        overlayX: 'end',
-        overlayY: 'top',
-      },
-      {
-        originX: 'end',
-        originY: 'top',
-        overlayX: 'end',
-        overlayY: 'bottom',
-      },
-    ]"
-    [cdkConnectedOverlayOpen]="showCalendar"
-    (detach)="showCalendar = false"
-  >
-    <div class="calendar" [style.width]="datePickerWidth" #datePickerExpansion>
-      <div class="calendar-header">
-        <ng-container *ngIf="!useDropdowns; else dropdowns">
-          <button (click)="previousMonth()">
-            <verben-svg [width]="20" [icon]="'chevron-left'"></verben-svg>
-          </button>
-          <span>{{ months[selectedMonth] }} {{ selectedYear }}</span>
-          <button (click)="nextMonth()">
-            <verben-svg [width]="20" [icon]="'chevron-right'"></verben-svg>
-          </button>
-        </ng-container>
-
-        <ng-template #dropdowns>
-          <!-- [DP-12] Year list opens scrolled to the selected year -->
-          <verben-drop-down
-            [placeholder]="yearPlaceholder"
-            (onChange)="onDropdownYearChange($event)"
-            [options]="yearRange"
-            [autoScrollToCurrentItem]="true"
-            [(ngModel)]="selectedYear"
-            [width]="'90px'"
-          ></verben-drop-down>
-
-          <verben-drop-down
-            [placeholder]="monthPlaceholder"
-            (onChange)="onDropdownMonthChange($event)"
-            [options]="months"
-            class="drop-down"
-            [(ngModel)]="selectedMonthString"
-            [width]="'90px'"
-          ></verben-drop-down>
-        </ng-template>
-
-        <!-- [DP-5] Time picker hidden in range mode (ranges are whole days) -->
-        <div
-          class="time-picker flex items-center gap-2"
-          *ngIf="showTime && !isRangeMode"
-        >
-          <!-- [DP-11] "time-field" (component CSS) replaces Tailwind's "relative":
-               it anchors the floating list below. Tailwind isn't compiled for
-               the library, so apps using it may not have that class. -->
-          <div class="time-field">
-            <div
-              class="flex items-center box rounded px-2 py-1 cursor-pointer"
-              (click)="toggleHourDropdown()"
-            >
-              {{ selectedHour }}
-            </div>
-
-            <!-- [DP-11] Floats over the calendar (see .time-field .dropdown in CSS) -->
-            <div *ngIf="showHourOptions" class="dropdown">
-              <div
-                class="dropdown-item"
-                *ngFor="let h of hours"
-                [class.active]="h === selectedHour"
-                (click)="selectHour(h)"
-              >
-                {{ h }}
-              </div>
-            </div>
-          </div>
-
-          <span>:</span>
-
-          <!-- [DP-11] Same as the hour field -->
-          <div class="time-field">
-            <div
-              class="flex items-center box rounded px-2 py-1 cursor-pointer"
-              (click)="toggleMinuteDropdown()"
-            >
-              {{ selectedMinute }}
-            </div>
-
-            <div *ngIf="showMinuteOptions" class="dropdown">
-              <div
-                class="dropdown-item"
-                *ngFor="let m of minutes"
-                [class.active]="m === selectedMinute"
-                (click)="selectMinute(m)"
-              >
-                {{ m }}
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <verben-tooltip
-              [top]="'-40px'"
-              [textColor]="'var(--vbn-color-text)'"
-              [backgroundColor]="'var(--vbn-color-surface-alt)'"
-              [left]="'0'"
-              [width]="'100px'"
-              [tooltipContent]="tooltipTemplate"
-              #tooltip
-            >
-              <verben-svg
-                (click)="setToStartOfDay()"
-                class="cursor-pointer"
-                [width]="14"
-                [height]="14"
-                [icon]="'sun'"
-              ></verben-svg>
-            </verben-tooltip>
-            <ng-template #tooltipTemplate>
-              <div>
-                <p class="text-xs">Set start of day</p>
-              </div>
-            </ng-template>
-          </div>
-          <div>
-            <verben-tooltip
-              [top]="'-40px'"
-              [textColor]="'var(--vbn-color-text)'"
-              [backgroundColor]="'var(--vbn-color-surface-alt)'"
-              [left]="'0'"
-              [width]="'100px'"
-              [tooltipContent]="endOfDayTooltip"
-              #endOfDayTip
-            >
-              <verben-svg
-                (click)="setToEndOfDay()"
-                class="cursor-pointer"
-                [width]="14"
-                [height]="14"
-                [icon]="'moon'"
-              ></verben-svg>
-            </verben-tooltip>
-
-            <ng-template #endOfDayTooltip>
-              <div>
-                <p class="text-xs">Set end of day</p>
-              </div>
-            </ng-template>
-          </div>
-          <verben-tooltip
-            [top]="'-40px'"
-            [textColor]="'var(--vbn-color-text)'"
-            [backgroundColor]="'var(--vbn-color-surface-alt)'"
-            [left]="'0'"
-            [width]="'100px'"
-            [tooltipContent]="clearTooltip"
-            #clearDateTip
-          >
-            <verben-svg
-              (click)="clearDate()"
-              class="cursor-pointer"
-              [width]="14"
-              [height]="14"
-              [icon]="'close'"
-            ></verben-svg>
-          </verben-tooltip>
-
-          <ng-template #clearTooltip>
-            <div>
-              <p class="text-xs">clear date</p>
-            </div>
-          </ng-template>
-        </div>
-      </div>
-
-      <div class="calendar-body">
-        <div class="weekdays">
-          <span *ngFor="let day of weekDays">{{ day }}</span>
-        </div>
-
-        <!-- [DP-6] Leaving the grid removes the hover preview -->
-        <div class="dates" (mouseleave)="hoverDate = null">
-          <ng-container *ngFor="let day of daysInMonth">
-            <!-- [DP-6] In range mode the two ends get "selected" (filled circle),
-                 plus range-start / range-end / in-range for the band.
-                 mouseenter feeds the hover preview while picking the end. -->
-            <button
-              *ngIf="day; else empty"
-              [class.selected]="
-                isRangeMode
-                  ? isRangeStart(day) || isRangeEnd(day)
-                  : isSelected(day)
-              "
-              [class.range-start]="isRangeMode && isRangeStart(day)"
-              [class.range-end]="isRangeMode && isRangeEnd(day)"
-              [class.in-range]="isRangeMode && isInRange(day)"
-              [disabled]="isDisabled(day)"
-              [ngClass]="{ 'disabled-day': isDisabled(day) }"
-              (mouseenter)="isRangeMode && (hoverDate = day)"
-              (click)="selectTemporaryDate(day)"
-            >
-              {{ day.getDate() }}
-            </button>
-            <ng-template #empty>
-              <span class="empty-date"></span>
-            </ng-template>
-          </ng-container>
-        </div>
-      </div>
-
-      <!-- [DP-9] Footer: OK removed (picks save immediately), Cancel -> Close,
-           range mode adds a hint and a Clear button -->
-      <div class="calendar-footer">
-        <span *ngIf="isRangeMode" class="range-hint">
-          {{
-            tempRangeStart && !tempRangeEnd ? "Select end date" : "Select start date"
-          }}
-        </span>
-        <button *ngIf="isRangeMode && rangeStart" (click)="clearDate()">
-          Clear
-        </button>
-        <button (click)="close()">Close</button>
-      </div>
-    </div>
+  <!-- The calendar: alone, or next to the period grid -->
+  <ng-template #calendar>
+    <verben-calendar
+      [(month)]="viewMonth"
+      [count]="calendarCount"
+      [start]="highlightStart"
+      [end]="highlightEnd"
+      [min]="min"
+      [max]="max"
+      [today]="todayDate"
+      [weekStartsOn]="weekStartsOn"
+      [interactive]="calendarInteractive"
+      (pick)="onDayPick($event)"
+      (hover)="onDayHover($event)"
+    ></verben-calendar>
   </ng-template>
-</div>
+</ng-template>

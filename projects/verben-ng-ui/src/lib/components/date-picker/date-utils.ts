@@ -1,5 +1,5 @@
 /**
- * Pure date helpers for <verben-date-picker>.
+ * Pure date helpers for <app-date-picker>.
  *
  * Everything works in LOCAL time and on whole days. No dependency (no
  * date-fns / moment), and no function mutates the Date it receives.
@@ -138,6 +138,17 @@ export function clampSpan(
   if (min && compareDays(start, min) < 0) start = startOfDay(min);
   if (max && compareDays(end, max) > 0) end = endOfDay(max);
   return compareDays(start, end) <= 0 ? [start, end] : null;
+}
+
+/** "Sep 1 – Sep 30", with the year only when it isn't today's year */
+export function formatShortSpan([start, end]: DateSpan, today: Date): string {
+  const f = (d: Date) =>
+    d.toLocaleDateString(undefined, {
+      month: 'short',
+      day: 'numeric',
+      ...(d.getFullYear() !== today.getFullYear() ? { year: 'numeric' } : {}),
+    });
+  return compareDays(start, end) === 0 ? f(start) : `${f(start)} – ${f(end)}`;
 }
 
 export const isOutside = (d: Date, min?: Date | null, max?: Date | null): boolean =>

@@ -4,14 +4,14 @@ import { FormsModule } from '@angular/forms';
 import {
   CardModule,
   ChipModule,
+  DataViewModule,
   DatePickerModule,
   DropDownModule,
   NotificationModule,
   NumberInputModule,
   SvgModule,
   TooltipModule,
-  VerbenDatePickerModule,
-  VerbenSimpleDatePickerModule,
+  UnstableCardModule,
   VerbenDialogueModule,
   VerbenTimePickerModule,
   VerbenaBadgeModule,
@@ -30,6 +30,9 @@ import { DocsCodeBlockComponent } from './docs-kit/code-block.component';
 import { DocsExampleComponent } from './docs-kit/docs-example.component';
 import { DocsPageComponent } from './docs-kit/docs-page.component';
 import { DocsPropsTableComponent } from './docs-kit/props-table.component';
+import { DocsCodeTabsComponent } from './docs-kit/code-tabs.component';
+import { DocsChangesComponent } from './docs-kit/changes.component';
+import { DocsPlaygroundUsageComponent } from './docs-kit/playground-usage.component';
 
 // Pages
 import { DocsHomeComponent } from './pages/home/docs-home.component';
@@ -51,7 +54,9 @@ import { TabsPageComponent } from './pages/components/tabs-page.component';
 import { TextareaPageComponent } from './pages/components/textarea-page.component';
 import { TimePickerPageComponent } from './pages/components/time-picker-page.component';
 import { TooltipPageComponent } from './pages/components/tooltip-page.component';
-import { VerbenDatePickerPageComponent } from './pages/components/verben-date-picker-page.component';
+import { UnstableCardPageComponent } from './pages/unstable/card-page.component';
+import { VendorInvoicesComponent } from './pages/playground/vendor-invoices/vendor-invoices.component';
+import { VendorInvoicesPageComponent } from './pages/playground/vendor-invoices/vendor-invoices-page.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +65,9 @@ import { VerbenDatePickerPageComponent } from './pages/components/verben-date-pi
     DocsExampleComponent,
     DocsPageComponent,
     DocsPropsTableComponent,
+    DocsCodeTabsComponent,
+    DocsChangesComponent,
+    DocsPlaygroundUsageComponent,
     DocsHomeComponent,
     InstallationPageComponent,
     ThemingPageComponent,
@@ -79,7 +87,9 @@ import { VerbenDatePickerPageComponent } from './pages/components/verben-date-pi
     TextareaPageComponent,
     TimePickerPageComponent,
     TooltipPageComponent,
-    VerbenDatePickerPageComponent,
+    UnstableCardPageComponent,
+    VendorInvoicesComponent,
+    VendorInvoicesPageComponent,
   ],
   imports: [
     CommonModule,
@@ -94,8 +104,7 @@ import { VerbenDatePickerPageComponent } from './pages/components/verben-date-pi
     NumberInputModule,
     SvgModule,
     TooltipModule,
-    VerbenDatePickerModule,
-    VerbenSimpleDatePickerModule,
+    UnstableCardModule,
     VerbenDialogueModule,
     VerbenTimePickerModule,
     VerbenaBadgeModule,
@@ -104,6 +113,7 @@ import { VerbenDatePickerPageComponent } from './pages/components/verben-date-pi
     VerbenaSwitchModule,
     VerbenaTabModule,
     VerbenaTextareaModule,
+    DataViewModule,
   ],
 })
 export class DocumentationModule {}

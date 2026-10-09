@@ -12,7 +12,6 @@ export class DocsHomeComponent implements OnInit {
   unstable = UNSTABLE_DOCS;
 
   // Sample values so the thumbnails look "in use"
-  previewDate = new Date(2026, 9, 14);
   previewTime = new Date(2026, 9, 14, 9, 30);
   fruits = ['Apple', 'Banana', 'Mango'];
   tags = ['Angular', 'Design'];

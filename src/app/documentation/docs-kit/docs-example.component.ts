@@ -49,13 +49,19 @@ import { DocsLang } from './highlight';
         <docs-code-block
           [code]="code"
           [lang]="lang"
-          [filename]="tsCode ? htmlFilename : undefined"
+          [filename]="tsCode || cssCode ? htmlFilename : undefined"
         ></docs-code-block>
         <docs-code-block
           *ngIf="tsCode"
           [code]="tsCode"
           lang="ts"
           [filename]="tsFilename"
+        ></docs-code-block>
+        <docs-code-block
+          *ngIf="cssCode"
+          [code]="cssCode"
+          lang="css"
+          [filename]="cssFilename"
         ></docs-code-block>
       </div>
     </section>
@@ -71,6 +77,9 @@ export class DocsExampleComponent {
   @Input() tsCode?: string;
   @Input() htmlFilename = 'example.component.html';
   @Input() tsFilename = 'example.component.ts';
+  /** Optional styles, shown as a third file */
+  @Input() cssCode?: string;
+  @Input() cssFilename = 'example.component.css';
   @Input() align: 'center' | 'start' = 'center';
   @Input() direction: 'row' | 'column' = 'row';
   @Input() minHeight?: string;

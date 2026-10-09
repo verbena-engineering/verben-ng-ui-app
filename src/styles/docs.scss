@@ -440,6 +440,49 @@
   color: #34d399;
 }
 
+/* Updated (existing component that changed) markers */
+.docs-tag-updated {
+  margin-left: 6px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, #3b82f6 16%, transparent);
+  color: #1d4ed8;
+  font-size: 10.5px;
+  font-weight: 600;
+  vertical-align: 1px;
+}
+
+.docs-pill--updated {
+  background: color-mix(in srgb, #3b82f6 14%, transparent);
+  color: #1d4ed8;
+}
+
+[data-vbn-theme='dark'] .docs-tag-updated,
+[data-vbn-theme='dark'] .docs-pill--updated {
+  color: #93c5fd;
+}
+
+.docs-callout.is-updated {
+  border-color: color-mix(in srgb, #3b82f6 40%, var(--docs-border));
+  background: color-mix(in srgb, #3b82f6 6%, transparent);
+}
+
+.docs-changes-date {
+  margin-left: 6px;
+  color: var(--docs-muted-fg);
+  font-size: 13px;
+}
+
+.docs-changes-list {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  list-style: disc;
+}
+
+.docs-changes-list li {
+  margin: 2px 0;
+}
+
 /* Unstable (in review) markers */
 .docs-tag-unstable {
   margin-left: 6px;
@@ -579,6 +622,39 @@
   word-break: break-all;
 }
 
+/* Composable card examples: a sensible width inside previews.
+   :where() keeps it weak, so an example's own class wins */
+:where(.docs-preview > .vbn-card) {
+  width: 100%;
+  max-width: min(100%, 400px);
+}
+
+.docs-preview {
+  .link {
+    padding: 0; border: 0; background: none; cursor: pointer;
+    color: var(--vbn-color-info); font: inherit; text-decoration: underline;
+  }
+
+  /* "Coming from <verben-card>" demo */
+  .compare { display: flex; flex-direction: column; gap: 8px; max-width: 100%; }
+  .compare > .vbn-card { max-width: 100%; }
+  .compare-label { font: 12px var(--docs-mono, ui-monospace, monospace); color: var(--vbn-color-text-muted); }
+  .filter-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .filter-actions { display: flex; justify-content: flex-end; gap: 8px; }
+}
+
+/* Playground screens shown full width inside a docs page (Vendor Invoices) */
+.docs-playground-screen {
+  margin: 24px 0 8px;
+  color: var(--vbn-color-text);
+}
+
+/* Several files in tabs: long files scroll inside the block */
+.docs-code-tabs pre {
+  max-height: 560px;
+  overflow: auto;
+}
+
 /* ---------- Code block ---------- */
 
 .docs-code {
@@ -711,6 +787,15 @@
 
   td:first-child code {
     font-weight: 600;
+  }
+
+  /* Long names (slot lists, element trees) wrap instead of widening the
+     column and pushing the description out of view */
+  td code {
+    white-space: normal;
+    overflow-wrap: break-word;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
   }
 }
 
@@ -1123,4 +1208,11 @@
   .docs-hero h1 {
     font-size: 30px;
   }
+}
+
+/* Usage section under playground pages */
+.docs-playground-usage {
+  margin-top: 56px;
+  padding-top: 8px;
+  border-top: 1px solid var(--docs-border);
 }

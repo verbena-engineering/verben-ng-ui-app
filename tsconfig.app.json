@@ -4,6 +4,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
+    /* esnext (not ES2022) so imports can carry attributes: with { loader: 'text' } */
+    "module": "esnext",
     "types": []
   },
   "files": [

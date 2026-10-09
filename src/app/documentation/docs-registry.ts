@@ -17,8 +17,17 @@ export interface DocsNavItem {
   /**
    * 'unstable' = in team review: badge in the sidebar, warning on the page.
    * 'new' = recently added: small badge in the sidebar and on the page.
+   * 'updated' = existing component that changed: badge + a "What changed" note (see changes).
    */
-  status?: 'unstable' | 'new';
+  status?: 'unstable' | 'new' | 'updated';
+  /** What changed and when, shown on the page for 'updated' (and 'new') items */
+  changes?: DocsChange;
+}
+
+export interface DocsChange {
+  /** "2026-10-09" */
+  date: string;
+  notes: string[];
 }
 
 export interface DocsNavGroup {
@@ -62,9 +71,20 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
     slug: 'button',
     title: 'Button',
     route: '/documentation/components/button',
-    description: 'Preset button styles with icons and a loading state.',
+    description: 'Preset looks and sizes with hover, focus and loading states, icons, dark mode.',
     playground: '/documentation/button-badge',
     source: lib + 'verbena-button',
+    status: 'updated',
+    changes: {
+      date: '2026-10-09',
+      notes: [
+        'New look: one height per size, 8px corners, softer default colors, and dark-mode colors (outline and grey were unreadable in dark mode).',
+        'Hover, pressed and keyboard-focus states; loading shows a spinner, sets aria-busy and blocks clicks.',
+        "New inputs: size ('sm' | 'md' | 'lg'), block, disabled (same as disable); styleType 'ghost' and 'link'.",
+        'The label can be content between the tags; a button without text becomes a square icon button; icons follow the text color.',
+        'Every existing input still works, and bgColor / textColor / border / pd overrides still win.',
+      ],
+    },
   },
   {
     slug: 'card',
@@ -86,17 +106,10 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
     slug: 'date-picker',
     title: 'Date Picker',
     route: '/documentation/components/date-picker',
-    description: 'A day, a range, or a period: daily, weekly, monthly, quarterly, yearly.',
-    source: lib + 'components/verben-date-picker',
-    status: 'new',
-  },
-  {
-    slug: 'date-picker-classic',
-    title: 'Date Picker (classic)',
-    route: '/documentation/components/date-picker-classic',
-    description: 'The original <app-date-picker>: single date, date & time, or range.',
+    description: 'A day, a date and time, a range or a period, in a default, simple or advanced variant.',
     playground: '/documentation/date-picker',
     source: lib + 'components/date-picker',
+    status: 'new',
   },
   {
     slug: 'dialog',
@@ -113,6 +126,11 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
     description: 'Select one or many options, with search and lazy loading.',
     playground: '/documentation/dropdown',
     source: lib + 'components/drop-down',
+    status: 'updated',
+    changes: {
+      date: '2026-10-02',
+      notes: ['New input autoScrollToCurrentItem: the list opens scrolled to the selected item (matched by selectKey).'],
+    },
   },
   {
     slug: 'icons',
@@ -145,6 +163,14 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
     description: 'Formatted numbers (separators, decimals, prefix, suffix).',
     playground: '/documentation/input-textarea',
     source: lib + 'components/number-input',
+    status: 'updated',
+    changes: {
+      date: '2026-10-09',
+      notes: [
+        '2026-10-02: thousand separators (on by default), decimalPlaces, prefix and suffix; the bound value is still a number.',
+        '2026-10-09: typing after padded decimals works ("0.00", "2,500.00" were blocking); while editing the decimals are not padded.',
+      ],
+    },
   },
   {
     slug: 'switch',
@@ -187,14 +213,36 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
   },
 ];
 
-/** New components waiting for team approval (empty right now). Their API may still change. */
-export const UNSTABLE_DOCS: DocsNavItem[] = [];
+/** New components waiting for team approval. Their API may still change. */
+export const UNSTABLE_DOCS: DocsNavItem[] = [
+  {
+    slug: 'unstable-card',
+    title: 'Card (composable)',
+    route: '/documentation/unstable/card',
+    description: 'shadcn-style parts for posts, comments, profiles, transactions and cards inside cards.',
+    source: lib + 'unstable/card',
+    status: 'unstable',
+  },
+];
 
 /** The original demo / test pages, still reachable for manual testing */
 export const PLAYGROUND_PAGES: DocsNavItem[] = [
   { slug: 'pg-data-table', title: 'Data Table', route: '/documentation/data-table' },
-  { slug: 'pg-data-view', title: 'Data View', route: '/documentation/data-view' },
+  {
+    slug: 'pg-data-view',
+    title: 'Data View',
+    route: '/documentation/data-view',
+    status: 'updated',
+    changes: {
+      date: '2026-10-09',
+      notes: [
+        'The "Create New" button text uses --vbn-color-on-primary, so it stays readable in dark mode.',
+        'Its buttons have the new button look (hover, focus, sizes).',
+      ],
+    },
+  },
   { slug: 'pg-card-data-view', title: 'Card Data View', route: '/documentation/card-data-view' },
+  { slug: 'pg-vendor-invoices', title: 'Vendor Invoices', route: '/documentation/vendor-invoices', status: 'unstable' },
   { slug: 'pg-card-view', title: 'Card View', route: '/documentation/card-view' },
   { slug: 'pg-sort-table', title: 'Sort Table', route: '/documentation/sort-table' },
   { slug: 'pg-table-filter', title: 'Table Filter', route: '/documentation/table-filter' },

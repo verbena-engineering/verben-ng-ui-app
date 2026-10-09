@@ -15,10 +15,7 @@ export interface DocsProp {
       <table class="docs-table">
         <thead>
           <tr>
-            <th>{{ kind === 'output' ? 'Event' : 'Prop' }}</th>
-            <th>Type</th>
-            <th *ngIf="kind === 'input'">Default</th>
-            <th>Description</th>
+            <th *ngFor="let h of columns">{{ h }}</th>
           </tr>
         </thead>
         <tbody>
@@ -38,4 +35,10 @@ export interface DocsProp {
 export class DocsPropsTableComponent {
   @Input() props: DocsProp[] = [];
   @Input() kind: 'input' | 'output' = 'input';
+  /** Custom column titles, one per visible column (3 for 'output', 4 for 'input') */
+  @Input() headings?: string[];
+
+  get columns(): string[] {
+    return this.headings ?? (this.kind === 'output' ? ['Event', 'Type', 'Description'] : ['Prop', 'Type', 'Default', 'Description']);
+  }
 }

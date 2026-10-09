@@ -1,33 +1,222 @@
-.verbena-button {
+/*
+ * <verbena-button>. Every preset only sets these private custom properties;
+ * the per-instance inputs (bgColor, textColor, border, borderRadius, pd,
+ * height) set the same properties inline, so they win, and the hover and
+ * pressed shades below are mixed from whatever ends up in --_bg / --_fg.
+ * The host element is left inline on purpose: width="100%" keeps meaning
+ * "the parent's width", as before.
+ */
+
+.vbn-btn {
+  --_bg: var(--vbn-btn-primary-bg);
+  --_fg: var(--vbn-btn-primary-fg);
+  --_border: 1px solid transparent;
+  --_radius: var(--vbn-btn-radius, 8px);
+  --_h: 36px;
+  --_pad: 0 14px;
+  --_hover: color-mix(in srgb, var(--_bg) 86%, var(--_fg));
+  --_press: color-mix(in srgb, var(--_bg) 78%, var(--_fg));
+  --_shadow: none;
+
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+  box-sizing: border-box;
+  min-height: var(--_h);
+  padding: var(--_pad);
+  border: var(--_border);
+  border-radius: var(--_radius);
+  background-color: var(--_bg);
+  box-shadow: var(--_shadow);
+  color: var(--_fg);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease,
+    opacity 0.15s ease;
 }
 
-.verbena-button i {
-  font-size: 16px;
+.vbn-btn:hover:not(:disabled) {
+  background-color: var(--_hover);
 }
 
-.verbena-button svg {
-  display: inline-block;
+.vbn-btn:active:not(:disabled) {
+  background-color: var(--_press);
+  transform: translateY(1px);
 }
 
-.verbena-button[disabled] {
+/* Keyboard focus only (not on mouse click): a ring with a gap */
+.vbn-btn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--vbn-color-surface, #fff),
+    0 0 0 4px var(--vbn-btn-ring, var(--vbn-color-border-focus));
+}
+
+.vbn-btn:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
-  opacity: 0.6;
+  box-shadow: none;
 }
 
-.loading-spinner {
-  border: 2px solid var(--vbn-color-border);
-  border-top-color: var(--vbn-color-text-muted);
+/* Loading also disables the button, but it shouldn't look switched off */
+.vbn-btn.is-loading:disabled {
+  opacity: 0.85;
+  cursor: progress;
+}
+
+/* ---------- Presets (styleType) ---------- */
+
+.vbn-btn--primary,
+.vbn-btn--secondary,
+.vbn-btn--danger {
+  --_shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+}
+
+.vbn-btn--secondary {
+  --_bg: var(--vbn-btn-secondary-bg);
+  --_fg: var(--vbn-btn-secondary-fg);
+}
+
+.vbn-btn--danger {
+  --_bg: var(--vbn-btn-danger-bg);
+  --_fg: var(--vbn-btn-danger-fg);
+}
+
+/* See-through presets: hover is a light tint of the text color */
+.vbn-btn--outline,
+.vbn-btn--grey,
+.vbn-btn--ghost,
+.vbn-btn--link {
+  --_bg: transparent;
+  --_hover: color-mix(in srgb, var(--_fg) 7%, transparent);
+  --_press: color-mix(in srgb, var(--_fg) 12%, transparent);
+}
+
+.vbn-btn--outline {
+  --_fg: var(--vbn-btn-outline-fg);
+  --_border: 1px solid var(--vbn-btn-outline-border);
+}
+
+.vbn-btn--grey {
+  --_fg: var(--vbn-btn-grey-fg);
+  --_border: 1px solid var(--vbn-color-border);
+}
+
+.vbn-btn--ghost {
+  --_fg: var(--vbn-color-text);
+}
+
+.vbn-btn--ylw-outline {
+  --_bg: var(--vbn-btn-ylw-outline-bg);
+  --_fg: var(--vbn-btn-ylw-outline-fg);
+  --_border: 1px solid var(--vbn-btn-ylw-outline-border);
+  --_hover: color-mix(in srgb, var(--vbn-btn-ylw-outline-border) 30%, var(--_bg));
+  --_press: color-mix(in srgb, var(--vbn-btn-ylw-outline-border) 45%, var(--_bg));
+}
+
+.vbn-btn--small {
+  --_bg: var(--vbn-btn-small-bg);
+  --_fg: var(--vbn-btn-small-fg);
+  --_border: 1px solid var(--vbn-color-border);
+  --_radius: 7px;
+  --_h: 30px;
+  --_pad: 0 10px;
+  --_hover: color-mix(in srgb, var(--_fg) 5%, var(--_bg));
+  font-size: 13px;
+}
+
+.vbn-btn--link {
+  --_fg: var(--vbn-btn-link-fg, var(--vbn-color-info));
+  --_h: auto;
+  --_pad: 0;
+  --_hover: transparent;
+  --_press: transparent;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 3px;
+}
+
+.vbn-btn--link:hover:not(:disabled) {
+  text-decoration-color: currentColor;
+}
+
+.vbn-btn--link:active:not(:disabled) {
+  transform: none;
+}
+
+/* ---------- Sizes ---------- */
+
+.vbn-btn--sm {
+  --_h: 32px;
+  --_pad: 0 12px;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.vbn-btn--lg {
+  --_h: 44px;
+  --_pad: 0 20px;
+  font-size: 15px;
+}
+
+.vbn-btn--block {
+  width: 100%;
+}
+
+/* Icon only (no text, nothing projected): a square */
+.vbn-btn:not(:has(.vbn-btn-label)):has(.vbn-btn-content:empty) {
+  width: var(--_h);
+  padding: 0;
+}
+
+/* ---------- Parts ---------- */
+
+.vbn-btn-content:empty {
+  display: none;
+}
+
+.vbn-btn-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.vbn-btn-spinner {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border: 2px solid var(--_spin, currentColor);
+  border-top-color: transparent;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: vbn-btn-spin 0.7s linear infinite;
 }
 
-@keyframes spin {
+@keyframes vbn-btn-spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vbn-btn {
+    transition: none;
+  }
+
+  .vbn-btn-spinner {
+    animation-duration: 1.6s;
   }
 }

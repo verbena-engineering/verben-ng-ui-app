@@ -15,6 +15,15 @@
     </verben-card>
   </docs-example>
 
+  <div class="docs-callout">
+    <span>🧩</span>
+    <span>
+      A composable card that takes this same markup (rename the tag to
+      <code class="docs-inline-code">&lt;vbn-card&gt;</code>) is in review:
+      <a routerLink="/documentation/unstable/card" fragment="migrate"><u>Card (composable)</u></a>.
+    </span>
+  </div>
+
   <h2 class="docs-h2" id="usage">Usage</h2>
   <p class="docs-p">
     Import <code class="docs-inline-code">CardModule</code>. Put content in elements marked with
@@ -39,5 +48,5 @@
   <h2 class="docs-h2" id="api">API</h2>
   <docs-props-table [props]="inputs"></docs-props-table>
   <h3 class="docs-h3" id="api-slots">Slots</h3>
-  <docs-props-table [props]="slots" kind="output"></docs-props-table>
+  <docs-props-table [props]="slots" kind="output" [headings]="['Slot', 'Type', 'Description']"></docs-props-table>
 </docs-page>

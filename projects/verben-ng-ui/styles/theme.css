@@ -76,21 +76,25 @@
 
   /* ==== Component tokens (default to core; override for fine control) ==== */
 
-  /* Button variants */
-  --vbn-btn-primary-bg: lightgrey;
-  --vbn-btn-primary-fg: #000000;
+  /* Button variants (verbena-button styleType). Hover / pressed shades are
+     mixed from these, so one color per preset is enough. */
+  --vbn-btn-radius: 8px;
+  --vbn-btn-ring: var(--vbn-color-border-focus);
+  --vbn-btn-primary-bg: #e8eaf0;
+  --vbn-btn-primary-fg: #1f2937;
   --vbn-btn-secondary-bg: var(--vbn-color-primary);
   --vbn-btn-secondary-fg: var(--vbn-color-on-primary);
-  --vbn-btn-danger-bg: #dc3545;
+  --vbn-btn-danger-bg: #dc2626;
   --vbn-btn-danger-fg: #ffffff;
-  --vbn-btn-small-bg: #ffffff;
-  --vbn-btn-small-fg: #000000;
-  --vbn-btn-outline-fg: #000000;
-  --vbn-btn-outline-border: #404040;
-  --vbn-btn-ylw-outline-bg: #fffbeb;
+  --vbn-btn-small-bg: var(--vbn-color-surface);
+  --vbn-btn-small-fg: var(--vbn-color-text);
+  --vbn-btn-outline-fg: var(--vbn-color-text);
+  --vbn-btn-outline-border: var(--vbn-color-border);
+  --vbn-btn-ylw-outline-bg: color-mix(in srgb, var(--vbn-color-primary) 16%, var(--vbn-color-surface));
   --vbn-btn-ylw-outline-fg: var(--vbn-color-on-primary);
   --vbn-btn-ylw-outline-border: var(--vbn-color-primary);
-  --vbn-btn-grey-fg: #d9d9d940;
+  --vbn-btn-grey-fg: var(--vbn-color-text-muted);
+  --vbn-btn-link-fg: var(--vbn-color-info);
 
   /* Inputs */
   --vbn-input-bg: #f9f9f9;
@@ -153,4 +157,9 @@
   --vbn-table-row-hover-bg: #333333;
   --vbn-table-footer-bg: #2a2a2a;
   --vbn-table-border: #3f3f46;
+
+  --vbn-btn-primary-bg: #2f3239;
+  --vbn-btn-primary-fg: var(--vbn-color-text);
+  --vbn-btn-ylw-outline-fg: var(--vbn-color-primary);
+  --vbn-btn-link-fg: #7cb3ff;
 }

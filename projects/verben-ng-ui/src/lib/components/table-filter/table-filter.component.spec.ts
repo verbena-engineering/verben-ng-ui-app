@@ -163,22 +163,25 @@ describe('TableFilterComponent', () => {
       });
     });
 
-    it('allows multiple saved filters with the same field name', () => {
-      component.onFilterNameChange('Age');
-      component.selectedCondition = 'Greater Than';
-      component.inputValue = 18;
+    it('allows multiple saved filters with the same field name without making subsequent ones required', () => {
+      // Status column is required (statusFilter at index 0 is required)
+      expect(component.isRequiredFilter(component.savedFilters[0])).toBe(true);
+
+      // Add a second Status filter
+      component.onFilterNameChange('Status');
+      component.selectedCondition = 'Is Not';
+      component.inputValue = 'Suspended';
       component.addFilter();
 
       expect(component.savedFilters.length).toBe(3);
+      const secondStatus = component.savedFilters[2];
+      expect(secondStatus.name).toBe('Status');
+      // Second filter for Status is optional and not locked!
+      expect(component.isRequiredFilter(secondStatus)).toBe(false);
 
-      component.onFilterNameChange('Age');
-      component.selectedCondition = 'Less Than';
-      component.inputValue = 65;
-      component.addFilter();
-
-      expect(component.savedFilters.length).toBe(4);
-      const ageFilters = component.savedFilters.filter((f) => f.name === 'Age');
-      expect(ageFilters.length).toBe(3); // Initial 25 + new 18 + new 65
+      // Can delete the second filter
+      component.deleteFilter(2);
+      expect(component.savedFilters.length).toBe(2);
     });
   });
 });

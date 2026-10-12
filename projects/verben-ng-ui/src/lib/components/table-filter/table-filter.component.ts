@@ -149,6 +149,7 @@ export class TableFilterComponent implements OnInit, OnChanges {
           condition: this.mapCodeToConditionLabel(cond.operator),
           value: this.toEditableValue(cond.value, colType),
           checked: true,
+          isRequired: !!col?.isRequiredFilter,
         };
       });
       this.filterCount = this.savedFilters.length;
@@ -391,10 +392,12 @@ export class TableFilterComponent implements OnInit, OnChanges {
 
   isRequiredFilter(filter: IDataFilter): boolean {
     if (!this.isColumnsMode) return false;
+    if (filter.isRequired !== undefined) return filter.isRequired;
     const col = this.filterableColumns.find(
       (c) => this.getColumnHeader(c) === filter.name || c.id === filter.name,
     );
-    return !!col?.isRequiredFilter;
+    // If not explicitly set on the filter, only true if no other filter with this column is already required
+    return !!col?.isRequiredFilter && this.savedFilters.find((f) => f.name === filter.name) === filter;
   }
 
   addFilter() {

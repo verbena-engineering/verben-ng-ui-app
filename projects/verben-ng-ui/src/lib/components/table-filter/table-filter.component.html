@@ -12,9 +12,16 @@
   <div class="vbn-panel-header">
     <h3 class="vbn-panel-title" [style.color]="tertiaryColor">
       Filters
-      <span class="vbn-panel-count" [style.color]="secondaryColor">{{ filterCount }}</span>
+      <span class="vbn-panel-count" [style.color]="secondaryColor">{{
+        filterCount
+      }}</span>
     </h3>
-    <button type="button" class="vbn-panel-link" [style.color]="secondaryColor" (click)="resetFilters()">
+    <button
+      type="button"
+      class="vbn-panel-link"
+      [style.color]="secondaryColor"
+      (click)="resetFilters()"
+    >
       Reset
     </button>
   </div>
@@ -23,17 +30,31 @@
   <div class="vbn-panel-scroll">
     <div class="filter-section-title">
       <p class="vbn-panel-label">Saved Filters</p>
-      <verben-svg icon="info" [width]="14" [height]="14" fill="var(--vbn-color-text-muted)"></verben-svg>
+      <verben-svg
+        icon="info"
+        [width]="14"
+        [height]="14"
+        fill="var(--vbn-color-text-muted)"
+      ></verben-svg>
     </div>
 
-    <p class="filter-empty" *ngIf="!savedFilters.length">No saved filters yet. Add one below.</p>
+    <p class="filter-empty" *ngIf="!savedFilters.length">
+      No saved filters yet. Add one below.
+    </p>
 
     <label class="vbn-panel-row vbn-panel-row--all" *ngIf="savedFilters.length">
-      <input type="checkbox" [checked]="checkAll" (change)="toggleSelectAll()" />
+      <input
+        type="checkbox"
+        [checked]="checkAll"
+        (change)="toggleSelectAll()"
+      />
       Select All
     </label>
 
-    <div *ngFor="let filter of visibleFilters; let i = index" class="filter-item">
+    <div
+      *ngFor="let filter of visibleFilters; let i = index"
+      class="filter-item"
+    >
       <label class="vbn-panel-row">
         <input
           type="checkbox"
@@ -42,11 +63,18 @@
           (click)="toggleCheckbox(i)"
         />
         <span class="filter-text" [style.color]="tertiaryColor">
-          <b>{{ filter.name }}</b> {{ filter.condition }} <b>{{ filter.value }}</b>
+          <b>{{ filter.name }}</b> {{ filter.condition }}
+          <b>{{ filter.value }}</b>
         </span>
       </label>
       <div class="filter-actions">
-        <button type="button" class="filter-icon" aria-label="Edit filter" title="Edit" (click)="editFilter(i)">
+        <button
+          type="button"
+          class="filter-icon"
+          aria-label="Edit filter"
+          title="Edit"
+          (click)="editFilter(i)"
+        >
           <verben-svg
             icon="pencil"
             [width]="14"
@@ -63,7 +91,12 @@
           [disabled]="isRequiredFilter(filter)"
           (click)="deleteFilter(i)"
         >
-          <verben-svg icon="trash" [width]="14" [height]="14" stroke="var(--vbn-color-error)"></verben-svg>
+          <verben-svg
+            icon="trash"
+            [width]="14"
+            [height]="14"
+            stroke="var(--vbn-color-error)"
+          ></verben-svg>
         </button>
       </div>
     </div>
@@ -99,7 +132,13 @@
           [top]="'20px'"
           [right]="'0px'"
         >
-          <verben-svg icon="info" [width]="14" [height]="14" *ngIf="isDuplicateFilter" fill="var(--vbn-color-error)">
+          <verben-svg
+            icon="info"
+            [width]="14"
+            [height]="14"
+            *ngIf="isDuplicateFilter"
+            fill="var(--vbn-color-error)"
+          >
           </verben-svg>
         </verben-tooltip>
 
@@ -139,12 +178,13 @@
         *ngIf="selectedFilterType === 'Date'"
         variant="advanced"
         placeholder="Select date"
-        [datePickerWidth]="'380px'"
         [(ngModel)]="inputValue"
       ></app-date-picker>
 
       <verbena-input
-        *ngIf="selectedFilterType === 'Credit' || selectedFilterType === 'Integer'"
+        *ngIf="
+          selectedFilterType === 'Credit' || selectedFilterType === 'Integer'
+        "
         border="1px solid var(--vbn-color-border)"
         borderRadius="8px"
         textColor="var(--vbn-color-text)"

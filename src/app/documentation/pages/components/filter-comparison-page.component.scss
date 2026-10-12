@@ -1,0 +1,50 @@
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.comparison-card {
+  background: var(--vbn-color-surface, #fff);
+  border: 1px solid var(--vbn-color-border, #e2e8f0);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--vbn-color-text, #1e293b);
+  }
+
+  p {
+    font-size: 0.875rem;
+    color: var(--vbn-color-text-muted, #64748b);
+    margin-bottom: 1rem;
+  }
+}
+
+.output-panel {
+  margin-top: 1rem;
+  background: var(--vbn-color-surface-alt, #f8fafc);
+  border: 1px dashed var(--vbn-color-border, #cbd5e1);
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 0.75rem;
+
+  h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 180px;
+    overflow-y: auto;
+  }
+}

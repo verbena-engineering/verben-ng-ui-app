@@ -35,7 +35,12 @@
 
     <div *ngFor="let filter of visibleFilters; let i = index" class="filter-item">
       <label class="vbn-panel-row">
-        <input type="checkbox" [checked]="filter.checked" (click)="toggleCheckbox(i)" />
+        <input
+          type="checkbox"
+          [checked]="filter.checked"
+          [disabled]="isRequiredFilter(filter)"
+          (click)="toggleCheckbox(i)"
+        />
         <span class="filter-text" [style.color]="tertiaryColor">
           <b>{{ filter.name }}</b> {{ filter.condition }} <b>{{ filter.value }}</b>
         </span>
@@ -50,7 +55,14 @@
             fill="var(--vbn-color-text-muted)"
           ></verben-svg>
         </button>
-        <button type="button" class="filter-icon is-danger" aria-label="Delete filter" title="Delete" (click)="deleteFilter(i)">
+        <button
+          type="button"
+          class="filter-icon is-danger"
+          aria-label="Delete filter"
+          title="Delete"
+          [disabled]="isRequiredFilter(filter)"
+          (click)="deleteFilter(i)"
+        >
           <verben-svg icon="trash" [width]="14" [height]="14" stroke="var(--vbn-color-error)"></verben-svg>
         </button>
       </div>
@@ -175,13 +187,25 @@
         [(ngModel)]="inputValue"
       ></verbena-input>
 
+      <verben-drop-down
+        *ngIf="selectedFilterType === 'Bool' || selectedFilterType === 'Enum'"
+        width="100%"
+        placeholder="Select value"
+        [options]="valueOptions"
+        optionLabel="label"
+        optionValue="value"
+        [(ngModel)]="inputValue"
+      ></verben-drop-down>
+
       <verbena-input
         *ngIf="
           selectedFilterType !== 'Credit' &&
           selectedFilterType !== 'Date' &&
           selectedFilterType !== 'Integer' &&
           selectedFilterType !== 'Decimal' &&
-          selectedFilterType !== 'Number'
+          selectedFilterType !== 'Number' &&
+          selectedFilterType !== 'Bool' &&
+          selectedFilterType !== 'Enum'
         "
         border="1px solid var(--vbn-color-border)"
         placeHolder="Value"

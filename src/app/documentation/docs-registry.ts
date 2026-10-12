@@ -235,6 +235,24 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
     source: lib + 'components/verben-time-picker',
   },
   {
+    slug: 'table-filter',
+    title: 'Table Filter (Unified)',
+    route: '/documentation/components/table-filter',
+    description: 'Filter panel supporting classic filterOptions and DataTable columns drop-in unification.',
+    playground: '/documentation/table-filter',
+    source: lib + 'components/table-filter',
+    status: 'new',
+    changes: {
+      date: '2026-10-12',
+      notes: [
+        'Unified TableFilter and DataFilter into a single component.',
+        'Drop-in replacement for lib-data-filter: accepts columns, data, initialFilters, filterApplied, and resetFilter.',
+        'Classic filterOptions and filtersApplied remain 100% backwards-compatible.',
+        'Supports Enum and Bool dropdown values, and isRequiredFilter rules.',
+      ],
+    },
+  },
+  {
     slug: 'tooltip',
     title: 'Tooltip',
     route: '/documentation/components/tooltip',

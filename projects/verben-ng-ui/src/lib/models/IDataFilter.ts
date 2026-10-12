@@ -6,4 +6,5 @@ export interface IDataFilter {
   value?: any;
   checked: boolean;
   condition?: string;
+  isRequired?: boolean;
 }

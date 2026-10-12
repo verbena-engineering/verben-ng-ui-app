@@ -23,10 +23,10 @@ import {
   DATE_OPERATORS,
   BOOL_OPERATORS,
   ENUM_OPERATORS,
-} from '../data-filter/data-filter.types';
+} from 'verben-ng-ui/src/lib/components/data-filter';
 
 @Component({
-  selector: 'verben-table-filter, lib-data-filter',
+  selector: 'verben-table-filter',
   templateUrl: './table-filter.component.html',
   styleUrls: ['../shared/panel.css', './table-filter.component.css'],
 })
@@ -114,23 +114,35 @@ export class TableFilterComponent implements OnInit, OnChanges {
     } else {
       this.isColumnsMode = false;
       this.filterArray = (this.filterOptions || []).map((item) => item.name);
-      this.filterCount = this.savedFilters.filter((item) => item.checked === true).length;
+      this.filterCount = this.savedFilters.filter(
+        (item) => item.checked === true,
+      ).length;
     }
   }
 
   private initializeFromColumns(): void {
-    this.filterableColumns = (this.columns || []).filter((col) => col.accessorKey || col.id);
-    this.filterArray = this.filterableColumns.map((col) => this.getColumnHeader(col));
+    this.filterableColumns = (this.columns || []).filter(
+      (col) => col.accessorKey || col.id,
+    );
+    this.filterArray = this.filterableColumns.map((col) =>
+      this.getColumnHeader(col),
+    );
     this.buildOperatorMaps();
   }
 
   private hydrateSavedFilters(): void {
     if (this.userTouched) return;
-    if (this.isColumnsMode && this.initialFilters && this.initialFilters.length > 0) {
+    if (
+      this.isColumnsMode &&
+      this.initialFilters &&
+      this.initialFilters.length > 0
+    ) {
       this.savedFilters = this.initialFilters.map((cond) => {
         const col = this.filterableColumns.find((c) => c.id === cond.columnId);
         const colName = col ? this.getColumnHeader(col) : cond.columnId;
-        const colType = col ? this.resolveColumnType(col) : DataFilterType.String;
+        const colType = col
+          ? this.resolveColumnType(col)
+          : DataFilterType.String;
         return {
           name: colName,
           type: colType,
@@ -149,7 +161,9 @@ export class TableFilterComponent implements OnInit, OnChanges {
   }
 
   private getColumnHeader(column: ColumnDefinition<any>): string {
-    return typeof column.header === 'function' ? column.header({}) : (column.header || column.id);
+    return typeof column.header === 'function'
+      ? column.header({})
+      : column.header || column.id;
   }
 
   private buildOperatorMaps(): void {
@@ -210,12 +224,20 @@ export class TableFilterComponent implements OnInit, OnChanges {
   private inferColumnType(column: ColumnDefinition<any>): DataFilterType {
     if (!this.data || !this.data.length) return DataFilterType.String;
     for (const row of this.data) {
-      const val = column.accessorKey ? row[column.accessorKey] : column.accessorFn ? column.accessorFn(row) : null;
+      const val = column.accessorKey
+        ? row[column.accessorKey]
+        : column.accessorFn
+          ? column.accessorFn(row)
+          : null;
       if (val !== null && val !== undefined && val !== '') {
         if (val instanceof Date) return DataFilterType.Date;
         if (typeof val === 'number') return DataFilterType.Number;
         if (typeof val === 'boolean') return DataFilterType.Bool;
-        if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}/.test(val) && !isNaN(new Date(val).getTime())) {
+        if (
+          typeof val === 'string' &&
+          /^\d{4}-\d{2}-\d{2}/.test(val) &&
+          !isNaN(new Date(val).getTime())
+        ) {
           return DataFilterType.Date;
         }
         return DataFilterType.String;
@@ -236,7 +258,10 @@ export class TableFilterComponent implements OnInit, OnChanges {
     return match ? match.label : operatorCode;
   }
 
-  private mapConditionLabelToCode(conditionLabel: string, colType?: DataFilterType): string {
+  private mapConditionLabelToCode(
+    conditionLabel: string,
+    colType?: DataFilterType,
+  ): string {
     const allOps = [
       ...STRING_OPERATORS,
       ...NUMBER_OPERATORS,
@@ -244,31 +269,46 @@ export class TableFilterComponent implements OnInit, OnChanges {
       ...BOOL_OPERATORS,
       ...ENUM_OPERATORS,
     ];
-    const match = allOps.find((op) => op.label.toLowerCase() === (conditionLabel || '').toLowerCase());
+    const match = allOps.find(
+      (op) => op.label.toLowerCase() === (conditionLabel || '').toLowerCase(),
+    );
     if (match) return match.value;
 
     // Fallbacks from Config / ConditionalOptions enum
     const lower = (conditionLabel || '').toLowerCase();
     if (lower === 'contains') return 'contains';
-    if (lower === 'on' || lower === 'equals' || lower === 'equal') return colType === DataFilterType.Date ? 'on' : colType === DataFilterType.Number || colType === DataFilterType.Integer ? 'equal' : 'equals';
-    if (lower === 'before' || lower === 'less than' || lower === 'lte') return colType === DataFilterType.Date ? 'before' : 'lessThan';
-    if (lower === 'after' || lower === 'greater than' || lower === 'gte') return colType === DataFilterType.Date ? 'after' : 'greaterThan';
+    if (lower === 'on' || lower === 'equals' || lower === 'equal')
+      return colType === DataFilterType.Date
+        ? 'on'
+        : colType === DataFilterType.Number ||
+            colType === DataFilterType.Integer
+          ? 'equal'
+          : 'equals';
+    if (lower === 'before' || lower === 'less than' || lower === 'lte')
+      return colType === DataFilterType.Date ? 'before' : 'lessThan';
+    if (lower === 'after' || lower === 'greater than' || lower === 'gte')
+      return colType === DataFilterType.Date ? 'after' : 'greaterThan';
     if (lower === 'neq' || lower === 'is not') return 'isNot';
     if (lower === 'yes' || lower === 'is') return 'is';
     if (lower === 'no') return 'isNot';
     return conditionLabel;
   }
 
-  private normalizeValueOptions(options: string[] | ColumnValueOption[] | undefined): ColumnValueOption[] {
+  private normalizeValueOptions(
+    options: string[] | ColumnValueOption[] | undefined,
+  ): ColumnValueOption[] {
     if (!options || !options.length) return [];
     return (options as unknown[]).map((option) =>
       typeof option === 'string'
         ? { label: option, value: option }
-        : (option as ColumnValueOption)
+        : (option as ColumnValueOption),
     );
   }
 
-  private toEditableValue(val: any, type: DataFilterType): string | number | boolean {
+  private toEditableValue(
+    val: any,
+    type: DataFilterType,
+  ): string | number | boolean {
     if (type === DataFilterType.Bool) return `${val}`;
     if (val instanceof Date) {
       const month = `${val.getMonth() + 1}`.padStart(2, '0');
@@ -281,7 +321,9 @@ export class TableFilterComponent implements OnInit, OnChanges {
   onFilterNameChange(selectedFilterValue: string) {
     if (this.isColumnsMode) {
       const col = this.filterableColumns.find(
-        (c) => this.getColumnHeader(c) === selectedFilterValue || c.id === selectedFilterValue
+        (c) =>
+          this.getColumnHeader(c) === selectedFilterValue ||
+          c.id === selectedFilterValue,
       );
       this.currentColumnDef = col;
       if (col) {
@@ -294,8 +336,8 @@ export class TableFilterComponent implements OnInit, OnChanges {
           this.selectedFilterType === DataFilterType.Bool
             ? this.boolOptions
             : this.selectedFilterType === DataFilterType.Enum
-            ? this.normalizeValueOptions(col.valueOptions)
-            : [];
+              ? this.normalizeValueOptions(col.valueOptions)
+              : [];
       }
       return;
     }
@@ -310,9 +352,7 @@ export class TableFilterComponent implements OnInit, OnChanges {
         this.configInstance.getConditionOptions(this.selectedFilterType) || [];
       this.selectedCondition = '';
       this.valueOptions =
-        this.selectedFilterType === DataFilterType.Bool
-          ? this.boolOptions
-          : [];
+        this.selectedFilterType === DataFilterType.Bool ? this.boolOptions : [];
     }
   }
 
@@ -321,10 +361,12 @@ export class TableFilterComponent implements OnInit, OnChanges {
     this.selectedFilterType = null;
     this.selectedCondition = '';
     this.inputValue = '';
-    
+
     // In columns mode, check for required filters
     if (this.isColumnsMode) {
-      this.savedFilters = this.savedFilters.filter((filter) => this.isRequiredFilter(filter));
+      this.savedFilters = this.savedFilters.filter((filter) =>
+        this.isRequiredFilter(filter),
+      );
       this.savedFilters.forEach((x) => (x.checked = true));
     } else {
       this.savedFilters.forEach((x) => {
@@ -333,7 +375,8 @@ export class TableFilterComponent implements OnInit, OnChanges {
     }
 
     this.editIndex = null;
-    this.checkAll = this.savedFilters.length > 0 && this.savedFilters.every((f) => f.checked);
+    this.checkAll =
+      this.savedFilters.length > 0 && this.savedFilters.every((f) => f.checked);
     this.isDuplicateFilter = false;
     this.duplicateMessage = '';
     localStorage.removeItem(this.storageKey);
@@ -349,7 +392,7 @@ export class TableFilterComponent implements OnInit, OnChanges {
   isRequiredFilter(filter: IDataFilter): boolean {
     if (!this.isColumnsMode) return false;
     const col = this.filterableColumns.find(
-      (c) => this.getColumnHeader(c) === filter.name || c.id === filter.name
+      (c) => this.getColumnHeader(c) === filter.name || c.id === filter.name,
     );
     return !!col?.isRequiredFilter;
   }
@@ -451,9 +494,10 @@ export class TableFilterComponent implements OnInit, OnChanges {
         this.editIndex = null;
       } else {
         // If it's a required column in columns mode, update existing chip in place
-        const requiredIndex = this.isColumnsMode && this.isRequiredFilter(newFilter)
-          ? this.savedFilters.findIndex((f) => f.name === newFilter.name)
-          : -1;
+        const requiredIndex =
+          this.isColumnsMode && this.isRequiredFilter(newFilter)
+            ? this.savedFilters.findIndex((f) => f.name === newFilter.name)
+            : -1;
 
         if (requiredIndex >= 0) {
           this.savedFilters[requiredIndex] = newFilter;
@@ -518,7 +562,9 @@ export class TableFilterComponent implements OnInit, OnChanges {
 
   applyFilters(skipSave: boolean = false) {
     this.userTouched = true;
-    this.selectedFilters = this.savedFilters.filter((filter) => filter.checked || this.isRequiredFilter(filter));
+    this.selectedFilters = this.savedFilters.filter(
+      (filter) => filter.checked || this.isRequiredFilter(filter),
+    );
     if (this.saveCallback && !skipSave) {
       this.saveCallback(this.savedFilters);
     }
@@ -530,25 +576,30 @@ export class TableFilterComponent implements OnInit, OnChanges {
     }
 
     // Convert and emit for DataFilter consumers
-    const dataFilterConditions: FilterCondition[] = this.selectedFilters.map((f) => {
-      let colId = f.name;
-      if (this.isColumnsMode) {
-        const col = this.filterableColumns.find(
-          (c) => this.getColumnHeader(c) === f.name || c.id === f.name
+    const dataFilterConditions: FilterCondition[] = this.selectedFilters.map(
+      (f) => {
+        let colId = f.name;
+        if (this.isColumnsMode) {
+          const col = this.filterableColumns.find(
+            (c) => this.getColumnHeader(c) === f.name || c.id === f.name,
+          );
+          if (col) colId = col.id;
+        }
+        const operator = this.mapConditionLabelToCode(
+          f.condition || '',
+          f.type,
         );
-        if (col) colId = col.id;
-      }
-      const operator = this.mapConditionLabelToCode(f.condition || '', f.type);
-      let value: any = f.value;
-      if (f.type === DataFilterType.Bool && typeof value === 'string') {
-        value = value === 'true';
-      }
-      return {
-        columnId: colId,
-        operator,
-        value,
-      };
-    });
+        let value: any = f.value;
+        if (f.type === DataFilterType.Bool && typeof value === 'string') {
+          value = value === 'true';
+        }
+        return {
+          columnId: colId,
+          operator,
+          value,
+        };
+      },
+    );
 
     this.filterApplied.emit(dataFilterConditions);
   }
@@ -566,9 +617,7 @@ export class TableFilterComponent implements OnInit, OnChanges {
         ]
       : this.savedFilters;
 
-    return this.showAllFilters
-      ? sorted
-      : sorted.slice(0, this.maxFilterLength);
+    return this.showAllFilters ? sorted : sorted.slice(0, this.maxFilterLength);
   }
 
   clearOperationSection() {

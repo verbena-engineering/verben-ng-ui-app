@@ -16,11 +16,10 @@
   outline: 2px solid var(--vbn-color-border-focus);
   outline-offset: 1px;
 }
-.input-class{
+.input-class {
   border: none;
- min-width:100%;
- display: block;
-
+  min-width: 100%;
+  display: block;
 }
 .toggle-button-container verben-svg {
   display: inline-grid;
@@ -37,13 +36,13 @@
   background-color: var(--vbn-color-surface-alt);
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
 }
-.justify-end{
+.justify-end {
   justify-self: end;
 }
 .flex {
   display: flex;
 }
-.flex-1{
+.flex-1 {
   flex: 1;
 }
 .justify-between {
@@ -102,11 +101,14 @@
   border-radius: 8px;
   background-color: var(--vbn-color-surface);
   color: var(--vbn-color-text-muted);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 .search-input:focus-within {
   border-color: var(--vbn-color-border-focus);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--vbn-color-border-focus) 18%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--vbn-color-border-focus) 18%, transparent);
 }
 .search-input input {
   display: block;
@@ -176,7 +178,7 @@ sup {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex: 1 1 240px;
+  flex: 1 1 220px;
   min-width: 0;
 }
 
@@ -186,7 +188,7 @@ sup {
   align-items: center;
   justify-content: flex-end;
   gap: 6px;
-  flex: 1 1 auto;
+  /* flex: 1 1 auto; */
 }
 
 /* Columns, Filter, Import, Sort, Export */
@@ -194,8 +196,7 @@ sup {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  height: 32px;
-  padding: 0 10px;
+  padding: 5px 8px;
   box-sizing: border-box;
   border: 1px solid var(--vbn-color-border);
   border-radius: 8px;
@@ -206,7 +207,9 @@ sup {
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
 }
 .dv-action:hover {
   background-color: var(--vbn-color-surface-alt);

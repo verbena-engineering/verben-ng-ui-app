@@ -94,3 +94,139 @@
     max-width: 100%;
     overflow-wrap: break-word;
   }
+
+  /* ===== Corner (added later 2026-10-09, opt-in): tag, actions, [card-actions].
+     Only rendered when used, so other cards are untouched. ===== */
+  .card--has-corner {
+    position: relative;
+  }
+
+  /* With a header: its content on the left, the corner on the right */
+  .card-header.has-corner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 10px;
+    align-items: center;
+  }
+  /* Header content (yours and heading / subheading) stays in the first column */
+  .card-header.has-corner > ::ng-deep * {
+    grid-column: 1;
+  }
+  .card-header.has-corner > .card-corner {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+  }
+
+  .card-corner {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    /* Doesn't make the header taller than its text */
+    margin-block: -5px;
+  }
+
+  /* No header content and the card starts with card-media: float over the image */
+  .card:not(.card--collapsed) > .card-header.has-corner.is-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    display: block;
+    padding: 10px;
+    border: 0;
+    background: none;
+  }
+  .card:not(.card--collapsed) > .card-header.is-overlay + .card-media {
+    margin-top: calc(var(--card-pad-top) * -1);
+  }
+  .card:not(.card--collapsed) > .card-header.is-overlay .card-corner {
+    margin: 0;
+  }
+  .card:not(.card--collapsed) > .card-header.is-overlay .card-action {
+    background-color: color-mix(in srgb, var(--vbn-color-surface) 88%, transparent);
+    box-shadow: var(--vbn-shadow-sm);
+    backdrop-filter: blur(4px);
+  }
+
+  /* The tag: a small chip, coloured by tagTone (tagBgColor / tagTextColor win) */
+  .card-tag {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 9px;
+    margin-right: 4px;
+    border-radius: 999px;
+    background-color: var(--vbn-color-surface-alt);
+    box-shadow: inset 0 0 0 1px var(--vbn-color-border);
+    color: var(--vbn-color-text-muted);
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .card-tag[data-tone='info'],
+  .card-tag[data-tone='success'],
+  .card-tag[data-tone='warning'],
+  .card-tag[data-tone='error'] {
+    box-shadow: none;
+    background-color: color-mix(in srgb, var(--tone) 15%, var(--vbn-color-surface));
+    color: color-mix(in srgb, var(--tone) 80%, var(--vbn-color-text));
+  }
+  .card-tag[data-tone='info'] { --tone: var(--vbn-color-info); }
+  .card-tag[data-tone='success'] { --tone: var(--vbn-color-success); }
+  .card-tag[data-tone='warning'] { --tone: var(--vbn-color-warning); }
+  .card-tag[data-tone='error'] { --tone: var(--vbn-color-error); }
+
+  /* Corner buttons: built-in ones, and yours with class="card-action" */
+  .card-action,
+  .card-corner ::ng-deep .card-action {
+    display: inline-grid;
+    place-items: center;
+    min-width: 26px;
+    height: 26px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--vbn-color-text-muted);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .card-action svg {
+    width: 15px;
+    height: 15px;
+  }
+  .card-action--text {
+    padding: 0 8px;
+  }
+  .card-action:hover:not(:disabled),
+  .card-corner ::ng-deep .card-action:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--vbn-color-text) 8%, transparent);
+    color: var(--vbn-color-text);
+  }
+  .card-action--danger:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--vbn-color-error) 12%, transparent);
+    color: var(--vbn-color-error);
+  }
+  .card-action:focus-visible,
+  .card-corner ::ng-deep .card-action:focus-visible {
+    outline: 2px solid var(--vbn-color-border-focus);
+    outline-offset: 1px;
+  }
+  .card-action:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* collapsed / minimized: only the header */
+  .card--collapsed > .card-media,
+  .card--collapsed > .card-body,
+  .card--collapsed > .card-footer {
+    display: none;
+  }
+  .card--collapsed > .card-header {
+    border-bottom-color: transparent;
+  }

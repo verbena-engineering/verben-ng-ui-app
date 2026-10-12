@@ -102,6 +102,7 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
         'New, opt-in: heading / subheading, variant="plain", interactive, selected and a card-media slot.',
         'The card is OnPush inside; projected content is unaffected.',
         'Responsive: a set width (width="340px") is never wider than the space the card gets; long words wrap.',
+        'New, opt-in corner (top-right): tag + tagTone (or tagBgColor / tagTextColor), actions (minimize, close, delete, edit, more, expand or your own) with (action), [(collapsed)], and a [card-actions] slot. Floats over card-media when there is no header.',
       ],
     },
   },

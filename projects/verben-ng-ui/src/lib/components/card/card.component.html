@@ -5,21 +5,65 @@
   [style.border-radius]="borderRadius"
   [style.color]="textColor"
   [style.width]="width"
-  [style.height]="height"
+  [style.height]="collapsed ? null : height"
   [ngClass]="disabled?'disable':''"
-  [style.aspect-ratio]="aspectRatio"
+  [style.aspect-ratio]="collapsed ? null : aspectRatio"
   [style.padding]="pd"
   [class.card--plain]="variant === 'plain'"
   [class.card--interactive]="interactive"
   [class.card--selected]="selected"
+  [class.card--has-corner]="hasCorner"
+  [class.card--collapsed]="collapsed"
   [style.--card-pad-top]="padTop"
   [style.--card-pad-right]="padRight"
   [style.--card-pad-left]="padLeft"
   >
-    <div class="card-header" *ngIf="hasHeader">
+    <div class="card-header" *ngIf="hasHeader" [class.has-corner]="hasCorner" [class.is-overlay]="cornerOverlay">
       <ng-content select="[card-header]"></ng-content>
       <div class="card-heading" *ngIf="heading">{{ heading }}</div>
       <div class="card-subheading" *ngIf="subheading">{{ subheading }}</div>
+
+      <!-- Corner (opt-in). In a clickable card, using it doesn't also click the card -->
+      <div
+        class="card-corner"
+        *ngIf="hasCorner"
+        (click)="interactive && $event.stopPropagation()"
+        (keydown.enter)="interactive && $event.stopPropagation()"
+        (keydown.space)="interactive && $event.stopPropagation()"
+      >
+        <span
+          class="card-tag"
+          *ngIf="tag"
+          [attr.data-tone]="tagTone"
+          [style.background-color]="tagBgColor"
+          [style.color]="tagTextColor"
+        >{{ tag }}</span>
+        <ng-content select="[card-actions]"></ng-content>
+        <button
+          *ngFor="let b of buttons; trackBy: trackButton"
+          type="button"
+          class="card-action"
+          [class.card-action--danger]="b.danger"
+          [class.card-action--text]="!b.icon"
+          [attr.aria-label]="labelOf(b)"
+          [attr.aria-expanded]="b.icon === 'minimize' ? !collapsed : null"
+          [title]="labelOf(b)"
+          [disabled]="disabled || b.disabled"
+          (click)="press(b)"
+        >
+          <svg
+            *ngIf="iconOf(b) as d"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            [attr.stroke-width]="b.icon === 'more' ? 4.5 : 2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          ><path [attr.d]="d" /></svg>
+          <span *ngIf="!b.icon">{{ b.text ?? b.label }}</span>
+        </button>
+      </div>
     </div>
     <div class="card-media">
       <ng-content select="[card-media]"></ng-content>

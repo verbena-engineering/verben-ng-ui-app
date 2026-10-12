@@ -135,17 +135,13 @@
       >
       </verben-drop-down>
 
-      <verbena-input
+      <app-date-picker
         *ngIf="selectedFilterType === 'Date'"
-        border="1px solid var(--vbn-color-border)"
-        borderRadius="8px"
-        textColor="var(--vbn-color-text)"
-        [showBorder]="true"
-        [showErrorMessage]="true"
-        [errorPosition]="'bottom'"
-        [type]="'date'"
+        variant="advanced"
+        placeholder="Select date"
+        [datePickerWidth]="'380px'"
         [(ngModel)]="inputValue"
-      ></verbena-input>
+      ></app-date-picker>
 
       <verbena-input
         *ngIf="selectedFilterType === 'Credit' || selectedFilterType === 'Integer'"

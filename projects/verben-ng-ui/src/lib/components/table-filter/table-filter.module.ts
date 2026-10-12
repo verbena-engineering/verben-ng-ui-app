@@ -7,6 +7,7 @@ import { VerbenaInputModule } from 'verben-ng-ui/src/lib/verbena-input';
 import { TooltipModule } from 'verben-ng-ui/src/lib/components/tooltip';
 import { ValidationModule } from 'verben-ng-ui/src/lib/validate';
 import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
+import { DatePickerModule } from 'verben-ng-ui/src/lib/components/date-picker';
 
 @NgModule({
   declarations: [TableFilterComponent],
@@ -18,6 +19,7 @@ import { SvgModule } from 'verben-ng-ui/src/lib/components/svg';
     ValidationModule,
     TooltipModule,
     SvgModule,
+    DatePickerModule,
   ],
   exports: [TableFilterComponent],
 })

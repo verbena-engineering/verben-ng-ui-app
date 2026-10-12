@@ -64,7 +64,7 @@ export class TableFilterComponent implements OnInit, OnChanges {
   selectedFilterType: DataFilterType | null = null;
   conditionOptions: string[] = [];
   selectedCondition: string | undefined = '';
-  inputValue?: string | number | boolean;
+  inputValue?: any;
   selectedFilters: IDataFilter[] = [];
   showAllFilters: boolean = false;
   editIndex: number | null = null;
@@ -416,31 +416,92 @@ export class TableFilterComponent implements OnInit, OnChanges {
       return;
     }
 
-    // 00:00 23:59 for Date On in classic mode
-    if (
-      !this.isColumnsMode &&
-      (this.selectedFilterType as DataFilterType) == DataFilterType.Date &&
-      this.selectedCondition == 'On'
-    ) {
-      const leftFilter: IDataFilter = {
-        name: this.selectedFilterValue,
-        type: this.selectedFilterType || DataFilterType.String,
-        condition: 'After',
-        value: (this.inputValue as string).concat(' 00:00'),
-        checked: true,
-      };
+    if (this.selectedFilterType === DataFilterType.Date) {
+      const filtersToAdd: IDataFilter[] = [];
 
-      const rightFilter: IDataFilter = {
-        name: this.selectedFilterValue,
-        type: this.selectedFilterType || DataFilterType.String,
-        condition: 'Before',
-        value: (this.inputValue as string).concat(' 23:59'),
-        checked: true,
-      };
+      if (Array.isArray(this.inputValue)) {
+        // Range / Period: array of two dates [start, end]
+        const [rawStart, rawEnd] = this.inputValue;
+        const startStr = typeof rawStart === 'string' ? rawStart : rawStart instanceof Date ? rawStart.toISOString() : String(rawStart);
+        const endStr = typeof rawEnd === 'string' ? rawEnd : rawEnd instanceof Date ? rawEnd.toISOString() : String(rawEnd);
 
-      const filters = [leftFilter, rightFilter];
+        // Normalize to day bounds if simple date
+        const startVal = startStr.includes('T') ? startStr.replace('T', ' ').slice(0, 16) : startStr.concat(' 00:00');
+        const endVal = endStr.includes('T') ? endStr.replace('T', ' ').slice(0, 16) : endStr.concat(' 23:59');
 
-      for (let newFilter of filters) {
+        filtersToAdd.push(
+          {
+            name: this.selectedFilterValue,
+            type: DataFilterType.Date,
+            condition: 'After',
+            value: startVal,
+            checked: true,
+          },
+          {
+            name: this.selectedFilterValue,
+            type: DataFilterType.Date,
+            condition: 'Before',
+            value: endVal,
+            checked: true,
+          }
+        );
+      } else if (
+        this.selectedCondition === 'On' ||
+        this.selectedCondition?.toLowerCase() === 'on' ||
+        this.selectedCondition === 'Equal' ||
+        this.selectedCondition === 'Equals'
+      ) {
+        // Single Date with On / Equals: split into After 00:00 and Before 23:59 for backend processing
+        let dateBase = '';
+        if (typeof this.inputValue === 'string') {
+          dateBase = this.inputValue.includes('T') ? this.inputValue.split('T')[0] : this.inputValue.split(' ')[0];
+        } else if (this.inputValue instanceof Date) {
+          const month = `${this.inputValue.getMonth() + 1}`.padStart(2, '0');
+          const day = `${this.inputValue.getDate()}`.padStart(2, '0');
+          dateBase = `${this.inputValue.getFullYear()}-${month}-${day}`;
+        } else {
+          dateBase = String(this.inputValue);
+        }
+
+        filtersToAdd.push(
+          {
+            name: this.selectedFilterValue,
+            type: DataFilterType.Date,
+            condition: 'After',
+            value: dateBase.concat(' 00:00'),
+            checked: true,
+          },
+          {
+            name: this.selectedFilterValue,
+            type: DataFilterType.Date,
+            condition: 'Before',
+            value: dateBase.concat(' 23:59'),
+            checked: true,
+          }
+        );
+      } else {
+        // Single Date with Before / After
+        let valStr = '';
+        if (typeof this.inputValue === 'string') {
+          valStr = this.inputValue.includes('T') ? this.inputValue.replace('T', ' ').slice(0, 16) : this.inputValue;
+        } else if (this.inputValue instanceof Date) {
+          const month = `${this.inputValue.getMonth() + 1}`.padStart(2, '0');
+          const day = `${this.inputValue.getDate()}`.padStart(2, '0');
+          valStr = `${this.inputValue.getFullYear()}-${month}-${day}`;
+        } else {
+          valStr = String(this.inputValue);
+        }
+
+        filtersToAdd.push({
+          name: this.selectedFilterValue,
+          type: DataFilterType.Date,
+          condition: this.selectedCondition,
+          value: valStr,
+          checked: true,
+        });
+      }
+
+      for (const newFilter of filtersToAdd) {
         if (this.editIndex !== null) {
           const isDuplicate = this.savedFilters.some(
             (filter, index) =>
@@ -449,10 +510,7 @@ export class TableFilterComponent implements OnInit, OnChanges {
               filter.value === newFilter.value &&
               index !== this.editIndex,
           );
-
-          if (isDuplicate) {
-            continue;
-          }
+          if (isDuplicate) continue;
           this.savedFilters[this.editIndex] = newFilter;
           this.editIndex = null;
         } else {

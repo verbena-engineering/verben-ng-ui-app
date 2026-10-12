@@ -183,5 +183,33 @@ describe('TableFilterComponent', () => {
       component.deleteFilter(2);
       expect(component.savedFilters.length).toBe(2);
     });
+
+    it('splits a single Date filter with condition On into After 00:00 and Before 23:59', () => {
+      component.onFilterNameChange('Registered Date');
+      component.selectedCondition = 'On';
+      component.inputValue = '2026-10-12';
+      component.addFilter();
+
+      const dateFilters = component.savedFilters.filter((f) => f.name === 'Registered Date');
+      expect(dateFilters.length).toBe(2);
+      expect(dateFilters[0].condition).toBe('After');
+      expect(dateFilters[0].value).toBe('2026-10-12 00:00');
+      expect(dateFilters[1].condition).toBe('Before');
+      expect(dateFilters[1].value).toBe('2026-10-12 23:59');
+    });
+
+    it('splits a Date range array [start, end] into After start and Before end filters', () => {
+      component.onFilterNameChange('Registered Date');
+      component.selectedCondition = 'Between';
+      component.inputValue = ['2026-09-01T00:00:00', '2026-09-30T23:59:59'];
+      component.addFilter();
+
+      const dateFilters = component.savedFilters.filter((f) => f.name === 'Registered Date');
+      expect(dateFilters.length).toBe(2);
+      expect(dateFilters[0].condition).toBe('After');
+      expect(dateFilters[0].value).toContain('2026-09-01');
+      expect(dateFilters[1].condition).toBe('Before');
+      expect(dateFilters[1].value).toContain('2026-09-30');
+    });
   });
 });

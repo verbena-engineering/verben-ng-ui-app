@@ -1,0 +1,13 @@
+/* Runs only <verben-card-hover-actions>' specs (older card-data-view specs don't compile yet).
+   "@angular/*": see tsconfig.spec.date-picker.json (keeps TestBed on one copy of Angular). */
+{
+  "extends": "./tsconfig.spec.json",
+  "compilerOptions": {
+    "paths": {
+      "@angular/*": ["./node_modules/@angular/*"],
+      "verben-ng-ui/*": ["./*"],
+      "verben-ng-ui": ["../../dist/verben-ng-ui"]
+    }
+  },
+  "include": ["src/lib/components/card-data-view/card-hover-actions/**/*.spec.ts", "**/*.d.ts"]
+}

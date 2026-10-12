@@ -610,6 +610,7 @@
   .card-demo-stack { display: grid; gap: 10px; }
   .card-demo-muted { color: var(--vbn-color-text-muted); font-size: 13px; }
   .card-demo-list { display: grid; gap: 10px; width: 100%; max-width: 320px; }
+  .card-demo-pair { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px; }
   .card-demo-cover {
     height: 120px;
     background: linear-gradient(135deg, #f97316, #db2777 55%, #7c3aed);

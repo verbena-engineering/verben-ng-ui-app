@@ -6,3 +6,4 @@ export * from './left-card-data-view/left-card-data-view.component';
 export * from './right-card-data-view/right-card-data-view.component';
 export * from './card-data-view-header/card-data-view-header.component';
 export * from './card-data-view-footer/card-data-view-footer.component';
+export * from './card-hover-actions/card-hover-actions.component';

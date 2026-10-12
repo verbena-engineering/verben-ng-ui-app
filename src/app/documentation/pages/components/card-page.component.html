@@ -21,8 +21,8 @@
     <code class="docs-inline-code">card-header</code>, <code class="docs-inline-code">card-media</code>,
     <code class="docs-inline-code">card-body</code> or <code class="docs-inline-code">card-footer</code>;
     sections you don't use aren't shown, and they always appear in that order (header, media, body,
-    footer) wherever they are in your markup. Everything added on 2026-10-09 is opt-in: existing cards
-    render exactly as before.
+    footer) wherever they are in your markup. Everything added on 2026-10-09 is opt-in, including the
+    top-right corner (tag, actions, card-actions): existing cards render exactly as before.
   </p>
 
   <h2 class="docs-h2" id="examples">Examples</h2>
@@ -93,6 +93,132 @@
     </div>
   </docs-example>
 
+  <docs-example responsive
+    title="Corner: window controls"
+    description="New: actions puts buttons in the top-right corner. minimize collapses the card to its header ([(collapsed)]); every button emits (action) with its name, so close / delete do what you decide."
+    [code]="code.window"
+    [tsCode]="code.windowTs"
+  >
+    <verben-card
+      *ngIf="!closed"
+      width="300px"
+      heading="Upload queue"
+      subheading="3 files · 2 done"
+      [actions]="['minimize', 'close']"
+      [(collapsed)]="minimized"
+      (action)="onWindowAction($event)"
+    >
+      <div card-body class="card-demo-stack">
+        <span>receipts-oct.pdf <span class="card-demo-muted">· done</span></span>
+        <span>vendors.xlsx <span class="card-demo-muted">· done</span></span>
+        <span>contract-final.docx <span class="card-demo-muted">· 64%</span></span>
+      </div>
+    </verben-card>
+    <verbena-button *ngIf="closed" text="Show the card again" styleType="outline" (click)="closed = false"></verbena-button>
+  </docs-example>
+
+  <docs-example responsive
+    title="Corner: tags and item actions"
+    description="New: tag adds a chip (tagTone: neutral, info, success, warning, error; or your own tagBgColor / tagTextColor). Mix it with any actions, e.g. edit and delete per item."
+    [code]="code.tags"
+    [tsCode]="code.tagsTs"
+  >
+    <div class="card-demo-list">
+      <verben-card
+        *ngFor="let doc of docs; trackBy: trackDoc"
+        variant="plain"
+        [heading]="doc.title"
+        [subheading]="doc.owner"
+        [tag]="doc.status"
+        [tagTone]="tone[doc.status]"
+        [actions]="['edit', 'delete']"
+        (action)="onDocAction(doc, $event)"
+      ></verben-card>
+      <p class="card-demo-muted" *ngIf="lastDocAction">{{ lastDocAction }}</p>
+    </div>
+  </docs-example>
+
+  <docs-example responsive
+    title="Corner: over an image, and your own content"
+    description="With no header, the corner floats over card-media. Actions can be your own ({ id, label, icon | text }), and anything marked card-actions goes in the corner too (class=&quot;card-action&quot; gives it the same look)."
+    [code]="code.custom"
+    [tsCode]="code.customTs"
+    align="start"
+  >
+    <div class="card-demo-pair">
+      <verben-card width="240px" variant="plain" tag="New" tagTone="info" [actions]="['more']" (action)="lastCustom = $event">
+        <div card-media class="card-demo-cover"></div>
+        <div card-body><b>Sunday market</b><br /><span class="card-demo-muted">Lagos · 2 km</span></div>
+      </verben-card>
+
+      <verben-card
+        width="290px"
+        heading="Q4 budget"
+        subheading="Finance"
+        tag="Shared"
+        tagBgColor="#ede9fe"
+        tagTextColor="#5b21b6"
+        [actions]="[{ id: 'pin', text: 'Pin' }]"
+        (action)="lastCustom = $event"
+      >
+        <button card-actions class="card-action" title="Star" aria-label="Star" (click)="starred = !starred">
+          {{ starred ? '★' : '☆' }}
+        </button>
+        <div card-body>₦ 48.2m of ₦ 60m used.</div>
+      </verben-card>
+    </div>
+    <p class="card-demo-muted" *ngIf="lastCustom">(action) emitted: {{ lastCustom }}</p>
+  </docs-example>
+
+  <docs-example responsive
+    title="Corner: on hover, and on the left"
+    description="actionsOnHover shows the buttons only while the card is hovered or something in it has keyboard focus (always on touch screens); the tag stays. cornerPosition=&quot;top-left&quot; moves the corner to the other side, over an image too."
+    [code]="code.hover"
+    [tsCode]="code.hoverTs"
+    align="start"
+  >
+    <div class="card-demo-pair">
+      <verben-card
+        width="300px"
+        heading="Team notes"
+        subheading="Hover me, or Tab to me"
+        tag="3 new"
+        actionsOnHover
+        [actions]="['edit', 'delete']"
+        (action)="lastHover = $event"
+      >
+        <div card-body>The buttons fade in on hover; nothing moves.</div>
+      </verben-card>
+
+      <verben-card
+        width="250px"
+        heading="Mini player"
+        subheading="Now playing"
+        cornerPosition="top-left"
+        [actions]="['close', 'minimize']"
+        [(collapsed)]="miniCollapsed"
+        (action)="lastHover = $event"
+      >
+        <div card-body>Window buttons on the left, like macOS.</div>
+      </verben-card>
+
+      <verben-card
+        width="220px"
+        variant="plain"
+        tag="Sale"
+        tagTone="error"
+        cornerPosition="top-left"
+        actionsOnHover
+        [actions]="['more']"
+        (action)="lastHover = $event"
+      >
+        <div card-media class="card-demo-cover"></div>
+        <div card-body><b>Ankara tote</b><br /><span class="card-demo-muted">₦ 18,500</span></div>
+      </verben-card>
+    </div>
+    <p class="card-demo-muted" *ngIf="lastHover">(action) emitted: {{ lastHover }}</p>
+  </docs-example>
+
   <docs-example responsive title="Cards inside cards" description="A card in card-body is just another card; pd keeps the inner ones compact." [code]="code.nested">
     <verben-card width="320px" heading="Order #1042" subheading="Placed 7 Oct 2026 · Paid">
       <div card-body class="card-demo-stack">
@@ -108,6 +234,8 @@
 
   <h2 class="docs-h2" id="api">API</h2>
   <docs-props-table [props]="inputs"></docs-props-table>
+  <h3 class="docs-h3" id="api-outputs">Outputs</h3>
+  <docs-props-table [props]="outputs" kind="output"></docs-props-table>
   <h3 class="docs-h3" id="api-slots">Slots</h3>
   <docs-props-table [props]="slots" kind="output" [headings]="['Slot', 'Type', 'Description']"></docs-props-table>
 </docs-page>

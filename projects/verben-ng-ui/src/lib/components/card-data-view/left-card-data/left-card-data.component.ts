@@ -1,6 +1,10 @@
 import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
 import { CardData } from '../card-data';
 import { CardDataViewComponent } from '../card-data-view.component';
+import {
+  CardHoverAction,
+  CardHoverActionsPosition,
+} from '../card-hover-actions/card-hover-actions.component';
 
 @Component({
   selector: 'verben-left-card-data',
@@ -24,6 +28,15 @@ export class LeftCardDataComponent {
   @ContentChild('cardChild') cardChild!: TemplateRef<any>;
   @ContentChild('cardFooter') cardFooter!: TemplateRef<any>;
   @Input() dataId!: string; //what to use to identify each data
+  /**
+   * Buttons revealed on hover / keyboard focus over each card (the #card
+   * template). When set, every card is wrapped in <verben-card-hover-actions>
+   * with its CardData; empty or unset renders exactly as before (no wrapper).
+   * Pass a stable array (a field, not an inline literal).
+   */
+  @Input() cardActions: CardHoverAction[] | null | undefined = [];
+  /** Where those buttons sit on each card. */
+  @Input() cardActionsPosition: CardHoverActionsPosition = 'top-right';
   // currentItem:any={};
   showToggle(item: CardData) {
     // showToggle() && item.children.length>0

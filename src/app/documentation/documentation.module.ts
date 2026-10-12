@@ -53,7 +53,6 @@ import { TabsPageComponent } from './pages/components/tabs-page.component';
 import { TextareaPageComponent } from './pages/components/textarea-page.component';
 import { TimePickerPageComponent } from './pages/components/time-picker-page.component';
 import { TooltipPageComponent } from './pages/components/tooltip-page.component';
-import { VendorInvoicesComponent } from './pages/playground/vendor-invoices/vendor-invoices.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +83,6 @@ import { VendorInvoicesComponent } from './pages/playground/vendor-invoices/vend
     TextareaPageComponent,
     TimePickerPageComponent,
     TooltipPageComponent,
-    VendorInvoicesComponent,
   ],
   imports: [
     CommonModule,

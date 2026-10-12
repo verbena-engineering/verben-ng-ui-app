@@ -27,9 +27,39 @@ import { CardModule } from './card.module';
       <img card-media src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt="" />
       <div card-body>Lines</div>
     </verben-card>
+
+    <verben-card
+      id="corner"
+      heading="Report"
+      tag="Draft"
+      tagTone="warning"
+      [actions]="['minimize', 'close', { id: 'pin', text: 'Pin' }]"
+      [(collapsed)]="collapsed"
+      (action)="last = $event"
+    >
+      <div card-body>Body</div>
+    </verben-card>
+
+    <verben-card id="slot" interactive (click)="clicks = clicks + 1">
+      <button card-actions class="card-action" id="mine">★</button>
+      <div card-body>Body</div>
+    </verben-card>
+
+    <verben-card id="left" heading="Left" tag="Tag" [actions]="['close']" cornerPosition="top-left" actionsOnHover>
+      <div card-body>Body</div>
+    </verben-card>
+
+    <verben-card id="overlay" tag="New">
+      <div card-media style="height: 40px"></div>
+      <div card-body>Body</div>
+    </verben-card>
   `,
 })
-class HostComponent {}
+class HostComponent {
+  collapsed = false;
+  last = '';
+  clicks = 0;
+}
 
 describe('verben-card', () => {
   let fixture: ComponentFixture<HostComponent>;
@@ -83,5 +113,77 @@ describe('verben-card', () => {
     const classic = card('classic');
     expect(classic.classList).not.toContain('card--plain');
     expect(fixture.nativeElement.querySelector('#classic').hasAttribute('tabindex')).toBeFalse();
+  });
+
+  it('renders no corner unless a tag, actions or [card-actions] content is given', () => {
+    for (const id of ['classic', 'bodyOnly', 'added']) {
+      expect(card(id).querySelector('.card-corner')).withContext(id).toBeNull();
+      expect(card(id).classList).not.toContain('card--has-corner');
+    }
+  });
+
+  it('shows the tag and the action buttons; minimize collapses the card', () => {
+    const c = card('corner');
+    const host = fixture.componentInstance;
+    const tag = c.querySelector('.card-tag') as HTMLElement;
+    expect(tag.textContent!.trim()).toBe('Draft');
+    expect(tag.dataset['tone']).toBe('warning');
+
+    const buttons = () => Array.from(c.querySelectorAll<HTMLButtonElement>('.card-action'));
+    expect(buttons().map((b) => b.getAttribute('aria-label'))).toEqual(['Minimize', 'Close', 'Pin']);
+    expect(buttons()[2].textContent!.trim()).toBe('Pin');
+
+    buttons()[0].click();
+    fixture.detectChanges();
+    expect(host.collapsed).toBeTrue();
+    expect(host.last).toBe('minimize');
+    expect(visible(c.querySelector('.card-body'))).toBeFalse();
+    expect(buttons()[0].getAttribute('aria-label')).toBe('Restore');
+    expect(buttons()[0].getAttribute('aria-expanded')).toBe('false');
+
+    buttons()[1].click();
+    expect(host.last).toBe('close');
+
+    // Two-way: the page can expand it again
+    host.collapsed = false;
+    fixture.detectChanges();
+    expect(visible(c.querySelector('.card-body'))).toBeTrue();
+  });
+
+  it('shows [card-actions] content in the corner without clicking an interactive card', () => {
+    const mine = card('slot').querySelector('.card-corner #mine') as HTMLButtonElement;
+    expect(mine).not.toBeNull();
+    mine.click();
+    expect(fixture.componentInstance.clicks).toBe(0);
+    card('slot').querySelector<HTMLElement>('.card-body')!.click();
+    expect(fixture.componentInstance.clicks).toBe(1);
+  });
+
+  it('puts the corner top-left and shows its buttons only on hover / focus when asked', () => {
+    const c = card('left');
+    const header = c.querySelector('.card-header') as HTMLElement;
+    const corner = c.querySelector('.card-corner') as HTMLElement;
+    const close = c.querySelector('.card-action') as HTMLButtonElement;
+    expect(getComputedStyle(corner).gridColumnStart).toBe('1');
+    expect(getComputedStyle(c.querySelector('.card-heading')!).gridColumnStart).toBe('2');
+    expect(getComputedStyle(c.querySelector('.card-tag')!).order).toBe('1'); // after the buttons
+    expect(header.classList).toContain('has-corner');
+
+    close.style.transition = 'none';
+    const touch = matchMedia('(hover: none)').matches;
+    expect(getComputedStyle(close).opacity).toBe(touch ? '1' : '0');
+    expect(getComputedStyle(c.querySelector('.card-tag')!).opacity).toBe('1'); // the tag always shows
+    close.focus(); // keyboard users reach it, and it shows
+    expect(getComputedStyle(close).opacity).toBe('1');
+
+    // Defaults: top-right, always visible
+    const other = card('corner').querySelector('.card-action') as HTMLElement;
+    expect(getComputedStyle(other).opacity).toBe('1');
+    expect(getComputedStyle(card('corner').querySelector('.card-corner')!).gridColumnStart).toBe('2');
+  });
+
+  it('floats the corner over card-media when there is no header', () => {
+    expect(card('overlay').querySelector('.card-header')!.classList).toContain('is-overlay');
+    expect(card('corner').querySelector('.card-header')!.classList).not.toContain('is-overlay');
   });
 });

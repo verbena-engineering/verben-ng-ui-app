@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, booleanAttribute } from '@angular/core';
 import { DocsLang } from './highlight';
 
 export interface DocsCodeFile {
-  /** File name, e.g. "vendor-invoices.component.html" */
+  /** File name, e.g. "data-view.component.html" */
   name: string;
   lang: DocsLang;
   /** The code, or… */

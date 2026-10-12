@@ -163,24 +163,22 @@ describe('TableFilterComponent', () => {
       });
     });
 
-    it('handles adding new filter and updating required filter in-place', () => {
-      component.onFilterNameChange('Full Name');
-      component.selectedCondition = 'Starts With';
-      component.inputValue = 'Alice';
+    it('allows multiple saved filters with the same field name', () => {
+      component.onFilterNameChange('Age');
+      component.selectedCondition = 'Greater Than';
+      component.inputValue = 18;
       component.addFilter();
 
       expect(component.savedFilters.length).toBe(3);
 
-      // Editing required filter replaces it rather than duplicating
-      component.onFilterNameChange('Status');
-      component.selectedCondition = 'Is Not';
-      component.inputValue = 'Suspended';
+      component.onFilterNameChange('Age');
+      component.selectedCondition = 'Less Than';
+      component.inputValue = 65;
       component.addFilter();
 
-      expect(component.savedFilters.length).toBe(3);
-      const updatedStatus = component.savedFilters.find((f) => f.name === 'Status');
-      expect(updatedStatus?.condition).toBe('Is Not');
-      expect(updatedStatus?.value).toBe('Suspended');
+      expect(component.savedFilters.length).toBe(4);
+      const ageFilters = component.savedFilters.filter((f) => f.name === 'Age');
+      expect(ageFilters.length).toBe(3); // Initial 25 + new 18 + new 65
     });
   });
 });

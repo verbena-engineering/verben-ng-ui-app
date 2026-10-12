@@ -493,30 +493,20 @@ export class TableFilterComponent implements OnInit, OnChanges {
         this.savedFilters[this.editIndex] = newFilter;
         this.editIndex = null;
       } else {
-        // If it's a required column in columns mode, update existing chip in place
-        const requiredIndex =
-          this.isColumnsMode && this.isRequiredFilter(newFilter)
-            ? this.savedFilters.findIndex((f) => f.name === newFilter.name)
-            : -1;
-
-        if (requiredIndex >= 0) {
-          this.savedFilters[requiredIndex] = newFilter;
-        } else {
-          if (
-            this.savedFilters.some(
-              (filter) =>
-                filter.name === newFilter.name &&
-                filter.condition === newFilter.condition &&
-                filter.value === newFilter.value,
-            )
-          ) {
-            return;
-          }
-          this.savedFilters.push(newFilter);
-          this.filterCount = this.savedFilters.filter(
-            (item) => item.checked === true,
-          ).length;
+        if (
+          this.savedFilters.some(
+            (filter) =>
+              filter.name === newFilter.name &&
+              filter.condition === newFilter.condition &&
+              filter.value === newFilter.value,
+          )
+        ) {
+          return;
         }
+        this.savedFilters.push(newFilter);
+        this.filterCount = this.savedFilters.filter(
+          (item) => item.checked === true,
+        ).length;
       }
     }
 

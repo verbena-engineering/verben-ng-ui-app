@@ -59,15 +59,13 @@
       <ng-container *ngIf="columnTemplate; else defaultColumn"></ng-container>
       <ng-template #defaultColumn>
         <span
-          [ngClass]="[
-            'dv-action',
-            columnCustomClass ? columnCustomClass : '',
-          ]"
+          [ngClass]="['dv-action', columnCustomClass ? columnCustomClass : '']"
           [class.is-open]="showColumnChild"
           (click)="toggleChildView('column')"
         >
           <verben-svg [width]="15" [icon]="'column'"></verben-svg>
-          <span>Columns</span><span class="dv-count">{{ selectedColumnCount }}</span>
+          <span>Columns</span
+          ><span class="dv-count">{{ selectedColumnCount }}</span>
         </span>
         <div
           [style.z-index]="zIndex"
@@ -92,15 +90,13 @@
       <ng-container *ngIf="filterTemplate; else defaultFilter"></ng-container>
       <ng-template #defaultFilter>
         <span
-          [ngClass]="[
-            'dv-action',
-            filterCustomClass ? filterCustomClass : '',
-          ]"
+          [ngClass]="['dv-action', filterCustomClass ? filterCustomClass : '']"
           [class.is-open]="showFilterChild"
           (click)="toggleChildView('filter')"
         >
           <verben-svg [width]="15" [icon]="'filter'"></verben-svg>
-          <span>Filter</span><span class="dv-count">{{ selectedFilterTableCount }}</span>
+          <span>Filter</span
+          ><span class="dv-count">{{ selectedFilterTableCount }}</span>
         </span>
         <div
           (click)="stopPropagation($event)"
@@ -125,10 +121,7 @@
       <ng-container *ngIf="importTemplate; else defaultImport"></ng-container>
       <ng-template #defaultImport>
         <span
-          [ngClass]="[
-            'dv-action',
-            importCustomClass ? importCustomClass : '',
-          ]"
+          [ngClass]="['dv-action', importCustomClass ? importCustomClass : '']"
           [class.is-open]="showImportChild"
           (click)="toggleChildView('import')"
         >
@@ -156,10 +149,7 @@
       <ng-container *ngIf="sortTemplate; else defaultSort"></ng-container>
       <ng-template #defaultSort>
         <span
-          [ngClass]="[
-            'dv-action',
-            sortCustomClass ? sortCustomClass : '',
-          ]"
+          [ngClass]="['dv-action', sortCustomClass ? sortCustomClass : '']"
           [class.is-open]="showSortChild"
           (click)="toggleChildView('sort')"
         >
@@ -184,10 +174,7 @@
       <ng-container *ngIf="extendTemplate; else defaultExtend"></ng-container>
       <ng-template #defaultExtend>
         <span
-          [ngClass]="[
-            'dv-action',
-            importCustomClass ? extendCustomClass : '',
-          ]"
+          [ngClass]="['dv-action', importCustomClass ? extendCustomClass : '']"
           [class.is-open]="showExtendChild"
           (click)="toggleChildView('extend')"
         >
@@ -215,10 +202,7 @@
       <ng-container *ngIf="exportTemplate; else defaultExport"></ng-container>
       <ng-template #defaultExport>
         <span
-          [ngClass]="[
-            'dv-action',
-            exportCustomClass ? exportCustomClass : '',
-          ]"
+          [ngClass]="['dv-action', exportCustomClass ? exportCustomClass : '']"
           [class.is-open]="showExportChild"
           (click)="toggleChildView('export')"
         >
@@ -258,7 +242,6 @@
       *ngIf="viewState.isCreate"
     >
       <verbena-button
-        size="sm"
         [bgColor]="'var(--vbn-color-primary)'"
         [buttonClass]="createCustomClass"
         [textColor]="'var(--vbn-color-on-primary)'"

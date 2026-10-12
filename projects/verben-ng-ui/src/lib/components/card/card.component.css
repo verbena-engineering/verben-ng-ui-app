@@ -230,3 +230,48 @@
   .card--collapsed > .card-header {
     border-bottom-color: transparent;
   }
+
+  /* cornerPosition="top-left": the corner first, then the header content */
+  .card--corner-left > .card-header.has-corner {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .card--corner-left > .card-header.has-corner > ::ng-deep * {
+    grid-column: 2;
+  }
+  .card--corner-left > .card-header.has-corner > .card-corner {
+    grid-column: 1;
+  }
+  .card--corner-left:not(.card--collapsed) > .card-header.has-corner.is-overlay {
+    right: auto;
+    left: 0;
+  }
+  /* The buttons keep your order; the tag goes after them (next to the content) */
+  .card--corner-left > .card-header > .card-corner > .card-tag {
+    order: 1;
+    margin-right: 0;
+    margin-left: 4px;
+  }
+
+  /* actionsOnHover: the buttons appear while this card is hovered or has focus
+     inside (they stay in the layout, so nothing moves). The tag always shows.
+     Child selectors (>) so a nested card's buttons follow their own card. */
+  .card--actions-hover > .card-header > .card-corner > .card-action,
+  .card--actions-hover > .card-header > .card-corner > ::ng-deep [card-actions] {
+    opacity: 0;
+    transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  }
+  .card--actions-hover:hover > .card-header > .card-corner > .card-action,
+  .card--actions-hover:hover > .card-header > .card-corner > ::ng-deep [card-actions],
+  .card--actions-hover:focus-within > .card-header > .card-corner > .card-action,
+  .card--actions-hover:focus-within > .card-header > .card-corner > ::ng-deep [card-actions],
+  :host(:focus-visible) > .card--actions-hover > .card-header > .card-corner > .card-action,
+  :host(:focus-visible) > .card--actions-hover > .card-header > .card-corner > ::ng-deep [card-actions] {
+    opacity: 1;
+  }
+  /* Touch screens can't hover: always show them */
+  @media (hover: none) {
+    .card--actions-hover > .card-header > .card-corner > .card-action,
+    .card--actions-hover > .card-header > .card-corner > ::ng-deep [card-actions] {
+      opacity: 1;
+    }
+  }

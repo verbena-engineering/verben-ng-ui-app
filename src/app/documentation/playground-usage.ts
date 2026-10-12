@@ -134,7 +134,7 @@ sortBy(options: IDataFilter[]) { this.activeSorts = options.length; }`,
         title: 'Popovers exist from the start',
         text: 'Column and filter stay attached while closed (they keep their state); sort, import, export and create are attached only while open. Either way Angular creates projected content with the page, so keep popovers light or put heavy ones behind your own *ngIf.',
       },
-      { title: 'Your views decide the speed', text: 'The table and card views are your components; see Card Data View and the Vendor Invoices playground.' },
+      { title: 'Your views decide the speed', text: 'The table and card views are your components; see the Card Data View playground.' },
     ],
   },
   files: [
@@ -256,7 +256,7 @@ loadMore() { /* fetch the next page and append it to cards */ }`,
       { title: '"Virtual scroll" renders everything', text: 'useVirtualScroll wraps an @for list, not *cdkVirtualFor, so every item is still created: a fixed-height scroll box, not virtualisation. Page with Load more instead.' },
       { title: 'n × n template calls', text: 'The playground calls list.showToggle(item) per card, which scans the whole list. 48 items: 2,304 scans per check (500 items: 250,000), on every click or key press anywhere. Prefer a field set when data changes.' },
       { title: 'Selection loops over the list', text: 'Clicking an item clears every other item\'s flag. Fine for tens of items; one "selected" reference is O(1).' },
-      { title: 'Default change detection', text: 'Checked on every event in the app: an unrelated check costs 1.01 ms on this page (48 items) against 0.07 ms on the OnPush Vendor Invoices page.' },
+      { title: 'Default change detection', text: 'Checked on every event in the app: an unrelated check costs 1.01 ms on this page (48 items). With OnPush on your screen component it is skipped unless its inputs or events change.' },
     ],
   },
   files: [
@@ -265,123 +265,83 @@ loadMore() { /* fetch the next page and append it to cards */ }`,
   ],
 };
 
-const VENDOR_INVOICES: PlaygroundUsage = {
+const CARD_HOVER_ACTIONS: PlaygroundUsage = {
   description:
-    "The app's invoices screen built with the existing <verben-card> and data view toolbar: search, filter, sort, create, " +
-    '+ for invoice lines, click for details, load more. Written the way the rest of the app writes cards.',
-  docs: '/documentation/components/card',
+    'Small buttons that appear on a card while it is hovered or has keyboard focus (always on touch screens). ' +
+    'Each action decides per card whether it shows (canView) and what it does (onSelect); clicks on the buttons ' +
+    "never reach the card, so the card's own click can keep selecting it.",
   steps: [
     {
-      title: 'Import the modules',
-      text: 'Only existing modules; CommonModule also brings the currency pipe.',
-      lang: 'ts',
-      filename: 'invoices.module.ts',
-      code: `import { CardModule, DataViewModule, NumberInputModule, VerbenaBadgeModule,
-  VerbenaButtonModule, VerbenaInputModule } from 'verben-ng-ui';
+      title: 'Import the module',
+      text: 'It ships with the card data view (verben-ng-ui 1.5.0+).',
+      code: `import { CardDataViewModule } from 'verben-ng-ui';
 
-@NgModule({
-  declarations: [VendorInvoicesComponent],
-  imports: [
-    CommonModule, FormsModule,
-    DataViewModule,              // the toolbar
-    CardModule,                  // <verben-card>, the same card as everywhere else
-    VerbenaBadgeModule, VerbenaButtonModule, VerbenaInputModule, NumberInputModule,
-  ],
-})
-export class InvoicesModule {}`,
+@NgModule({ imports: [CardDataViewModule] })`,
+      lang: 'ts',
     },
     {
-      title: 'One card per invoice',
-      text: 'The whole template is in Code above; the heart of it is a list of interactive cards with their lines inside.',
+      title: 'Describe the actions',
+      text: 'Keep the array in a field (not an inline literal in the template). icon is a <verben-svg> name: the library icons, then your app\'s assets/icons/<name>.svg; leave it out to show the label as text.',
+      code: `import { CardHoverAction } from 'verben-ng-ui';
+
+readonly actions: CardHoverAction[] = [
+  { id: 'duplicate', label: 'Duplicate', icon: 'document-duplicate',
+    onSelect: (card) => this.duplicate(card.data) },
+  { id: 'delete', label: 'Delete draft', icon: 'trash', class: 'danger',
+    canView: (card) => card.data.state === 'Draft',
+    onSelect: (card) => this.remove(card.data) },
+  { id: 'cancel', label: 'Cancel' }, // text only
+];`,
+      lang: 'ts',
+    },
+    {
+      title: 'In a card list: one input',
+      text: 'Every #card is wrapped for you with its CardData. Without [cardActions] the list renders exactly as before.',
+      code: `<verben-left-card-data [cardDataList]="cards" [cardActions]="actions" cardActionsPosition="top-right">
+  <ng-template #card let-item>
+    <app-invoice-card [invoice]="item.data" (click)="select(item)"></app-invoice-card>
+  </ng-template>
+</verben-left-card-data>`,
       lang: 'html',
-      filename: 'vendor-invoices.component.html',
-      code: `<verben-card
-  *ngFor="let inv of visible; trackBy: byId"
-  variant="plain"
-  interactive
-  [selected]="inv === selected"
-  (click)="select(inv)"
->
-  <div card-header>
-    <div class="row"><b>{{ inv.id }}</b><span>{{ inv.vendor }}</span></div>
-    <div class="row">
-      <span>{{ inv.total | currency: 'NGN' : 'symbol-narrow' }}</span>
-      <verbena-badge [text]="inv.status" [bgColor]="badge[inv.status].bg" [textColor]="badge[inv.status].fg"></verbena-badge>
-    </div>
-  </div>
-  <div card-body *ngIf="inv.open">
-    <verben-card *ngFor="let line of inv.lines; trackBy: byId" variant="plain"
-      [heading]="line.id" [subheading]="'Product: ' + line.product"></verben-card>
-  </div>
-</verben-card>`,
     },
     {
-      title: 'Keep the template cheap',
-      text: 'OnPush, and everything the template shows is computed once per change, never in the template.',
-      lang: 'ts',
-      filename: 'vendor-invoices.component.ts',
-      code: `@Component({ …, changeDetection: ChangeDetectionStrategy.OnPush })
-export class VendorInvoicesComponent {
-  visible: Invoice[] = [];      // what the board shows
-  selected: Invoice | null = null;
-
-  refresh(): void {             // after every search, filter, sort, save…
-    for (const invoice of this.all) invoice.total = this.sumLines(invoice);
-    const matches = this.all.filter(…);   // search + filters
-    this.visible = matches.sort(…).slice(0, this.loaded);
-  }
-
-  byId(_: number, item: { id: string }) { return item.id; }   // trackBy
-}`,
+      title: 'Or around any card',
+      code: `<verben-card-hover-actions [item]="item" [actions]="actions" position="bottom-left" (action)="onAction($event)">
+  <app-invoice-card [invoice]="item.data"></app-invoice-card>
+  <button hoverActions (click)="star(item)">☆</button> <!-- optional: your own buttons -->
+</verben-card-hover-actions>`,
+      lang: 'html',
     },
   ],
   anatomy: {
-    tree: `<verben-data-view>                               toolbar
-├── <verben-card filter-content|sort-content|create-content variant="plain" heading>
-└── <verben-card card-content variant="plain">   the board
-    ├── [card-body]
-    │   ├── <verben-card interactive [selected]> × n   an invoice
-    │   │   ├── [card-header]   id · vendor, amount · status
-    │   │   └── [card-body]     its lines: <verben-card [heading] [subheading]>
-    │   └── <verben-card>                         details (default look)
-    └── [card-footer]                             "9 of 37 records loaded · Load more"`,
+    tree: `<verben-card-hover-actions [item] [actions] [position] [alwaysVisible] [disabled] [buttonClass] (action)>
+├── (your card)                       projected as is
+└── .card-hover-actions.<position>    absolute, shown on :hover / :focus-within
+    ├── button.card-hover-action      one per visible action (icon or label)
+    └── [hoverActions]                your own buttons`,
     parts: [
-      { name: 'variant="plain"', type: 'verben-card', description: 'No grey bars: the board, popovers and invoice cards.' },
-      { name: 'interactive / [selected]', type: 'verben-card', description: 'Clickable invoice and line cards; the open one gets the accent strip.' },
-      { name: '[heading] / [subheading]', type: 'verben-card', description: 'Line cards without header markup.' },
-      { name: 'Details card', type: 'verben-card', description: 'The default look: header with close, form in the body, Delete / Save in the footer.' },
-      { name: 'Status pill / amount', type: 'verbena-badge / currency pipe', description: 'Existing library badge with soft colors; Angular\'s currency pipe for ₦.' },
-    ],
-  },
-  performance: {
-    intro: 'Measured in this docs app in one session (dev build, Chrome); compare the columns, not the absolute numbers. Both include the docs layout around the page.',
-    compare: ['Card Data View', 'Vendor Invoices'],
-    metrics: [
-      { label: 'Check from elsewhere in the app', before: '1.01 ms', after: '0.07 ms', note: 'OnPush: the screen is skipped, its template isn\'t read.' },
-      { label: 'Check of the screen itself', before: '0.90 ms', after: '0.36 ms', note: '48 items vs 37 cards: about half the work per card.' },
-      { label: 'Elements per card', before: '21', after: '14', note: 'Less memory and less style / layout work.' },
-    ],
-    notes: [
-      { title: 'Cards stay with their data', text: 'trackBy id: after a sort, a filter or a new invoice, Angular moves cards and creates only new ones.' },
-      { title: 'No work per card per check', text: 'The template reads fields (inv.total, visible, selected) computed once per change in refresh().' },
-      { title: 'One selected reference', text: '"Is this card open" is inv === selected; no loop over the list.' },
-      { title: 'Paging, not "virtual scroll"', text: '9 cards render; Load more adds 9 (a real screen asks the server for the next page).' },
-      { title: 'verben-card is OnPush', text: 'Its template only reads its own inputs; unfilled sections are hidden by CSS (:empty), states are CSS.' },
-      { title: 'Buttons without per-check objects', text: 'verbena-button used to build a new style object 5× per check; now plain bindings and CSS states.' },
+      { name: 'item', type: 'CardData (required)', description: 'Passed to canView / onSelect and emitted with (action).' },
+      { name: 'actions', type: 'CardHoverAction[]', description: '{ id, label, icon?, iconSize?, disabled?, class?, canView?(item), onSelect?(item) }.' },
+      { name: 'position', type: "'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'", description: "Corner of the card; default 'top-right'." },
+      { name: 'alwaysVisible / disabled', type: 'boolean', description: 'Show without hovering / disable every button.' },
+      { name: 'buttonClass', type: 'string', description: "Classes on every button; per action use class (built-in 'danger')." },
+      { name: '(action)', type: '{ id, item }', description: 'After onSelect, for every enabled click.' },
+      { name: '--card-action-*', type: 'CSS variables', description: 'size, offset, gap, bg, hover-bg, border, radius, shadow, color; set on the element or any parent.' },
+      { name: '[cardActions] / cardActionsPosition', type: 'verben-left-card-data', description: 'Wraps every #card for you.' },
     ],
   },
   files: [
-    { name: 'vendor-invoices.component.html', lang: 'html', load: () => import('./pages/playground/vendor-invoices/vendor-invoices.component.html', { with: { loader: 'text' } }) },
-    { name: 'vendor-invoices.component.ts', lang: 'ts', load: () => import('./pages/playground/vendor-invoices/vendor-invoices.component', { with: { loader: 'text' } }) },
-    { name: 'vendor-invoices.component.css', lang: 'css', load: () => import('./pages/playground/vendor-invoices/vendor-invoices.component.css', { with: { loader: 'text' } }) },
+    { name: 'card-hover-actions-demo.component.html', lang: 'html', load: () => import('./card-hover-actions/card-hover-actions-demo.component.html', { with: { loader: 'text' } }) },
+    { name: 'card-hover-actions-demo.component.ts', lang: 'ts', load: () => import('./card-hover-actions/card-hover-actions-demo.component', { with: { loader: 'text' } }) },
+    { name: 'card-hover-actions-demo.component.css', lang: 'css', load: () => import('./card-hover-actions/card-hover-actions-demo.component.css', { with: { loader: 'text' } }) },
   ],
 };
 
 /** Usage for each playground route */
 export const PLAYGROUND_USAGE: Record<string, PlaygroundUsage> = {
-  '/documentation/vendor-invoices': VENDOR_INVOICES,
   '/documentation/data-view': DATA_VIEW,
   '/documentation/card-data-view': CARD_DATA_VIEW,
+  '/documentation/card-hover-actions': CARD_HOVER_ACTIONS,
   '/documentation/data-table': {
     files: [
       { name: 'data-table.component.html', lang: 'html', load: () => import('./data-table/data-table.component.html', { with: { loader: 'text' } }) },

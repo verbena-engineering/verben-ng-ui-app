@@ -1,0 +1,86 @@
+/* Theme with the --card-action-* variables, on this element or any parent:
+     .my-list { --card-action-bg: #111827; --card-action-color: #fff; }
+   They are read with fallbacks (not declared here), so a page's value always
+   wins. The fallbacks follow the library theme, so dark mode works as is.
+     --card-action-size     26px         --card-action-offset  6px
+     --card-action-gap      4px          --card-action-radius  6px
+     --card-action-bg       surface      --card-action-hover-bg  surface-alt
+     --card-action-border   1px border   --card-action-shadow  0 1px 3px …
+     --card-action-color    text */
+:host {
+  position: relative;
+  display: block;
+}
+
+.card-hover-actions {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  gap: var(--card-action-gap, 4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.top-right { top: var(--card-action-offset, 6px); right: var(--card-action-offset, 6px); }
+.top-left { top: var(--card-action-offset, 6px); left: var(--card-action-offset, 6px); }
+.bottom-right { bottom: var(--card-action-offset, 6px); right: var(--card-action-offset, 6px); }
+.bottom-left { bottom: var(--card-action-offset, 6px); left: var(--card-action-offset, 6px); }
+
+/* Hovered, keyboard focus anywhere in the card (or on a button), or asked to stay */
+:host(:hover) .card-hover-actions,
+:host(:focus-within) .card-hover-actions,
+.card-hover-actions.always-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Touch screens can't hover: always show them */
+@media (hover: none) {
+  .card-hover-actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.card-hover-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--card-action-size, 26px);
+  height: var(--card-action-size, 26px);
+  padding: 0 4px;
+  border: var(--card-action-border, 1px solid var(--vbn-color-border, #e5e7eb));
+  border-radius: var(--card-action-radius, 6px);
+  background: var(--card-action-bg, var(--vbn-color-surface, #ffffff));
+  box-shadow: var(--card-action-shadow, 0 1px 3px rgba(0, 0, 0, 0.12));
+  color: var(--card-action-color, var(--vbn-color-text, #404040));
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.card-hover-action:hover:not(:disabled) {
+  background: var(--card-action-hover-bg, var(--vbn-color-surface-alt, #f3f4f6));
+}
+
+.card-hover-action:focus-visible {
+  outline: 2px solid var(--vbn-color-border-focus, #3b82f6);
+  outline-offset: 1px;
+}
+
+.card-hover-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* class: 'danger' on an action, e.g. delete */
+.card-hover-action.danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--vbn-color-error, #e20000) 12%, var(--card-action-bg, var(--vbn-color-surface, #ffffff)));
+  color: var(--vbn-color-error, #e20000);
+}
+
+.card-hover-action-text {
+  padding: 0 4px;
+  white-space: nowrap;
+}

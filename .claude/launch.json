@@ -4,8 +4,8 @@
     {
       "name": "verben-ui",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["ng", "serve", "--port", "4300"],
-      "port": 4300
+      "runtimeArgs": ["ng", "serve", "--port", "4301"],
+      "port": 4301
     }
   ]
 }

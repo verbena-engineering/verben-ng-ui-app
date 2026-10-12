@@ -170,6 +170,55 @@
     <p class="card-demo-muted" *ngIf="lastCustom">(action) emitted: {{ lastCustom }}</p>
   </docs-example>
 
+  <docs-example responsive
+    title="Corner: on hover, and on the left"
+    description="actionsOnHover shows the buttons only while the card is hovered or something in it has keyboard focus (always on touch screens); the tag stays. cornerPosition=&quot;top-left&quot; moves the corner to the other side, over an image too."
+    [code]="code.hover"
+    [tsCode]="code.hoverTs"
+    align="start"
+  >
+    <div class="card-demo-pair">
+      <verben-card
+        width="300px"
+        heading="Team notes"
+        subheading="Hover me, or Tab to me"
+        tag="3 new"
+        actionsOnHover
+        [actions]="['edit', 'delete']"
+        (action)="lastHover = $event"
+      >
+        <div card-body>The buttons fade in on hover; nothing moves.</div>
+      </verben-card>
+
+      <verben-card
+        width="250px"
+        heading="Mini player"
+        subheading="Now playing"
+        cornerPosition="top-left"
+        [actions]="['close', 'minimize']"
+        [(collapsed)]="miniCollapsed"
+        (action)="lastHover = $event"
+      >
+        <div card-body>Window buttons on the left, like macOS.</div>
+      </verben-card>
+
+      <verben-card
+        width="220px"
+        variant="plain"
+        tag="Sale"
+        tagTone="error"
+        cornerPosition="top-left"
+        actionsOnHover
+        [actions]="['more']"
+        (action)="lastHover = $event"
+      >
+        <div card-media class="card-demo-cover"></div>
+        <div card-body><b>Ankara tote</b><br /><span class="card-demo-muted">₦ 18,500</span></div>
+      </verben-card>
+    </div>
+    <p class="card-demo-muted" *ngIf="lastHover">(action) emitted: {{ lastHover }}</p>
+  </docs-example>
+
   <docs-example responsive title="Cards inside cards" description="A card in card-body is just another card; pd keeps the inner ones compact." [code]="code.nested">
     <verben-card width="320px" heading="Order #1042" subheading="Placed 7 Oct 2026 · Paid">
       <div card-body class="card-demo-stack">

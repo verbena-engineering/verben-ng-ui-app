@@ -45,6 +45,10 @@ import { CardModule } from './card.module';
       <div card-body>Body</div>
     </verben-card>
 
+    <verben-card id="left" heading="Left" tag="Tag" [actions]="['close']" cornerPosition="top-left" actionsOnHover>
+      <div card-body>Body</div>
+    </verben-card>
+
     <verben-card id="overlay" tag="New">
       <div card-media style="height: 40px"></div>
       <div card-body>Body</div>
@@ -153,6 +157,29 @@ describe('verben-card', () => {
     expect(fixture.componentInstance.clicks).toBe(0);
     card('slot').querySelector<HTMLElement>('.card-body')!.click();
     expect(fixture.componentInstance.clicks).toBe(1);
+  });
+
+  it('puts the corner top-left and shows its buttons only on hover / focus when asked', () => {
+    const c = card('left');
+    const header = c.querySelector('.card-header') as HTMLElement;
+    const corner = c.querySelector('.card-corner') as HTMLElement;
+    const close = c.querySelector('.card-action') as HTMLButtonElement;
+    expect(getComputedStyle(corner).gridColumnStart).toBe('1');
+    expect(getComputedStyle(c.querySelector('.card-heading')!).gridColumnStart).toBe('2');
+    expect(getComputedStyle(c.querySelector('.card-tag')!).order).toBe('1'); // after the buttons
+    expect(header.classList).toContain('has-corner');
+
+    close.style.transition = 'none';
+    const touch = matchMedia('(hover: none)').matches;
+    expect(getComputedStyle(close).opacity).toBe(touch ? '1' : '0');
+    expect(getComputedStyle(c.querySelector('.card-tag')!).opacity).toBe('1'); // the tag always shows
+    close.focus(); // keyboard users reach it, and it shows
+    expect(getComputedStyle(close).opacity).toBe('1');
+
+    // Defaults: top-right, always visible
+    const other = card('corner').querySelector('.card-action') as HTMLElement;
+    expect(getComputedStyle(other).opacity).toBe('1');
+    expect(getComputedStyle(card('corner').querySelector('.card-corner')!).gridColumnStart).toBe('2');
   });
 
   it('floats the corner over card-media when there is no header', () => {

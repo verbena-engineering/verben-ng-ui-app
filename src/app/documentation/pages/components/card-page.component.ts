@@ -46,6 +46,10 @@ export class CardPageComponent {
     return doc.id;
   }
 
+  // Corner: on hover, and on the left
+  lastHover = '';
+  miniCollapsed = false;
+
   // Corner: over an image, and your own content
   lastCustom = '';
   starred = false;
@@ -229,6 +233,42 @@ actions: CardAction[] = [
 ];
 starred = false;`,
 
+    hover: `<!-- Buttons only while hovered or focused; the tag stays -->
+<verben-card
+  heading="Team notes"
+  subheading="Hover me, or Tab to me"
+  tag="3 new"
+  actionsOnHover
+  [actions]="['edit', 'delete']"
+  (action)="onAction($event)"
+>
+  <div card-body>…</div>
+</verben-card>
+
+<!-- The corner on the left -->
+<verben-card
+  heading="Mini player"
+  subheading="Now playing"
+  cornerPosition="top-left"
+  [actions]="['close', 'minimize']"
+  [(collapsed)]="miniCollapsed"
+>
+  <div card-body>…</div>
+</verben-card>
+
+<!-- Both, over an image -->
+<verben-card variant="plain" tag="Sale" tagTone="error"
+  cornerPosition="top-left" actionsOnHover [actions]="['more']">
+  <img card-media src="tote.jpg" alt="Ankara tote" />
+  <div card-body>…</div>
+</verben-card>`,
+
+    hoverTs: `miniCollapsed = false;
+
+onAction(id: string) {
+  // 'edit' | 'delete' | 'more' | 'close' | 'minimize'
+}`,
+
     nested: `<verben-card width="320px" heading="Order #1042" subheading="Placed 7 Oct 2026 · Paid">
   <div card-body class="stack">
     <verben-card variant="plain" pd="4px" heading="Shipping to" subheading="12 Admiralty Way, Lekki"></verben-card>
@@ -257,6 +297,8 @@ starred = false;`,
     { name: 'tagTone', type: "'neutral' | 'info' | 'success' | 'warning' | 'error'", default: "'neutral'", description: 'New: tag colours from the theme.' },
     { name: 'tagBgColor / tagTextColor', type: 'string', default: '—', description: 'New: your own tag colours (win over tagTone).' },
     { name: 'actions', type: '(CardActionName | CardAction)[]', default: '[]', description: "New: corner buttons, in order. Built-in: 'minimize', 'close', 'delete', 'edit', 'more', 'expand'. Your own: { id, label?, icon?, text?, tone?, disabled? }." },
+    { name: 'cornerPosition', type: "'top-right' | 'top-left'", default: "'top-right'", description: 'New: which top corner holds the tag and buttons (over card-media too).' },
+    { name: 'actionsOnHover', type: 'boolean', default: 'false', description: 'New: the corner buttons only show while the card is hovered or has keyboard focus inside (always on touch screens). The tag always shows.' },
     { name: 'collapsed', type: 'boolean', default: 'false', description: 'New: only the header is shown. minimize toggles it; use [(collapsed)] to read or set it.' },
   ];
 

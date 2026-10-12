@@ -36,6 +36,8 @@ export interface CardAction {
 
 export type CardTagTone = 'neutral' | 'info' | 'success' | 'warning' | 'error';
 
+export type CardCornerPosition = 'top-right' | 'top-left';
+
 /** Icons are inline paths (24×24, stroked), so the card needs no icon loading */
 const ICONS: Record<CardActionName | 'restore', string> = {
   minimize: 'M5 12h14',
@@ -92,6 +94,8 @@ interface CornerButton {
  *   [actions]="['minimize', 'close']"        built-in buttons, or your own
  *   (action)="…"  [(collapsed)]="…"          minimize collapses the card
  *   <button card-actions>…</button>          anything else
+ *   cornerPosition="top-left"                the other side (default top-right)
+ *   actionsOnHover                           buttons only while hovered / focused
  * With a header it sits on the right of the header; on a card that starts
  * with card-media (no header) it floats over the image.
  */
@@ -149,6 +153,14 @@ export class CardComponent implements OnChanges, AfterContentInit {
    * Each click emits (action) with its id; 'minimize' also collapses the card.
    */
   @Input() actions: (CardActionName | CardAction)[] = [];
+  /** Which top corner: 'top-right' (default) or 'top-left' */
+  @Input() cornerPosition: CardCornerPosition = 'top-right';
+  /**
+   * The corner's buttons ([actions] and [card-actions] content) only show while
+   * the card is hovered or something in it has keyboard focus. The tag stays.
+   * On touch screens (no hover) they always show.
+   */
+  @Input({ transform: booleanAttribute }) actionsOnHover = false;
   /** Only the header is shown (what 'minimize' toggles); two-way: [(collapsed)] */
   @Input({ transform: booleanAttribute }) collapsed = false;
   @Output() collapsedChange = new EventEmitter<boolean>();

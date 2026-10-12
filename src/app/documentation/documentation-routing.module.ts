@@ -20,7 +20,6 @@ import { TabsPageComponent } from './pages/components/tabs-page.component';
 import { TextareaPageComponent } from './pages/components/textarea-page.component';
 import { TimePickerPageComponent } from './pages/components/time-picker-page.component';
 import { TooltipPageComponent } from './pages/components/tooltip-page.component';
-import { VendorInvoicesComponent } from './pages/playground/vendor-invoices/vendor-invoices.component';
 
 const title = (page: string) => `${page} · verben-ng-ui`;
 
@@ -64,7 +63,8 @@ const routes: Routes = [
 
       // ---- Playground: the original test pages, URLs unchanged ----
       // ⚠️ Unstable: a full screen built with the composable card
-      { path: 'vendor-invoices', component: VendorInvoicesComponent, title: title('Vendor Invoices') },
+      // Vendor Invoices was removed from the playground (2026-10-12); old links land on the Card docs
+      { path: 'vendor-invoices', redirectTo: 'components/card', pathMatch: 'full' },
       {
         path: 'data-table',
         loadChildren: () =>
@@ -168,6 +168,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('./dialogue-sample/dialogue-sample.module').then(
             (m) => m.DialogueSampleModule,
+          ),
+      },
+      {
+        path: 'card-hover-actions',
+        loadChildren: () =>
+          import('./card-hover-actions/card-hover-actions-demo.module').then(
+            (m) => m.CardHoverActionsDemoModule,
           ),
       },
       {

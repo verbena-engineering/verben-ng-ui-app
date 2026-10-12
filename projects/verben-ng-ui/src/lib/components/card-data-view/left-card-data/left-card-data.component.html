@@ -1,9 +1,22 @@
 @for (item of cardDataList; track $index) {
 <div class="flex">
   <div class="flex-col full-width">
+    @if (cardActions?.length) {
+    <!-- [cardActions]: the card gets the hover buttons -->
+    <verben-card-hover-actions
+      [item]="item"
+      [actions]="cardActions!"
+      [position]="cardActionsPosition"
+    >
+      <ng-container
+        *ngTemplateOutlet="card; context: { $implicit: item }"
+      ></ng-container>
+    </verben-card-hover-actions>
+    } @else {
     <ng-content
       *ngTemplateOutlet="card; context: { $implicit: item }"
     ></ng-content>
+    }
     <!-- children -->
     <ng-template #childrenList>
       @for (child of item.children; track $index) {

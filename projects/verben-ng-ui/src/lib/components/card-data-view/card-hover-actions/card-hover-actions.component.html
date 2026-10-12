@@ -1,0 +1,32 @@
+<ng-content></ng-content>
+<div
+  class="card-hover-actions {{ position }}"
+  [class.always-visible]="alwaysVisible"
+  (click)="$event.stopPropagation()"
+>
+  @for (a of actions; track a.id) {
+    @if (isVisible(a)) {
+      <button
+        type="button"
+        class="card-hover-action {{ buttonClass }} {{ a.class ?? '' }}"
+        [title]="a.label"
+        [attr.aria-label]="a.label"
+        [disabled]="disabled || a.disabled"
+        (click)="onClick(a, $event)"
+      >
+        @if (a.icon) {
+          <!-- The icon's own colours unless iconColor is set ('currentColor' = the button's colour) -->
+          <verben-svg
+            [icon]="a.icon"
+            [width]="a.iconSize ?? 14"
+            [height]="a.iconSize ?? 14"
+            [stroke]="a.iconColor ?? ''"
+          ></verben-svg>
+        } @else {
+          <span class="card-hover-action-text">{{ a.label }}</span>
+        }
+      </button>
+    }
+  }
+  <ng-content select="[hoverActions]"></ng-content>
+</div>

@@ -1,0 +1,130 @@
+<section class="cha-section">
+  <h2 class="cha-title">Like the trucks list</h2>
+  <p class="cha-muted">
+    The White360FE trucks screen: hover a truck for <b>Duplicate</b>; the unsaved one (N/A) also gets
+    <b>Delete draft</b>. Click a truck to select it.
+  </p>
+
+  <div class="truck-panel">
+    <verben-left-card-data [cardDataList]="trucks" [cardActions]="truckActions">
+      <ng-template #card let-item>
+        <!-- Same markup as truck-card.component.html, without Tailwind -->
+        <div class="truck-card" (click)="selectTruck(item)">
+          <div class="truck-strip" [class.is-selected]="item.selected"></div>
+          <div class="truck-content">
+            <div class="truck-header">
+              <h3 class="truck-title">{{ item.data.Code }}</h3>
+              <span class="capacity-text">{{ capacity(item.data) }}</span>
+            </div>
+            <div class="truck-body">
+              <span class="driver-label">Driver:</span>
+              <span class="driver-name">{{ item.data.DriverName || 'Unassigned' }}</span>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </verben-left-card-data>
+  </div>
+  <p class="cha-muted" *ngIf="truckLog">{{ truckLog }}</p>
+</section>
+
+<section class="cha-section">
+  <h2 class="cha-title">In a card list: [cardActions]</h2>
+  <p class="cha-muted">
+    Hover a card (or Tab into it). <b>Duplicate</b> is on every card; <b>Delete draft</b> only on drafts
+    (<code>canView</code>). Clicking a button doesn't select the card; clicking the card does.
+  </p>
+
+  <div class="cha-list">
+    <verben-left-card-data [cardDataList]="cards" [cardActions]="invoiceActions">
+      <ng-template #card let-item>
+        <verben-card
+          variant="plain"
+          interactive
+          [selected]="item.selected"
+          (click)="select(item)"
+          (keydown.enter)="select(item)"
+        >
+          <div card-header class="cha-row">
+            <b>{{ item.data.id }}</b>
+          </div>
+          <div card-body class="cha-row">
+            <span class="cha-muted">{{ item.data.vendor }}</span>
+            <span class="cha-state" [class.is-draft]="item.data.state === 'Draft'">{{ item.data.state }}</span>
+          </div>
+          <div card-footer>{{ item.data.amount | currency: 'NGN' : 'symbol-narrow' }}</div>
+        </verben-card>
+      </ng-template>
+    </verben-left-card-data>
+  </div>
+  <ul class="cha-log" *ngIf="log.length">
+    <li *ngFor="let line of log">{{ line }}</li>
+  </ul>
+</section>
+
+<section class="cha-section">
+  <h2 class="cha-title">Text-only actions and the position</h2>
+  <p class="cha-muted">Actions without an icon show their label. Pick where the buttons sit.</p>
+
+  <div class="cha-controls">
+    <div class="cha-segmented" role="group" aria-label="Position">
+      <button
+        *ngFor="let p of positions"
+        type="button"
+        [class.is-active]="position === p"
+        [attr.aria-pressed]="position === p"
+        (click)="position = p"
+      >
+        {{ p }}
+      </button>
+    </div>
+    <label class="cha-check"><input type="checkbox" [(ngModel)]="alwaysVisible" /> alwaysVisible</label>
+  </div>
+
+  <verben-card-hover-actions
+    *ngIf="!cancelled; else restore"
+    class="cha-window"
+    [item]="windowCard"
+    [actions]="windowActions"
+    [position]="position"
+    [alwaysVisible]="alwaysVisible"
+    (action)="lastEvent = $event.id + ' on ' + $event.item.data.id"
+  >
+    <verben-card heading="Upload queue" subheading="3 files · 2 done">
+      <div card-body *ngIf="!minimized" class="cha-stack">
+        <span>receipts-oct.pdf <span class="cha-muted">· done</span></span>
+        <span>vendors.xlsx <span class="cha-muted">· done</span></span>
+        <span>contract-final.docx <span class="cha-muted">· 64%</span></span>
+      </div>
+    </verben-card>
+  </verben-card-hover-actions>
+  <ng-template #restore>
+    <button type="button" class="cha-link" (click)="cancelled = false">Show the card again</button>
+  </ng-template>
+  <p class="cha-muted" *ngIf="lastEvent">(action): {{ lastEvent }}</p>
+</section>
+
+<section class="cha-section">
+  <h2 class="cha-title">Theming with CSS variables, and your own buttons</h2>
+  <p class="cha-muted">
+    Set <code>--card-action-*</code> on the element or any parent. Anything marked
+    <code>hoverActions</code> joins the row.
+  </p>
+
+  <div class="cha-pair">
+    <verben-card-hover-actions class="cha-themed" [item]="themedCard" [actions]="themedActions" alwaysVisible>
+      <verben-card heading="Dark pill buttons" subheading="alwaysVisible">
+        <div card-body>--card-action-bg, -color, -radius, -size, -border, -shadow.</div>
+      </verben-card>
+    </verben-card-hover-actions>
+
+    <verben-card-hover-actions [item]="themedCard" position="bottom-right">
+      <verben-card heading="Custom button" subheading="Hover me">
+        <div card-body>Your own markup in the [hoverActions] slot.</div>
+      </verben-card>
+      <button hoverActions type="button" class="cha-star" [attr.aria-pressed]="starred" (click)="starred = !starred">
+        {{ starred ? '★ Starred' : '☆ Star' }}
+      </button>
+    </verben-card-hover-actions>
+  </div>
+</section>

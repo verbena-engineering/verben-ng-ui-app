@@ -277,13 +277,32 @@
       </div>
     </section>
   </div>
-  <div card-footer class="card-footer">
-    <button
+  <div card-footer class="card-footer flex gap-2">
+    <verbena-button
+      (click)="exportData()"
+      styleType="secondary"
+      text="Export"
+      [disable]="!isAnyProfileSelected()"
+    ></verbena-button>
+    <verbena-button
+      (click)="exportAllData()"
+      styleType="secondary"
+      text="Export All"
+      [disable]="!isAnyProfileSelected()"
+    ></verbena-button>
+    <!-- <button
       class="export-button"
       [disabled]="!isAnyProfileSelected()"
       (click)="exportData()"
     >
       Export
     </button>
+    <button
+      class="export-button"
+      [disabled]="!isAnyProfileSelected()"
+      (click)="exportAllData()"
+    >
+      Export All
+    </button> -->
   </div>
 </verben-card>

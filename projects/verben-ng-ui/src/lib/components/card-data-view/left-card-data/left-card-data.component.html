@@ -20,12 +20,28 @@
     <!-- children -->
     <ng-template #childrenList>
       @for (child of item.children; track $index) {
+      @if (childActions?.length) {
+      <!-- child cards get the hover buttons too (cardChildActions, else cardActions) -->
+      <verben-card-hover-actions
+        [item]="child"
+        [actions]="childActions!"
+        [position]="cardActionsPosition"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            cardChild;
+            context: { index: $index, $implicit: child }
+          "
+        ></ng-container>
+      </verben-card-hover-actions>
+      } @else {
       <ng-container
         *ngTemplateOutlet="
           cardChild;
           context: { index: $index, $implicit: child }
         "
       ></ng-container>
+      }
       }
     </ng-template>
     <div

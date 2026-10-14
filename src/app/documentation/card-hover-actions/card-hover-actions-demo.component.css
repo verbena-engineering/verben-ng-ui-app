@@ -234,3 +234,18 @@
   font-weight: 500;
   color: #333;
 }
+
+/* Sub card (a compartment) */
+.truck-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: #e8eaf1;
+  color: #333;
+  font-size: 13px;
+  font-weight: 500;
+}

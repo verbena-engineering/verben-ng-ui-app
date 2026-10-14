@@ -38,6 +38,31 @@ export class CardHoverActionsDemoComponent {
     { Code: 'BUSTRK001', DriverName: 'Tayo', TotalCapacity: 500000, DataState: 'Saved' as const },
     { Code: 'KJA-482XY', DriverName: 'Amaka', TotalCapacity: 45000, DataState: 'Saved' as const },
   ].map((t, i) => ({ ...truckCard(t), selected: i === 0 })); // the first one open, as on the screen
+
+  constructor() {
+    // Sub cards: the first truck's compartments, shown expanded
+    const first = this.trucks[0];
+    first.isChildrenExpanded = true;
+    first.children = [
+      { selected: false, title: 'Compartment 1', body: [], children: [], data: { Position: 1, Capacity: 11000 } },
+      { selected: false, title: 'Compartment 2', body: [], children: [], data: { Position: 2, Capacity: 22000 } },
+    ];
+  }
+
+  // Child cards get their own buttons (without [cardChildActions] they'd use truckActions)
+  readonly compartmentActions: CardHoverAction[] = [
+    {
+      id: 'remove',
+      label: 'Remove compartment',
+      icon: 'delete',
+      iconSize: 13,
+      onSelect: (child) => {
+        const parent = this.trucks.find((t) => t.children.includes(child));
+        if (parent) parent.children = parent.children.filter((c) => c !== child);
+        this.truckLog = `removed ${child.title}`;
+      },
+    },
+  ];
   truckLog = '';
   private truckCopies = 0;
 

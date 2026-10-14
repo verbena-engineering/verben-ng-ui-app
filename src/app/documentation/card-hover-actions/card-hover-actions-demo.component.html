@@ -2,11 +2,12 @@
   <h2 class="cha-title">Like the trucks list</h2>
   <p class="cha-muted">
     The White360FE trucks screen: hover a truck for <b>Duplicate</b>; the unsaved one (N/A) also gets
-    <b>Delete draft</b>. Click a truck to select it.
+    <b>Delete draft</b>. Click a truck to select it. The compartments under the first truck are sub cards
+    (<code>#cardChild</code>) with their own button from <code>[cardChildActions]</code>.
   </p>
 
   <div class="truck-panel">
-    <verben-left-card-data [cardDataList]="trucks" [cardActions]="truckActions">
+    <verben-left-card-data [cardDataList]="trucks" [cardActions]="truckActions" [cardChildActions]="compartmentActions">
       <ng-template #card let-item>
         <!-- Same markup as truck-card.component.html, without Tailwind -->
         <div class="truck-card" (click)="selectTruck(item)">
@@ -21,6 +22,13 @@
               <span class="driver-name">{{ item.data.DriverName || 'Unassigned' }}</span>
             </div>
           </div>
+        </div>
+      </ng-template>
+      <!-- Sub cards: hover them too -->
+      <ng-template #cardChild let-child>
+        <div class="truck-child">
+          <span>{{ child.title }}</span>
+          <span class="capacity-text">{{ child.data.Capacity }} L</span>
         </div>
       </ng-template>
     </verben-left-card-data>

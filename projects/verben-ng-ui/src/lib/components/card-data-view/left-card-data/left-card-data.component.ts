@@ -30,13 +30,25 @@ export class LeftCardDataComponent {
   @Input() dataId!: string; //what to use to identify each data
   /**
    * Buttons revealed on hover / keyboard focus over each card (the #card
-   * template). When set, every card is wrapped in <verben-card-hover-actions>
-   * with its CardData; empty or unset renders exactly as before (no wrapper).
+   * template) and, unless cardChildActions says otherwise, each child card
+   * (#cardChild). When set, every card is wrapped in <verben-card-hover-actions>
+   * with its own CardData; empty or unset renders exactly as before (no wrapper).
    * Pass a stable array (a field, not an inline literal).
    */
   @Input() cardActions: CardHoverAction[] | null | undefined = [];
-  /** Where those buttons sit on each card. */
+  /**
+   * Different buttons for child cards (#cardChild). Unset (undefined): the
+   * children use cardActions. [] or null: no buttons on children.
+   * canView / onSelect receive the child's CardData.
+   */
+  @Input() cardChildActions: CardHoverAction[] | null | undefined = undefined;
+  /** Where those buttons sit on each card (and child card). */
   @Input() cardActionsPosition: CardHoverActionsPosition = 'top-right';
+
+  /** The actions for child cards: cardChildActions when set, else cardActions */
+  get childActions(): CardHoverAction[] | null | undefined {
+    return this.cardChildActions === undefined ? this.cardActions : this.cardChildActions;
+  }
   // currentItem:any={};
   showToggle(item: CardData) {
     // showToggle() && item.children.length>0

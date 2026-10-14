@@ -327,7 +327,8 @@ readonly actions: CardHoverAction[] = [
       { name: 'buttonClass', type: 'string', description: "Classes on every button; per action use class (built-in 'danger')." },
       { name: '(action)', type: '{ id, item }', description: 'After onSelect, for every enabled click.' },
       { name: '--card-action-*', type: 'CSS variables', description: 'size, offset, gap, bg, hover-bg, border, radius, shadow, color; set on the element or any parent.' },
-      { name: '[cardActions] / cardActionsPosition', type: 'verben-left-card-data', description: 'Wraps every #card for you.' },
+      { name: '[cardActions] / cardActionsPosition', type: 'verben-left-card-data', description: 'Wraps every #card (and #cardChild) for you.' },
+      { name: '[cardChildActions]', type: 'verben-left-card-data', description: 'Other buttons for child cards; unset = cardActions, [] = none.' },
     ],
   },
   files: [

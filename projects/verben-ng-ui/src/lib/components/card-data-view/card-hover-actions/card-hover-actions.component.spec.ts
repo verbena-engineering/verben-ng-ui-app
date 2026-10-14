@@ -39,10 +39,19 @@ const card = (title: string, state: string): CardData => ({
     <verben-left-card-data id="wrapped" [cardDataList]="items" [cardActions]="actions" cardActionsPosition="bottom-left">
       <ng-template #card let-item><div class="tpl">{{ item.title }}</div></ng-template>
     </verben-left-card-data>
+
+    <verben-left-card-data id="family" [cardDataList]="family" [cardActions]="actions" [cardChildActions]="childActions">
+      <ng-template #card let-item><div class="tpl">{{ item.title }}</div></ng-template>
+      <ng-template #cardChild let-child><div class="child">{{ child.title }}</div></ng-template>
+    </verben-left-card-data>
   `,
 })
 class HostComponent {
   items = [card('Draft one', 'Draft'), card('Posted one', 'Posted')];
+  family: CardData[] = [
+    { ...card('Parent', 'Posted'), isChildrenExpanded: true, children: [card('Child draft', 'Draft'), card('Child posted', 'Posted')] },
+  ];
+  childActions: CardHoverAction[] | null | undefined = undefined; // undefined: children use [actions]
   selected: CardData[] = [];
   emitted: { id: string; item: CardData }[] = [];
   parentClicks = 0;
@@ -172,6 +181,31 @@ describe('verben-card-hover-actions', () => {
 
       buttons(wrapped[1])[0].click();
       expect(host.selected).toEqual([host.items[1]]);
+    });
+
+    it('gives child cards the same buttons, with their own CardData', () => {
+      const children = Array.from(list('family').querySelectorAll<HTMLElement>('.childrenPadding verben-card-hover-actions'));
+      expect(children.map((c) => c.querySelector('.child')!.textContent!.trim())).toEqual(['Child draft', 'Child posted']);
+      expect(labels(children[0])).toEqual(['Delete draft', 'Duplicate', 'Cancel', 'Locked']); // canView saw the child
+      expect(labels(children[1])).toEqual(['Duplicate', 'Cancel', 'Locked']);
+
+      buttons(children[1])[0].click();
+      expect(host.selected).toEqual([host.family[0].children[1]]);
+    });
+
+    it('uses cardChildActions for children when set, and none for []', () => {
+      host.childActions = [{ id: 'open', label: 'Open' }];
+      fixture.detectChanges();
+      const children = () => Array.from(list('family').querySelectorAll<HTMLElement>('.childrenPadding verben-card-hover-actions'));
+      expect(children().map(labels)).toEqual([['Open'], ['Open']]);
+      // the parent card keeps [cardActions]
+      const parent = list('family').querySelector('verben-card-hover-actions') as HTMLElement;
+      expect(labels(parent)).toEqual(['Duplicate', 'Cancel', 'Locked']);
+
+      host.childActions = [];
+      fixture.detectChanges();
+      expect(children().length).toBe(0);
+      expect(list('family').querySelectorAll('.childrenPadding .child').length).toBe(2); // still rendered, unwrapped
     });
 
     it('drops the wrapper again when cardActions is emptied', () => {

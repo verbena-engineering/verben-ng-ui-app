@@ -65,7 +65,7 @@ export class DataXportComponent<T> {
 
   constructor(
     private exportService: DataXportService<T>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {
     this.newGroupForm = this.fb.group({
       name: ['', Validators.required],
@@ -96,7 +96,7 @@ export class DataXportComponent<T> {
       (col) =>
         col.exportBy ||
         (col.canExport !== false && (col.accessorKey || col.accessorFn)) ||
-        (this.useImportKey && col.importKey)
+        (this.useImportKey && col.importKey),
     );
     if (validColumns?.length) {
       this.exportService.setColumns(validColumns);
@@ -214,7 +214,7 @@ export class DataXportComponent<T> {
   editProfile(profile: ExportProfile & { selected: boolean }) {
     this.groupItems.forEach((item) => {
       item.selected = profile.items.some(
-        (profileItem) => profileItem.id === item.id
+        (profileItem) => profileItem.id === item.id,
       );
     });
     this.removeProfile(profile);
@@ -302,7 +302,7 @@ export class DataXportComponent<T> {
 
   exportData() {
     const selectedProfiles = this.profiles.filter(
-      (profile) => profile.selected
+      (profile) => profile.selected,
     );
     const dataQueryFunction = this.dataQueryFunction();
 
@@ -316,17 +316,47 @@ export class DataXportComponent<T> {
                 data,
                 selectedProfiles,
                 this.useImportKey,
-                this.includeFooterInExport
+                this.includeFooterInExport,
               );
             }
-          }
+          },
         );
       } else {
         this.exportService.exportData(
           this.data,
           selectedProfiles,
           this.useImportKey,
-          this.includeFooterInExport
+          this.includeFooterInExport,
+        );
+      }
+    }
+  }
+
+  exportAllData() {
+    const selectedProfiles = this.profiles.filter(
+      (profile) => profile.selected,
+    );
+    const dataQueryFunction = this.dataQueryFunction();
+
+    if (selectedProfiles.length > 0) {
+      if (dataQueryFunction) {
+        // this.exportDataRangeEvent.emit({ skip: this.skip, limit: this.limit });
+        dataQueryFunction({ skip: 0, limit: 0 }).then((data) => {
+          if (data) {
+            this.exportService.exportData(
+              data,
+              selectedProfiles,
+              this.useImportKey,
+              this.includeFooterInExport,
+            );
+          }
+        });
+      } else {
+        this.exportService.exportData(
+          this.data,
+          selectedProfiles,
+          this.useImportKey,
+          this.includeFooterInExport,
         );
       }
     }
@@ -339,7 +369,7 @@ export class DataXportComponent<T> {
   onField1Change() {
     this.newOperation.field2 = '';
     const isNumeric = this.numericColumns.some(
-      (col) => col.id === this.newOperation.field1
+      (col) => col.id === this.newOperation.field1,
     );
     this.newOperation.type = isNumeric ? 'arithmetic' : 'string';
     if (isNumeric) {
@@ -360,7 +390,7 @@ export class DataXportComponent<T> {
 
   get columnOptions() {
     return [...this.numericColumns, ...this.stringColumns].map((col) =>
-      this.transformColumnToOption(col)
+      this.transformColumnToOption(col),
     );
   }
 

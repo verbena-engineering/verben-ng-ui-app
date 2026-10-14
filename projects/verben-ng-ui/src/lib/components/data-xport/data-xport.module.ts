@@ -8,6 +8,7 @@ import { TooltipModule } from 'verben-ng-ui/src/lib/components/tooltip';
 import { VerbenaInputModule } from 'verben-ng-ui/src/lib/verbena-input';
 import { DataXportService } from './data-xport.service';
 import { DataXportComponent } from './data-xport.component';
+import { VerbenaButtonModule } from 'verben-ng-ui/src/lib/verbena-button';
 
 @NgModule({
   declarations: [DataXportComponent],
@@ -20,6 +21,7 @@ import { DataXportComponent } from './data-xport.component';
     DropDownModule,
     TooltipModule,
     VerbenaInputModule,
+    VerbenaButtonModule,
   ],
   providers: [DataXportService],
   exports: [DataXportComponent],

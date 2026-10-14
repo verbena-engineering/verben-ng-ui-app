@@ -21,6 +21,10 @@
   cursor: grab;
 }
 
+.sort-option .vbn-panel-handle {
+  opacity: 1;
+}
+
 .sort-option-main {
   display: flex;
   align-items: center;

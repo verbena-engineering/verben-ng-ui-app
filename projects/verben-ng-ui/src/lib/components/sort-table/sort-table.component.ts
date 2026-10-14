@@ -1,15 +1,39 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { DataFilterType } from 'verben-ng-ui/src/lib/models';
 import { IDataFilter } from 'verben-ng-ui/src/lib/models';
+import {
+  ColumnDefinition,
+  ColumnValueType,
+} from 'verben-ng-ui/src/lib/components/data-table';
+import {
+  SortCondition,
+  SortDirection,
+} from 'verben-ng-ui/src/lib/components/data-sort';
 
 @Component({
   selector: 'verben-sort-table',
   templateUrl: './sort-table.component.html',
   styleUrls: ['../shared/panel.css', './sort-table.component.css'],
 })
-export class SortTableComponent {
+export class SortTableComponent<T = any> implements OnInit, OnChanges {
+  private static instanceCounter = 0;
+  readonly instanceId: string = `vbn-sort-${++SortTableComponent.instanceCounter}`;
+
   @Input() enableDragAndDrop: boolean = false;
   @Input() sortOptions: IDataFilter[] = [];
+  /** Drop-in support for ColumnDefinition[] (data-sort) */
+  @Input() columns?: ColumnDefinition<T>[];
+  /** Drop-in support for data rows (used for type inference if needed) */
+  @Input() data?: T[];
+
   @Input() resetText: string = 'Reset';
   @Input() displayedOptions: number = 4;
   @Input() propertyText: string = 'Property';
@@ -29,8 +53,15 @@ export class SortTableComponent {
   @Input() borderRadius?: string;
   @Input() selectWidth?: string;
   @Input() containerHeight?: string = '400px';
+
+  /** Classic outputs */
   @Output() selectedOptions = new EventEmitter<IDataFilter[]>();
   @Output() resetSortData = new EventEmitter();
+
+  /** Drop-in outputs matching lib-data-sort */
+  @Output() sortApplied = new EventEmitter<SortCondition[]>();
+  @Output() resetFilter = new EventEmitter();
+
   draggedIndex: number | null = null;
   visibleSortOptions: IDataFilter[] = [];
   hiddenSortOptions: IDataFilter[] = [];
@@ -39,10 +70,74 @@ export class SortTableComponent {
   selectedOrders: Map<number, 'asc' | 'desc'> = new Map();
   defaultSortOptions: IDataFilter[] = [];
   checkAll: boolean = false;
+
+  /** True when columns input was provided */
+  isColumnsMode: boolean = false;
+  filterableColumns: ColumnDefinition<T>[] = [];
+
   ngOnInit() {
-    this.defaultSortOptions = [...this.sortOptions];
-    this.updateVisibleOptions();
-    this.updateSortButtonState();
+    this.setupFromInputs();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['columns'] || changes['sortOptions'] || changes['data']) {
+      this.setupFromInputs();
+    }
+  }
+
+  private setupFromInputs(): void {
+    if (this.columns && this.columns.length > 0) {
+      this.isColumnsMode = true;
+      this.filterableColumns = this.columns.filter(
+        (col) => col.accessorKey || col.id,
+      );
+      this.sortOptions = this.filterableColumns.map((col) => ({
+        name: this.getColumnHeader(col),
+        type: this.resolveColumnType(col),
+        checked: false,
+      }));
+      this.defaultSortOptions = [...this.sortOptions];
+      this.updateVisibleOptions();
+      this.updateSortButtonState();
+    } else {
+      this.isColumnsMode = false;
+      this.defaultSortOptions = [...this.sortOptions];
+      this.updateVisibleOptions();
+      this.updateSortButtonState();
+    }
+  }
+
+  private getColumnHeader(column: ColumnDefinition<T>): string {
+    return typeof column.header === 'function'
+      ? column.header({})
+      : column.header || column.id;
+  }
+
+  private resolveColumnType(column: ColumnDefinition<T>): DataFilterType {
+    if (column.valueType) {
+      switch (column.valueType) {
+        case ColumnValueType.Date:
+          return DataFilterType.Date;
+        case ColumnValueType.Integer:
+        case ColumnValueType.Number:
+        case ColumnValueType.Decimal:
+        case ColumnValueType.Currency:
+          return DataFilterType.Number;
+        default:
+          return DataFilterType.String;
+      }
+    }
+    // Fallback: infer from data
+    if (this.data && this.data.length > 0) {
+      const sample = column.accessorKey
+        ? (this.data[0] as any)[column.accessorKey]
+        : column.accessorFn
+        ? column.accessorFn(this.data[0])
+        : null;
+      if (sample instanceof Date) return DataFilterType.Date;
+      if (typeof sample === 'number') return DataFilterType.Number;
+    }
+    return DataFilterType.String;
   }
 
   updateVisibleOptions() {
@@ -88,6 +183,30 @@ export class SortTableComponent {
       [],
     );
     this.selectedOptions.emit(selectedSortDetails);
+
+    // Emit SortCondition[] matching lib-data-sort
+    const sortConditions: SortCondition[] = this.sortOptions.reduce<SortCondition[]>(
+      (acc, sort, index) => {
+        if (sort.checked) {
+          let columnId = sort.name;
+          if (this.isColumnsMode) {
+            const col = this.filterableColumns.find(
+              (c) => this.getColumnHeader(c) === sort.name || c.id === sort.name,
+            );
+            if (col) columnId = col.id;
+          }
+          const order = this.selectedOrders.get(index) || 'asc';
+          acc.push({
+            columnId,
+            direction: order === 'desc' ? SortDirection.Desc : SortDirection.Asc,
+          });
+        }
+        return acc;
+      },
+      [],
+    );
+    this.sortApplied.emit(sortConditions);
+
     return selectedSortDetails;
   }
   getSortOrder(type: DataFilterType, selectedOrder: 'asc' | 'desc') {
@@ -147,7 +266,23 @@ export class SortTableComponent {
     this.updateSortButtonState();
     this.checkAll = false;
     this.resetSortData.emit();
+    this.resetFilter.emit();
     this.applySort();
+  }
+
+  /** Alias matching lib-data-sort method */
+  resetAll() {
+    this.resetSort();
+  }
+
+  /** Alias matching lib-data-sort method */
+  applySorts() {
+    return this.applySort();
+  }
+
+  /** Alias matching lib-data-sort property */
+  get activeSortCount(): number {
+    return this.countSelectedSorts();
   }
 
   updateSortButtonState() {

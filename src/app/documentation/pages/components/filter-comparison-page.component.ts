@@ -5,6 +5,8 @@ import {
   DataFilterType,
   IDataFilter,
   FilterCondition,
+  SortCondition,
+  SortDirection,
 } from 'verben-ng-ui';
 import { DocsProp } from '../../docs-kit/props-table.component';
 
@@ -23,7 +25,7 @@ interface DemoUser {
   styleUrls: ['./filter-comparison-page.component.scss'],
 })
 export class FilterComparisonPageComponent {
-  // Mode 1: Classic TableFilter filterOptions
+  // ================= FILTER SECTION =================
   classicFilterOptions: IDataFilter[] = [
     { name: 'Customer Name', type: DataFilterType.String, checked: false },
     { name: 'Age', type: DataFilterType.Integer, checked: false },
@@ -33,7 +35,6 @@ export class FilterComparisonPageComponent {
 
   classicAppliedOutput: any = null;
 
-  // Mode 2: Columns format (Drop-in DataFilter contract)
   columnsDefinition: ColumnDefinition<DemoUser>[] = [
     {
       id: 'name',
@@ -82,16 +83,27 @@ export class FilterComparisonPageComponent {
   columnsAppliedOutput: FilterCondition[] | null = null;
   dataFilterAppliedOutput: FilterCondition[] | null = null;
 
+  // ================= SORT SECTION =================
+  classicSortOptions: IDataFilter[] = [
+    { name: 'Full Name', type: DataFilterType.String, checked: false },
+    { name: 'User Age', type: DataFilterType.Number, checked: false },
+    { name: 'Join Date', type: DataFilterType.Date, checked: false },
+  ];
+
+  classicSortOutput: IDataFilter[] | null = null;
+  unifiedSortOutput: SortCondition[] | null = null;
+  dataSortOutput: SortCondition[] | null = null;
+
   code = {
-    classic: `<!-- Classic TableFilter mode: passes filterOptions and handles filtersApplied -->
+    classicFilter: `<!-- Classic TableFilter mode -->
 <verben-table-filter
   width="100%"
   [filterOptions]="classicFilterOptions"
-  [maxFilterLength]="4"
+  [maxFilterLength]="3"
   (filtersApplied)="onClassicApplied($event)"
 ></verben-table-filter>`,
 
-    unified: `<!-- Unified mode: drop-in compatible with lib-data-filter bindings -->
+    unifiedFilter: `<!-- Unified TableFilter (drop-in for lib-data-filter) -->
 <verben-table-filter
   width="100%"
   [columns]="columnsDefinition"
@@ -108,9 +120,44 @@ export class FilterComparisonPageComponent {
   [initialFilters]="initialFilters"
   (filterApplied)="onDataFilterApplied($event)"
 ></lib-data-filter>`,
+
+    classicSort: `<!-- Classic SortTable mode -->
+<verben-sort-table
+  width="100%"
+  [enableDragAndDrop]="true"
+  [sortOptions]="classicSortOptions"
+  (selectedOptions)="onClassicSortApplied($event)"
+></verben-sort-table>`,
+
+    unifiedSort: `<!-- Unified SortTable (drop-in for lib-data-sort) -->
+<verben-sort-table
+  width="100%"
+  [enableDragAndDrop]="true"
+  [columns]="columnsDefinition"
+  [data]="tableData"
+  (sortApplied)="onUnifiedSortApplied($event)"
+  (resetFilter)="onSortReset()"
+></verben-sort-table>`,
+
+    dataSort: `<!-- Original DataSort component -->
+<lib-data-sort
+  [enableDragAndDrop]="true"
+  [columns]="columnsDefinition"
+  [data]="tableData"
+  (sortApplied)="onDataSortApplied($event)"
+></lib-data-sort>`,
+    unified: `<!-- Unified mode: drop-in compatible with lib-data-filter bindings -->
+<verben-table-filter
+  width="100%"
+  [columns]="columnsDefinition"
+  [data]="tableData"
+  [initialFilters]="initialFilters"
+  (filterApplied)="onColumnsApplied($event)"
+  (resetFilter)="onColumnsReset()"
+></verben-table-filter>`,
   };
 
-  inputs: DocsProp[] = [
+  filterInputs: DocsProp[] = [
     { name: 'columns', type: 'ColumnDefinition<T>[]', default: 'undefined', description: 'DataTable column definitions. Enables drop-in DataFilter mode.' },
     { name: 'data', type: 'T[]', default: 'undefined', description: 'Table rows used for dynamic type inference if column valueType is omitted.' },
     { name: 'initialFilters', type: 'FilterCondition[]', default: 'undefined', description: 'Pre-populated active filters in DataFilter format.' },
@@ -120,11 +167,30 @@ export class FilterComparisonPageComponent {
     { name: 'tooltip', type: 'boolean', default: 'false', description: 'Show tooltip on duplicate validation.' },
   ];
 
-  outputs: DocsProp[] = [
+  filterOutputs: DocsProp[] = [
     { name: 'filterApplied', type: 'EventEmitter<FilterCondition[]>', default: '-', description: 'Emits FilterCondition[] array matching lib-data-filter contract.' },
     { name: 'resetFilter', type: 'EventEmitter<void>', default: '-', description: 'Emitted when filters are reset.' },
     { name: 'filtersApplied', type: 'EventEmitter<any>', default: '-', description: 'Classic TableFilter event (emits IDataFilter[] then storageKey).' },
     { name: 'resetSortData', type: 'EventEmitter<any>', default: '-', description: 'Classic TableFilter reset event.' },
+  ];
+
+  inputs = this.filterInputs;
+  outputs = this.filterOutputs;
+
+  sortInputs: DocsProp[] = [
+    { name: 'columns', type: 'ColumnDefinition<T>[]', default: 'undefined', description: 'DataTable column definitions. Enables drop-in DataSort mode.' },
+    { name: 'data', type: 'T[]', default: 'undefined', description: 'Table rows used for dynamic type inference if column valueType is omitted.' },
+    { name: 'sortOptions', type: 'IDataFilter[]', default: '[]', description: 'Classic SortTable options list.' },
+    { name: 'enableDragAndDrop', type: 'boolean', default: 'false', description: 'Enable drag-and-drop reordering of sort properties with clearly visible handle.' },
+    { name: 'displayedOptions', type: 'number', default: '4', description: 'Number of sort properties visible before Show More.' },
+    { name: 'sortButtonText', type: 'string', default: "'Confirm'", description: 'Button text.' },
+  ];
+
+  sortOutputs: DocsProp[] = [
+    { name: 'sortApplied', type: 'EventEmitter<SortCondition[]>', default: '-', description: 'Emits SortCondition[] array matching lib-data-sort contract.' },
+    { name: 'resetFilter', type: 'EventEmitter<void>', default: '-', description: 'Emitted when sorting is reset (alias matching lib-data-sort).' },
+    { name: 'selectedOptions', type: 'EventEmitter<IDataFilter[]>', default: '-', description: 'Classic SortTable output emitting selected IDataFilter[] options.' },
+    { name: 'resetSortData', type: 'EventEmitter<any>', default: '-', description: 'Classic SortTable reset output.' },
   ];
 
   onClassicApplied(event: any): void {
@@ -139,5 +205,37 @@ export class FilterComparisonPageComponent {
 
   onDataFilterApplied(filters: FilterCondition[]): void {
     this.dataFilterAppliedOutput = filters;
+  }
+
+  onColumnsReset(): void {
+    this.columnsAppliedOutput = [];
+  }
+
+  onClassicReset(): void {
+    this.classicAppliedOutput = null;
+  }
+
+  onClassicSortApplied(sorts: IDataFilter[]): void {
+    this.classicSortOutput = sorts;
+  }
+
+  onClassicSortReset(): void {
+    this.classicSortOutput = null;
+  }
+
+  onUnifiedSortApplied(sorts: SortCondition[]): void {
+    this.unifiedSortOutput = sorts;
+  }
+
+  onSortReset(): void {
+    this.unifiedSortOutput = [];
+  }
+
+  onDataSortApplied(sorts: SortCondition[]): void {
+    this.dataSortOutput = sorts;
+  }
+
+  onDataSortReset(): void {
+    this.dataSortOutput = [];
   }
 }

@@ -41,7 +41,7 @@
       <div class="sort-option-main">
         <verben-svg
           *ngIf="enableDragAndDrop"
-          fill="var(--vbn-color-text-muted)"
+          fill="#64748b"
           [width]="18"
           class="vbn-panel-handle"
           icon="square-dot"
@@ -78,7 +78,7 @@
             100-1
           </label>
         </ng-container>
-        <ng-container *ngIf="option.type === 'String' || option.type === 'Date'">
+        <ng-container *ngIf="option.type === 'String'">
           <label class="sort-order-option">
             <input
               type="radio"
@@ -100,6 +100,30 @@
               (change)="setSortOrder(i, 'desc')"
             />
             Z-A
+          </label>
+        </ng-container>
+        <ng-container *ngIf="option.type === 'Date'">
+          <label class="sort-order-option">
+            <input
+              type="radio"
+              name="sortOrder{{ i }}"
+              value="asc"
+              [checked]="selectedOrders.get(i) === 'asc'"
+              [disabled]="!option.checked"
+              (change)="setSortOrder(i, 'asc')"
+            />
+            Oldest First
+          </label>
+          <label class="sort-order-option">
+            <input
+              type="radio"
+              name="sortOrder{{ i }}"
+              value="desc"
+              [checked]="selectedOrders.get(i) === 'desc'"
+              [disabled]="!option.checked"
+              (change)="setSortOrder(i, 'desc')"
+            />
+            Newest First
           </label>
         </ng-container>
       </div>

@@ -260,7 +260,7 @@
     </div>
   </div>
 
-  <div>
+  <div *ngIf="children">
     <ng-container *ngIf="children; else defaultChildren"></ng-container>
     <ng-template #defaultChildren>
       <div>

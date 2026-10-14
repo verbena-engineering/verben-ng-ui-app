@@ -24,6 +24,9 @@ import {
   styleUrls: ['../shared/panel.css', './sort-table.component.css'],
 })
 export class SortTableComponent<T = any> implements OnInit, OnChanges {
+  private static instanceCounter = 0;
+  readonly instanceId: string = `vbn-sort-${++SortTableComponent.instanceCounter}`;
+
   @Input() enableDragAndDrop: boolean = false;
   @Input() sortOptions: IDataFilter[] = [];
   /** Drop-in support for ColumnDefinition[] (data-sort) */

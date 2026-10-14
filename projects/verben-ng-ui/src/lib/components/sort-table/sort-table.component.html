@@ -58,7 +58,7 @@
           <label class="sort-order-option">
             <input
               type="radio"
-              name="sortOrder{{ i }}"
+              [name]="instanceId + '-sortOrder-' + i"
               value="asc"
               [checked]="selectedOrders.get(i) === 'asc'"
               [disabled]="!option.checked"
@@ -69,7 +69,7 @@
           <label class="sort-order-option">
             <input
               type="radio"
-              name="sortOrder{{ i }}"
+              [name]="instanceId + '-sortOrder-' + i"
               value="desc"
               [checked]="selectedOrders.get(i) === 'desc'"
               [disabled]="!option.checked"
@@ -82,7 +82,7 @@
           <label class="sort-order-option">
             <input
               type="radio"
-              name="sortOrder{{ i }}"
+              [name]="instanceId + '-sortOrder-' + i"
               value="asc"
               [checked]="selectedOrders.get(i) === 'asc'"
               [disabled]="!option.checked"
@@ -93,7 +93,7 @@
           <label class="sort-order-option">
             <input
               type="radio"
-              name="sortOrder{{ i }}"
+              [name]="instanceId + '-sortOrder-' + i"
               value="desc"
               [checked]="selectedOrders.get(i) === 'desc'"
               [disabled]="!option.checked"
@@ -106,7 +106,7 @@
           <label class="sort-order-option">
             <input
               type="radio"
-              name="sortOrder{{ i }}"
+              [name]="instanceId + '-sortOrder-' + i"
               value="asc"
               [checked]="selectedOrders.get(i) === 'asc'"
               [disabled]="!option.checked"
@@ -117,7 +117,7 @@
           <label class="sort-order-option">
             <input
               type="radio"
-              name="sortOrder{{ i }}"
+              [name]="instanceId + '-sortOrder-' + i"
               value="desc"
               [checked]="selectedOrders.get(i) === 'desc'"
               [disabled]="!option.checked"

@@ -22,12 +22,17 @@
       <verben-table-filter
         width="100%"
         [filterOptions]="classicFilterOptions"
+        [savedFilters]="classicSavedFilters"
         [maxFilterLength]="3"
         (filtersApplied)="onClassicApplied($event)"
+        (resetSortData)="onClassicReset()"
       ></verben-table-filter>
 
-      <div class="output-panel" *ngIf="classicAppliedOutput">
-        <h4>Emitted (filtersApplied):</h4>
+      <div class="output-panel">
+        <div class="output-header">
+          <h4>Emitted (filtersApplied):</h4>
+          <span class="badge">{{ classicAppliedOutput?.length ?? 0 }} active</span>
+        </div>
         <pre>{{ classicAppliedOutput | json }}</pre>
       </div>
     </div>
@@ -44,11 +49,15 @@
         [initialFilters]="initialFilters"
         [maxFilterLength]="3"
         (filterApplied)="onColumnsApplied($event)"
+        (filtersApplied)="onColumnsClassicApplied($event)"
         (resetFilter)="onColumnsReset()"
       ></verben-table-filter>
 
-      <div class="output-panel" *ngIf="columnsAppliedOutput">
-        <h4>Emitted (filterApplied):</h4>
+      <div class="output-panel">
+        <div class="output-header">
+          <h4>Emitted (filterApplied):</h4>
+          <span class="badge">{{ columnsAppliedOutput?.length ?? 0 }} active</span>
+        </div>
         <pre>{{ columnsAppliedOutput | json }}</pre>
       </div>
     </div>
@@ -63,10 +72,14 @@
         [data]="tableData"
         [initialFilters]="initialFilters"
         (filterApplied)="onDataFilterApplied($event)"
+        (resetFilter)="onDataFilterReset()"
       ></lib-data-filter>
 
-      <div class="output-panel" *ngIf="dataFilterAppliedOutput">
-        <h4>Emitted (filterApplied):</h4>
+      <div class="output-panel">
+        <div class="output-header">
+          <h4>Emitted (filterApplied):</h4>
+          <span class="badge">{{ dataFilterAppliedOutput?.length ?? 0 }} active</span>
+        </div>
         <pre>{{ dataFilterAppliedOutput | json }}</pre>
       </div>
     </div>
@@ -119,8 +132,11 @@
         (resetSortData)="onClassicSortReset()"
       ></verben-sort-table>
 
-      <div class="output-panel" *ngIf="classicSortOutput">
-        <h4>Emitted (selectedOptions):</h4>
+      <div class="output-panel">
+        <div class="output-header">
+          <h4>Emitted (selectedOptions):</h4>
+          <span class="badge">{{ classicSortOutput?.length ?? 0 }} active</span>
+        </div>
         <pre>{{ classicSortOutput | json }}</pre>
       </div>
     </div>
@@ -139,8 +155,11 @@
         (resetFilter)="onSortReset()"
       ></verben-sort-table>
 
-      <div class="output-panel" *ngIf="unifiedSortOutput">
-        <h4>Emitted (sortApplied):</h4>
+      <div class="output-panel">
+        <div class="output-header">
+          <h4>Emitted (sortApplied):</h4>
+          <span class="badge">{{ unifiedSortOutput?.length ?? 0 }} active</span>
+        </div>
         <pre>{{ unifiedSortOutput | json }}</pre>
       </div>
     </div>
@@ -158,8 +177,11 @@
         (resetFilter)="onDataSortReset()"
       ></lib-data-sort>
 
-      <div class="output-panel" *ngIf="dataSortOutput">
-        <h4>Emitted (sortApplied):</h4>
+      <div class="output-panel">
+        <div class="output-header">
+          <h4>Emitted (sortApplied):</h4>
+          <span class="badge">{{ dataSortOutput?.length ?? 0 }} active</span>
+        </div>
         <pre>{{ dataSortOutput | json }}</pre>
       </div>
     </div>

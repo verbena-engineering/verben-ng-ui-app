@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ColumnDefinition,
   ColumnValueType,
@@ -24,16 +24,36 @@ interface DemoUser {
   templateUrl: './filter-comparison-page.component.html',
   styleUrls: ['./filter-comparison-page.component.scss'],
 })
-export class FilterComparisonPageComponent {
+export class FilterComparisonPageComponent implements OnInit {
   // ================= FILTER SECTION =================
   classicFilterOptions: IDataFilter[] = [
-    { name: 'Customer Name', type: DataFilterType.String, checked: false },
-    { name: 'Age', type: DataFilterType.Integer, checked: false },
-    { name: 'Role', type: DataFilterType.Enum, checked: false },
-    { name: 'Joined Date', type: DataFilterType.Date, checked: false },
+    { name: 'Full Name', type: DataFilterType.String, checked: false },
+    { name: 'Account Role', type: DataFilterType.Enum, checked: false },
+    { name: 'User Age', type: DataFilterType.Integer, checked: false },
+    { name: 'Active Account', type: DataFilterType.Bool, checked: false },
+    { name: 'Join Date', type: DataFilterType.Date, checked: false },
   ];
 
-  classicAppliedOutput: any = null;
+  classicSavedFilters: IDataFilter[] = [
+    {
+      name: 'Account Role',
+      type: DataFilterType.Enum,
+      condition: 'is',
+      value: 'Administrator',
+      checked: true,
+      isRequired: true,
+    },
+    {
+      name: 'User Age',
+      type: DataFilterType.Integer,
+      condition: 'greaterThan',
+      value: 25,
+      checked: true,
+    },
+  ];
+
+  classicAppliedOutput: IDataFilter[] | null = null;
+  columnsClassicAppliedOutput: IDataFilter[] | null = null;
 
   columnsDefinition: ColumnDefinition<DemoUser>[] = [
     {
@@ -193,6 +213,22 @@ export class FilterComparisonPageComponent {
     { name: 'resetSortData', type: 'EventEmitter<any>', default: '-', description: 'Classic SortTable reset output.' },
   ];
 
+  ngOnInit(): void {
+    // Seed initial output panels so verification is visible immediately
+    this.classicAppliedOutput = [...this.classicSavedFilters];
+    this.columnsAppliedOutput = [...this.initialFilters];
+    this.dataFilterAppliedOutput = [...this.initialFilters];
+    this.classicSortOutput = [
+      { name: 'Full Name', type: DataFilterType.String, value: 'asc', checked: true },
+    ];
+    this.unifiedSortOutput = [
+      { columnId: 'name', direction: SortDirection.Asc },
+    ];
+    this.dataSortOutput = [
+      { columnId: 'name', direction: SortDirection.Asc },
+    ];
+  }
+
   onClassicApplied(event: any): void {
     if (Array.isArray(event)) {
       this.classicAppliedOutput = event;
@@ -203,16 +239,27 @@ export class FilterComparisonPageComponent {
     this.columnsAppliedOutput = filters;
   }
 
+  onColumnsClassicApplied(event: any): void {
+    if (Array.isArray(event)) {
+      this.columnsClassicAppliedOutput = event;
+    }
+  }
+
   onDataFilterApplied(filters: FilterCondition[]): void {
     this.dataFilterAppliedOutput = filters;
   }
 
   onColumnsReset(): void {
     this.columnsAppliedOutput = [];
+    this.columnsClassicAppliedOutput = [];
   }
 
   onClassicReset(): void {
-    this.classicAppliedOutput = null;
+    this.classicAppliedOutput = [];
+  }
+
+  onDataFilterReset(): void {
+    this.dataFilterAppliedOutput = [];
   }
 
   onClassicSortApplied(sorts: IDataFilter[]): void {
@@ -220,7 +267,7 @@ export class FilterComparisonPageComponent {
   }
 
   onClassicSortReset(): void {
-    this.classicSortOutput = null;
+    this.classicSortOutput = [];
   }
 
   onUnifiedSortApplied(sorts: SortCondition[]): void {

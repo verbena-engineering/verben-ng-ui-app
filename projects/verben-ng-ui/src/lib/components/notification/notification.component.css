@@ -1,23 +1,79 @@
-p{
-    margin-bottom: 0px !important;
-}
-.mainwrapper{ 
-    position: relative;
-}
-.closeSvg{
-    position: absolute;
-    top:3px;
-    right: 8px;
-    cursor: pointer;
+/* shadcn / Sonner-like toast on the original tinted colours. Position,
+   slide-in, width and the options' colours are inline (notificationStyles). */
+
+p {
+  margin: 0 !important;
+  line-height: 1.4;
 }
 
-/* @keyframes slideIn {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(0); }
-  }
-  
-  @keyframes slideOut {
-    from { transform: translateX(0); }
-    to { transform: translateX(-100%); }
-  }
-   */
+.mainwrapper {
+  position: relative;
+  box-sizing: border-box;
+  max-width: calc(100vw - 2rem); /* width="400px" still fits a phone */
+  min-height: 52px;
+  /* One row; with long text or several buttons the buttons go under it */
+  flex-wrap: wrap;
+  row-gap: 10px;
+  column-gap: 12px;
+  font-family: var(--vbn-font-family, inherit);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+}
+
+.content {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.content p {
+  overflow-wrap: anywhere;
+}
+
+.side {
+  margin-left: auto;
+}
+
+.side:empty {
+  display: none;
+}
+
+.icon {
+  flex: none;
+  display: inline-flex;
+  align-self: flex-start;
+  margin-top: 1px; /* centred on the first line of text */
+}
+
+/* Close: small and quiet in the top-right corner, clearer on hover */
+.closeSvg {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.closeSvg:hover,
+.closeSvg:focus-visible {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.closeSvg:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 1px;
+}
+
+.closeSvg svg {
+  width: 14px;
+  height: 14px;
+}

@@ -21,10 +21,11 @@ import { Subscription } from 'rxjs';
 export class NotificationComponent implements OnInit, OnDestroy {
   @Input() width?: string = '400px';
   height?: string = '50px';
-  borderRadius: string = '15px';
-  fontSize: string = '20px';
-  fontWeight: string = '700';
-  padding: string = '10px 2.5rem 10px 1.5rem';
+  // Look (2026-10-16): close to shadcn / Sonner "rich colors" toasts
+  borderRadius: string = '10px';
+  fontSize: string = '14px';
+  fontWeight: string = '500';
+  padding: string = '14px 2.5rem 14px 16px';
   @Input() content?: string;
   top: string = '';
   bottom: string = '';
@@ -78,9 +79,13 @@ export class NotificationComponent implements OnInit, OnDestroy {
         ? this.notificationOptions.backgroundColor
         : '',
       color: this.notificationOptions ? this.notificationOptions.textColor : '',
+      // The toast's colours for its buttons (main = text colour, others = a tint of it)
+      '--vbn-toast-fg': this.notificationOptions?.textColor || 'currentColor',
+      '--vbn-toast-bg': this.notificationOptions?.backgroundColor || 'transparent',
+      '--vbn-toast-soft': 'color-mix(in srgb, var(--vbn-toast-fg) 12%, transparent)',
       padding: this.padding,
       'border-radius': this.borderRadius,
-      border: '1px solid transparent',
+      border: '1px solid color-mix(in srgb, currentColor 20%, transparent)',
       width: this.width,
       'font-size': this.fontSize,
       'font-weight': this.fontWeight,
@@ -135,7 +140,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
     return {
       display: 'flex',
       'align-items': 'center',
-      gap: '0.2rem',
+      gap: '6px',
     };
   }
 
@@ -143,7 +148,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
     return {
       display: 'flex',
       'align-items': 'center',
-      gap: '1.5rem',
+      gap: '10px',
     };
   }
 

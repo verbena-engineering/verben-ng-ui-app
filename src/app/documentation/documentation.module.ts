@@ -47,6 +47,7 @@ import { DropdownPageComponent } from './pages/components/dropdown-page.componen
 import { IconsPageComponent } from './pages/components/icons-page.component';
 import { InputPageComponent } from './pages/components/input-page.component';
 import { NotificationPageComponent } from './pages/components/notification-page.component';
+import { NotificationButtonsExampleComponent } from './pages/components/notification-buttons-example.component';
 import { NumberInputPageComponent } from './pages/components/number-input-page.component';
 import { SwitchPageComponent } from './pages/components/switch-page.component';
 import { TabsPageComponent } from './pages/components/tabs-page.component';
@@ -77,6 +78,7 @@ import { TooltipPageComponent } from './pages/components/tooltip-page.component'
     IconsPageComponent,
     InputPageComponent,
     NotificationPageComponent,
+    NotificationButtonsExampleComponent,
     NumberInputPageComponent,
     SwitchPageComponent,
     TabsPageComponent,

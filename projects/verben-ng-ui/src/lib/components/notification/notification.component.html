@@ -1,29 +1,39 @@
 <div
   [ngStyle]="notificationStyles"
   class="mainwrapper"
+  [attr.data-type]="notificationOptions.type"
+  [attr.role]="notificationOptions.type === 'error' ? 'alert' : 'status'"
   *ngIf="notificationOptions"
 >
-  <div [ngStyle]="innerWrapperStyles">
+  <div class="content" [ngStyle]="innerWrapperStyles">
     <verben-svg
+      class="icon"
+      *ngIf="notificationOptions.iconName"
       [icon]="notificationOptions.iconName || ''"
-      [width]="notificationOptions.iconWidth || 20"
-      [height]="notificationOptions.iconHeight || 20"
+      [width]="notificationOptions.iconWidth || 18"
+      [height]="notificationOptions.iconHeight || 18"
       [stroke]="notificationOptions.stroke || ''"
       [fill]="notificationOptions.fill || ''"
     ></verben-svg>
     <p>{{ notificationContent }}</p>
   </div>
-  <div>
+
+  <!-- Buttons: the first is the main action (solid), the others are quieter.
+       A button's own bgColor / primarycolor still win. -->
+  <div class="side">
     <ng-container *ngIf="notificationOptions.buttons">
       <div [ngStyle]="btnWrapperStyle">
         <verbena-button
-          *ngFor="let button of notificationOptions.buttons"
+          *ngFor="let button of notificationOptions.buttons; let first = first"
           [text]="button.text"
-          [bgColor]="button.bgColor"
-          [textColor]="button.primarycolor || button.secondarycolor"
-          [borderRadius]="'8px'"
-          [pd]="'0px 8px'"
-          [fontSize]="'14px'"
+          [bgColor]="button.bgColor || (first ? 'var(--vbn-toast-fg)' : 'var(--vbn-toast-soft)')"
+          [textColor]="button.primarycolor || button.secondarycolor || (first ? 'var(--vbn-toast-bg)' : 'var(--vbn-toast-fg)')"
+          [border]="'0'"
+          [height]="'28px'"
+          [borderRadius]="'6px'"
+          [pd]="'0 10px'"
+          [fontSize]="button.fontSize || '12.5px'"
+          [fontWeight]="button.fontWeight || '600'"
           (click)="button.callBack && button.callBack()"
         ></verbena-button>
       </div>
@@ -31,23 +41,31 @@
     <ng-container *ngIf="!notificationOptions.buttons">
       <div [ngStyle]="btnWrapperStyle" *ngIf="buttons.length">
         <verbena-button
-          *ngFor="let button of buttons"
+          *ngFor="let button of buttons; let first = first"
           [text]="button.text"
-          [bgColor]="button.bgColor"
-          [textColor]="button.primarycolor || button.secondarycolor"
-          [borderRadius]="'8px'"
-          [pd]="'0px 8px'"
-          [fontSize]="'14px'"
+          [bgColor]="button.bgColor || (first ? 'var(--vbn-toast-fg)' : 'var(--vbn-toast-soft)')"
+          [textColor]="button.primarycolor || button.secondarycolor || (first ? 'var(--vbn-toast-bg)' : 'var(--vbn-toast-fg)')"
+          [border]="'0'"
+          [height]="'28px'"
+          [borderRadius]="'6px'"
+          [pd]="'0 10px'"
+          [fontSize]="button.fontSize || '12.5px'"
+          [fontWeight]="button.fontWeight || '600'"
           (click)="onButtonClick(button); button.callBack && button.callBack()"
         ></verbena-button>
       </div>
     </ng-container>
-    <verben-svg
-      class="closeSvg"
-      [icon]="'close'"
-      [size]="'sm'"
-      [stroke]="'var(--vbn-color-text-muted)'"
-      (click)="closeNotification()"
-    ></verben-svg>
   </div>
+
+  <button
+    type="button"
+    class="closeSvg"
+    aria-label="Close notification"
+    title="Close"
+    (click)="closeNotification()"
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <path d="M18 6 6 18M6 6l12 12" />
+    </svg>
+  </button>
 </div>

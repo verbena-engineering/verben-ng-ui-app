@@ -176,6 +176,16 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
     description: 'Toast messages triggered from NotificationService.',
     playground: '/documentation/notifications',
     source: lib + 'components/notification',
+    status: 'updated',
+    changes: {
+      date: '2026-10-16',
+      notes: [
+        'Sleeker, shadcn / Sonner-like, same feel: still tinted per type, now a light tint with a deeper shade for the text and icon (mixed from the theme, so error is no longer yellow and dark mode works), thin border, soft shadow, 14px text.',
+        'Compact buttons: the first is a solid button in the toast colour, the others are soft; a button bgColor / primarycolor still wins. With long text or several buttons they move under the message.',
+        'A small, quiet close button (keyboard too); never wider than the screen; role="status" (role="alert" for errors).',
+        'Same service, methods, options, inputs, outputs and behaviour.',
+      ],
+    },
   },
   {
     slug: 'number-input',

@@ -1,0 +1,90 @@
+<docs-page
+  title="Table Filter & Data Filter Unification"
+  description="Compare and verify the unified TableFilter component: runs both classic filterOptions mode and drop-in DataTable columns mode without breaking backwards compatibility."
+>
+  <h2 class="docs-h2" id="overview">Overview</h2>
+  <p class="docs-p">
+    <code class="docs-inline-code">verben-table-filter</code> has been enhanced to natively accept both
+    <code class="docs-inline-code">[filterOptions]</code> (the classic TableFilter interface) and
+    <code class="docs-inline-code">[columns]</code> + <code class="docs-inline-code">[data]</code>
+    (the DataFilter interface). Additionally, it responds to the
+    <code class="docs-inline-code">lib-data-filter</code> selector, allowing direct tag replacement.
+  </p>
+
+  <h2 class="docs-h2" id="live-comparison">Side-by-Side Live Verification</h2>
+
+  <div class="comparison-grid">
+    <!-- Card 1: Classic Mode -->
+    <div class="comparison-card">
+      <h3>1. Classic Table Filter Mode</h3>
+      <p>Using <code>[filterOptions]="classicFilterOptions"</code> and emitting <code>(filtersApplied)</code>.</p>
+
+      <verben-table-filter
+        width="100%"
+        [filterOptions]="classicFilterOptions"
+        [maxFilterLength]="3"
+        (filtersApplied)="onClassicApplied($event)"
+      ></verben-table-filter>
+
+      <div class="output-panel" *ngIf="classicAppliedOutput">
+        <h4>Emitted (filtersApplied):</h4>
+        <pre>{{ classicAppliedOutput | json }}</pre>
+      </div>
+    </div>
+
+    <!-- Card 2: Unified Mode with Columns -->
+    <div class="comparison-card">
+      <h3>2. Unified Table Filter (Drop-in Mode)</h3>
+      <p>Using <code>[columns]="columnsDefinition"</code> and emitting <code>(filterApplied)</code>.</p>
+
+      <verben-table-filter
+        width="100%"
+        [columns]="columnsDefinition"
+        [data]="tableData"
+        [initialFilters]="initialFilters"
+        [maxFilterLength]="3"
+        (filterApplied)="onColumnsApplied($event)"
+      ></verben-table-filter>
+
+      <div class="output-panel" *ngIf="columnsAppliedOutput">
+        <h4>Emitted (filterApplied):</h4>
+        <pre>{{ columnsAppliedOutput | json }}</pre>
+      </div>
+    </div>
+
+    <!-- Card 3: Original DataFilter -->
+    <div class="comparison-card">
+      <h3>3. Original Data Filter Component</h3>
+      <p>Using <code>&lt;lib-data-filter&gt;</code> with the same column definitions and initial filters.</p>
+
+      <lib-data-filter
+        [columns]="columnsDefinition"
+        [data]="tableData"
+        [initialFilters]="initialFilters"
+        (filterApplied)="onDataFilterApplied($event)"
+      ></lib-data-filter>
+
+      <div class="output-panel" *ngIf="dataFilterAppliedOutput">
+        <h4>Emitted (filterApplied):</h4>
+        <pre>{{ dataFilterAppliedOutput | json }}</pre>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="docs-h2" id="usage">Usage & Migration Guide</h2>
+  <p class="docs-p">
+    To migrate existing code from <code>&lt;lib-data-filter&gt;</code> to <code>&lt;verben-table-filter&gt;</code>,
+    simply swap the component tag:
+  </p>
+
+  <docs-example title="Drop-in Template Replacement" [code]="code.unified">
+    <p class="docs-p">All existing bindings (<code>columns</code>, <code>data</code>, <code>initialFilters</code>, <code>filterApplied</code>, <code>resetFilter</code>) continue to work seamlessly.</p>
+  </docs-example>
+
+  <h2 class="docs-h2" id="api">API Specification</h2>
+  <h3 class="docs-h3" id="inputs">Inputs</h3>
+  <docs-props-table [props]="inputs"></docs-props-table>
+
+  <h3 class="docs-h3" id="outputs">Outputs</h3>
+  <docs-props-table [props]="outputs"></docs-props-table>
+</docs-page>

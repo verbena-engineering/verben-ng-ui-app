@@ -54,6 +54,8 @@ import { TabsPageComponent } from './pages/components/tabs-page.component';
 import { TextareaPageComponent } from './pages/components/textarea-page.component';
 import { TimePickerPageComponent } from './pages/components/time-picker-page.component';
 import { TooltipPageComponent } from './pages/components/tooltip-page.component';
+import { FilterComparisonPageComponent } from './pages/components/filter-comparison-page.component';
+import { TableFilterModule, DataFilterModule } from 'verben-ng-ui';
 
 @NgModule({
   declarations: [
@@ -85,6 +87,7 @@ import { TooltipPageComponent } from './pages/components/tooltip-page.component'
     TextareaPageComponent,
     TimePickerPageComponent,
     TooltipPageComponent,
+    FilterComparisonPageComponent,
   ],
   imports: [
     CommonModule,
@@ -108,6 +111,8 @@ import { TooltipPageComponent } from './pages/components/tooltip-page.component'
     VerbenaTabModule,
     VerbenaTextareaModule,
     DataViewModule,
+    TableFilterModule,
+    DataFilterModule,
   ],
 })
 export class DocumentationModule {}

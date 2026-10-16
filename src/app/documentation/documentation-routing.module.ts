@@ -20,6 +20,7 @@ import { TabsPageComponent } from './pages/components/tabs-page.component';
 import { TextareaPageComponent } from './pages/components/textarea-page.component';
 import { TimePickerPageComponent } from './pages/components/time-picker-page.component';
 import { TooltipPageComponent } from './pages/components/tooltip-page.component';
+import { FilterComparisonPageComponent } from './pages/components/filter-comparison-page.component';
 
 const title = (page: string) => `${page} · verben-ng-ui`;
 
@@ -53,6 +54,7 @@ const routes: Routes = [
       { path: 'components/switch', component: SwitchPageComponent, title: title('Switch') },
       { path: 'components/tabs', component: TabsPageComponent, title: title('Tabs') },
       { path: 'components/textarea', component: TextareaPageComponent, title: title('Textarea') },
+      { path: 'components/table-filter', component: FilterComparisonPageComponent, title: title('Table & Data Filter') },
       { path: 'components/time-picker', component: TimePickerPageComponent, title: title('Time Picker') },
       { path: 'components/tooltip', component: TooltipPageComponent, title: title('Tooltip') },
 

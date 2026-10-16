@@ -1,40 +1,45 @@
 <docs-page
-  title="Table Filter & Data Filter Unification"
-  description="Compare and verify the unified TableFilter component: runs both classic filterOptions mode and drop-in DataTable columns mode without breaking backwards compatibility."
+  title="Filter & Sort Unification"
+  description="Compare and verify unified TableFilter and SortTable components: each seamlessly supports both classic options-based workflows and DataTable columns-based drop-in workflows without breaking backwards compatibility."
 >
-  <h2 class="docs-h2" id="overview">Overview</h2>
+  <!-- ================= FILTER SECTION ================= -->
+  <h2 class="docs-h2" id="filter-overview">1. Table Filter Unification</h2>
   <p class="docs-p">
-    <code class="docs-inline-code">verben-table-filter</code> has been enhanced to natively accept both
+    <code class="docs-inline-code">verben-table-filter</code> natively supports both
     <code class="docs-inline-code">[filterOptions]</code> (the classic TableFilter interface) and
     <code class="docs-inline-code">[columns]</code> + <code class="docs-inline-code">[data]</code>
-    (the DataFilter interface). Additionally, it responds to the
-    <code class="docs-inline-code">lib-data-filter</code> selector, allowing direct tag replacement.
+    (the DataFilter interface), with advanced date picker integration and multiple field filters.
   </p>
 
-  <h2 class="docs-h2" id="live-comparison">Side-by-Side Live Verification</h2>
+  <h3 class="docs-h3" id="filter-live-comparison">Side-by-Side Filter Verification</h3>
 
   <div class="comparison-grid">
-    <!-- Card 1: Classic Mode -->
+    <!-- Card 1: Classic Filter Mode -->
     <div class="comparison-card">
-      <h3>1. Classic Table Filter Mode</h3>
+      <h3>Classic Table Filter</h3>
       <p>Using <code>[filterOptions]="classicFilterOptions"</code> and emitting <code>(filtersApplied)</code>.</p>
 
       <verben-table-filter
         width="100%"
         [filterOptions]="classicFilterOptions"
+        [savedFilters]="classicSavedFilters"
         [maxFilterLength]="3"
         (filtersApplied)="onClassicApplied($event)"
+        (resetSortData)="onClassicReset()"
       ></verben-table-filter>
 
-      <div class="output-panel" *ngIf="classicAppliedOutput">
-        <h4>Emitted (filtersApplied):</h4>
+      <div class="output-panel">
+        <div class="output-header">
+          <h4>Emitted (filtersApplied):</h4>
+          <span class="badge">{{ classicAppliedOutput?.length ?? 0 }} active</span>
+        </div>
         <pre>{{ classicAppliedOutput | json }}</pre>
       </div>
     </div>
 
-    <!-- Card 2: Unified Mode with Columns -->
+    <!-- Card 2: Unified Filter Drop-in Mode -->
     <div class="comparison-card">
-      <h3>2. Unified Table Filter (Drop-in Mode)</h3>
+      <h3>Unified Table Filter (Drop-in)</h3>
       <p>Using <code>[columns]="columnsDefinition"</code> and emitting <code>(filterApplied)</code>.</p>
 
       <verben-table-filter
@@ -44,17 +49,22 @@
         [initialFilters]="initialFilters"
         [maxFilterLength]="3"
         (filterApplied)="onColumnsApplied($event)"
+        (filtersApplied)="onColumnsClassicApplied($event)"
+        (resetFilter)="onColumnsReset()"
       ></verben-table-filter>
 
-      <div class="output-panel" *ngIf="columnsAppliedOutput">
-        <h4>Emitted (filterApplied):</h4>
+      <div class="output-panel">
+        <div class="output-header">
+          <h4>Emitted (filterApplied):</h4>
+          <span class="badge">{{ columnsAppliedOutput?.length ?? 0 }} active</span>
+        </div>
         <pre>{{ columnsAppliedOutput | json }}</pre>
       </div>
     </div>
 
     <!-- Card 3: Original DataFilter -->
     <div class="comparison-card">
-      <h3>3. Original Data Filter Component</h3>
+      <h3>Original Data Filter</h3>
       <p>Using <code>&lt;lib-data-filter&gt;</code> with the same column definitions and initial filters.</p>
 
       <lib-data-filter
@@ -62,29 +72,132 @@
         [data]="tableData"
         [initialFilters]="initialFilters"
         (filterApplied)="onDataFilterApplied($event)"
+        (resetFilter)="onDataFilterReset()"
       ></lib-data-filter>
 
-      <div class="output-panel" *ngIf="dataFilterAppliedOutput">
-        <h4>Emitted (filterApplied):</h4>
+      <div class="output-panel">
+        <div class="output-header">
+          <h4>Emitted (filterApplied):</h4>
+          <span class="badge">{{ dataFilterAppliedOutput?.length ?? 0 }} active</span>
+        </div>
         <pre>{{ dataFilterAppliedOutput | json }}</pre>
       </div>
     </div>
   </div>
 
-  <h2 class="docs-h2" id="usage">Usage & Migration Guide</h2>
+  <h3 class="docs-h3" id="filter-usage">Filter Migration Guide</h3>
   <p class="docs-p">
     To migrate existing code from <code>&lt;lib-data-filter&gt;</code> to <code>&lt;verben-table-filter&gt;</code>,
     simply swap the component tag:
   </p>
 
-  <docs-example title="Drop-in Template Replacement" [code]="code.unified">
+  <docs-example title="Filter Drop-in Template Replacement" [code]="code.unifiedFilter">
     <p class="docs-p">All existing bindings (<code>columns</code>, <code>data</code>, <code>initialFilters</code>, <code>filterApplied</code>, <code>resetFilter</code>) continue to work seamlessly.</p>
   </docs-example>
 
-  <h2 class="docs-h2" id="api">API Specification</h2>
-  <h3 class="docs-h3" id="inputs">Inputs</h3>
-  <docs-props-table [props]="inputs"></docs-props-table>
+  <h3 class="docs-h3" id="filter-api">Filter API Specification</h3>
+  <docs-props-table [props]="filterInputs"></docs-props-table>
+  <docs-props-table [props]="filterOutputs"></docs-props-table>
 
-  <h3 class="docs-h3" id="outputs">Outputs</h3>
-  <docs-props-table [props]="outputs"></docs-props-table>
+  <!-- ================= SORT SECTION ================= -->
+  <h2 class="docs-h2" id="sort-overview" style="margin-top: 3rem;">2. Sort Table Unification</h2>
+  <p class="docs-p">
+    <code class="docs-inline-code">verben-sort-table</code> has been upgraded to natively accept both
+    <code class="docs-inline-code">[sortOptions]</code> (the classic SortTable interface) and
+    <code class="docs-inline-code">[columns]</code> + <code class="docs-inline-code">[data]</code>
+    (the DataSort interface).
+  </p>
+  <p class="docs-p">
+    Key improvements include:
+  </p>
+  <ul>
+    <li><strong>High-Visibility Drag Handle:</strong> The reorder drag handle icon has been updated with a clear, crisp color (<code class="docs-inline-code">#64748b</code>) and full opacity, making it easily distinguishable.</li>
+    <li><strong>Dual Emission:</strong> When sorting is applied, both <code class="docs-inline-code">(selectedOptions)</code> (classic <code class="docs-inline-code">IDataFilter[]</code>) and <code class="docs-inline-code">(sortApplied)</code> (<code class="docs-inline-code">SortCondition[]</code>) are emitted.</li>
+    <li><strong>Reset Synchronization:</strong> Resetting emits both <code class="docs-inline-code">(resetSortData)</code> and <code class="docs-inline-code">(resetFilter)</code>.</li>
+  </ul>
+
+  <h3 class="docs-h3" id="sort-live-comparison">Side-by-Side Sort Verification</h3>
+
+  <div class="comparison-grid">
+    <!-- Card 1: Classic Sort Table Mode -->
+    <div class="comparison-card">
+      <h3>Classic Sort Table</h3>
+      <p>Using <code>[sortOptions]="classicSortOptions"</code> and emitting <code>(selectedOptions)</code>.</p>
+
+      <verben-sort-table
+        width="100%"
+        [enableDragAndDrop]="true"
+        [sortOptions]="classicSortOptions"
+        (selectedOptions)="onClassicSortApplied($event)"
+        (resetSortData)="onClassicSortReset()"
+      ></verben-sort-table>
+
+      <div class="output-panel">
+        <div class="output-header">
+          <h4>Emitted (selectedOptions):</h4>
+          <span class="badge">{{ classicSortOutput?.length ?? 0 }} active</span>
+        </div>
+        <pre>{{ classicSortOutput | json }}</pre>
+      </div>
+    </div>
+
+    <!-- Card 2: Unified Sort Table Drop-in Mode -->
+    <div class="comparison-card">
+      <h3>Unified Sort Table (Drop-in)</h3>
+      <p>Using <code>[columns]="columnsDefinition"</code> and emitting <code>(sortApplied)</code>.</p>
+
+      <verben-sort-table
+        width="100%"
+        [enableDragAndDrop]="true"
+        [columns]="columnsDefinition"
+        [data]="tableData"
+        (sortApplied)="onUnifiedSortApplied($event)"
+        (resetFilter)="onSortReset()"
+      ></verben-sort-table>
+
+      <div class="output-panel">
+        <div class="output-header">
+          <h4>Emitted (sortApplied):</h4>
+          <span class="badge">{{ unifiedSortOutput?.length ?? 0 }} active</span>
+        </div>
+        <pre>{{ unifiedSortOutput | json }}</pre>
+      </div>
+    </div>
+
+    <!-- Card 3: Original DataSort -->
+    <div class="comparison-card">
+      <h3>Original Data Sort</h3>
+      <p>Using <code>&lt;lib-data-sort&gt;</code> with the same column definitions.</p>
+
+      <lib-data-sort
+        [columns]="columnsDefinition"
+        [data]="tableData"
+        [enableDragAndDrop]="true"
+        (sortApplied)="onDataSortApplied($event)"
+        (resetFilter)="onDataSortReset()"
+      ></lib-data-sort>
+
+      <div class="output-panel">
+        <div class="output-header">
+          <h4>Emitted (sortApplied):</h4>
+          <span class="badge">{{ dataSortOutput?.length ?? 0 }} active</span>
+        </div>
+        <pre>{{ dataSortOutput | json }}</pre>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="docs-h3" id="sort-usage">Sort Migration Guide</h3>
+  <p class="docs-p">
+    To migrate existing code from <code>&lt;lib-data-sort&gt;</code> to <code>&lt;verben-sort-table&gt;</code>,
+    replace the tag with <code>&lt;verben-sort-table&gt;</code>:
+  </p>
+
+  <docs-example title="Sort Drop-in Template Replacement" [code]="code.unifiedSort">
+    <p class="docs-p">Existing bindings like <code>columns</code>, <code>data</code>, <code>enableDragAndDrop</code>, <code>sortApplied</code>, and <code>resetFilter</code> are fully preserved.</p>
+  </docs-example>
+
+  <h3 class="docs-h3" id="sort-api">Sort API Specification</h3>
+  <docs-props-table [props]="sortInputs"></docs-props-table>
+  <docs-props-table [props]="sortOutputs"></docs-props-table>
 </docs-page>

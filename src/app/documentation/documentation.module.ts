@@ -55,7 +55,12 @@ import { TextareaPageComponent } from './pages/components/textarea-page.componen
 import { TimePickerPageComponent } from './pages/components/time-picker-page.component';
 import { TooltipPageComponent } from './pages/components/tooltip-page.component';
 import { FilterComparisonPageComponent } from './pages/components/filter-comparison-page.component';
-import { TableFilterModule, DataFilterModule } from 'verben-ng-ui';
+import {
+  TableFilterModule,
+  DataFilterModule,
+  SortTableModule,
+  DataSortModule,
+} from 'verben-ng-ui';
 
 @NgModule({
   declarations: [
@@ -113,6 +118,8 @@ import { TableFilterModule, DataFilterModule } from 'verben-ng-ui';
     DataViewModule,
     TableFilterModule,
     DataFilterModule,
+    SortTableModule,
+    DataSortModule,
   ],
 })
 export class DocumentationModule {}

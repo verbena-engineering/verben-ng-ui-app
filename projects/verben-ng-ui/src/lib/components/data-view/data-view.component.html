@@ -258,14 +258,13 @@
         </div>
       </ng-template>
     </div>
-  </div>
 
-  <div>
-    <ng-container *ngIf="children; else defaultChildren"></ng-container>
+    <!-- Children / Custom action buttons -->
+    <ng-container *ngIf="children; else defaultChildren">
+      <ng-container *ngTemplateOutlet="$any(children)"></ng-container>
+    </ng-container>
     <ng-template #defaultChildren>
-      <div>
-        <ng-content select="[children]"></ng-content>
-      </div>
+      <ng-content select="[children]"></ng-content>
     </ng-template>
   </div>
 </div>

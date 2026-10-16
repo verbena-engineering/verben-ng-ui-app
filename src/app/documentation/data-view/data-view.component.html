@@ -8,7 +8,7 @@
     isSelect: true,
     isCreate: true,
     isImport: true,
-    isToggle: true
+    isToggle: true,
   }"
   [buttonClass]="'my-custom-button-class'"
   [iconClass]="'my-icon-class'"
@@ -27,7 +27,9 @@
 >
   <div table-content>
     <!-- Your table goes here (see the Data Table page) -->
-    <p class="demo-placeholder">Table view: pass your table as table-content.</p>
+    <p class="demo-placeholder">
+      Table view: pass your table as table-content.
+    </p>
   </div>
   <div card-content>
     <verben-card-data-view
@@ -65,12 +67,12 @@
                   <!-- <verben-svg class="ml-auto" icon="close" [width]="20" [height]="20" color="black"></verben-svg>  -->
                 </div>
                 @for (ciItem of item.body; track ciItem.value) {
-                <div class="gap-2">
-                  <span class="text-muted font-light text-xs"
-                    >{{ ciItem.title }}:</span
-                  >
-                  <span class="text-black">{{ ciItem.value }}</span>
-                </div>
+                  <div class="gap-2">
+                    <span class="text-muted font-light text-xs"
+                      >{{ ciItem.title }}:</span
+                    >
+                    <span class="text-black">{{ ciItem.value }}</span>
+                  </div>
                 }
               </div>
             </div>
@@ -90,12 +92,12 @@
                   <!-- <verben-svg class="ml-auto" icon="close" [width]="20" [height]="20" color="black"></verben-svg>  -->
                 </div>
                 @for (ciItem of item.body; track ciItem.value) {
-                <div class="gap-2">
-                  <span class="text-muted font-light text-xs"
-                    >{{ ciItem.title }}:</span
-                  >
-                  <span class="text-black">{{ ciItem.value }}</span>
-                </div>
+                  <div class="gap-2">
+                    <span class="text-muted font-light text-xs"
+                      >{{ ciItem.title }}:</span
+                    >
+                    <span class="text-black">{{ ciItem.value }}</span>
+                  </div>
                 }
               </div>
             </div>
@@ -167,7 +169,11 @@
     ></verben-visible-column>
   </div>
   <div filter-content>
-    <verben-table-filter width="420px" [filterOptions]="filterArray" [maxFilterLength]="3"></verben-table-filter>
+    <verben-table-filter
+      width="420px"
+      [filterOptions]="filterArray"
+      [maxFilterLength]="3"
+    ></verben-table-filter>
   </div>
   <div sort-content>
     <verben-sort-table
@@ -183,6 +189,8 @@
   <div create-content>
     <!--pass create component-->
   </div>
-  <div import-content><p class="demo-placeholder">Pass your import panel as import-content.</p></div>
-  <div children></div>
+  <div import-content>
+    <p class="demo-placeholder">Pass your import panel as import-content.</p>
+  </div>
+  <div children>Test</div>
 </verben-data-view>

@@ -28,43 +28,50 @@ export class NotificationService {
   private getDefaultOptions(
     type: NotificationOptions['type'],
   ): NotificationStyles {
+    // Tinted like before, Sonner "rich colors" style: a light tint of the type
+    // colour behind a deeper shade of it for the text and icon. Mixed from the
+    // theme, so dark mode gets a dark tint with a light shade.
+    const tint = (tone: string, bg: number) =>
+      `color-mix(in srgb, var(${tone}) ${bg}%, var(--vbn-color-surface))`;
+    const shade = (tone: string, fg: number) =>
+      `color-mix(in oklab, var(${tone}) ${fg}%, var(--vbn-color-text))`;
     const typeStyles: Record<NotificationOptions['type'], NotificationStyles> =
       {
         success: {
-          backgroundColor: 'var(--vbn-status-success-bg)',
-          textColor: 'var(--vbn-status-success-fg)',
+          backgroundColor: tint('--vbn-color-success', 10),
+          textColor: shade('--vbn-color-success', 60),
           iconName: 'success',
-          iconWidth: 20,
-          iconHeight: 20,
+          iconWidth: 18,
+          iconHeight: 18,
           stroke: '',
           fill: '',
         },
         error: {
-          backgroundColor: 'var(--vbn-status-error-bg)',
-          textColor: 'var(--vbn-status-error-fg)',
+          backgroundColor: tint('--vbn-color-error', 7),
+          textColor: shade('--vbn-color-error', 85),
           iconName: 'warning',
-          iconWidth: 20,
-          iconHeight: 20,
-          stroke: 'var(--vbn-status-error-fg)',
-          fill: 'var(--vbn-status-error-fg)',
+          iconWidth: 18,
+          iconHeight: 18,
+          stroke: shade('--vbn-color-error', 85),
+          fill: shade('--vbn-color-error', 85),
         },
         warning: {
-          backgroundColor: 'var(--vbn-status-warning-bg)',
-          textColor: 'var(--vbn-status-warning-fg)',
+          backgroundColor: tint('--vbn-color-warning', 12),
+          textColor: shade('--vbn-color-warning', 62),
           iconName: 'dangerInfo',
-          iconWidth: 20,
-          iconHeight: 20,
-          stroke: 'var(--vbn-status-warning-fg)',
-          fill: 'var(--vbn-status-warning-fg)',
+          iconWidth: 18,
+          iconHeight: 18,
+          stroke: shade('--vbn-color-warning', 62),
+          fill: shade('--vbn-color-warning', 62),
         },
         info: {
-          backgroundColor: 'var(--vbn-status-info-bg)',
-          textColor: 'var(--vbn-status-info-fg)',
+          backgroundColor: tint('--vbn-color-info', 8),
+          textColor: shade('--vbn-color-info', 85),
           iconName: 'dangerInfo',
-          iconWidth: 20,
-          iconHeight: 20,
-          stroke: 'var(--vbn-status-info-fg)',
-          fill: 'var(--vbn-status-info-fg)',
+          iconWidth: 18,
+          iconHeight: 18,
+          stroke: shade('--vbn-color-info', 85),
+          fill: shade('--vbn-color-info', 85),
         },
       };
 

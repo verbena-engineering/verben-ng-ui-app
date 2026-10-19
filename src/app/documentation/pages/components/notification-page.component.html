@@ -16,7 +16,18 @@
 
   <h2 class="docs-h2" id="examples">Examples</h2>
 
-  <docs-example title="With an action" [code]="code.action" [tsCode]="code.actionTs">
+  <docs-example
+    responsive
+    title="With buttons"
+    description="Pass buttons in the options: each one runs its callBack when clicked. Pick a scenario; the toast appears in the box below (on a real page it appears in the screen corner)."
+    [code]="code.buttons"
+    [tsCode]="code.buttonsTs"
+    align="start"
+  >
+    <docs-notification-buttons-example></docs-notification-buttons-example>
+  </docs-example>
+
+  <docs-example title="With an action" description="One button, in the page's corner like a real app." [code]="code.action" [tsCode]="code.actionTs">
     <verbena-button text="Delete with undo" styleType="outline" (click)="withAction()"></verbena-button>
   </docs-example>
 
@@ -25,6 +36,9 @@
   <docs-props-table [props]="methods" kind="output"></docs-props-table>
   <h3 class="docs-h3" id="api-options">Options</h3>
   <docs-props-table [props]="options"></docs-props-table>
+  <h3 class="docs-h3" id="api-buttons">NotificationButton</h3>
+  <docs-props-table [props]="buttonFields"></docs-props-table>
   <h3 class="docs-h3" id="api-component">&lt;verben-notification&gt;</h3>
   <docs-props-table [props]="inputs"></docs-props-table>
+  <docs-props-table [props]="outputs" kind="output"></docs-props-table>
 </docs-page>

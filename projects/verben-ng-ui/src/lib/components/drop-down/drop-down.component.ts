@@ -909,12 +909,17 @@ export class DropDownComponent
     if (!this.isExpanded) {
       return;
     }
-    if (
-      !this.dropdownContainer.nativeElement.contains(event.target) &&
-      this.isExpanded &&
-      this.dropdownExpansion &&
-      !this.dropdownExpansion.nativeElement.contains(event.target)
-    ) {
+    const path = event.composedPath();
+    const clickedInsideContainer =
+      this.dropdownContainer?.nativeElement &&
+      (path.includes(this.dropdownContainer.nativeElement) ||
+        this.dropdownContainer.nativeElement.contains(event.target as Node));
+    const clickedInsideExpansion =
+      this.dropdownExpansion?.nativeElement &&
+      (path.includes(this.dropdownExpansion.nativeElement) ||
+        this.dropdownExpansion.nativeElement.contains(event.target as Node));
+
+    if (!clickedInsideContainer && !clickedInsideExpansion) {
       this.isExpanded = false;
     }
   }

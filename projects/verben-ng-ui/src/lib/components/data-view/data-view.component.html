@@ -53,7 +53,7 @@
     <!-- Column Section -->
     <ng-container
       [appOutSideClick]="showColumnChild"
-      (outSideClick)="resetChildViewsExcept('column')"
+      (outSideClick)="closeChildView('column')"
       *ngIf="viewState.isColumn && isTableView"
     >
       <ng-container *ngIf="columnTemplate; else defaultColumn"></ng-container>
@@ -83,9 +83,8 @@
     <!-- Filter Section -->
     <ng-container
       [appOutSideClick]="showFilterChild"
-      (outSideClick)="resetChildViewsExcept('filter')"
+      (outSideClick)="closeChildView('filter')"
       *ngIf="viewState.isFilter"
-      (click)="stopPropagation($event)"
     >
       <ng-container *ngIf="filterTemplate; else defaultFilter"></ng-container>
       <ng-template #defaultFilter>
@@ -99,7 +98,6 @@
           ><span class="dv-count">{{ selectedFilterTableCount }}</span>
         </span>
         <div
-          (click)="stopPropagation($event)"
           [style.z-index]="zIndex"
           class="data-view-element"
           [style.display]="showFilterChild ? 'block' : 'none'"
@@ -114,9 +112,8 @@
     <!--import Section-->
     <ng-container
       [appOutSideClick]="showImportChild"
-      (outSideClick)="resetChildViewsExcept('import')"
+      (outSideClick)="closeChildView('import')"
       *ngIf="viewState.isImport"
-      (click)="stopPropagation($event)"
     >
       <ng-container *ngIf="importTemplate; else defaultImport"></ng-container>
       <ng-template #defaultImport>
@@ -129,7 +126,6 @@
           <span>Import</span>
         </span>
         <div
-          (click)="stopPropagation($event)"
           [style.z-index]="zIndex"
           class="data-view-element"
         >
@@ -143,7 +139,7 @@
     <!-- Sort Section -->
     <ng-container
       [appOutSideClick]="showSortChild"
-      (outSideClick)="resetChildViewsExcept('sort')"
+      (outSideClick)="closeChildView('sort')"
       *ngIf="viewState.isSort"
     >
       <ng-container *ngIf="sortTemplate; else defaultSort"></ng-container>
@@ -167,9 +163,8 @@
     <!--Extend Section-->
     <ng-container
       [appOutSideClick]="showExtendChild"
-      (outSideClick)="resetChildViewsExcept('extend')"
+      (outSideClick)="closeChildView('extend')"
       *ngIf="viewState.isExtend"
-      (click)="stopPropagation($event)"
     >
       <ng-container *ngIf="extendTemplate; else defaultExtend"></ng-container>
       <ng-template #defaultExtend>
@@ -182,7 +177,6 @@
           <span>Extend</span>
         </span>
         <div
-          (click)="stopPropagation($event)"
           [style.z-index]="zIndex"
           class="data-view-element"
         >
@@ -196,7 +190,7 @@
     <!-- Export Section -->
     <ng-container
       [appOutSideClick]="showExportChild"
-      (outSideClick)="resetChildViewsExcept('export')"
+      (outSideClick)="closeChildView('export')"
       *ngIf="viewState.isExport"
     >
       <ng-container *ngIf="exportTemplate; else defaultExport"></ng-container>
@@ -238,7 +232,7 @@
 
     <div
       [appOutSideClick]="create"
-      (outSideClick)="resetChildViewsExcept('create')"
+      (outSideClick)="closeChildView('create')"
       *ngIf="viewState.isCreate"
     >
       <verbena-button

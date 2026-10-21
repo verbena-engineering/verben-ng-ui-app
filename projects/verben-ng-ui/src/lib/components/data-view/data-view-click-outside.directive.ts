@@ -26,19 +26,26 @@ export class OutSideClickDirective implements OnInit, OnDestroy {
   private listener: (() => void) | undefined;
 
   onDocumentClick = (event: Event) => {
-    const target = event.target as HTMLElement;
-    //const isInsidePane = target.closest('.cdk-overlay-pane') !== null;
+    if (!this.appOutSideClick) {
+      return;
+    }
+
     const path = event.composedPath();
 
-    const isInsidePane = path.some(
+    const parent = this.element?.nativeElement?.parentElement;
+    const isInsideElement =
+      parent &&
+      (path.includes(parent) || parent.contains(event.target as Node));
+
+    const isOverlay = path.some(
       (node) =>
         node instanceof HTMLElement &&
-        node.classList.contains('cdk-overlay-pane'),
+        (node.classList.contains('cdk-overlay-pane') ||
+          node.classList.contains('cdk-overlay-backdrop') ||
+          node.classList.contains('cdk-overlay-container')),
     );
-    if (
-      !this.element.nativeElement.parentElement.contains(event.target) &&
-      !isInsidePane
-    ) {
+
+    if (!isInsideElement && !isOverlay) {
       this.outSideClick.emit();
     }
   };

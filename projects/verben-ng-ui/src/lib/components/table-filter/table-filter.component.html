@@ -162,6 +162,7 @@
         placeholder="Field"
         [options]="filterArray"
         [(ngModel)]="selectedFilterValue"
+        [overlayWidth]="400"
         (ngModelChange)="onFilterNameChange(selectedFilterValue)"
       >
       </verben-drop-down>
@@ -171,6 +172,7 @@
         [options]="conditionOptions"
         (onChange)="checkDuplicateFilter()"
         [(ngModel)]="selectedCondition"
+        [overlayWidth]="200"
       >
       </verben-drop-down>
 
@@ -231,6 +233,7 @@
         optionLabel="label"
         optionValue="value"
         [(ngModel)]="inputValue"
+        [overlayWidth]="200"
       ></verben-drop-down>
 
       <verbena-input

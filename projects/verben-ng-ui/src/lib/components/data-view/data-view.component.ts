@@ -170,6 +170,39 @@ export class DataViewComponent implements OnInit {
     if (viewType !== 'create') this.create = false;
   }
 
+  closeChildView(viewType: string): void {
+    switch (viewType) {
+      case 'column':
+        this.showColumnChild = false;
+        break;
+      case 'filter':
+        this.showFilterChild = false;
+        break;
+      case 'sort':
+        this.showSortChild = false;
+        break;
+      case 'select':
+        this.showSelected = false;
+        break;
+      case 'export':
+        this.showExportChild = false;
+        break;
+      case 'import':
+        this.showImportChild = false;
+        break;
+      case 'extend':
+        this.showExtendChild = false;
+        break;
+      case 'create':
+        this.create = false;
+        break;
+    }
+    this.stateChange.emit({
+      key: viewType,
+      value: false,
+    });
+  }
+
   // Helper method to get the state of a specific child view
   getChildViewState(viewType: string): boolean {
     switch (viewType) {

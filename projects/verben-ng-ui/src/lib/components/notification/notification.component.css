@@ -28,6 +28,25 @@ p {
   overflow-wrap: anywhere;
 }
 
+/* Message, and the optional description under it */
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.has-description .message {
+  font-weight: 600;
+}
+
+.description {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.45;
+  opacity: 0.78;
+}
+
 .side {
   margin-left: auto;
 }
@@ -76,4 +95,20 @@ p {
 .closeSvg svg {
   width: 14px;
   height: 14px;
+}
+
+/* ===== Default look (type 'default', NotificationService.show) =====
+   Neutral and quiet: the page's surface and text, a fine border in the theme's
+   border colour, a soft layered shadow; the main button is solid in the text
+   colour (dark on light, light on dark). */
+.mainwrapper[data-type='default'] {
+  --vbn-toast-border: var(--vbn-color-border);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.05),
+    0 10px 28px -10px rgb(0 0 0 / 0.22);
+}
+
+.mainwrapper[data-type='default'] .description {
+  color: var(--vbn-color-text-muted);
+  opacity: 1;
 }

@@ -2,6 +2,7 @@
   [ngStyle]="notificationStyles"
   class="mainwrapper"
   [attr.data-type]="notificationOptions.type"
+  [class.has-description]="!!notificationOptions.description"
   [attr.role]="notificationOptions.type === 'error' ? 'alert' : 'status'"
   *ngIf="notificationOptions"
 >
@@ -15,7 +16,10 @@
       [stroke]="notificationOptions.stroke || ''"
       [fill]="notificationOptions.fill || ''"
     ></verben-svg>
-    <p>{{ notificationContent }}</p>
+    <div class="text">
+      <p class="message">{{ notificationContent }}</p>
+      <p class="description" *ngIf="notificationOptions.description">{{ notificationOptions.description }}</p>
+    </div>
   </div>
 
   <!-- Buttons: the first is the main action (solid), the others are quieter.

@@ -85,7 +85,8 @@ export class NotificationComponent implements OnInit, OnDestroy {
       '--vbn-toast-soft': 'color-mix(in srgb, var(--vbn-toast-fg) 12%, transparent)',
       padding: this.padding,
       'border-radius': this.borderRadius,
-      border: '1px solid color-mix(in srgb, currentColor 20%, transparent)',
+      // --vbn-toast-border: set by the default look (CSS); the tinted ones use their text colour
+      border: '1px solid var(--vbn-toast-border, color-mix(in srgb, currentColor 20%, transparent))',
       width: this.width,
       'font-size': this.fontSize,
       'font-weight': this.fontWeight,

@@ -178,8 +178,10 @@ export const COMPONENT_DOCS: DocsNavItem[] = [
     source: lib + 'components/notification',
     status: 'updated',
     changes: {
-      date: '2026-10-16',
+      date: '2026-11-02',
       notes: [
+        'New default look: NotificationService.show(message, options) gives a neutral toast (page surface and text, fine border, soft shadow, dark main button); success / error / warning / info keep their tinted colours.',
+        'New option description: a second, quieter line under the message (any type).',
         'Sleeker, shadcn / Sonner-like, same feel: still tinted per type, now a light tint with a deeper shade for the text and icon (mixed from the theme, so error is no longer yellow and dark mode works), thin border, soft shadow, 14px text.',
         'Compact buttons: the first is a solid button in the toast colour, the others are soft; a button bgColor / primarycolor still wins. With long text or several buttons they move under the message.',
         'A small, quiet close button (keyboard too); never wider than the screen; role="status" (role="alert" for errors).',

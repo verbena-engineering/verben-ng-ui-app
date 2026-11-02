@@ -9,6 +9,13 @@ import { DocsProp } from '../../docs-kit/props-table.component';
 export class NotificationPageComponent {
   constructor(private notifications: NotificationService) {}
 
+  show(): void {
+    this.notifications.show('Invoice INV-0042 created', {
+      description: 'Due Friday, 7 November 2026 · ₦ 250,000',
+      timeout: 4000,
+    });
+  }
+
   success(): void {
     this.notifications.success('Changes saved.', { timeout: 3000 });
   }
@@ -26,7 +33,8 @@ export class NotificationPageComponent {
   }
 
   withAction(): void {
-    this.notifications.info('Invoice INV-0042 was deleted.', {
+    this.notifications.show('Invoice INV-0042 was deleted', {
+      description: 'Dangote · ₦ 210,000',
       timeout: 5000,
       buttons: [{ text: 'Undo', callBack: () => this.success() }],
     });
@@ -36,12 +44,20 @@ export class NotificationPageComponent {
     basic: `<!-- Once, e.g. in app.component.html -->
 <verben-notification position="top-right"></verben-notification>
 
+<verbena-button text="Default" styleType="outline" (click)="show()"></verbena-button>
 <verbena-button text="Success" styleType="outline" (click)="success()"></verbena-button>
 <verbena-button text="Error" styleType="outline" (click)="error()"></verbena-button>`,
 
     basicTs: `import { NotificationService } from 'verben-ng-ui';
 
 constructor(private notifications: NotificationService) {}
+
+// The default look: neutral, with an optional description line
+show() {
+  this.notifications.show('Invoice INV-0042 created', {
+    description: 'Due Friday, 7 November 2026 · ₦ 250,000',
+  });
+}
 
 success() {
   this.notifications.success('Changes saved.', { timeout: 3000 });
@@ -89,7 +105,8 @@ connectionLost() {
     action: `<verbena-button text="Delete with undo" styleType="outline" (click)="withAction()"></verbena-button>`,
 
     actionTs: `withAction() {
-  this.notifications.info('Invoice INV-0042 was deleted.', {
+  this.notifications.show('Invoice INV-0042 was deleted', {
+    description: 'Dangote · ₦ 210,000',
     timeout: 5000,
     buttons: [{ text: 'Undo', callBack: () => this.restore() }],
   });
@@ -97,6 +114,7 @@ connectionLost() {
   };
 
   methods: DocsProp[] = [
+    { name: 'show(message, options?)', type: 'void', description: 'The default toast: neutral (page surface and text colours), no icon. For everyday messages.' },
     { name: 'success(message, options?)', type: 'void', description: 'Green success toast.' },
     { name: 'error(message, options?)', type: 'void', description: 'Error toast.' },
     { name: 'warning(message, options?)', type: 'void', description: 'Warning toast.' },
@@ -105,6 +123,7 @@ connectionLost() {
   ];
 
   options: DocsProp[] = [
+    { name: 'description', type: 'string', default: '—', description: 'A second, quieter line under the message (any type).' },
     { name: 'timeout', type: 'number', default: '2000', description: 'Milliseconds before it hides.' },
     { name: 'buttons', type: 'NotificationButton[]', default: '—', description: 'Buttons under the message, each with its own callBack (see NotificationButton).' },
     { name: 'backgroundColor / textColor', type: 'string', default: 'per type', description: 'Override the type colors.' },

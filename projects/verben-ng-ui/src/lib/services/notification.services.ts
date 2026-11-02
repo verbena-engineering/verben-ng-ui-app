@@ -37,6 +37,17 @@ export class NotificationService {
       `color-mix(in oklab, var(${tone}) ${fg}%, var(--vbn-color-text))`;
     const typeStyles: Record<NotificationOptions['type'], NotificationStyles> =
       {
+        // Neutral, the default look (show()): the page's surface and text
+        // colours, no icon; the type colours are for success / error / …
+        default: {
+          backgroundColor: 'var(--vbn-color-surface)',
+          textColor: 'var(--vbn-color-text)',
+          iconName: '',
+          iconWidth: 18,
+          iconHeight: 18,
+          stroke: '',
+          fill: '',
+        },
         success: {
           backgroundColor: tint('--vbn-color-success', 10),
           textColor: shade('--vbn-color-success', 60),
@@ -107,6 +118,11 @@ export class NotificationService {
 
   clearNotification() {
     this.notificationSubject.next(null);
+  }
+
+  /** The default notification: neutral and quiet, for everyday messages */
+  show(message: string, options?: Partial<NotificationOptions>) {
+    this.showNotification('default', message, options);
   }
 
   success(message: string, options?: Partial<NotificationOptions>) {

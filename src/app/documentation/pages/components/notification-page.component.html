@@ -2,6 +2,7 @@
   <verben-notification position="top-right" width="380px"></verben-notification>
 
   <docs-example [code]="code.basic" [tsCode]="code.basicTs">
+    <verbena-button text="Default" styleType="outline" (click)="show()"></verbena-button>
     <verbena-button text="Success" styleType="outline" (click)="success()"></verbena-button>
     <verbena-button text="Error" styleType="outline" (click)="error()"></verbena-button>
     <verbena-button text="Warning" styleType="outline" (click)="warning()"></verbena-button>
@@ -12,6 +13,10 @@
   <ol class="docs-list" style="list-style: decimal">
     <li>Import <code class="docs-inline-code">NotificationModule</code> and place one <code class="docs-inline-code">&lt;verben-notification&gt;</code> in your app shell.</li>
     <li>Inject <code class="docs-inline-code">NotificationService</code> wherever you need to show a message.</li>
+    <li>Use <code class="docs-inline-code">show()</code> for everyday messages (the neutral default look) and
+      <code class="docs-inline-code">success()</code>, <code class="docs-inline-code">error()</code>,
+      <code class="docs-inline-code">warning()</code> or <code class="docs-inline-code">info()</code> when the colour should say something.
+      Any of them can take a <code class="docs-inline-code">description</code> line.</li>
   </ol>
 
   <h2 class="docs-h2" id="examples">Examples</h2>
@@ -27,7 +32,7 @@
     <docs-notification-buttons-example></docs-notification-buttons-example>
   </docs-example>
 
-  <docs-example title="With an action" description="One button, in the page's corner like a real app." [code]="code.action" [tsCode]="code.actionTs">
+  <docs-example title="With an action" description="The default look with a description and one button, in the page's corner like a real app." [code]="code.action" [tsCode]="code.actionTs">
     <verbena-button text="Delete with undo" styleType="outline" (click)="withAction()"></verbena-button>
   </docs-example>
 

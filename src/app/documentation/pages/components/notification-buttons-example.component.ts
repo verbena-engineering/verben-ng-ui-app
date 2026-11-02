@@ -69,7 +69,9 @@ export class NotificationButtonsExampleComponent {
   constructor(private notifications: NotificationService) {}
 
   deleteInvoice(): void {
-    this.notifications.info('Invoice INV-0042 was deleted.', {
+    // The default look (show): neutral, with a description line
+    this.notifications.show('Invoice INV-0042 was deleted', {
+      description: 'Dangote · ₦ 210,000 · you can undo this for a few seconds',
       timeout: 8000,
       buttons: [
         {

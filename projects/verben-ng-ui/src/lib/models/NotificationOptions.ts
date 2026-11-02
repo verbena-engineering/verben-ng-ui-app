@@ -11,5 +11,8 @@ export interface NotificationOptions {
   stroke?: string;
   fill?: string;
   buttons?: NotificationButton[];
-  type: 'success' | 'error' | 'warning' | 'info';
+  /** A second, quieter line under the message, e.g. a date or a detail */
+  description?: string;
+  /** 'default' is the neutral look (NotificationService.show); the others are tinted */
+  type: 'default' | 'success' | 'error' | 'warning' | 'info';
 }

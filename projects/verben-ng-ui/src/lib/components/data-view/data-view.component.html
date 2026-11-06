@@ -125,10 +125,7 @@
           <verben-svg [width]="15" [icon]="'file'"></verben-svg>
           <span>Import</span>
         </span>
-        <div
-          [style.z-index]="zIndex"
-          class="data-view-element"
-        >
+        <div [style.z-index]="zIndex" class="data-view-element">
           <ng-content
             *ngIf="showImportChild"
             select="[import-content]"
@@ -176,10 +173,7 @@
           <verben-svg [width]="15" [icon]="'extend'"></verben-svg>
           <span>Extend</span>
         </span>
-        <div
-          [style.z-index]="zIndex"
-          class="data-view-element"
-        >
+        <div [style.z-index]="zIndex" class="data-view-element">
           <ng-content
             *ngIf="showImportChild"
             select="[extend-content]"
@@ -232,7 +226,7 @@
 
     <div
       [appOutSideClick]="create"
-      (outSideClick)="closeChildView('create')"
+      (outSideClick)="closeChildView('null')"
       *ngIf="viewState.isCreate"
     >
       <verbena-button
